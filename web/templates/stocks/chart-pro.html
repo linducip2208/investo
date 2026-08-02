@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Stock.Code]] &mdash; Chart Pro &mdash; Investo</title>
+    <meta name="description" content="Chart profesional [[.Stock.Code]] ([[.Stock.Name]]) dengan drawing tools, indicator, pattern scanner, dan multi-timeframe analisis.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:16px;transition:all .2s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .tool-btn{transition:all .15s}
+        .tool-btn:hover{transform:translateY(-1px)}
+        .tool-btn.active{background:#2563eb!important;color:#fff!important;box-shadow:0 0 0 2px rgba(37,99,235,.3)}
+        .star-gold{color:#f59e0b}
+        @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .animate-slide-up{animation:slideUp .3s ease-out}
+        @media(max-width:1023px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="chartPro()" x-init="init()">
+
+<script>
+function chartPro() {
+    return {
+        sidebarOpen: false,
+        loading: true,
+        patterns: [],
+        annotations: [],
+        indicators: null,
+        srLevels: null,
+        fibLevels: [],
+        activeTool: null,
+        timeframe: '6M',
+        chartType: 'candlestick',
+        indicatorToggles: { sma:true, ema:false, rsi:false, macd:false, bb:false, stoch:false, atr:false },
+        timeframes: [{l:'1D',v:'1D'},{l:'1M',v:'1M'},{l:'3M',v:'3M'},{l:'6M',v:'6M'},{l:'1Y',v:'1Y'},{l:'5Y',v:'5Y'},{l:'MAX',v:'MAX'}],
+        tfScans: [],
+        sidebarTab: 'patterns',
+        compareSearch: '',
+        compareResults: [],
+        compareOverlay: null,
+
+        init() {
+            var self = this;
+            this.$watch('timeframe', function(){ self.loadAllPro(); });
+            this.$watch('chartType', function(val){
+                window.__chartType = val;
+                if (allChartData) rebuildChart();
+            });
+            this.loadAllPro();
+        }
+    };
+}
+
+const code = '[[.Stock.Code]]';
+let proChart = null, proMain = null, proVolume = null;
+let allChartData = null;
+let indicatorSeries = [];
+let annotationLines = [];
+let _annotationSeriesAdded = false;
+let _drawingSeries = [];
+let _drawingUndo = [];
+let _drawings = [];
+
+function chartColors() {
+    return {
+        bg: '#1e293b', text: '#94a3b8', grid: '#334155', border: '#475569',
+        green: '#34d399', red: '#f87171',
+    };
+}
+
+function getTimeframeDays(tf) {
+    switch(tf) {
+        case '1D': return 5; case '1M': return 42; case '3M': return 100;
+        case '6M': return 200; case '1Y': return 365; case '5Y': return 1825; case 'MAX': return 3650;
+        default: return 365;
+    }
+}
+
+function rebuildChart() {
+    if (!allChartData || !allChartData.dates) return;
+    var el = document.getElementById('pro-chart');
+    if (!el) return;
+
+    if (proChart) {
+        indicatorSeries.forEach(function(s){ try{proChart.removeSeries(s)}catch(e){} });
+        annotationLines.forEach(function(s){ try{proChart.removeSeries(s)}catch(e){} });
+        _drawingSeries.forEach(function(s){ try{proChart.removeSeries(s)}catch(e){} });
+        proChart.remove();
+        proChart = null; proMain = null; proVolume = null;
+        indicatorSeries = []; annotationLines = [];
+    }
+
+    var c = chartColors();
+
+    proChart = LightweightCharts.createChart(el, {
+        layout: { background: { color: c.bg }, textColor: c.text },
+        grid: { vertLines: { color: c.grid }, horzLines: { color: c.grid } },
+        crosshair: { mode: 1 },
+        rightPriceScale: { borderColor: c.border, scaleMargins: { top: 0.05, bottom: 0.25 } },
+        timeScale: { borderColor: c.border, timeVisible: true, secondsVisible: false },
+        width: el.clientWidth,
+        height: el.clientHeight || 500,
+    });
+
+    if (window.__chartType === 'line' || window.__chartType === 'area') {
+        proMain = proChart.addSeries(
+            window.__chartType === 'area' ? LightweightCharts.AreaSeries : LightweightCharts.LineSeries,
+            { lineColor: '#94a3b8', topColor: 'rgba(59,130,246,0.2)', bottomColor: 'rgba(59,130,246,0.02)', lineWidth: 2 }
+        );
+        var lineData = [];
+        for (var i = 0; i < allChartData.dates.length; i++) {
+            lineData.push({ time: allChartData.dates[i], value: allChartData.prices[i].close });
+        }
+        proMain.setData(lineData);
+    } else {
+        proMain = proChart.addSeries(LightweightCharts.CandlestickSeries, {
+            upColor: c.green, downColor: c.red, borderUpColor: c.green, borderDownColor: c.red,
+            wickUpColor: c.green, wickDownColor: c.red,
+        });
+        var candleData = [];
+        for (var i = 0; i < allChartData.dates.length; i++) {
+            candleData.push({ time: allChartData.dates[i], open: allChartData.prices[i].open, high: allChartData.prices[i].high, low: allChartData.prices[i].low, close: allChartData.prices[i].close });
+        }
+        proMain.setData(candleData);
+    }
+
+    proVolume = proChart.addSeries(LightweightCharts.HistogramSeries, {
+        color: '#334155', priceFormat: { type: 'volume' }, priceScaleId: 'volume',
+    });
+    proChart.priceScale('volume').applyOptions({ scaleMargins: { top: 0.85, bottom: 0 }, visible: false });
+
+    var volumeData = [];
+    for (var i = 0; i < allChartData.dates.length; i++) {
+        volumeData.push({ time: allChartData.dates[i], value: allChartData.volume[i], color: allChartData.prices[i].close >= allChartData.prices[i].open ? 'rgba(52,211,153,0.3)' : 'rgba(248,113,113,0.3)' });
+    }
+    proVolume.setData(volumeData);
+    proChart.timeScale().fitContent();
+
+    renderIndicatorsOnChart();
+    renderAnnotationsOnChart();
+    updateFibonacci();
+
+    window.addEventListener('resize', function(){
+        if (proChart && el) proChart.applyOptions({ width: el.clientWidth, height: el.clientHeight || 500 });
+    });
+}
+
+function renderIndicatorsOnChart() {
+    if (!proChart || !allChartData || !allChartData.dates) return;
+    indicatorSeries.forEach(function(s){ try{proChart.removeSeries(s)}catch(e){} });
+    indicatorSeries = [];
+
+    var dates = allChartData.dates;
+    var toggles = null;
+    var app = document.querySelector('[x-data]');
+    if (app && app.__x) toggles = app.__x.$data.indicatorToggles;
+    if (!toggles) return;
+
+    if (toggles.sma && allChartData.sma) {
+        [{p:20,c:'rgba(59,130,246,0.7)'},{p:50,c:'rgba(245,158,11,0.7)'},{p:200,c:'rgba(239,68,68,0.7)'}].forEach(function(cfg){
+            if (allChartData.sma[cfg.p]) {
+                var d = [];
+                allChartData.sma[cfg.p].forEach(function(v,i){ if(v) d.push({time:dates[i],value:v}); });
+                if (d.length > 0) {
+                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
+                    s.setData(d); indicatorSeries.push(s);
+                }
+            }
+        });
+    }
+
+    if (toggles.ema && allChartData.ema) {
+        [{p:12,c:'rgba(16,185,129,0.7)'},{p:26,c:'rgba(99,102,241,0.7)'}].forEach(function(cfg){
+            if (allChartData.ema[cfg.p]) {
+                var d = [];
+                allChartData.ema[cfg.p].forEach(function(v,i){ if(v) d.push({time:dates[i],value:v}); });
+                if (d.length > 0) {
+                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
+                    s.setData(d); indicatorSeries.push(s);
+                }
+            }
+        });
+    }
+
+    if (toggles.bb && allChartData.bb) {
+        var colors = ['rgba(99,102,241,0.4)','rgba(59,130,246,0.8)','rgba(99,102,241,0.4)'];
+        ['upper','middle','lower'].forEach(function(b,i){
+            if (allChartData.bb[b]) {
+                var d = [];
+                allChartData.bb[b].forEach(function(v,idx){ if(v) d.push({time:dates[idx],value:v}); });
+                if (d.length > 0) {
+                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:colors[i],lineWidth:1,priceLineVisible:false,lastValueVisible:false });
+                    s.setData(d); indicatorSeries.push(s);
+                }
+            }
+        });
+    }
+
+    proChart && proChart.timeScale().fitContent();
+}
+
+function renderAnnotationsOnChart() {
+    if (!proChart || !allChartData || _annotationSeriesAdded) return;
+    _annotationSeriesAdded = true;
+    var app = document.querySelector('[x-data]');
+    if (!app || !app.__x || !app.__x.$data.annotations) return;
+    var annotations = app.__x.$data.annotations || [];
+
+    annotations.forEach(function(a){
+        if (a.price > 0 && a.date && proChart) {
+            var line = proChart.addSeries(LightweightCharts.LineSeries, {
+                color: a.color || '#8b5cf6', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted,
+                priceLineVisible: false, lastValueVisible: true,
+            });
+            var d1 = allChartData.dates[0], d2 = allChartData.dates[allChartData.dates.length-1];
+            if (d1 && d2) {
+                line.setData([{time:d1,value:a.price},{time:d2,value:a.price}]);
+                annotationLines.push(line);
+            }
+        }
+    });
+}
+
+function updateFibonacci() {
+    if (!allChartData || !allChartData.prices || allChartData.prices.length === 0) return;
+    var high = allChartData.prices[0].high, low = allChartData.prices[0].low;
+    allChartData.prices.forEach(function(p){ if(p.high>high) high=p.high; if(p.low<low) low=p.low; });
+    var diff = high - low;
+    if (diff <= 0) return;
+    var levels = [
+        {level:'0%',ratio:0},{level:'23.6%',ratio:0.236},{level:'38.2%',ratio:0.382},
+        {level:'50%',ratio:0.5},{level:'61.8%',ratio:0.618},{level:'78.6%',ratio:0.786},{level:'100%',ratio:1}
+    ];
+    var fibResult = levels.map(function(l){ return {level:l.level,ratio:l.ratio,price:Math.round((high-diff*l.ratio)*100)/100}; });
+    var app = document.querySelector('[x-data]');
+    if (app && app.__x) app.__x.$data.fibLevels = fibResult;
+}
+
+function renderIndicators() { renderIndicatorsOnChart(); }
+
+function searchCompare() {
+    var app = document.querySelector('[x-data]');
+    if (!app||!app.__x) return;
+    var q = app.__x.$data.compareSearch;
+    if (!q || q.length < 2) { app.__x.$data.compareResults = []; return; }
+    fetch('/api/stocks/search?q='+encodeURIComponent(q)).then(function(r){return r.json()}).then(function(d){ app.__x.$data.compareResults = d||[]; }).catch(function(){ app.__x.$data.compareResults = []; });
+}
+
+function getReliability(name) {
+    var app = document.querySelector('[x-data]');
+    if (!app||!app.__x||!app.__x.$data.patternReliability) return null;
+    return app.__x.$data.patternReliability.find(function(r){return r.pattern===name})||null;
+}
+
+async function loadAllPro() {
+    try {
+        var appEl = document.querySelector('[x-data]');
+        var app = appEl ? appEl.__x : null;
+        var days = getTimeframeDays(app ? app.$data.timeframe : '6M');
+        var end = new Date().toISOString().split('T')[0];
+        var start = new Date(Date.now()-days*86400000).toISOString().split('T')[0];
+        var chartUrl = '/api/stocks/'+code+'/chart?'+new URLSearchParams({start,end}).toString();
+
+        var chartRes = await fetch(chartUrl).then(function(r){return r.ok?r.json():null}).catch(function(){return null});
+        var patRes = await fetch('/api/stocks/'+code+'/patterns').then(function(r){return r.ok?r.json():[]}).catch(function(){return []});
+        var srRes = await fetch('/api/stocks/'+code+'/sr-levels').then(function(r){return r.ok?r.json():null}).catch(function(){return null});
+        var indRes = await fetch('/api/stocks/'+code+'/indicators').then(function(r){return r.ok?r.json():null}).catch(function(){return null});
+        var annRes = await fetch('/api/stocks/'+code+'/annotations').then(function(r){return r.ok?r.json():[]}).catch(function(){return []});
+        var tfRes = await fetch('/api/stocks/'+code+'/multi-tf').then(function(r){return r.ok?r.json():[]}).catch(function(){return []});
+
+        if (chartRes && chartRes.dates) {
+            allChartData = chartRes;
+            window.__chartType = 'candlestick';
+            rebuildChart();
+        }
+
+        if (patRes && app) { app.$data.patterns = Array.isArray(patRes)?patRes:[]; addPatternMarkers(patRes); }
+        if (srRes && app) { app.$data.srLevels = srRes; addSRLines(srRes); }
+        if (indRes && app) app.$data.indicators = indRes;
+        if (annRes && app) { app.$data.annotations = Array.isArray(annRes)?annRes:[]; _annotationSeriesAdded = false; renderAnnotationsOnChart(); }
+        if (tfRes && app) app.$data.tfScans = Array.isArray(tfRes)?tfRes:[];
+        if (app) app.$data.loading = false;
+    } catch(e) { console.error('ChartPro load error:', e); var a=document.querySelector('[x-data]'); if(a&&a.__x) a.__x.$data.loading=false; }
+}
+
+function addPatternMarkers(patterns) {
+    if (!proMain||!allChartData||!patterns||patterns.length===0) return;
+    var dates = allChartData.dates;
+    var markers = [];
+    patterns.forEach(function(p){
+        if (p.index>=0&&p.index<dates.length) {
+            markers.push({ time:dates[p.index], position:p.type==='bullish'?'belowBar':'aboveBar', color:p.type==='bullish'?'#34d399':p.type==='bearish'?'#f87171':'#6b7280', shape:p.type==='bullish'?'arrowUp':'arrowDown', text:p.name, size:2 });
+        }
+    });
+    if (markers.length>0&&proMain.setMarkers) proMain.setMarkers(markers);
+}
+
+function addSRLines(srLevels) {
+    if (!proChart||!allChartData||!srLevels) return;
+    var dates = allChartData.dates;
+    var from = dates[0], to = dates[dates.length-1];
+    if (!from||!to) return;
+    (srLevels.resistances||[]).slice(0,5).forEach(function(l){
+        var s = proChart.addSeries(LightweightCharts.LineSeries, { color:'rgba(248,113,113,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
+        s.setData([{time:from,value:l.price},{time:to,value:l.price}]); indicatorSeries.push(s);
+    });
+    (srLevels.supports||[]).slice(0,5).forEach(function(l){
+        var s = proChart.addSeries(LightweightCharts.LineSeries, { color:'rgba(52,211,153,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
+        s.setData([{time:from,value:l.price},{time:to,value:l.price}]); indicatorSeries.push(s);
+    });
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-700/50 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-700/50">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+        <a href="/saham" class="sidebar-link active"><span class="icon">📈</span> Saham IDX</a>
+        <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+        <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+        <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+        <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Market Recap</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Detail</p>
+        <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon">📄</span> Ringkasan</a>
+        <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon">📐</span> Analisa Teknikal</a>
+        <a href="/saham/[[.Stock.Code]]/chart-pro" class="sidebar-link" style="color:#93c5fd;font-weight:600"><span class="icon">📊</span> Chart Pro</a>
+        <a href="/saham/[[.Stock.Code]]/fundamental" class="sidebar-link"><span class="icon">📋</span> Data Fundamental</a>
+        <a href="/saham/[[.Stock.Code]]/valuation" class="sidebar-link"><span class="icon">💰</span> Valuasi</a>
+    </nav>
+    <div class="p-3 border-t border-slate-700/50">
+        <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        <a href="/logout" class="sidebar-link" style="color:#f87171"><span class="icon">🚪</span> Keluar</a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <!-- TOPBAR -->
+    <header class="sticky top-0 z-40 h-12 bg-[#0b1120]/95 backdrop-blur-xl border-b border-slate-700/50 flex items-center px-3 lg:px-6 gap-3">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-1.5 text-slate-400 hover:text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex items-center gap-2 text-xs">
+            <span class="font-bold text-[#f8fafc] font-mono">[[.Stock.Code]]</span>
+            <span class="text-slate-500">[[.Stock.Name]]</span>
+        </div>
+        <div class="flex items-center gap-1.5 ml-auto">
+            <div class="flex items-center bg-slate-800 rounded-lg p-0.5">
+                <template x-for="tf in timeframes" :key="tf.v">
+                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'bg-blue-600 text-white':'text-slate-400 hover:text-slate-200'" class="px-2 py-1 text-[11px] font-medium rounded-md transition-colors" x-text="tf.l"></button>
+                </template>
+            </div>
+            <button @click="loadAllPro()" class="p-1.5 text-slate-400 hover:text-blue-400 rounded-lg hover:bg-slate-800 transition-colors" title="Refresh">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT: CHART PRO LAYOUT -->
+    <div class="flex flex-col lg:flex-row flex-1 overflow-hidden">
+        <!-- SIDE PANEL -->
+        <aside class="w-full lg:w-64 shrink-0 bg-[#0b1120] border-r border-slate-700/50 overflow-y-auto">
+            <div class="p-3">
+                <div class="flex rounded-lg bg-slate-800 p-0.5 mb-3">
+                    <button @click="sidebarTab='patterns'" :class="sidebarTab==='patterns'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Pola</button>
+                    <button @click="sidebarTab='indicators'" :class="sidebarTab==='indicators'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Indikator</button>
+                    <button @click="sidebarTab='fibonacci'" :class="sidebarTab==='fibonacci'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Fibonacci</button>
+                    <button @click="sidebarTab='sr'" :class="sidebarTab==='sr'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">S/R</button>
+                </div>
+
+                <div x-show="sidebarTab==='patterns'" class="space-y-1.5">
+                    <template x-if="patterns.length===0"><p class="text-[11px] text-slate-500">Tidak ada pola terdeteksi</p></template>
+                    <template x-for="p in patterns" :key="p.name+p.index">
+                        <div class="p-2 rounded-lg border" :class="p.type==='bullish'?'bg-emerald-900/20 border-emerald-800':'p.type==='bearish'?'bg-red-900/20 border-red-800':'bg-slate-700/30 border-slate-700'">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-semibold" :class="p.type==='bullish'?'text-emerald-300':'p.type==='bearish'?'text-red-300':'text-slate-300'" x-text="p.name"></span>
+                                <span class="flex">
+                                    <template x-for="s in Array.from({length:5},(_,i)=>i)"><span class="text-[9px]" :class="s<p.reliability?'star-gold':'text-slate-600'">★</span></template>
+                                </span>
+                            </div>
+                            <p class="text-[10px] leading-relaxed text-slate-400 mt-1" x-text="p.description"></p>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-show="sidebarTab==='indicators'" class="space-y-2">
+                    <p class="text-[11px] text-slate-500 mb-2">Toggle indicator overlay</p>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">SMA (20, 50, 200)</span><input type="checkbox" x-model="indicatorToggles.sma" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">EMA (12, 26)</span><input type="checkbox" x-model="indicatorToggles.ema" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">RSI (14)</span><input type="checkbox" x-model="indicatorToggles.rsi" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">MACD</span><input type="checkbox" x-model="indicatorToggles.macd" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">Bollinger Bands</span><input type="checkbox" x-model="indicatorToggles.bb" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">Stochastic</span><input type="checkbox" x-model="indicatorToggles.stoch" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-300">ATR (14)</span><input type="checkbox" x-model="indicatorToggles.atr" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                </div>
+
+                <div x-show="sidebarTab==='fibonacci'" class="space-y-2">
+                    <p class="text-[11px] text-slate-500">Auto Fibonacci Retracement</p>
+                    <template x-if="fibLevels.length>0">
+                        <div class="space-y-1">
+                            <template x-for="l in fibLevels" :key="l.level">
+                                <div class="flex items-center justify-between text-xs py-1 px-2 rounded-md" :class="l.ratio<=0.236?'bg-emerald-900/20':l.ratio<=0.5?'bg-blue-900/20':l.ratio<=0.786?'bg-amber-900/20':'bg-red-900/20'">
+                                    <span class="font-mono font-semibold" x-text="l.level"></span>
+                                    <span class="font-mono text-slate-400" x-text="l.price.toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0})"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-show="sidebarTab==='sr'" class="space-y-2">
+                    <p class="text-[11px] text-slate-500">Support & Resistance</p>
+                    <template x-if="srLevels?.resistances?.length">
+                        <div>
+                            <div class="text-[10px] font-semibold text-red-400 mb-1">Resistance</div>
+                            <div class="space-y-1">
+                                <template x-for="l in srLevels.resistances.slice(0,6)" :key="l.price">
+                                    <div class="flex items-center justify-between text-[11px] py-1 px-2 rounded bg-red-900/20">
+                                        <span class="font-mono font-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
+                                        <span class="text-slate-400">T:<span x-text="l.touches"></span></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    <template x-if="srLevels?.supports?.length">
+                        <div>
+                            <div class="text-[10px] font-semibold text-emerald-400 mb-1">Support</div>
+                            <div class="space-y-1">
+                                <template x-for="l in srLevels.supports.slice(0,6)" :key="l.price">
+                                    <div class="flex items-center justify-between text-[11px] py-1 px-2 rounded bg-emerald-900/20">
+                                        <span class="font-mono font-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
+                                        <span class="text-slate-400">T:<span x-text="l.touches"></span></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CHART AREA -->
+        <main class="flex-1 flex flex-col min-w-0">
+            <div class="flex items-center gap-1 px-3 py-1.5 border-b border-slate-700/50 bg-[#0b1120] overflow-x-auto">
+                <span class="text-[10px] text-slate-500 mr-1 shrink-0">Tools:</span>
+                <button @click="activeTool=activeTool==='trendline'?null:'trendline'" :class="activeTool==='trendline'?'tool-btn active':'tool-btn text-slate-400 bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
+                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20L20 4"/></svg>Trendline
+                </button>
+                <button @click="activeTool=activeTool==='hline'?null:'hline'" :class="activeTool==='hline'?'tool-btn active':'tool-btn text-slate-400 bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
+                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/></svg>H-Line
+                </button>
+                <button @click="activeTool=activeTool==='rect'?null:'rect'" :class="activeTool==='rect'?'tool-btn active':'tool-btn text-slate-400 bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
+                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4h8a2 2 0 012 2v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Rect
+                </button>
+                <button @click="activeTool=activeTool==='text'?null:'text'" :class="activeTool==='text'?'tool-btn active':'tool-btn text-slate-400 bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
+                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>Text
+                </button>
+                <div class="w-px h-4 bg-slate-600 shrink-0"></div>
+                <span class="text-[10px] text-slate-500 shrink-0">Type:</span>
+                <button @click="chartType='candlestick'" :class="chartType==='candlestick'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Candle</button>
+                <button @click="chartType='line'" :class="chartType==='line'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Line</button>
+                <button @click="chartType='area'" :class="chartType==='area'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Area</button>
+                <div class="w-px h-4 bg-slate-600 shrink-0"></div>
+                <input type="text" placeholder="Compare stock..." x-model="compareSearch" @input="searchCompare()" class="text-[11px] px-2 py-1 rounded-lg border border-slate-600 bg-slate-800 text-white w-28 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </div>
+
+            <div class="relative flex-1">
+                <div id="pro-chart" class="w-full h-full" style="min-height:400px"></div>
+                <div x-show="loading" class="absolute inset-0 flex items-center justify-center bg-[#0b1120]/60 z-10">
+                    <div class="flex flex-col items-center gap-2">
+                        <svg class="animate-spin w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                        <span class="text-sm text-slate-400">Memuat data...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-700/50 bg-[#0b1120] px-3 py-2">
+                <div class="flex items-center gap-2 text-[11px]">
+                    <span class="text-slate-400 font-medium shrink-0">Multi-TF:</span>
+                    <template x-if="tfScans.length===0"><span class="text-slate-500">Scanning...</span></template>
+                    <template x-for="tf in tfScans" :key="tf.timeframe">
+                        <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-700/50">
+                            <span class="font-semibold text-slate-300" x-text="tf.timeframe"></span>
+                            <span class="text-slate-500" x-text="tf.patterns?.length+' pola'"></span>
+                            <template x-for="p in tf.patterns.slice(0,2)" :key="p.name">
+                                <span :class="p.type==='bullish'?'text-emerald-400':'p.type==='bearish'?'text-red-400':'text-slate-400'" class="text-[10px]" x-text="p.name"></span>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

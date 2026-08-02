@@ -1,0 +1,80 @@
+<div x-data="marketClock()" x-init="startClock()" class="inline-flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full" :class="{
+        'bg-green-400 animate-pulse': status === 'trading',
+        'bg-yellow-400 animate-pulse': status === 'pre_open' || status === 'lunch_break',
+        'bg-red-400': status === 'post_close' || status === 'weekend'
+    }"></span>
+    <span class="text-xs font-semibold font-mono" :class="{
+        'text-green-400': status === 'trading',
+        'text-yellow-400': status === 'pre_open' || status === 'lunch_break',
+        'text-red-400': status === 'post_close' || status === 'weekend'
+    }" x-text="label"></span>
+    <span x-show="countdown !== ''" class="text-xs text-slate-500 font-mono" x-text="countdown"></span>
+</div>
+
+<script>
+function marketClock() {
+    return {
+        status: 'post_close',
+        label: 'CLOSED',
+        countdown: '',
+        timer: null,
+        nextOpen: null,
+        nextClose: null,
+
+        startClock() {
+            this.fetchStatus();
+            this.timer = setInterval(() => { this.tick(); }, 1000);
+        },
+
+        tick() {
+            if (this.countdown !== '') {
+                if (!this.nextOpen && !this.nextClose) { this.countdown = ''; return; }
+                var target = this.status === 'trading' ? this.nextClose : this.nextOpen;
+                if (!target) { this.countdown = ''; return; }
+                var diff = Math.max(0, Math.floor((new Date(target).getTime() - Date.now()) / 1000));
+                if (diff <= 0) { this.fetchStatus(); return; }
+                var h = Math.floor(diff / 3600);
+                var m = Math.floor((diff % 3600) / 60);
+                var s = diff % 60;
+                this.countdown = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+            }
+        },
+
+        async fetchStatus() {
+            try {
+                var r = await fetch('/api/market/clock');
+                var d = await r.json();
+                this.status = d.status;
+                this.nextOpen = d.next_open;
+                this.nextClose = d.next_close;
+
+                if (d.status === 'trading') {
+                    this.label = 'OPEN';
+                } else if (d.status === 'pre_open') {
+                    this.label = 'PRE-OPEN';
+                } else if (d.status === 'lunch_break') {
+                    this.label = 'BREAK';
+                } else if (d.status === 'post_close') {
+                    this.label = 'CLOSED';
+                } else {
+                    this.label = 'CLOSED';
+                }
+
+                if (d.status === 'pre_open' || d.status === 'lunch_break') {
+                    var target = d.next_open;
+                    var diff = Math.max(0, Math.floor((new Date(target).getTime() - Date.now()) / 1000));
+                    if (diff > 0) {
+                        var h = Math.floor(diff / 3600);
+                        var m = Math.floor((diff % 3600) / 60);
+                        var s = diff % 60;
+                        this.countdown = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+                    }
+                } else {
+                    this.countdown = '';
+                }
+            } catch(e) {}
+        }
+    };
+}
+</script>

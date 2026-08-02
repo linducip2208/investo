@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon.svg">
+    <title>Dashboard · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0f172a}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0f172a}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .gradient-blue{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+        .gradient-cyan{background:linear-gradient(135deg,#155e75,#06b6d4)}
+        .gradient-green{background:linear-gradient(135deg,#14532d,#10b981)}
+        .gradient-purple{background:linear-gradient(135deg,#4c1d95,#8b5cf6)}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .badge{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:14px!important}.stat-value{font-size:22px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="dashboard()" x-init="init()">
+    <script>
+        function dashboard() {
+            return {
+                sidebarOpen: false, clock: '', gainers: [], losers: [], forex: [], breadth: null, ticker: [],
+                weather: null, weatherLoading: true,
+                init() {
+                    this.updateClock(); setInterval(() => this.updateClock(), 1000);
+                    this.fetchAll(); setInterval(() => this.fetchAll(), 30000);
+                    this.fetchWeather();
+                },
+                updateClock() {
+                    var d = new Date();
+                    this.clock = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'}) + ' WIB · ' + d.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Jakarta'});
+                },
+                async fetchAll() {
+                    try {
+                        var r = await fetch('/api/market/summary'); var d = await r.json();
+                        this.ticker = (d.ticker||[]).slice(0,8);
+                        this.gainers = (d.top_gainers||d.gainers||[]).slice(0,6);
+                        this.losers = (d.top_losers||d.losers||[]).slice(0,6);
+                        this.breadth = d.breadth;
+                        this.renderGainersLosers();
+                        this.renderBreadth();
+                    } catch(e) {}
+                    try {
+                        var fr = await fetch('/api/forex/rates'); var fd = await fr.json();
+                        this.forex = (Array.isArray(fd)?fd:[]).slice(0,8);
+                        this.renderForex();
+                    } catch(e) {}
+                },
+                renderGainersLosers() {
+                    var self = this;
+                    var g = document.getElementById('gainers-list');
+                    if (g) g.innerHTML = this.gainers.map(function(s,i){
+                        return '<a href="/saham/'+s.code+'" class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-700/30 rounded-lg transition-colors">' +
+                            '<div class="flex items-center gap-3"><span class="text-xs text-slate-500 w-5">'+(i+1)+'</span><span class="font-semibold text-white w-12">'+s.code+'</span><span class="text-xs text-slate-400 truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
+                            '<div class="text-right"><span class="font-mono text-sm text-white">' + self.fmt(s.price) + '</span><span class="font-mono text-xs text-success block">+'+(s.change||0).toFixed(1)+'%</span></div></a>';
+                    }).join('');
+                    var l = document.getElementById('losers-list');
+                    if (l) l.innerHTML = this.losers.map(function(s,i){
+                        return '<a href="/saham/'+s.code+'" class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-700/30 rounded-lg transition-colors">' +
+                            '<div class="flex items-center gap-3"><span class="text-xs text-slate-500 w-5">'+(i+1)+'</span><span class="font-semibold text-white w-12">'+s.code+'</span><span class="text-xs text-slate-400 truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
+                            '<div class="text-right"><span class="font-mono text-sm text-white">' + self.fmt(s.price) + '</span><span class="font-mono text-xs text-danger block">'+(s.change||0).toFixed(1)+'%</span></div></a>';
+                    }).join('');
+                },
+                renderBreadth() {
+                    var bb = document.getElementById('breadth-bar');
+                    if (bb && this.breadth) {
+                        var b = this.breadth;
+                        var adv = b.advance||0, dec = b.decline||0, total = adv+dec||1;
+                        bb.innerHTML = '<div class="flex items-center gap-0.5 h-5 rounded overflow-hidden">' +
+                            '<div style="width:'+(adv/total*100)+'%" class="h-full bg-success/40 flex items-center pl-2 text-[10px] font-mono">'+adv+' \u2191</div>' +
+                            '<div style="width:'+(dec/total*100)+'%" class="h-full bg-danger/40 flex items-center pl-2 text-[10px] font-mono">'+dec+' \u2193</div></div>';
+                    }
+                },
+                renderForex() {
+                    var fm = document.getElementById('forex-list');
+                    if (fm) fm.innerHTML = this.forex.map(function(p){
+                        return '<a href="/forex/'+p.pair.replace('/','-')+'" class="flex items-center justify-between py-2 px-3 hover:bg-slate-700/30 rounded-lg transition-colors text-sm">' +
+                            '<span class="font-semibold text-white font-mono">'+p.pair+'</span>' +
+                            '<span class="font-mono text-slate-400">'+(p.close||0).toFixed(4)+'</span></a>';
+                    }).join('');
+                },
+                fmt(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; },
+                async fetchWeather() {
+                    try {
+                        var r = await fetch('/api/portfolios/[[.DefaultPortfolioID]]/weather');
+                        if (r.ok) { var d = await r.json(); this.weather = d; }
+                    } catch(e) {}
+                    this.weatherLoading = false;
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+            <a href="/dashboard" class="sidebar-link active"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham <span class="ml-auto text-[10px] bg-slate-700 px-1.5 py-0.5 rounded text-slate-300">[[.TotalStocks]]</span></a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <a href="/ai/signal-center" class="sidebar-link"><span class="icon">📡</span> Signal Center</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analysis</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Recap</a>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😨</span> Fear & Greed</a>
+            <a href="/market/economic-calendar" class="sidebar-link"><span class="icon">📅</span> Eco Calendar</a>
+            <a href="/market/live-signals" class="sidebar-link"><span class="icon">⚡</span> Live Signals</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">🔬</span> Pattern Scan</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span class="icon">📈</span> Trend Scan</a>
+            <a href="/market/price-action" class="sidebar-link"><span class="icon">💹</span> Price Action</a>
+            <a href="/market/bandarmologi" class="sidebar-link"><span class="icon">🕵️</span> Bandarmologi</a>
+            <a href="/market/saham-gorengan" class="sidebar-link"><span class="icon">⚠️</span> Gorengan Alert</a>
+            <a href="/market/foreign-flow" class="sidebar-link"><span class="icon">🌏</span> Foreign Flow</a>
+            <a href="/market/syariah" class="sidebar-link"><span class="icon">☪️</span> Syariah</a>
+            <a href="/market/ipo" class="sidebar-link"><span class="icon">🚀</span> IPO Watch</a>
+            <a href="/market/insider" class="sidebar-link"><span class="icon">👔</span> Insider</a>
+            <a href="/market/waran" class="sidebar-link"><span class="icon">🎫</span> Waran</a>
+            <a href="/market/sector-health" class="sidebar-link"><span class="icon">💚</span> Sector Health</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
+            <a href="/market/pair-trading" class="sidebar-link"><span class="icon">🔗</span> Pair Trading</a>
+            <a href="/market/correlation" class="sidebar-link"><span class="icon">📊</span> Correlation</a>
+            <a href="/market/macro-dashboard" class="sidebar-link"><span class="icon">🏛️</span> Macro</a>
+            <a href="/market/yield-curve" class="sidebar-link"><span class="icon">📉</span> Yield Curve</a>
+            <a href="/market/liquidity-flow" class="sidebar-link"><span class="icon">💧</span> Liquidity</a>
+            <a href="/market/leading-indicators" class="sidebar-link"><span class="icon">📊</span> Leading Ind</a>
+            <a href="/market/macro-spillover" class="sidebar-link"><span class="icon">🌐</span> Spillover</a>
+            <a href="/market/supply-chain" class="sidebar-link"><span class="icon">🔗</span> Supply Chain</a>
+            <a href="/market/competitive" class="sidebar-link"><span class="icon">⚔️</span> Competitive</a>
+            <a href="/market/ma-targets" class="sidebar-link"><span class="icon">🎯</span> M&A Targets</a>
+            <a href="/market/factor-exposure" class="sidebar-link"><span class="icon">📐</span> Factor Exposure</a>
+            <a href="/market/factor-timing" class="sidebar-link"><span class="icon">⏱️</span> Factor Timing</a>
+            <a href="/market/smart-beta" class="sidebar-link"><span class="icon">🧠</span> Smart Beta</a>
+            <a href="/market/thesis-backtester" class="sidebar-link"><span class="icon">⏪</span> Thesis Backtest</a>
+            <a href="/market/factor-replication" class="sidebar-link"><span class="icon">📋</span> Factor Replica</a>
+            <a href="/market/event-study" class="sidebar-link"><span class="icon">📅</span> Event Study</a>
+            <a href="/market/cross-asset" class="sidebar-link"><span class="icon">🌍</span> Cross-Asset</a>
+            <a href="/market/google-trends" class="sidebar-link"><span class="icon">🔎</span> Google Trends</a>
+            <a href="/market/social-buzz" class="sidebar-link"><span class="icon">🐦</span> Social Buzz</a>
+            <a href="/market/economic-proxy" class="sidebar-link"><span class="icon">🛰️</span> Eco Proxy</a>
+            <a href="/market/job-postings" class="sidebar-link"><span class="icon">💼</span> Job Postings</a>
+            <a href="/market/exchanges" class="sidebar-link"><span class="icon">🏦</span> Exchanges</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Intelligence</p>
+            <a href="/ai/coach" class="sidebar-link"><span class="icon">💬</span> AI Coach</a>
+            <a href="/ai/agents" class="sidebar-link"><span class="icon">🧠</span> Multi-Agent</a>
+            <a href="/ai/briefing" class="sidebar-link"><span class="icon">📰</span> Daily Briefing</a>
+            <a href="/ai/compare" class="sidebar-link"><span class="icon">⚖️</span> Stock Compare</a>
+            <a href="/ai/thesis" class="sidebar-link"><span class="icon">📝</span> Thesis Builder</a>
+            <a href="/ai/search" class="sidebar-link"><span class="icon">🔮</span> Smart Search</a>
+            <a href="/ai/risk-test" class="sidebar-link"><span class="icon">🎯</span> Risk Test</a>
+            <a href="/ai/standup" class="sidebar-link"><span class="icon">☀️</span> Daily Standup</a>
+            <a href="/ai/voice-trade" class="sidebar-link"><span class="icon">🎤</span> Voice Trade</a>
+            <a href="/ai/comic" class="sidebar-link"><span class="icon">😄</span> Market Comic</a>
+            <a href="/ai/report-generator" class="sidebar-link"><span class="icon">📄</span> Report Gen</a>
+            <a href="/ai/social" class="sidebar-link"><span class="icon">📱</span> Social Post</a>
+            <a href="/ai/tax-optimizer" class="sidebar-link"><span class="icon">💰</span> Tax Optimizer</a>
+            <a href="/ai/compliance" class="sidebar-link"><span class="icon">✅</span> Compliance</a>
+            <a href="/ai/client-report" class="sidebar-link"><span class="icon">📊</span> Client Report</a>
+            <a href="/ai/webhooks" class="sidebar-link"><span class="icon">🔗</span> Webhooks</a>
+            <a href="/ai/research-paper" class="sidebar-link"><span class="icon">📚</span> Research Paper</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">🧮</span> Tools</a>
+            <a href="/dashboard/journal" class="sidebar-link"><span class="icon">📓</span> Trade Journal</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Community</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+            <a href="/market/prediction" class="sidebar-link"><span class="icon">🎯</span> Prediction</a>
+            <a href="/achievements" class="sidebar-link"><span class="icon">🌟</span> Achievements</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">📝</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+            <a href="/pengaturan/ai" class="sidebar-link"><span class="icon">🤖</span> AI Settings</a>
+            <a href="/pengaturan/data-sources" class="sidebar-link"><span class="icon">📡</span> Data Sources</a>
+            <a href="/calculators" class="sidebar-link"><span class="icon">🧮</span> Kalkulator</a>
+            <a href="/docs" class="sidebar-link"><span class="icon">📖</span> Docs</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <!-- TOPBAR -->
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+                <div class="flex items-center gap-2 ml-auto">
+                [[template "components/market-clock.html" .]]
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            
+            <!-- HEADER ROW -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">Selamat datang, [[.User.Name]]</h1>
+                    <p class="text-sm text-slate-400 mt-0.5" x-text="clock"><span id="ws-status" class="text-xs text-slate-500 font-mono ml-2">CONNECTING</span></p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <template x-if="weather">
+                        <div class="flex items-center gap-2 bg-slate-800/80 border border-slate-700/50 rounded-xl px-3 py-2">
+                            <span class="text-xl" x-text="weather.emoji"></span>
+                            <div class="text-xs">
+                                <span class="text-slate-300 block" x-text="weather.one_liner"></span>
+                                <span class="font-mono font-bold" :class="weather.pl_percent>=0?'text-success':'text-danger'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
+                            </div>
+                        </div>
+                    </template>
+                    <a href="/dashboard/portfolios" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">+ Portfolio</a>
+                    <a href="/screener" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-xl transition-colors">Screener</a>
+                </div>
+            </div>
+
+            <!-- TICKER BAR -->
+            <div class="bg-slate-800/50 border border-slate-700/50 rounded-xl px-4 py-2.5 overflow-hidden">
+                <div class="flex gap-8 animate-[ticker_40s_linear_infinite]" style="min-width:200%">
+                    <template x-for="(s,i) in ticker.concat(ticker)" :key="i">
+                        <span class="inline-flex items-center gap-2 text-sm whitespace-nowrap shrink-0">
+                            <span class="font-semibold text-white font-mono" x-text="s.code"></span>
+                            <span class="text-slate-400 font-mono" x-text="fmt(s.price)"></span>
+                            <span :class="(s.change||0)>=0?'text-success':'text-danger'" class="font-mono text-xs" x-text="((s.change||0)>=0?'+':'')+(s.change||0).toFixed(1)+'%'"></span>
+                        </span>
+                    </template>
+                </div>
+            </div>
+
+            <!-- STAT CARDS -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card gradient-blue p-5 text-white">
+                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-blue-200 uppercase tracking-wider">Total Saham</span><span class="text-2xl">📈</span></div>
+                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.TotalStocks]]</div>
+                    <span class="text-xs text-blue-200 mt-1">Emiten IDX</span>
+                </div>
+                <div class="card gradient-cyan p-5 text-white">
+                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-cyan-200 uppercase tracking-wider">Portofolio</span><span class="text-2xl">💼</span></div>
+                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.PortfolioCount]]</div>
+                    <span class="text-xs text-cyan-200 mt-1">Aktif</span>
+                </div>
+                <div class="card gradient-green p-5 text-white">
+                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-emerald-200 uppercase tracking-wider">Watchlist</span><span class="text-2xl">⭐</span></div>
+                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.WatchlistCount]]</div>
+                    <span class="text-xs text-emerald-200 mt-1">Tersimpan</span>
+                </div>
+                <div class="card gradient-purple p-5 text-white">
+                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-purple-200 uppercase tracking-wider">Indeks</span><span class="text-2xl">📊</span></div>
+                    <div class="text-2xl lg:text-3xl font-bold font-mono">IDX</div>
+                    <span class="text-xs text-purple-200 mt-1">Pasar Reguler</span>
+                </div>
+            </div>
+
+            <!-- BREADTH BAR -->
+            <div class="card p-4">
+                <div class="widget-title">Market Breadth</div>
+                <div id="breadth-bar"></div>
+            </div>
+
+            <!-- CHART + NEWS ROW -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="card p-4 lg:col-span-2">
+                    <div class="widget-title">IHSG Composite · 1 Tahun</div>
+                    <div id="main-chart" style="height:320px"></div>
+                </div>
+                <div class="card p-4">
+                    <div class="widget-title">📰 Berita Terbaru</div>
+                    <div class="space-y-3">
+                        [[range .News]]
+                        <a href="/berita/[[.Slug]]" class="block hover:bg-slate-700/30 rounded-lg p-2 -mx-2 transition-colors">
+                            <p class="text-sm text-white leading-snug line-clamp-2">[[.Title]]</p>
+                            <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-500">
+                                [[if .Source]]<span class="text-blue-400">[[.Source]]</span>[[end]]
+                                <span>[[.PublishedAt.Format "02 Jan 15:04"]]</span>
+                            </div>
+                        </a>
+                        [[end]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAINERS + LOSERS + FOREX -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card p-4">
+                    <div class="widget-title text-success">🟢 Top Gainers</div>
+                    <div id="gainers-list" class="space-y-0.5"></div>
+                </div>
+                <div class="card p-4">
+                    <div class="widget-title text-danger">🔴 Top Losers</div>
+                    <div id="losers-list" class="space-y-0.5"></div>
+                </div>
+                <div class="card p-4">
+                    <div class="widget-title">💱 Forex Rates</div>
+                    <div id="forex-list" class="space-y-0.5"></div>
+                </div>
+            </div>
+
+            <!-- BOTTOM: PORTFOLIOS + WATCHLISTS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="widget-title mb-0">💼 Portofolio Anda</span>
+                        <a href="/dashboard/portfolios" class="text-xs text-blue-400 hover:underline">+ Baru</a>
+                    </div>
+                    [[if .Portfolios]]
+                    <div class="space-y-2">
+                        [[range .Portfolios]]
+                        <a href="/dashboard/portfolios/[[.ID]]" class="flex items-center justify-between p-3 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl transition-colors">
+                            <div class="flex items-center gap-3"><span class="text-lg">💼</span><span class="font-medium text-white">[[.Name]]</span></div>
+                            <span class="text-xs text-slate-500">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
+                        </a>
+                        [[end]]
+                    </div>
+                    [[else]]
+                    <p class="text-sm text-slate-500 text-center py-6">Belum ada portofolio</p>
+                    [[end]]
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="widget-title mb-0">⭐ Watchlist Anda</span>
+                        <a href="/dashboard/watchlists" class="text-xs text-blue-400 hover:underline">+ Baru</a>
+                    </div>
+                    [[if .Watchlists]]
+                    <div class="space-y-2">
+                        [[range .Watchlists]]
+                        <a href="/dashboard/watchlists" class="flex items-center justify-between p-3 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl transition-colors">
+                            <div class="flex items-center gap-3"><span class="text-lg">⭐</span><span class="font-medium text-white">[[.Name]]</span></div>
+                            <span class="text-xs text-slate-500">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
+                        </a>
+                        [[end]]
+                    </div>
+                    [[else]]
+                    <p class="text-sm text-slate-500 text-center py-6">Belum ada watchlist</p>
+                    [[end]]
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart Init -->
+    <script>
+    (function(){
+        var c = document.getElementById('main-chart');
+        if (!c) return;
+        var chart = LightweightCharts.createChart(c, {
+            layout: { background: { type: 'solid', color: '#1e293b' }, textColor: '#94a3b8' },
+            grid: { vertLines: { color: '#334155' }, horzLines: { color: '#334155' } },
+            crosshair: { mode: 0 }, timeScale: { borderColor: '#475569' },
+            rightPriceScale: { borderColor: '#475569' }, width: c.clientWidth, height: 320
+        });
+        var cs = chart.addCandlestickSeries({ upColor: '#34d399', downColor: '#f87171', borderUpColor: '#34d399', borderDownColor: '#f87171', wickUpColor: '#34d399', wickDownColor: '#f87171' });
+        chart.addHistogramSeries({ color: '#334155', priceFormat: { type: 'volume' }, priceScaleId: '', scaleMargins: { top: 0.85, bottom: 0 } });
+        fetch('/api/stocks/BBCA/chart?start=' + new Date(Date.now()-365*86400000).toISOString().slice(0,10)).then(r=>r.json()).then(function(d){
+            if(!d||!d.prices||!d.prices.length) return;
+            var cd=[],vd=[];
+            d.prices.forEach(function(p,i){ var t=d.dates[i]; if(!t)return; cd.push({time:t.replace(/-/g,'/'),open:p.open,high:p.high,low:p.low,close:p.close}); vd.push({time:cd[cd.length-1].time,value:d.volume[i]||0,color:p.close>=p.open?'rgba(52,211,153,0.2)':'rgba(248,113,113,0.2)'}); });
+            cs.setData(cd);
+        });
+        new ResizeObserver(function(){ chart.applyOptions({ width: c.clientWidth }); }).observe(c);
+    })();
+    </script>
+    <style>
+        @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+    </style>
+    <script>
+        (function(){
+            var ws = new WebSocket('ws://' + location.host + '/ws');
+            ws.onmessage = function(e) {
+                try {
+                    var d = JSON.parse(e.data);
+                    if (d.type === 'market_update') {
+                        var el = document.getElementById('ws-status');
+                        if (el) { el.textContent = 'LIVE ' + d.time; el.className = 'text-xs text-success font-mono ml-2'; }
+                        fetchAllData();
+                    }
+                } catch(ex) {}
+            };
+            ws.onclose = function() { var el = document.getElementById('ws-status'); if (el) { el.textContent = 'POLLING'; el.className = 'text-xs text-slate-500 font-mono ml-2'; } };
+        })();
+    </script>
+    [[template "components/voice-search.html" .]]
+</body>
+</html>

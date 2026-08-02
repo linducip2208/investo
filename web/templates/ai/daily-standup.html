@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Daily Standup &mdash; Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}
+        ::-webkit-scrollbar{width:5px}
+        ::-webkit-scrollbar-track{background:#0b1120}
+        ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .gradient-blue{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .briefing-content p{line-height:1.8;margin-bottom:1rem;font-size:15px;color:#cbd5e1}
+        .briefing-content p strong{color:#93c5fd}
+        .briefing-content h3{font-size:18px;font-weight:700;color:#e2e8f0;margin:1.5rem 0 .5rem}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.briefing-content p{font-size:14px}.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="{ sidebarOpen: false, playing: false, regenerating: false }">
+    <aside x-data :class="{'open': sidebarOpen}" class="sidebar fixed left-0 top-0 h-full w-64 bg-[#0f172a] border-r border-[#1e293b] z-40 flex flex-col overflow-y-auto">
+        <div class="p-5 border-b border-[#1e293b]"><a href="/dashboard" class="flex items-center gap-3 text-white no-underline"><span class="text-2xl">💹</span><span class="font-display font-bold text-lg">Investo</span></a></div>
+        <div class="p-4 space-y-1 flex-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">AI Tools</div>
+            <a href="/ai/briefing" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>Market Briefing</a>
+            <a href="/ai/standup" class="sidebar-link active"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>Daily Standup</a>
+            <a href="/ai/voice-trade" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>Voice-to-Trade</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Menu Utama</div>
+            <a href="/dashboard" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+        </div>
+        <div class="p-4 border-t border-[#1e293b]"><div class="flex items-center gap-3"><span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">[[slice .User.Name 0 1]]</span><div><div class="text-sm font-medium text-white">[[.User.Name]]</div><form action="/logout" method="POST" class="mt-1"><button class="text-xs text-slate-500 hover:text-red-400 transition-colors">Keluar</button></form></div></div></div>
+    </aside>
+
+    <div class="flex-1 ml-64 max-lg:ml-0 flex flex-col min-h-full">
+        <header class="sticky top-0 z-30 bg-[#0b1120]/90 backdrop-blur-md border-b border-[#1e293b]">
+            <div class="flex items-center justify-between px-6 py-3">
+                <div class="flex items-center gap-3">
+                    <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-[#1e293b] transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <h1 class="text-lg font-semibold text-white">Daily Standup</h1>
+                    <span class="text-xs text-slate-500 bg-[#1e293b] px-3 py-1 rounded-full">[[.Date]]</span>
+                </div>
+                <a href="/dashboard" class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-[#1e293b] rounded-lg transition-colors">Dashboard</a>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6">
+            <div x-show="sidebarOpen" @click="sidebarOpen=false" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+            <div class="max-w-4xl mx-auto">
+                <div class="card p-8 mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 gradient-blue rounded-xl flex items-center justify-center text-white text-xl">🫡</div>
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Trader Morning Standup</h2>
+                                <p class="text-sm text-slate-400">[[.Date]]</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button @click="playAudio()" :disabled="playing"
+                                    class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                                <span x-text="playing ? 'Playing...' : 'Dengarkan'">Dengarkan</span>
+                            </button>
+                            <button @click="regenerating=true;location.reload()" :disabled="regenerating"
+                                    class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                                <svg class="w-4 h-4" :class="{'animate-spin': regenerating}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                <span x-text="regenerating ? 'Generating...' : 'Regenerate'">Regenerate</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="briefing-content">[[.Briefing]]</div>
+                </div>
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span class="text-sm text-slate-400">Briefing dihasilkan otomatis setiap pagi. Data pasar real-time dari BEI.</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden fixed bottom-6 left-6 z-50 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+        <svg x-show="!sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg x-show="sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    window.playAudio = function() {
+        const el = document.querySelector('[x-data]');
+        Alpine.evaluate(el, 'playing = true');
+        const content = document.querySelector('.briefing-content');
+        if (content && 'speechSynthesis' in window) {
+            const text = content.textContent || content.innerText;
+            const utterance = new SpeechSynthesisUtterance(text.substring(0, 2000));
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            utterance.onend = () => Alpine.evaluate(el, 'playing = false');
+            utterance.onerror = () => Alpine.evaluate(el, 'playing = false');
+            speechSynthesis.speak(utterance);
+        } else {
+            Alpine.evaluate(el, 'playing = false');
+        }
+    };
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Bot · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .bot-response{border-radius:12px 12px 12px 4px;max-width:85%;white-space:pre-line}
+        .bot-response pre{white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="whatsappApp()">
+    <script>
+        function whatsappApp() {
+            return {
+                sidebarOpen: false,
+                testCommand: '',
+                response: '',
+                loading: false,
+                async sendTest() {
+                    if (!this.testCommand.trim()) return;
+                    this.loading = true;
+                    try {
+                        var r = await fetch('/api/whatsapp/test', {
+                            method: 'POST',
+                            headers: {'Content-Type':'application/json'},
+                            body: JSON.stringify({command: this.testCommand.trim()})
+                        });
+                        var d = await r.json();
+                        this.response = d.response || 'Tidak ada respons.';
+                    } catch(e) { this.response = 'Gagal menghubungi server.'; }
+                    this.loading = false;
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Market Recap</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon">💵</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Engagement</p>
+            <a href="/market/prediction" class="sidebar-link"><span class="icon">🎯</span> Prediction Market</a>
+            <a href="/achievements" class="sidebar-link"><span class="icon">🏅</span> Achievements</a>
+            <a href="/market/whatsapp-bot" class="sidebar-link active"><span class="icon">🤖</span> WhatsApp Bot</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">📝</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                [[if .User]]
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+                [[else]]
+                <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+                [[end]]
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-white">🤖 WhatsApp Bot</h1>
+                <p class="text-sm text-slate-400 mt-0.5">Dapatkan info saham & forex langsung via WhatsApp. Kirim perintah dan dapatkan respons instan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="card p-5" style="background:linear-gradient(135deg,#075e54,#128c7e)">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">🤖</div>
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Connect WhatsApp</h2>
+                                <p class="text-sm text-emerald-100 mt-1">Hubungkan nomor WhatsApp Anda dan mulai gunakan bot.</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center gap-4">
+                            <div class="bg-white/10 rounded-xl p-4 flex-1">
+                                <p class="text-xs text-emerald-200 mb-2">Nomor WhatsApp Bot</p>
+                                <p class="font-mono text-lg font-bold text-white">+62 812-XXXX-XXXX</p>
+                            </div>
+                            <div class="bg-white rounded-xl p-3 w-24 h-24 flex items-center justify-center">
+                                <div class="text-center">
+                                    <span class="text-3xl block">📱</span>
+                                    <span class="text-[8px] text-slate-500">QR Code</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-xs text-emerald-200">
+                            Kirim pesan "HELP" ke nomor bot untuk melihat daftar perintah.
+                        </div>
+                    </div>
+
+                    <div class="card p-5">
+                        <h2 class="widget-title mb-4">Test Bot</h2>
+                        <p class="text-sm text-slate-400 mb-3">Simulasikan mengirim perintah ke bot dan lihat responnya.</p>
+                        <div class="flex gap-2">
+                            <input type="text" x-model="testCommand" placeholder="INFO BBCA" @keydown.enter="sendTest()"
+                                class="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase">
+                            <button @click="sendTest()" :disabled="loading"
+                                class="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold text-sm rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all disabled:opacity-50">
+                                <span x-show="!loading">Kirim</span>
+                                <span x-show="loading">...</span>
+                            </button>
+                        </div>
+                        <div x-show="response" class="mt-4 bg-slate-800/80 border border-slate-700 rounded-xl p-4 bot-response">
+                            <div class="flex items-center gap-2 mb-2 text-xs text-slate-500">
+                                <span class="w-2 h-2 rounded-full bg-green-500"></span> Bot Response
+                            </div>
+                            <div class="text-sm text-slate-200 whitespace-pre-wrap font-mono" x-text="response"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card p-5">
+                        <h2 class="widget-title mb-4">Daftar Perintah</h2>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs font-mono font-bold text-blue-400">INFO {CODE}</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mb-2">Info lengkap saham</p>
+                                <div class="bg-slate-900 rounded-lg p-2.5 text-xs font-mono text-slate-300">
+                                    💰 BBCA: Rp 10,150<br>
+                                    📈 +2.3%<br>
+                                    📊 PER: 20.0 | PBV: 2.5
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <span class="text-xs font-mono font-bold text-green-400">HARGA {CODE}</span>
+                                <p class="text-xs text-slate-400 mt-1">Harga saham terkini</p>
+                                <div class="bg-slate-900 rounded-lg p-2.5 text-xs font-mono text-slate-300 mt-1">💰 BBCA: Rp 10,150</div>
+                            </div>
+
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <span class="text-xs font-mono font-bold text-purple-400">CHART {CODE}</span>
+                                <p class="text-xs text-slate-400 mt-1">Link halaman chart</p>
+                                <div class="bg-slate-900 rounded-lg p-2.5 text-xs font-mono text-slate-300 mt-1">📊 Chart BBCA: /saham/bbca</div>
+                            </div>
+
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <span class="text-xs font-mono font-bold text-cyan-400">FOREX {PAIR}</span>
+                                <p class="text-xs text-slate-400 mt-1">Info pasangan mata uang</p>
+                                <div class="bg-slate-900 rounded-lg p-2.5 text-xs font-mono text-slate-300 mt-1">💱 USD/IDR: 15,750.00</div>
+                            </div>
+
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <span class="text-xs font-mono font-bold text-amber-400">ALERT {CODE} {PRICE}</span>
+                                <p class="text-xs text-slate-400 mt-1">Buat alert harga</p>
+                                <div class="bg-slate-900 rounded-lg p-2.5 text-xs font-mono text-slate-300 mt-1">✅ Alert dibuat: BBCA > 12,000</div>
+                            </div>
+
+                            <div class="p-3 bg-slate-800/50 rounded-xl">
+                                <span class="text-xs font-mono font-bold text-pink-400">HELP</span>
+                                <p class="text-xs text-slate-400 mt-1">Tampilkan bantuan</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-5 mt-4" style="background:linear-gradient(135deg,#1e293b,#0f172a)">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Cara Konek</h3>
+                        <div class="space-y-3 text-xs text-slate-400">
+                            <div class="flex gap-2"><span class="text-green-400">1.</span> Simpan nomor bot ke kontak WhatsApp</div>
+                            <div class="flex gap-2"><span class="text-green-400">2.</span> Kirim pesan "HELP" untuk memulai</div>
+                            <div class="flex gap-2"><span class="text-green-400">3.</span> Bot akan merespons otomatis</div>
+                            <div class="flex gap-2"><span class="text-green-400">4.</span> Gunakan di mana saja, kapan saja!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

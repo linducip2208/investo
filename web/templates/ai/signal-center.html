@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: true, sidebarOpen: window.innerWidth >= 1024 }" x-init="document.documentElement.classList.add('dark');" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Center · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;font-size:14px;font-weight:600;transition:all .2s;border:none;cursor:pointer}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.25)}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.35)}
+        .btn-success{background:linear-gradient(135deg,#059669,#047857);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.25)}
+        .btn-success:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(5,150,105,.35)}
+        .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
+        .btn-outline:hover{background:#1e293b;border-color:#64748b}
+        .tab{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;color:#94a3b8;border:1px solid transparent}
+        .tab:hover{color:#e2e8f0;background:#1e293b}
+        .tab.active{background:#1e3a8a;color:#93c5fd;border-color:#3b82f6}
+        .signal-badge{padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+        .signal-STRONG_BUY{background:#064e3b;color:#6ee7b7}
+        .signal-BUY{background:#14532d;color:#86efac}
+        .signal-HOLD{background:#1e3a8a;color:#93c5fd}
+        .signal-SELL{background:#7f1d1d;color:#fca5a5}
+        .signal-STRONG_SELL{background:#450a0a;color:#fecaca}
+        .score-bar{height:6px;border-radius:3px;transition:width .6s ease-out}
+        .toast{position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;max-width:400px;animation:slideIn .3s ease-out}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        .toast-success{background:#064e3b;color:#6ee7b7;border:1px solid #065f46}
+        .toast-error{background:#7f1d1d;color:#fca5a5;border:1px solid #991b1b}
+        .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @media(max-width:1024px){.sidebar-cloak{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}}
+        @media(max-width:640px){.card{padding:16px!important}.signal-card{min-width:280px}}
+    </style>
+</head>
+<body class="h-full" x-data="signalCenter()" @resize.window="sidebarOpen = window.innerWidth >= 1024">
+
+<header class="sticky top-0 z-50 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50 flex items-center px-4 lg:px-8">
+    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden mr-3 p-2 rounded-lg text-slate-400 hover:bg-slate-800" style="min-height:42px;min-width:42px">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <a href="/dashboard" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </a>
+    <div class="mx-4 h-6 w-px bg-slate-700"></div>
+    <h1 class="text-base font-semibold text-white">Signal Center</h1>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-3 ml-2 pl-3 border-l border-slate-700">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+        <div class="hidden sm:block">
+            <p class="text-sm font-semibold text-white leading-tight">[[.User.Name]]</p>
+        </div>
+    </div>
+</header>
+
+<aside x-show="sidebarOpen" @click.away="if (window.innerWidth < 1024) sidebarOpen = false"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+       class="fixed inset-y-0 left-0 z-40 w-64 bg-[#0b1120] border-r border-slate-700/50 pt-16 lg:pt-0" :class="window.innerWidth >= 1024 ? 'block lg:relative' : ''" x-cloak>
+    <nav class="p-4 space-y-1 overflow-y-auto h-full">
+        <a href="/dashboard" class="sidebar-link">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+        <a href="/saham" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>Saham IDX</a>
+        <a href="/forex" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Forex</a>
+        <a href="/ai/signal-center" class="sidebar-link active"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Signal Center</a>
+        <a href="/pengaturan/data-sources" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>Data Sources</a>
+        <div class="pt-4 mt-4 border-t border-slate-700/50">
+            <a href="/pengaturan" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-red-400 hover:bg-red-900/20"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>Keluar</a>
+        </div>
+    </nav>
+</aside>
+<div x-show="sidebarOpen && window.innerWidth < 1024" @click="sidebarOpen = false" class="sidebar-cloak lg:hidden" x-cloak></div>
+
+<div class="lg:ml-64 min-h-screen">
+    <main class="p-4 lg:p-6 space-y-5">
+        <div x-show="toast.show" x-transition :class="toast.type === 'success' ? 'toast toast-success' : 'toast toast-error'" x-text="toast.message"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div class="flex bg-slate-800/50 rounded-xl p-1 gap-1">
+                <button @click="marketType = 'BEI'" :class="marketType === 'BEI' ? 'tab active' : 'tab'">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" stroke="currentColor" fill="none"/><text x="12" y="17" text-anchor="middle" font-size="10" font-weight="bold" fill="currentColor">BEI</text></svg>
+                    Pasar BEI
+                </button>
+                <button @click="marketType = 'FOREX'" :class="marketType === 'FOREX' ? 'tab active' : 'tab'">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Forex
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <input type="text" x-model="instrumentInput" @keyup.enter="generateSignal()"
+                       :placeholder="marketType === 'BEI' ? 'Kode saham (e.g. BBCA)' : 'Pair (e.g. USDIDR)'"
+                       class="bg-[#1e293b] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white font-mono w-48 focus:outline-none focus:border-blue-500">
+                <button @click="generateSignal()" :disabled="generating" class="btn btn-primary">
+                    <span x-show="generating" class="spinner"></span>
+                    <svg x-show="!generating" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span x-text="generating ? 'Analyzing...' : 'Generate Signal'"></span>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2 ml-auto">
+                <select x-model="signalFilter" class="bg-[#1e293b] border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                    <option value="">All Signals</option>
+                    <option value="STRONG_BUY">Strong Buy</option>
+                    <option value="BUY">Buy</option>
+                    <option value="HOLD">Hold</option>
+                    <option value="SELL">Sell</option>
+                    <option value="STRONG_SELL">Strong Sell</option>
+                </select>
+                <input type="number" x-model="minConfidence" placeholder="Min Confidence %" min="0" max="100"
+                       class="bg-[#1e293b] border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white w-36 focus:outline-none focus:border-blue-500">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            <template x-for="signal in filteredSignals()" :key="signal.instrument">
+                <div class="card p-5 signal-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg font-bold text-white font-mono" x-text="signal.instrument"></span>
+                                <span class="text-xs text-slate-500 px-2 py-0.5 bg-slate-800 rounded-md" x-text="signal.market_type"></span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="signal-badge" :class="'signal-'+signal.signal" x-text="signal.signal.replace('_',' ')"></span>
+                                <span class="text-sm text-slate-400">
+                                    <span class="font-semibold text-white" x-text="signal.confidence+'%'"></span> confidence
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button @click="distributeSignal(signal)" class="p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-green-400 transition" title="Distribute via WA/Webhook">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-3">
+                        <template x-for="(score, agent) in signal.agent_scores" :key="agent">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs text-slate-400 capitalize" x-text="agent.replace('_',' ')"></span>
+                                    <span class="text-xs font-mono font-semibold text-white" x-text="score+'/100'"></span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-1.5">
+                                    <div class="score-bar h-1.5 rounded-full" :style="'width:'+score+'%'"
+                                         :class="score >= 70 ? 'bg-emerald-500' : (score >= 50 ? 'bg-blue-500' : 'bg-red-500')"></div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 mb-3 text-center">
+                        <div class="bg-slate-800/50 rounded-lg p-2">
+                            <p class="text-xs text-slate-400">Entry</p>
+                            <p class="text-sm font-mono font-bold text-white" x-text="signal.entry_price"></p>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-2">
+                            <p class="text-xs text-slate-400">Stop Loss</p>
+                            <p class="text-sm font-mono font-bold text-red-400" x-text="signal.stop_loss"></p>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-2">
+                            <p class="text-xs text-slate-400">Target</p>
+                            <p class="text-sm font-mono font-bold text-emerald-400" x-text="signal.take_profit"></p>
+                        </div>
+                    </div>
+
+                    <template x-if="signal.risk_warnings && signal.risk_warnings.length > 0">
+                        <div class="border-t border-slate-700/50 pt-3 mt-2">
+                            <template x-for="w in signal.risk_warnings" :key="w">
+                                <p class="text-xs text-amber-400 flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"/></svg>
+                                    <span x-text="w"></span>
+                                </p>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div x-show="signals.length === 0 && !generating" class="card p-12 text-center col-span-full">
+            <div class="text-6xl mb-4">🔍</div>
+            <h3 class="text-lg font-semibold text-white mb-2">Belum ada sinyal</h3>
+            <p class="text-slate-400 max-w-md mx-auto">Masukkan kode saham BEI atau pair forex lalu klik "Generate Signal" untuk memulai analisis multi-agent.</p>
+            <div class="mt-6 flex flex-wrap gap-2 justify-center">
+                <button @click="quickGenerate(['BBCA','BBRI','TLKM','ASII'])" class="btn btn-outline text-xs">Analisis Saham Populer</button>
+                <button @click="quickGenerate(['USDIDR','EURUSD','GBPJPY'])" class="btn btn-outline text-xs">Analisis Forex Pair</button>
+            </div>
+        </div>
+
+        <div class="card p-5" x-show="signals.length > 0">
+            <h3 class="text-sm font-semibold text-white mb-3">Signal History</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-700/50">
+                            <th class="text-left py-2 text-slate-400 font-medium uppercase tracking-wider">Instrument</th>
+                            <th class="text-left py-2 text-slate-400 font-medium uppercase tracking-wider">Market</th>
+                            <th class="text-left py-2 text-slate-400 font-medium uppercase tracking-wider">Signal</th>
+                            <th class="text-right py-2 text-slate-400 font-medium uppercase tracking-wider">Confidence</th>
+                            <th class="text-right py-2 text-slate-400 font-medium uppercase tracking-wider">Time</th>
+                            <th class="text-center py-2 text-slate-400 font-medium uppercase tracking-wider">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="signal in signals" :key="signal.instrument + signal.timestamp">
+                            <tr class="border-b border-slate-700/30 hover:bg-slate-800/30">
+                                <td class="py-2 font-mono font-semibold text-white" x-text="signal.instrument"></td>
+                                <td class="py-2 text-slate-400" x-text="signal.market_type"></td>
+                                <td class="py-2">
+                                    <span class="signal-badge" :class="'signal-'+signal.signal" x-text="signal.signal.replace('_',' ')"></span>
+                                </td>
+                                <td class="py-2 text-right font-mono text-white" x-text="signal.confidence+'%'"></td>
+                                <td class="py-2 text-right text-slate-400 font-mono" x-text="new Date(signal.timestamp).toLocaleTimeString('id-ID')"></td>
+                                <td class="py-2 text-center">
+                                    <button @click="distributeSignal(signal)" class="text-xs text-blue-400 hover:text-blue-300 transition">Distribute</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+function signalCenter() {
+    return {
+        marketType: 'BEI',
+        instrumentInput: '',
+        signals: [],
+        generating: false,
+        signalFilter: '',
+        minConfidence: 0,
+        toast: { show: false, type: 'success', message: '' },
+
+        showToast(type, msg) {
+            this.toast = { show: true, type, message: msg };
+            setTimeout(() => { this.toast.show = false; }, 4000);
+        },
+
+        async generateSignal() {
+            if (!this.instrumentInput.trim()) {
+                this.showToast('error', 'Masukkan kode saham atau pair forex.');
+                return;
+            }
+            this.generating = true;
+            const instrument = this.instrumentInput.toUpperCase().trim();
+            const endpoint = this.marketType === 'BEI'
+                ? '/api/ai/signals/bei/' + instrument
+                : '/api/ai/signals/forex/' + instrument;
+
+            try {
+                const resp = await fetch(endpoint, { method: 'POST' });
+                if (!resp.ok) {
+                    const err = await resp.json();
+                    throw new Error(err.error || 'Server error');
+                }
+                const data = await resp.json();
+                if (data.success && data.signal) {
+                    this.signals.unshift(data.signal);
+                    this.instrumentInput = '';
+                    this.showToast('success', 'Sinyal ' + instrument + ' berhasil digenerate!');
+                } else {
+                    this.showToast('error', data.error || 'Gagal generate sinyal.');
+                }
+            } catch (e) {
+                this.showToast('error', e.message);
+            } finally {
+                this.generating = false;
+            }
+        },
+
+        async quickGenerate(instruments) {
+            for (const inst of instruments) {
+                this.instrumentInput = inst;
+                if (this.marketType === 'FOREX' && inst.length === 6) continue;
+                await this.generateSignal();
+                await new Promise(r => setTimeout(r, 500));
+            }
+        },
+
+        filteredSignals() {
+            let filtered = this.signals;
+            if (this.signalFilter) {
+                filtered = filtered.filter(s => s.signal === this.signalFilter);
+            }
+            if (this.minConfidence > 0) {
+                filtered = filtered.filter(s => s.confidence >= this.minConfidence);
+            }
+            return filtered;
+        },
+
+        async distributeSignal(signal) {
+            try {
+                const resp = await fetch('/api/ai/signals/distribute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ signal: signal, targets: ['broadcast'] })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    this.showToast('success', 'Sinyal didistribusikan via: ' + (data.channels || []).join(', '));
+                } else {
+                    this.showToast('error', data.error || 'Distribusi gagal.');
+                }
+            } catch (e) {
+                this.showToast('error', e.message);
+            }
+        }
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Portfolio.Name]] &mdash; Portofolio &mdash; Investo</title>
+    <meta name="description" content="Detail portofolio [[.Portfolio.Name]]: alokasi aset, daftar holding, dan kinerja investasi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+    <script>
+        let pieChart = null;
+        function initPieChart() {
+            var ctx = document.getElementById('allocation-chart');
+            if (!ctx) return;
+            if (pieChart) pieChart.destroy();
+            var colors = ['#3b82f6','#34d399','#f59e0b','#f87171','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [ [[range .Allocation]]'[[.Label]]',[[end]] ],
+                    datasets: [{ data: [ [[range .Allocation]][[.Value]],[[end]] ], backgroundColor: colors.slice(0, [[len .Allocation]]), borderColor: '#1e293b', borderWidth: 2 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '65%',
+                    plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, color: '#94a3b8', font: { size: 12 } } } }
+                }
+            });
+        }
+        function addHolding() {
+            var code = document.getElementById('add-code').value.trim();
+            var qty = document.getElementById('add-qty').value;
+            var price = document.getElementById('add-price').value;
+            if (!code || !qty) return;
+            fetch('/api/portfolios/[[.Portfolio.ID]]/holdings', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, quantity: parseInt(qty), avg_price: parseFloat(price) || 0 })
+            }).then(function(r) { if (r.ok) window.location.reload(); });
+        }
+        function removeHolding(id) {
+            if (!confirm('Hapus holding ini dari portofolio?')) return;
+            fetch('/api/portfolios/[[.Portfolio.ID]]/holdings/' + id, { method: 'DELETE' }).then(function(r) { if (r.ok) window.location.reload(); });
+        }
+        function fmtRp(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; }
+    </script>
+</head>
+<body class="h-full flex" x-data="{ sidebarOpen: false, showAddForm: false, buyPrice:0, sellPrice:0, quantity:0, feePercent:0.15, weather:null }" x-init="initPieChart();fetchWeather()">
+    <script>
+        function fetchWeather() {
+            fetch('/api/portfolios/[[.Portfolio.ID]]/weather').then(function(r){return r.json()}).then(function(d){document.querySelector('[x-data]').__x.$data.weather = d}).catch(function(){});
+        }
+    </script>
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon">💵</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">🧮</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
+            <nav class="flex items-center gap-2 text-sm text-slate-400 mb-5">
+                <a href="/dashboard/portfolios" class="hover:text-blue-400 transition-colors">Portofolio</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-white font-medium">[[.Portfolio.Name]]</span>
+            </nav>
+
+            <!-- SUMMARY CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="card p-5" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
+                    <span class="text-xs font-medium text-blue-200 uppercase tracking-wider">Nilai Total</span>
+                    <div class="mt-2 text-3xl font-bold text-white font-mono">[[.Portfolio.TotalValueFormatted]]</div>
+                </div>
+                <div class="card p-5 [[if ge .Portfolio.TotalGainLoss 0.0]]gradient-green[[else]]bg-gradient-to-r from-red-800 to-red-600[[end]]">
+                    <span class="text-xs font-medium text-white/70 uppercase tracking-wider">Total Gain/Loss</span>
+                    <div class="mt-2 text-3xl font-bold text-white font-mono">[[if ge .Portfolio.TotalGainLoss 0.0]]+[[end]][[.Portfolio.TotalGainLossFormatted]]</div>
+                </div>
+                <div class="card p-5">
+                    <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Gain/Loss %</span>
+                    <div class="mt-2 text-3xl font-bold font-mono [[if ge .Portfolio.GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Portfolio.GainLossPercent 0.0]]+[[end]][[.Portfolio.GainLossPercent]]%</div>
+                </div>
+            </div>
+
+            <!-- PORTFOLIO WEATHER -->
+            <div x-show="weather" class="card p-5 mb-6" :style="'background:linear-gradient(135deg,'+(weather.pl_percent>=0?'#1e3a8a,#3b82f6':'#7f1d1d,#991b1b')+')'">
+                <div class="flex items-center gap-4">
+                    <span class="text-5xl" x-text="weather.emoji"></span>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold text-white" x-text="weather.one_liner"></h2>
+                        <div class="flex items-center gap-3 mt-1">
+                            <span class="text-sm text-white/70">P/L Hari Ini:</span>
+                            <span class="font-mono font-bold text-lg" :class="weather.pl_percent>=0?'text-emerald-300':'text-red-300'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
+                            <span class="font-mono text-sm text-white/50" x-text="'Suhu: '+weather.temperature+'°'"></span>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-3" x-show="weather.details && weather.details.length">
+                            <template x-for="d in weather.details" :key="d">
+                                <span class="text-xs bg-white/10 text-white/80 px-2.5 py-1 rounded-lg" x-text="d"></span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            [[if .Allocation]]
+            <div class="card p-5 mb-6">
+                <h2 class="widget-title mb-3">Alokasi Portofolio</h2>
+                <div class="max-w-xs mx-auto" style="height: 260px;">
+                    <canvas id="allocation-chart"></canvas>
+                </div>
+            </div>
+            [[end]]
+
+            <!-- HOLDINGS TABLE -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <h2 class="widget-title mb-0">Daftar Holding</h2>
+                <button @click="showAddForm = !showAddForm" class="px-4 py-2 text-sm font-medium text-blue-400 bg-blue-900/20 rounded-xl hover:bg-blue-900/40 transition-colors" x-text="showAddForm ? 'Tutup Form' : '+ Tambah Saham'"></button>
+            </div>
+
+            <div x-show="showAddForm" x-cloak class="card p-4 mb-4">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Kode Saham</label>
+                        <input id="add-code" type="text" placeholder="BBCA" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Jumlah (Lot)</label>
+                        <input id="add-qty" type="number" min="1" placeholder="10" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Harga Rata</label>
+                        <input id="add-price" type="number" step="1" placeholder="Harga per lembar" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="addHolding()" class="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all">Tambah</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700/50 bg-slate-800/30">
+                                <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kode</th>
+                                <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Jumlah</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Harga Rata</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Harga Pasar</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Nilai Pasar</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">G/L</th>
+                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/30">
+                            [[range .Holdings]]
+                            <tr class="hover:bg-slate-700/20 transition-colors">
+                                <td class="px-4 py-3.5">
+                                    <a href="/saham/[[.Code]]" class="font-bold text-blue-400 hover:underline">[[.Code]]</a>
+                                </td>
+                                <td class="px-4 py-3.5 text-slate-300 hidden sm:table-cell max-w-[120px] truncate">[[.Name]]</td>
+                                <td class="px-4 py-3.5 text-right font-mono text-white">[[.Quantity]]</td>
+                                <td class="px-4 py-3.5 text-right font-mono text-slate-400 hidden md:table-cell">[[.AvgPriceFormatted]]</td>
+                                <td class="px-4 py-3.5 text-right font-mono font-semibold text-white">[[.CurrentPriceFormatted]]</td>
+                                <td class="px-4 py-3.5 text-right font-mono text-white">[[.MarketValueFormatted]]</td>
+                                <td class="px-4 py-3.5 text-right font-mono">
+                                    <span class="block font-semibold [[if ge .GainLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLoss 0.0]]+[[end]][[.GainLossFormatted]]</span>
+                                    <span class="block text-xs [[if ge .GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLossPercent 0.0]]+[[end]][[.GainLossPercent]]%</span>
+                                </td>
+                                <td class="px-4 py-3.5 text-right">
+                                    <button onclick="removeHolding('[[.ID]]')" class="p-1.5 text-slate-500 hover:text-danger transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                                </td>
+                            </tr>
+                            [[end]]
+                            [[if not .Holdings]]
+                            <tr>
+                                <td colspan="8" class="px-6 py-16 text-center text-slate-500">
+                                    <p class="font-medium">Belum ada holding</p>
+                                    <p class="text-sm mt-1">Klik "Tambah Saham" untuk menambahkan saham ke portofolio</p>
+                                </td>
+                            </tr>
+                            [[end]]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- P/L CALCULATOR -->
+            <div class="card p-5 mt-6" x-data="{}">
+                <h2 class="widget-title mb-4">Kalkulator Profit/Loss</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                    <div><label class="block text-xs text-slate-400 mb-1">Harga Beli</label><input type="number" x-model="buyPrice" step="1" placeholder="1000" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+                    <div><label class="block text-xs text-slate-400 mb-1">Harga Jual</label><input type="number" x-model="sellPrice" step="1" placeholder="1500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+                    <div><label class="block text-xs text-slate-400 mb-1">Jumlah (Lot)</label><input type="number" x-model="quantity" step="1" placeholder="10" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+                    <div><label class="block text-xs text-slate-400 mb-1">Fee (%)</label><input type="number" x-model="feePercent" step="0.01" placeholder="0.15" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    <div class="bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-400">Total Beli</span><div class="mt-1 font-mono text-sm font-bold text-white" x-text="'Rp ' + ((buyPrice||0)*(quantity||0)*100).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-400">Total Jual</span><div class="mt-1 font-mono text-sm font-bold text-white" x-text="'Rp ' + (((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-400">Profit Kotor</span><div class="mt-1 font-mono text-sm font-bold" :class="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100))>=0?'text-success':'text-danger'" x-text="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-400">Profit Bersih</span><div class="mt-1 font-mono text-sm font-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-400">ROI %</span><div class="mt-1 font-mono text-sm font-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0?'+':'')+((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100).toFixed(2)+'%'"></div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

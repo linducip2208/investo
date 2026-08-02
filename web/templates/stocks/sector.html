@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: localStorage.getItem('investo-dark-mode') === 'true' || (!localStorage.getItem('investo-dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-init="$watch('darkMode', val => { localStorage.setItem('investo-dark-mode', val); document.documentElement.classList.toggle('dark', val); }); document.documentElement.classList.toggle('dark', darkMode);" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saham [[.SectorName]] Terbaik [[.Year]] &mdash; Investo</title>
+    <meta name="description" content="Daftar 10 saham [[.SectorName]] terbaik tahun [[.Year]] berdasarkan kinerja dan fundamental. Data IDX lengkap dengan PER, PBV, dan market cap.">
+    <meta property="og:title" content="Saham [[.SectorName]] Terbaik [[.Year]]">
+    <meta property="og:description" content="Temukan saham [[.SectorName]] dengan kinerja terbaik di IDX. Ranking, harga, dan rasio keuangan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen antialiased">
+
+<header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <span class="font-display font-bold text-xl text-slate-900 dark:text-white">Investo</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a href="/" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Beranda</a>
+                <a href="/saham" class="text-brand-600 dark:text-brand-400">Saham</a>
+                <a href="/forex" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Forex</a>
+                <a href="/dashboard/portfolios" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Portofolio</a>
+                <a href="/dashboard/watchlists" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Watchlist</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button @click="darkMode = !darkMode" class="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+                    <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </button>
+                <a href="/dashboard" class="text-sm font-medium text-slate-600 hover:text-brand-600 dark:text-slate-300 dark:hover:text-brand-400 transition-colors hidden sm:block">Masuk</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
+        <a href="/saham" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Saham</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-slate-900 dark:text-white font-medium">Sektor [[.SectorName]]</span>
+    </nav>
+
+    <div class="mb-8">
+        <span class="px-3 py-1 bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300 rounded-lg text-xs font-semibold">[[.SectorName]]</span>
+        <h1 class="mt-3 font-display text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Saham [[.SectorName]] Terbaik [[.Year]]</h1>
+        <p class="mt-3 text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">[[.SectorDescription]]</p>
+    </div>
+
+    <div class="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Berdasarkan kombinasi kinerja harga, fundamental, dan kapitalisasi pasar. Data per [[.AsOf]].</span>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <th class="text-center px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] w-12">#</th>
+                        <th class="text-left px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Kode</th>
+                        <th class="text-left px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Nama</th>
+                        <th class="text-right px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Harga</th>
+                        <th class="text-right px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Perubahan</th>
+                        <th class="text-right px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hidden sm:table-cell">PER</th>
+                        <th class="text-right px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hidden md:table-cell">PBV</th>
+                        <th class="text-right px-4 sm:px-6 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hidden md:table-cell">Market Cap</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                    [[range $index, $stock := .Stocks]]
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group cursor-pointer" onclick="window.location='/saham/[[$stock.Code]]'">
+                        <td class="px-4 sm:px-6 py-4 text-center">
+                            [[if le $index 2]]
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold [[if eq $index 0]]bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300[[else if eq $index 1]]bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300[[else]]bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300[[end]]">[[add $index 1]]</span>
+                            [[else]]
+                            <span class="text-slate-400 dark:text-slate-500 font-mono text-xs">[[add $index 1]]</span>
+                            [[end]]
+                        </td>
+                        <td class="px-4 sm:px-6 py-4">
+                            <span class="font-bold text-brand-600 dark:text-brand-400 group-hover:underline">[[$stock.Code]]</span>
+                        </td>
+                        <td class="px-4 sm:px-6 py-4 max-w-[160px] sm:max-w-xs truncate text-slate-900 dark:text-white font-medium">[[$stock.Name]]</td>
+                        <td class="px-4 sm:px-6 py-4 text-right font-mono text-sm font-semibold text-slate-900 dark:text-white">[[$stock.PriceFormatted]]</td>
+                        <td class="px-4 sm:px-6 py-4 text-right font-mono text-sm">
+                            [[if ge $stock.ChangePercent 0.0]]
+                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold">+[[$stock.ChangePercent]]%</span>
+                            [[else]]
+                            <span class="text-red-600 dark:text-red-400 font-semibold">[[$stock.ChangePercent]]%</span>
+                            [[end]]
+                        </td>
+                        <td class="px-4 sm:px-6 py-4 text-right font-mono text-sm text-slate-600 dark:text-slate-300 hidden sm:table-cell">[[$stock.PER]]x</td>
+                        <td class="px-4 sm:px-6 py-4 text-right font-mono text-sm text-slate-600 dark:text-slate-300 hidden md:table-cell">[[$stock.PBV]]x</td>
+                        <td class="px-4 sm:px-6 py-4 text-right font-mono text-sm text-slate-600 dark:text-slate-300 hidden md:table-cell">[[$stock.MarketCapFormatted]]</td>
+                    </tr>
+                    [[end]]
+                    [[if not .Stocks]]
+                    <tr>
+                        <td colspan="9" class="px-6 py-16 text-center text-slate-400 dark:text-slate-500">Belum ada data saham untuk sektor ini</td>
+                    </tr>
+                    [[end]]
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    [[if .OtherSectors]]
+    <section class="mt-12">
+        <h2 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-4">Sektor Lainnya</h2>
+        <div class="flex flex-wrap gap-2">
+            [[range .OtherSectors]]
+            <a href="/saham/sektor/[[.Slug]]" class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">[[.Name]]</a>
+            [[end]]
+        </div>
+    </section>
+    [[end]]
+</main>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+        <p>&copy; [[.CurrentYear]] Investo. Data pasar bersumber dari IDX dan disajikan dengan penundaan.</p>
+    </div>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+        [[range $index, $stock := .Stocks]]
+        {
+            "@type": "ListItem",
+            "position": [[add $index 1]],
+            "item": {
+                "@type": "Corporation",
+                "name": "[[$stock.Name]]",
+                "tickerSymbol": "[[$stock.Code]]"
+            }
+        }[[if lt (add $index 1) (len $.Stocks)]],[[end]]
+        [[end]]
+    ]
+}
+</script>
+
+</body>
+</html>

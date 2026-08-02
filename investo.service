@@ -1,0 +1,16 @@
+[Unit]
+Description=Investo - Stock & Forex Platform
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/www/wwwroot/investo
+ExecStart=/www/wwwroot/investo/investo-linux
+Restart=always
+RestartSec=5
+StandardOutput=append:/www/wwwroot/investo/storage/logs/server.log
+StandardError=append:/www/wwwroot/investo/storage/logs/error.log
+
+[Install]
+WantedBy=multi-user.target

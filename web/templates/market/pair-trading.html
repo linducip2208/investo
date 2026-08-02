@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="pairTrading()" x-init="fetch()">
+    <script>
+        function pairTrading() {
+            return {
+                sidebarOpen: false,
+                pairs: [],
+                filteredPairs: [],
+                sectors: ['All'],
+                selectedSector: 'All',
+                loaded: false,
+                async fetch() {
+                    try {
+                        const resp = await fetch('/api/market/pair-trading');
+                        const data = await resp.json();
+                        this.pairs = data.pairs || [];
+                        const secSet = new Set(this.pairs.map(p => p.sector_name));
+                        this.sectors = ['All', ...Array.from(secSet).sort()];
+                        this.filter();
+                        this.loaded = true;
+                    } catch(e) { this.loaded = true; }
+                },
+                filter() {
+                    if (this.selectedSector === 'All') {
+                        this.filteredPairs = this.pairs;
+                    } else {
+                        this.filteredPairs = this.pairs.filter(p => p.sector_name === this.selectedSector);
+                    }
+                },
+                signalBadge(signal) {
+                    if (signal.startsWith('SHORT')) return 'bg-red-500/20 text-red-400 border border-red-500/30';
+                    if (signal.startsWith('LONG')) return 'bg-green-500/20 text-green-400 border border-green-500/30';
+                    return 'bg-slate-500/20 text-slate-400 border border-slate-500/30';
+                },
+                zColor(z) {
+                    const az = Math.abs(z);
+                    if (az > 2.5) return 'text-red-400';
+                    if (az > 2.0) return 'text-orange-400';
+                    if (az > 1.5) return 'text-yellow-400';
+                    return 'text-slate-400';
+                },
+                corColor(c) {
+                    if (c > 0.95) return 'bg-green-500';
+                    if (c > 0.9) return 'bg-lime-500';
+                    if (c > 0.85) return 'bg-yellow-500';
+                    return 'bg-blue-500';
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😱</span> Fear & Greed</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
+            <a href="/market/pair-trading" class="sidebar-link active"><span class="icon">🔗</span> Pair Trading</a>
+            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon">💡</span> Trade Ideas</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Market Recap</a>
+            <a href="/market/anomalies" class="sidebar-link"><span class="icon">🔮</span> Anomalies</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/indices" class="sidebar-link"><span class="icon">📐</span> Custom Index</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        </div>
+    </aside>
+
+    <!-- TOPBAR -->
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="text-sm text-slate-400"><span class="text-slate-600">Market /</span> Pair Trading Finder</div>
+        <div class="flex items-center gap-3">
+            <button @click="fetch()" class="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Refresh">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+            [[if .User]]
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            </a>
+            [[end]]
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+        <template x-if="!loaded">
+            <div class="card p-8 flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-slate-400">Finding correlated pairs...</p>
+            </div>
+        </template>
+
+        <template x-if="loaded">
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Pair Trading Finder</h1>
+                        <p class="text-slate-400 text-sm mt-1">Statistical arbitrage pairs with high correlation</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-slate-400">Filter:</span>
+                        <select x-model="selectedSector" @change="filter()"
+                                class="bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none">
+                            <template x-for="s in sectors" :key="s">
+                                <option :value="s" x-text="s"></option>
+                            </template>
+                        </select>
+                        <span class="text-xs text-slate-500 font-mono" x-text="filteredPairs.length + ' pairs'"></span>
+                    </div>
+                </div>
+
+                <!-- Pairs Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    <template x-for="pair in filteredPairs" :key="pair.stock_a + '-' + pair.stock_b">
+                        <div class="card p-5 hover:border-slate-500 transition-all">
+                            <!-- Pair Header -->
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-mono font-bold text-white text-sm" x-text="pair.stock_a"></span>
+                                    <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                                    <span class="font-mono font-bold text-white text-sm" x-text="pair.stock_b"></span>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-[10px] font-semibold" :class="signalBadge(pair.signal)" x-text="pair.signal === 'NEUTRAL' ? 'NEUTRAL' : pair.signal.substring(0, 25) + '...'"></span>
+                            </div>
+
+                            <!-- Details -->
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Correlation</div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-mono font-semibold" :class="corColor(pair.correlation).replace('bg-','text-')" x-text="pair.correlation"></span>
+                                        <div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                            <div class="h-full rounded-full" :class="corColor(pair.correlation)" :style="{ width: (pair.correlation * 100) + '%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Z-Score</div>
+                                    <span class="font-mono font-semibold" :class="zColor(pair.z_score)" x-text="pair.z_score"></span>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Spread Mean</div>
+                                    <span class="font-mono text-slate-300" x-text="pair.spread_mean"></span>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Spread Std</div>
+                                    <span class="font-mono text-slate-300" x-text="pair.spread_std"></span>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Current Spread</div>
+                                    <span class="font-mono font-semibold"
+                                          :class="Math.abs(pair.z_score) > 2 ? 'text-warning' : 'text-slate-300'"
+                                          x-text="pair.current_spread"></span>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 mb-0.5">Half-Life</div>
+                                    <span class="font-mono text-slate-300" x-text="pair.half_life + 'd'"></span>
+                                </div>
+                            </div>
+
+                            <!-- Sector Tag -->
+                            <div class="mt-4 pt-3 border-t border-slate-700">
+                                <span class="inline-block px-2.5 py-1 rounded-md bg-slate-800 text-[11px] text-slate-400 font-medium" x-text="pair.sector_name"></span>
+                                <span class="ml-2 text-xs text-slate-500" x-text="pair.stock_a_name + ' / ' + pair.stock_b_name"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <template x-if="filteredPairs.length === 0">
+                    <div class="card p-12 text-center">
+                        <div class="text-slate-500 text-lg mb-2">No pairs found</div>
+                        <p class="text-slate-600 text-sm">No correlated pairs (r >= 0.8) found in the selected sector. Try All sectors.</p>
+                    </div>
+                </template>
+
+                <!-- Info Card -->
+                <div class="card p-6">
+                    <h2 class="text-lg font-bold text-white mb-3">How Pair Trading Works</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                        <div class="space-y-2">
+                            <div class="font-semibold text-blue-400">1. Find Correlation</div>
+                            <p class="text-slate-400">Identify two stocks in the same sector with correlation &gt; 0.8 over 6 months.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-blue-400">2. Calculate Spread</div>
+                            <p class="text-slate-400">Compute log spread between the pair. When z-score &gt; 2, the pair is out of equilibrium.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-blue-400">3. Execute Trade</div>
+                            <p class="text-slate-400">LONG the underperformer, SHORT the overperformer. Exit when spread reverts to mean.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </main>
+
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .signal-expansion{color:#34d399;background:#064e3b;border:1px solid #065f46}
+        .signal-neutral{color:#fbbf24;background:#451a03;border:1px solid #78350f}
+        .signal-recession{color:#f87171;background:#450a0a;border:1px solid #7f1d1d}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="yieldCurve()" x-init="init()">
+
+<script>
+function yieldCurve() {
+    return {
+        sidebarOpen: false,
+        chart: null,
+        curve: [],
+        analysis: null,
+        loading: true,
+        init() { this.fetchData(); },
+        async fetchData() {
+            try {
+                var resp = await fetch('/api/market/yield-curve');
+                var data = await resp.json();
+                this.curve = data.curve || [];
+                this.analysis = data.analysis || null;
+                this.loading = false;
+                this.$nextTick(() => this.renderChart());
+            } catch(e) { this.loading = false; }
+        },
+        renderChart() {
+            if (this.chart) this.chart.destroy();
+            var ctx = document.getElementById('yieldChart');
+            if (!ctx || !this.curve.length) return;
+            this.chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: this.curve.map(p => p.tenor),
+                    datasets: [{
+                        label: 'SBN Yield Curve',
+                        data: this.curve.map(p => p.rate),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59,130,246,0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#1e40af',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { family: 'Inter' } } },
+                        tooltip: { backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#e2e8f0', borderColor: '#334155', borderWidth: 1, cornerRadius: 8 }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(51,65,85,0.3)' }, ticks: { color: '#94a3b8', font: { weight: '600' } } },
+                        y: { grid: { color: 'rgba(51,65,85,0.3)' }, ticks: { color: '#94a3b8', callback: function(v) { return v.toFixed(2) + '%' } } }
+                    }
+                }
+            });
+        },
+        signalClass(signal) {
+            if (signal === 'expansion') return 'signal-expansion';
+            if (signal === 'neutral') return 'signal-neutral';
+            return 'signal-recession';
+        },
+        signalLabel(signal) {
+            if (signal === 'expansion') return 'Expansion Signal';
+            if (signal === 'neutral') return 'Neutral Signal';
+            if (signal === 'recession risk') return 'Recession Risk';
+            return signal;
+        }
+    }
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
+        <a href="/saham" class="sidebar-link"><span>&#x1F4C8;</span> Saham IDX</a>
+        <a href="/market/macro-dashboard" class="sidebar-link"><span>&#x1F30D;</span> Macro Dashboard</a>
+        <a href="/market/yield-curve" class="sidebar-link active"><span>&#x1F4C9;</span> Yield Curve</a>
+        <a href="/market/liquidity-flow" class="sidebar-link"><span>&#x1F4A7;</span> Liquidity Flow</a>
+        <a href="/market/leading-indicators" class="sidebar-link"><span>&#x1F4C8;</span> Leading Indicators</a>
+        <a href="/market/macro-spillover" class="sidebar-link"><span>&#x1F310;</span> Macro Spillover</a>
+        <a href="/market/ma-targets" class="sidebar-link"><span>&#x1F91D;</span> M&A Targets</a>
+    </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-1 max-w-md hidden sm:block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+            [[if .User]]
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+            [[else]]
+            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <div>
+            <h1 class="text-xl lg:text-2xl font-bold text-white">Yield Curve Analyzer</h1>
+            <p class="text-sm text-slate-400 mt-0.5">SBN (Surat Berharga Negara) yield curve analysis. Shape, spread, and forward-looking signals.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-2">
+                <div class="card p-5">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-4">SBN Yield Curve</h3>
+                    <div style="height:350px">
+                        <canvas id="yieldChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <template x-if="!loading && analysis">
+                    <div>
+                        <div class="card p-5">
+                            <h3 class="text-sm font-semibold text-slate-300 mb-3">Curve Analysis</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-xs text-slate-500 mb-1">Shape</p>
+                                    <p class="text-lg font-bold text-white" x-text="analysis.shape"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 mb-1">Spread (10Y-2Y)</p>
+                                    <p class="text-lg font-bold font-mono text-blue-400" x-text="analysis.spread.toFixed(2) + '%'"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 mb-1">Signal</p>
+                                    <span class="inline-flex px-3 py-1 rounded-lg text-sm font-semibold" :class="signalClass(analysis.signal)" x-text="signalLabel(analysis.signal)"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-5 mt-4">
+                            <h3 class="text-sm font-semibold text-slate-300 mb-3">Implication</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed" x-text="analysis.implication"></p>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="loading">
+                    <div class="card p-5 space-y-3 animate-pulse">
+                        <div class="h-4 bg-slate-700/50 rounded w-2/3"></div>
+                        <div class="h-8 bg-slate-700/50 rounded w-1/2"></div>
+                        <div class="h-4 bg-slate-700/50 rounded w-3/4"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

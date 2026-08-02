@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquidity Zones - [[.Stock.Code]] - Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .zone-bar{transition:all .3s ease}
+        .zone-bar:hover{opacity:.9;transform:scaleX(1.02)}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.stat-card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="liquidityApp()" x-init="init()">
+
+<script>
+function liquidityApp() {
+    return {
+        sidebarOpen: false, zones: [], stockCode: '[[.Stock.Code]]', stockName: '[[.Stock.Name]]',
+        loading: true, maxVolume: 0, latestPrice: [[.LatestPrice.PriceFormatted]] || 0,
+
+        init() { this.fetchZones(); },
+        async fetchZones() {
+            try {
+                var resp = await fetch('/api/market/liquidity/'+this.stockCode);
+                var data = await resp.json();
+                this.zones = data.zones || [];
+                if (this.zones.length > 0) {
+                    this.maxVolume = Math.max.apply(null, this.zones.map(function(z){return z.volume}));
+                }
+                this.loading = false;
+            } catch(e) { this.loading = false; }
+        },
+        formatVol(v) { if(v>=1e9) return (v/1e9).toFixed(1)+'B'; if(v>=1e6) return (v/1e6).toFixed(1)+'M'; if(v>=1e3) return (v/1e3).toFixed(1)+'K'; return v.toString(); },
+        barWidth(v) { return this.maxVolume>0?(v/this.maxVolume*100).toFixed(1):'0'; },
+        getBarColor(z) { return z.type==='support'?'rgba(16,185,129,0.7)':'rgba(248,113,113,0.7)'; },
+        getBorderColor(z) { return z.type==='support'?'#10b981':'#ef4444'; },
+        getStrengthColor(s) { if(s>=5) return '#34d399'; if(s>=3) return '#fbbf24'; return '#94a3b8'; },
+        getStrengthLabel(s) { if(s>=5) return 'Strong'; if(s>=3) return 'Moderate'; return 'Weak'; }
+    }
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+        <a href="/saham" class="sidebar-link active"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+        <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+        <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+        <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+        <a href="/market/economic-calendar" class="sidebar-link"><span class="icon">&#x1F4C5;</span> Economic Calendar</a>
+        <a href="/market/correlation" class="sidebar-link"><span class="icon">&#x1F52C;</span> Correlation</a>
+        <div class="border-t border-slate-800 my-2"></div>
+        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Analisis [[.Stock.Code]]</p>
+        <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon">&#x1F4D0;</span> Analisa Teknikal</a>
+        <a href="/saham/[[.Stock.Code]]/fundamental" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Data Fundamental</a>
+    </nav>
+    <div class="p-3 border-t border-slate-800">
+        <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+        <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex items-center gap-2 text-sm text-slate-400">
+            <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a :href="'/saham/'+stockCode" class="hover:text-blue-400 transition-colors" x-text="stockCode"></a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-white font-medium">Liquidity Zones</span>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-2 ml-auto">
+            [[if .User]]
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+            [[else]]
+            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-white" x-text="'Liquidity Zones &mdash; '+stockCode"></h1>
+                <p class="text-sm text-slate-400 mt-0.5" x-text="stockName+' &mdash; Volume Profile dan Liquidity Zones. Support (hijau) di bawah harga, Resistance (merah) di atas.'"></p>
+            </div>
+            <a :href="'/saham/'+stockCode" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-xl transition-colors">&larr; Kembali ke [[.Stock.Code]]</a>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="card p-5 flex flex-col justify-between">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Total Zones</span>
+                <span class="text-2xl font-bold font-mono text-[#f8fafc] mt-1" x-text="zones.length"></span>
+                <span class="text-[10px] text-slate-600 mt-1">Zones >2x avg volume</span>
+            </div>
+            <div class="card p-5 flex flex-col justify-between">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Support Zones</span>
+                <span class="text-2xl font-bold font-mono text-success mt-1" x-text="zones.filter(function(z){return z.type==='support'}).length"></span>
+                <span class="text-[10px] text-slate-600 mt-1">Below current price</span>
+            </div>
+            <div class="card p-5 flex flex-col justify-between">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Resistance Zones</span>
+                <span class="text-2xl font-bold font-mono text-danger mt-1" x-text="zones.filter(function(z){return z.type==='resistance'}).length"></span>
+                <span class="text-[10px] text-slate-600 mt-1">Above current price</span>
+            </div>
+            <div class="card p-5 flex flex-col justify-between">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Strongest Zone</span>
+                <span class="text-2xl font-bold font-mono text-[#f8fafc] mt-1" x-text="zones.length>0?formatVol(zones[0].volume):'--'"></span>
+                <span class="text-[10px] text-slate-600 mt-1">Highest volume node</span>
+            </div>
+        </div>
+
+        <!-- VOLUME PROFILE CHART -->
+        <div class="card p-6">
+            <h3 class="text-sm font-semibold text-white mb-4">Volume Profile &amp; Liquidity Zones</h3>
+            <template x-if="loading">
+                <div class="space-y-3">
+                    <template x-for="i in 6" :key="i"><div class="h-8 bg-slate-700/30 rounded animate-pulse"></div></template>
+                </div>
+            </template>
+            <template x-if="!loading && zones.length===0">
+                <div class="py-12 text-center">
+                    <svg class="mx-auto h-10 w-10 text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <p class="text-slate-500 font-medium">No liquidity zones detected</p>
+                    <p class="text-xs text-slate-600 mt-1">Need more volume data to identify zones</p>
+                </div>
+            </template>
+            <template x-if="!loading && zones.length>0">
+                <div class="space-y-2">
+                    <template x-for="(z, idx) in zones" :key="idx">
+                        <div class="flex items-center gap-3 group">
+                            <span class="text-[10px] font-mono text-slate-400 w-10 text-right" x-text="'Rp '+z.price.toLocaleString()"></span>
+                            <div class="flex-1 h-8 bg-slate-800 rounded-r-lg relative overflow-hidden group-hover:bg-slate-700 transition-colors">
+                                <div class="zone-bar absolute inset-y-0 left-0 rounded-lg flex items-center px-3" :style="{width:barWidth(z.volume)+'%',backgroundColor:getBarColor(z),border:'1px solid '+getBorderColor(z)}">
+                                    <span class="text-xs font-mono font-semibold text-white drop-shadow" x-text="formatVol(z.volume)"></span>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded" :class="z.type==='support'?'bg-emerald-900/40 text-emerald-300':'bg-red-900/40 text-red-300'" x-text="z.type==='support'?'S':'R'"></span>
+                            <div class="flex items-center gap-1" :title="getStrengthLabel(z.strength)">
+                                <span class="w-2 h-2 rounded-full" :style="{backgroundColor:getStrengthColor(z.strength)}"></span>
+                                <span class="text-[10px] font-mono text-slate-500" x-text="z.strength.toFixed(1)"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <!-- LEGEND -->
+        <div class="card p-4">
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Legend</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-4 rounded" style="background:rgba(16,185,129,0.7);border:1px solid #10b981"></div>
+                    <div><span class="text-slate-300 font-medium">Support Zone</span><br><span class="text-slate-500">Price level below current price with high volume</span></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-4 rounded" style="background:rgba(248,113,113,0.7);border:1px solid #ef4444"></div>
+                    <div><span class="text-slate-300 font-medium">Resistance Zone</span><br><span class="text-slate-500">Price level above current price with high volume</span></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div><span class="text-slate-300 font-medium">Strength</span><br><span class="text-slate-500">Higher = more volume concentration relative to other zones</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP 5 ZONES TABLE -->
+        <div class="card overflow-hidden">
+            <div class="p-4 border-b border-slate-700/50">
+                <h3 class="text-sm font-semibold text-white">Top 5 Liquidity Zones</h3>
+            </div>
+            <template x-if="!loading && zones.length>0">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700/50">
+                                <th class="text-left py-3 px-4 font-semibold text-slate-400 text-xs uppercase tracking-wider">#</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-400 text-xs uppercase tracking-wider">Price Level</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-400 text-xs uppercase tracking-wider">Type</th>
+                                <th class="text-right py-3 px-4 font-semibold text-slate-400 text-xs uppercase tracking-wider">Volume</th>
+                                <th class="text-right py-3 px-4 font-semibold text-slate-400 text-xs uppercase tracking-wider">Strength</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/30">
+                            <template x-for="(z, idx) in zones.slice(0,5)" :key="idx">
+                                <tr class="hover:bg-slate-700/20 transition-colors">
+                                    <td class="py-3 px-4 text-xs text-slate-500" x-text="idx+1"></td>
+                                    <td class="py-3 px-4 font-mono text-sm font-semibold text-[#f8fafc]" x-text="'Rp '+z.price.toLocaleString()"></td>
+                                    <td class="py-3 px-4">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold" :class="z.type==='support'?'bg-emerald-900/30 text-emerald-300':'bg-red-900/30 text-red-300'" x-text="z.type.toUpperCase()"></span>
+                                    </td>
+                                    <td class="py-3 px-4 font-mono text-xs text-right text-slate-300" x-text="formatVol(z.volume)"></td>
+                                    <td class="py-3 px-4 font-mono text-xs text-right">
+                                        <span :class="z.strength>=5?'text-success':z.strength>=3?'text-warning':'text-slate-400'" x-text="z.strength.toFixed(1)"></span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+            <template x-if="!loading && zones.length===0">
+                <div class="p-8 text-center text-slate-500 text-sm">No zones to display</div>
+            </template>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

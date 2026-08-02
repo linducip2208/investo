@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Analysis &mdash; [[.Portfolio.Name]] &mdash; Investo</title>
+    <meta name="description" content="Analisis risiko AI untuk portofolio [[.Portfolio.Name]]: VaR, drawdown, Sharpe ratio, beta, diversifikasi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#f59e0b}
+        .gauge-bg{stroke:#1e293b}.gauge-low{stroke:#34d399}.gauge-medium{stroke:#f59e0b}.gauge-high{stroke:#f87171}
+        .risk-low{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+        .risk-medium{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+        .risk-high{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="{ sidebarOpen: false }">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/market/strategy-builder" class="sidebar-link"><span class="icon">🧠</span> Strategy Builder</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/journal" class="sidebar-link"><span class="icon">📓</span> Trade Journal</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">🧮</span> Tools</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1"></div>
+            <div class="flex items-center gap-3 text-sm text-slate-400">
+                <a href="/dashboard/portfolios" class="hover:text-blue-400 transition-colors">Portofolio</a>
+                <span>/</span>
+                <a href="/dashboard/portfolios/[[.Portfolio.ID]]" class="hover:text-blue-400 transition-colors">[[.Portfolio.Name]]</a>
+                <span>/</span>
+                <span class="text-white font-medium">Risk Analysis</span>
+            </div>
+            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">[[.Portfolio.Name]] &mdash; Risk Analysis</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">AI-powered portfolio risk assessment</p>
+                </div>
+            </div>
+
+            [[if .Risk]]
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="card p-6 flex flex-col items-center justify-center">
+                    <h2 class="widget-title mb-4">Risk Score</h2>
+                    <div class="relative w-48 h-48">
+                        <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#1e293b" stroke-width="10"/>
+                            <circle cx="60" cy="60" r="52" fill="none"
+                                [[if le .Risk.RiskScore 30.0]]stroke="#34d399"
+                                [[else if le .Risk.RiskScore 60.0]]stroke="#f59e0b"
+                                [[else]]stroke="#f87171"[[end]]
+                                stroke-width="10" stroke-linecap="round"
+                                stroke-dasharray="[[mul .Risk.RiskScore 3.267]] 326.7"
+                                style="transition: stroke-dasharray 1s ease;"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-4xl font-mono font-extrabold text-white">[[printf "%.0f" .Risk.RiskScore]]</span>
+                            <span class="text-xs text-slate-400 mt-1">/ 100</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider
+                        [[if eq .Risk.OverallRisk "low"]]risk-low
+                        [[else if eq .Risk.OverallRisk "medium"]]risk-medium
+                        [[else]]risk-high[[end]]">
+                        [[.Risk.OverallRisk]] Risk
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="card p-4">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">VaR 95%</span>
+                        <div class="mt-1.5 font-mono text-xl font-bold text-danger">[[printf "%.1f" .Risk.VaR95]]%</div>
+                        <span class="text-[11px] text-slate-500 mt-0.5 block">Daily VaR</span>
+                    </div>
+                    <div class="card p-4">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Max Drawdown</span>
+                        <div class="mt-1.5 font-mono text-xl font-bold [[if ge .Risk.MaxDrawdown 25.0]]text-danger[[else if ge .Risk.MaxDrawdown 15.0]]text-warning[[else]]text-success[[end]]">[[printf "%.1f" .Risk.MaxDrawdown]]%</div>
+                        <span class="text-[11px] text-slate-500 mt-0.5 block">Peak to trough</span>
+                    </div>
+                    <div class="card p-4">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Sharpe Ratio</span>
+                        <div class="mt-1.5 font-mono text-xl font-bold [[if ge .Risk.SharpeRatio 1.0]]text-success[[else if ge .Risk.SharpeRatio 0.5]]text-warning[[else]]text-danger[[end]]">[[printf "%.2f" .Risk.SharpeRatio]]</div>
+                        <span class="text-[11px] text-slate-500 mt-0.5 block">Risk-adjusted return</span>
+                    </div>
+                    <div class="card p-4">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Beta</span>
+                        <div class="mt-1.5 font-mono text-xl font-bold [[if le .Risk.Beta 1.2]]text-success[[else if le .Risk.Beta 1.8]]text-warning[[else]]text-danger[[end]]">[[printf "%.2f" .Risk.Beta]]</div>
+                        <span class="text-[11px] text-slate-500 mt-0.5 block">vs IHSG</span>
+                    </div>
+                    <div class="card p-4 sm:col-span-2">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Diversifikasi</span>
+                        <div class="mt-1.5 font-mono text-xl font-bold [[if ge .Risk.DiversificationScore 70.0]]text-success[[else if ge .Risk.DiversificationScore 40.0]]text-warning[[else]]text-danger[[end]]">[[printf "%.0f" .Risk.DiversificationScore]]%</div>
+                        <div class="w-full bg-slate-700/50 rounded-full h-1.5 mt-2">
+                            <div class="h-1.5 rounded-full transition-all duration-700 [[if ge .Risk.DiversificationScore 70.0]]bg-success[[else if ge .Risk.DiversificationScore 40.0]]bg-warning[[else]]bg-danger[[end]]" style="width:[[printf "%.0f" .Risk.DiversificationScore]]%"></div>
+                        </div>
+                    </div>
+                    <div class="card p-4 sm:col-span-2">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Konsentrasi</span>
+                        <div class="mt-1.5 font-mono text-lg font-bold [[if .Risk.ConcentrationRisk]]text-danger[[else]]text-success[[end]]">
+                            [[if .Risk.ConcentrationRisk]]
+                            <span>⚠️ Terkonsentrasi di [[.Risk.ConcentrationStock]]</span>
+                            [[else]]
+                            <span>✅ Terdiversifikasi baik</span>
+                            [[end]]
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            [[if .Risk.SectorRisk]]
+            <div class="card p-5">
+                <h2 class="widget-title mb-3">Alokasi Risiko per Sektor</h2>
+                <div style="height: 280px;"><canvas id="sectorRiskChart"></canvas></div>
+            </div>
+            [[end]]
+
+            <div class="card p-5">
+                <h2 class="widget-title mb-4">🤖 Rekomendasi AI</h2>
+                <div class="space-y-3">
+                    [[$icons := list "1️⃣" "2️⃣" "3️⃣" "4️⃣" "5️⃣"]]
+                    [[range $i, $rec := .Risk.Recommendations]]
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                        <span class="text-lg flex-shrink-0">[[index $icons $i]]</span>
+                        <p class="text-sm text-slate-300 leading-relaxed">[[$rec]]</p>
+                    </div>
+                    [[end]]
+                </div>
+            </div>
+            [[else]]
+            <div class="card p-12 text-center">
+                <div class="text-5xl mb-4">📊</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Tidak dapat menganalisis risiko</h3>
+                <p class="text-slate-400 text-sm">Portfolio kosong atau data harga tidak tersedia.</p>
+            </div>
+            [[end]]
+        </main>
+    </div>
+
+    <script>
+    (function(){
+        var gridColor = 'rgba(148,163,184,0.08)', textColor = '#94a3b8';
+        var colors = ['#3b82f6','#34d399','#f59e0b','#f87171','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f97316','#14b8a6'];
+
+        [[if .Risk]][[if .Risk.SectorRisk]]
+        var sl = [], sd = [], bgColors = [];
+        [[range $sector, $pct := .Risk.SectorRisk]]
+        sl.push("[[$sector]]"); sd.push([[$pct]]); bgColors.push(colors[sl.length-1] || '#3b82f6');
+        [[end]]
+        var ctx = document.getElementById('sectorRiskChart');
+        if (ctx && sd.length) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: { labels: sl, datasets: [{ data: sd, backgroundColor: bgColors, borderRadius: 6, borderSkipped: false }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: gridColor }, ticks: { color: textColor, callback: function(v){return v+'%'} } },
+                        y: { grid: { display: false }, ticks: { color: textColor, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+        [[end]][[end]]
+    })();
+    </script>
+</body>
+</html>

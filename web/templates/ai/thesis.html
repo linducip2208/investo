@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .thesis-content h2{font-size:1.25rem;font-weight:700;color:#e2e8f0;margin-top:1.5rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid #334155}
+        .thesis-content h3{font-size:1.05rem;font-weight:600;color:#cbd5e1;margin-top:1rem;margin-bottom:.5rem}
+        .thesis-content p{margin-bottom:.75rem;line-height:1.7;color:#94a3b8}
+        .thesis-content ul,.thesis-content ol{margin-bottom:.75rem;padding-left:1.5rem}
+        .thesis-content li{margin-bottom:.25rem;color:#94a3b8}
+        .thesis-content strong{color:#e2e8f0;font-weight:600}
+        .thesis-content code{background:#0f172a;padding:2px 6px;border-radius:4px;font-size:13px;color:#60a5fa;font-family:'JetBrains Mono',monospace}
+        .thesis-content blockquote{border-left:3px solid #3b82f6;padding-left:1rem;margin:.75rem 0;color:#94a3b8;font-style:italic}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="thesisBuilder()">
+    <script>
+        function thesisBuilder() {
+            return {
+                sidebarOpen: false,
+                code: '',
+                userInput: '',
+                analysis: '',
+                loading: false,
+                loaded: false,
+                poweredBy: '',
+                async generate() {
+                    if (!this.code) return;
+                    this.loading = true;
+                    this.loaded = false;
+                    this.analysis = '';
+                    this.poweredBy = '';
+                    try {
+                        const resp = await fetch('/api/ai/thesis', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                code: this.code.toUpperCase(),
+                                user_input: this.userInput
+                            })
+                        });
+                        const data = await resp.json();
+                        if (data.error) {
+                            this.analysis = '<p class="text-danger">' + data.error + '</p>';
+                        } else {
+                            this.analysis = data.analysis || 'Tidak ada hasil.';
+                            this.poweredBy = data.powered_by || '';
+                        }
+                    } catch(e) {
+                        this.analysis = '<p class="text-danger">Gagal menghubungi server. Pastikan AI Provider sudah dikonfigurasi.</p>';
+                    }
+                    this.loading = false;
+                    this.loaded = true;
+                },
+                renderedAnalysis() {
+                    if (!this.analysis) return '';
+                    if (this.analysis.startsWith('<')) return this.analysis;
+                    return marked.parse(this.analysis);
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Intelligence</p>
+            <a href="/ai/compare" class="sidebar-link"><span class="icon">⚖️</span> Compare Stocks</a>
+            <a href="/ai/coach" class="sidebar-link"><span class="icon">🎓</span> Trading Coach</a>
+            <a href="/ai/thesis" class="sidebar-link active"><span class="icon">📝</span> Thesis Builder</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😱</span> Fear & Greed</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
+            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon">💡</span> Trade Ideas</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        </div>
+    </aside>
+
+    <!-- TOPBAR -->
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="text-sm text-slate-400">
+            <span class="text-slate-600">AI /</span> Thesis Builder
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            </a>
+            [[end]]
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+        <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Investment Thesis Builder</h1>
+                    <p class="text-slate-400 text-sm mt-1">AI membantu Anda menyusun tesis investasi yang profesional</p>
+                </div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="card p-6 space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Kode Saham</label>
+                    <input type="text" x-model="code" placeholder="Contoh: BBCA"
+                           class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-white font-mono text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder-slate-600 uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Ide atau Gagasan Anda (opsional)</label>
+                    <textarea x-model="userInput" placeholder="Contoh: Saham ini menarik karena ekspansi ke bisnis digital dan valuasi masih murah dibandingkan peers..."
+                              rows="4"
+                              class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"></textarea>
+                </div>
+                <button @click="generate()" :disabled="loading || !code"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20">
+                    <span x-show="!loading" class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                        Generate Thesis
+                    </span>
+                    <span x-show="loading" class="flex items-center gap-2">
+                        <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Menyusun Thesis...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Thesis Framework Preview -->
+            <template x-if="!loaded && !loading">
+                <div class="card p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Struktur Tesis Investasi</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-blue-600/20 text-blue-400 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                                <span class="font-semibold text-sm text-white">Thesis Utama</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Inti alasan investasi dalam 1-2 kalimat</p>
+                        </div>
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-green-600/20 text-green-400 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                                <span class="font-semibold text-sm text-white">Bull Case</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Katalis positif & target upside</p>
+                        </div>
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-red-600/20 text-red-400 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                                <span class="font-semibold text-sm text-white">Bear Case</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Risiko downside & level cut-loss</p>
+                        </div>
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-yellow-600/20 text-yellow-400 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                                <span class="font-semibold text-sm text-white">Key Metrics</span>
+                            </div>
+                            <p class="text-xs text-slate-400">PER, PBV, ROE, DER & metrik penting lainnya</p>
+                        </div>
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-purple-600/20 text-purple-400 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                                <span class="font-semibold text-sm text-white">Entry & Exit Strategy</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Entry price, target, stop-loss, position sizing</p>
+                        </div>
+                        <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-cyan-600/20 text-cyan-400 rounded-lg flex items-center justify-center text-xs font-bold">6</span>
+                                <span class="font-semibold text-sm text-white">Rekomendasi</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Conviction level & monitoring checklist</p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Loading state -->
+            <template x-if="loading">
+                <div class="card p-12 flex flex-col items-center justify-center space-y-4">
+                    <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-slate-400">AI sedang menyusun tesis investasi...</p>
+                    <p class="text-xs text-slate-600">Menganalisis fundamental, risiko, dan strategi</p>
+                </div>
+            </template>
+
+            <!-- Results -->
+            <template x-if="loaded && !loading">
+                <div>
+                    <div x-show="poweredBy" class="mb-4 text-xs text-slate-600" x-text="'Powered by: ' + poweredBy"></div>
+                    <div class="card p-6 thesis-content" x-html="renderedAnalysis()"></div>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <!-- Mobile overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+</body>
+</html>

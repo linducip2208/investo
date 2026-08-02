@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pengguna · Admin · [[.AppName]]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
+    <style>
+        :root { --sidebar-width: 260px; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace !important; }
+        .sidebar { width: var(--sidebar-width); min-height: 100vh; }
+        .main-content { margin-left: var(--sidebar-width); min-height: 100vh; }
+        @media (max-width: 767px) {
+            .sidebar { position: fixed; z-index: 50; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 45; }
+            .sidebar-overlay.show { display: block; }
+        }
+        @media (prefers-color-scheme: dark) {
+            .bg-main { background-color: #0f172a; } .text-main { color: #e2e8f0; }
+            .card { background-color: #1e293b; border-color: #334155; }
+            .table-head { background-color: #1e293b; }
+            .table-stripe tr:nth-child(even) { background-color: #1e293b; }
+            .table-stripe tr:hover { background-color: #334155; }
+            .input-dark { background-color: #1e293b; border-color: #475569; color: #e2e8f0; }
+            .input-dark:focus { border-color: #3b82f6; }
+        }
+        @media (prefers-color-scheme: light) {
+            .bg-main { background-color: #f1f5f9; } .text-main { color: #0f172a; }
+            .card { background-color: #ffffff; border-color: #e2e8f0; }
+            .table-head { background-color: #f8fafc; }
+            .table-stripe tr:nth-child(even) { background-color: #f8fafc; }
+            .table-stripe tr:hover { background-color: #e2e8f0; }
+            .input-dark { background-color: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+            .input-dark:focus { border-color: #3b82f6; }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'], mono: ['JetBrains Mono','Fira Code','monospace'] } } },
+        }
+    </script>
+</head>
+<body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, deleteId: '', deleteName: '', showDeleteModal: false, search: '' }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
+
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
+
+    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
+            <div>
+                <div class="font-bold text-base leading-tight">[[.AppName]]</div>
+                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 py-4 space-y-1">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                <span class="text-sm">Pengguna</span>
+            </a>
+            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+                <span class="text-sm">Saham</span>
+            </a>
+            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="text-sm">Sektor</span>
+            </a>
+            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
+                <span class="text-sm">Berita</span>
+            </a>
+            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="text-sm">Blog</span>
+            </a>
+            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span class="text-sm">Pengaturan</span>
+            </a>
+        </nav>
+        <div class="px-6 py-4 border-t border-slate-700/60 space-y-3">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm">
+                <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+                <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
+            </button>
+            <div class="flex items-center gap-3 px-3 py-2 text-slate-400 text-xs">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
+                <div>
+                    <div class="text-slate-300 text-xs font-medium">[[.AdminName]]</div>
+                    <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+            </button>
+            <div class="text-sm text-slate-500 font-medium hidden sm:block">[[.AppName]] Admin</div>
+            <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+        </header>
+
+        <div class="px-6 py-6 max-w-7xl mx-auto space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Kelola Pengguna</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Total <span class="font-mono font-bold text-slate-700 dark:text-slate-300">[[.TotalUsers]]</span> pengguna terdaftar
+                    </p>
+                </div>
+            </div>
+
+            <div class="card rounded-2xl border shadow-sm overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div class="relative flex-1 max-w-md">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M22 22l-4.5-4.5"/></svg>
+                        <input type="text" x-model="search" placeholder="Cari nama atau email..." class="input-dark w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm table-stripe">
+                        <thead class="table-head border-b border-slate-200 dark:border-slate-700">
+                            <tr>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">ID</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Tanggal Daftar</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            [[range .Users]]
+                            <tr>
+                                <td class="px-5 py-3 font-mono text-xs text-slate-500 dark:text-slate-400">[[.ID]]</td>
+                                <td class="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">[[.Name]]</td>
+                                <td class="px-5 py-3 text-slate-500 dark:text-slate-400 font-mono text-xs">[[.Email]]</td>
+                                <td class="px-5 py-3">
+                                    <span class="inline-flex px-2 py-0.5 rounded-md text-[11px] font-semibold [[if eq .Role "admin"]]bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300[[else]]bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300[[end]]">[[.Role]]</span>
+                                </td>
+                                <td class="px-5 py-3 text-slate-500 dark:text-slate-400 text-xs hidden sm:table-cell">[[.CreatedAt]]</td>
+                                <td class="px-5 py-3">
+                                    <div class="flex items-center gap-2">
+                                        <a href="/admin/users/[[.ID]]/edit" class="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        </a>
+                                        <button @click="deleteId = '[[.ID]]'; deleteName = '[[.Name]]'; showDeleteModal = true" class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 dark:text-red-400 transition-colors" title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            [[end]]
+                            [[if not .Users]]
+                            <tr>
+                                <td colspan="6" class="px-5 py-16 text-center">
+                                    <div class="flex flex-col items-center gap-3">
+                                        <svg class="w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                                        <p class="text-slate-400 dark:text-slate-500 text-sm font-medium">Belum ada pengguna terdaftar</p>
+                                        <p class="text-slate-400 dark:text-slate-500 text-xs">Pengguna akan muncul di sini setelah mendaftar</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            [[end]]
+                        </tbody>
+                    </table>
+                </div>
+
+                [[if .Pagination]]
+                <div class="px-5 py-3 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+                    <div class="text-slate-500 dark:text-slate-400 text-xs">
+                        Menampilkan <span class="font-semibold text-slate-700 dark:text-slate-300">[[.Pagination.From]]</span> - <span class="font-semibold text-slate-700 dark:text-slate-300">[[.Pagination.To]]</span> dari <span class="font-semibold text-slate-700 dark:text-slate-300">[[.Pagination.Total]]</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        [[if .Pagination.HasPrev]]
+                        <a href="?page=[[.Pagination.PrevPage]]" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium">Sebelumnya</a>
+                        [[else]]
+                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Sebelumnya</span>
+                        [[end]]
+                        [[range .Pagination.Pages]]
+                        [[if .IsCurrent]]
+                        <span class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold">[[.Number]]</span>
+                        [[else]]
+                        <a href="?page=[[.Number]]" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium">[[.Number]]</a>
+                        [[end]]
+                        [[end]]
+                        [[if .Pagination.HasNext]]
+                        <a href="?page=[[.Pagination.NextPage]]" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium">Berikutnya</a>
+                        [[else]]
+                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Berikutnya</span>
+                        [[end]]
+                    </div>
+                </div>
+                [[end]]
+            </div>
+        </div>
+    </main>
+
+    <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4" x-transition.opacity>
+        <div class="fixed inset-0 bg-black/50" @click="showDeleteModal = false"></div>
+        <div class="card rounded-2xl border shadow-2xl p-6 max-w-sm w-full relative z-10 bg-white dark:bg-slate-800">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+                <div>
+                    <div class="font-bold text-slate-900 dark:text-white">Konfirmasi Hapus</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Hapus pengguna <span class="font-semibold" x-text="deleteName"></span>?</div>
+                </div>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mb-5">Tindakan ini tidak dapat dibatalkan. Semua data terkait akan dihapus permanen.</p>
+            <div class="flex gap-3">
+                <button @click="showDeleteModal = false" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm font-medium">Batal</button>
+                <button @click="showDeleteModal = false; window.location.href='/admin/users/' + deleteId + '/delete'" class="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-medium shadow-lg shadow-red-500/20">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

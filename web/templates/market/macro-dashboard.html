@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .indicator-card{border-radius:14px;padding:20px;transition:all .25s;border:1px solid transparent}
+        .indicator-card:hover{transform:translateY(-3px);border-color:#475569}
+        .impact-positive{background:linear-gradient(135deg,#064e3b,#065f46);border-color:#059669}
+        .impact-negative{background:linear-gradient(135deg,#450a0a,#7f1d1d);border-color:#dc2626}
+        .impact-neutral{background:linear-gradient(135deg,#1e293b,#334155);border-color:#64748b}
+        .tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin:2px 3px}
+        .tag-green{background:#064e3b;color:#34d399;border:1px solid #065f46}
+        .tag-red{background:#450a0a;color:#f87171;border:1px solid #7f1d1d}
+        .tag-amber{background:#451a03;color:#fbbf24;border:1px solid #78350f}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.indicator-card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="macroDashboard()" x-init="init()">
+
+<script>
+function macroDashboard() {
+    return {
+        sidebarOpen: false,
+        indicators: [],
+        loading: true,
+        init() { this.fetchData(); },
+        async fetchData() {
+            try {
+                var resp = await fetch('/api/market/macro-dashboard');
+                var data = await resp.json();
+                this.indicators = Array.isArray(data) ? data : [];
+                this.loading = false;
+            } catch(e) { this.loading = false; }
+        },
+        impactColor(impact) {
+            if (impact === 'positive') return 'impact-positive';
+            if (impact === 'negative') return 'impact-negative';
+            return 'impact-neutral';
+        },
+        impactEmoji(impact) {
+            if (impact === 'positive') return '\u{1F7E2}';
+            if (impact === 'negative') return '\u{1F534}';
+            return '\u{1F7E1}';
+        },
+        tagColor(impact) {
+            if (impact === 'positive') return 'tag-green';
+            if (impact === 'negative') return 'tag-red';
+            return 'tag-amber';
+        }
+    }
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
+        <a href="/saham" class="sidebar-link"><span>&#x1F4C8;</span> Saham IDX</a>
+        <a href="/forex" class="sidebar-link"><span>&#x1F4B1;</span> Forex</a>
+        <a href="/screener" class="sidebar-link"><span>&#x1F50D;</span> Screener</a>
+        <div class="border-t border-slate-800 my-2"></div>
+        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Macro Analysis</p>
+        <a href="/market/macro-dashboard" class="sidebar-link active"><span>&#x1F30D;</span> Macro Dashboard</a>
+        <a href="/market/yield-curve" class="sidebar-link"><span>&#x1F4C9;</span> Yield Curve</a>
+        <a href="/market/liquidity-flow" class="sidebar-link"><span>&#x1F4A7;</span> Liquidity Flow</a>
+        <a href="/market/leading-indicators" class="sidebar-link"><span>&#x1F4C8;</span> Leading Indicators</a>
+        <a href="/market/macro-spillover" class="sidebar-link"><span>&#x1F310;</span> Macro Spillover</a>
+        <a href="/market/ma-targets" class="sidebar-link"><span>&#x1F91D;</span> M&A Targets</a>
+        <div class="border-t border-slate-800 my-2"></div>
+        <a href="/market/heatmap" class="sidebar-link"><span>&#x1F5FA;</span> Heatmap</a>
+        <a href="/market/recap" class="sidebar-link"><span>&#x1F4CB;</span> Market Recap</a>
+    </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-1 max-w-md hidden sm:block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+            [[if .User]]
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+            [[else]]
+            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-white">Macro Factor Dashboard</h1>
+                <p class="text-sm text-slate-400 mt-0.5">Key economic indicators affecting Indonesian capital markets. BI Rate, inflation, GDP, currency, and more.</p>
+            </div>
+        </div>
+
+        <template x-if="loading">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <template x-for="i in 8" :key="i">
+                    <div class="card p-5 animate-pulse"><div class="h-4 bg-slate-700/50 rounded w-2/3 mb-3"></div><div class="h-8 bg-slate-700/50 rounded w-1/2 mb-2"></div><div class="h-3 bg-slate-700/50 rounded w-1/3"></div></div>
+                </template>
+            </div>
+        </template>
+
+        <template x-if="!loading">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <template x-for="indicator in indicators" :key="indicator.name">
+                    <div class="card p-5" :class="impactColor(indicator.impact)">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="text-sm font-semibold text-slate-300 leading-snug" x-text="indicator.name"></h3>
+                            <span class="text-lg" x-text="impactEmoji(indicator.impact)"></span>
+                        </div>
+                        <div class="text-3xl font-extrabold text-white mb-1 font-mono" x-text="indicator.value"></div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs text-slate-400">Prev: <span class="font-mono text-slate-300" x-text="indicator.previous"></span></span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full" :class="{'bg-green-900/50 text-green-300': indicator.change.includes('+') || indicator.change.includes('-0') && !indicator.change.includes('--'), 'bg-red-900/50 text-red-300': indicator.change.includes('-') && !indicator.change.includes('+'), 'bg-slate-700/50 text-slate-300': !indicator.change.includes('+') && !indicator.change.includes('-')}" x-text="indicator.change"></span>
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                            <template x-for="sector in indicator.affected_sectors" :key="sector">
+                                <span class="tag" :class="tagColor(indicator.impact)" x-text="sector"></span>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <div class="text-center text-xs text-slate-600 mt-4">
+            <template x-if="!loading">
+                <span x-text="indicators.length + ' macro indicators'"></span>
+            </template>
+        </div>
+    </main>
+</div>
+</body>
+</html>

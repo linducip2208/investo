@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Settings — Investo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
+        .nav-link{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s}
+        .nav-link:hover{background:#1e293b;color:#e2e8f0}
+        .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .input-field{width:100%;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:14px;font-family:'JetBrains Mono',Consolas,monospace;outline:none}
+        .input-field:focus{border-color:#3b82f6}
+        .input-field::placeholder{color:#475569}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{transform:translateY(-1px)}
+        .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
+        .btn-outline:hover{background:#1e293b}
+        .toast{position:fixed;top:16px;right:16px;z-index:9999;padding:10px 18px;border-radius:10px;font-size:13px}
+        .toast-success{background:#064e3b;color:#6ee7b7}
+        .toast-error{background:#7f1d1d;color:#fca5a5}
+    </style>
+</head>
+<body class="bg-[#0b1120] text-slate-200 flex">
+
+<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
+        <span class="font-bold text-white">Investo</span>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/saham" class="nav-link">📈 Saham</a>
+        <a href="/forex" class="nav-link">💱 Forex</a>
+        <a href="/screener" class="nav-link">🔍 Screener</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
+        <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
+        <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
+        <a href="/ai/agents" class="nav-link">🧠 Agents</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
+        <a href="/pengaturan/ai" class="nav-link active">🔑 AI Settings</a>
+        <a href="/pengaturan/data-sources" class="nav-link">📡 Data Sources</a>
+        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+    </nav>
+</aside>
+
+<div class="flex-1 min-w-0" x-data="aiSettings()">
+    <div class="max-w-3xl mx-auto px-6 py-6">
+        <h1 class="text-xl font-bold text-white mb-1">AI Provider Settings</h1>
+        <p class="text-sm text-slate-400 mb-6">BYOK — masukkan API key dari provider Anda sendiri.</p>
+
+        <div class="space-y-4">
+
+            <!-- DeepSeek -->
+            <div class="card p-5" :class="{'border-blue-500': activeProvider === 'deepseek'}">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-white">🧠 DeepSeek</h3>
+                    <button @click="activeProvider='deepseek'" class="text-xs px-3 py-1 rounded-lg" :class="activeProvider==='deepseek'?'bg-blue-600 text-white':'bg-slate-700 text-slate-400'">Active</button>
+                </div>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="deepseekKey" class="input-field" placeholder="sk-..."></div>
+                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Model</label><input x-model="deepseekModel" class="input-field" placeholder="deepseek-chat"></div><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Base URL</label><input x-model="deepseekURL" class="input-field" placeholder="https://api.deepseek.com/v1"></div></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveProvider('deepseek')" class="btn btn-primary">Save</button>
+                    <button @click="testProvider('deepseek')" class="btn btn-outline">Test</button>
+                </div>
+            </div>
+
+            <!-- OpenAI -->
+            <div class="card p-5" :class="{'border-blue-500': activeProvider === 'openai'}">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-white">🤖 OpenAI</h3>
+                    <button @click="activeProvider='openai'" class="text-xs px-3 py-1 rounded-lg" :class="activeProvider==='openai'?'bg-blue-600 text-white':'bg-slate-700 text-slate-400'">Active</button>
+                </div>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="openaiKey" class="input-field" placeholder="sk-..."></div>
+                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Model</label><input x-model="openaiModel" class="input-field" placeholder="gpt-4o"></div><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Base URL</label><input x-model="openaiURL" class="input-field" placeholder="https://api.openai.com/v1"></div></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveProvider('openai')" class="btn btn-primary">Save</button>
+                    <button @click="testProvider('openai')" class="btn btn-outline">Test</button>
+                </div>
+            </div>
+
+            <!-- Claude -->
+            <div class="card p-5" :class="{'border-blue-500': activeProvider === 'claude'}">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-white">🔮 Claude</h3>
+                    <button @click="activeProvider='claude'" class="text-xs px-3 py-1 rounded-lg" :class="activeProvider==='claude'?'bg-blue-600 text-white':'bg-slate-700 text-slate-400'">Active</button>
+                </div>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="claudeKey" class="input-field" placeholder="sk-ant-..."></div>
+                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Model</label><input x-model="claudeModel" class="input-field" placeholder="claude-3-5-sonnet-20241022"></div><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Base URL</label><input x-model="claudeURL" class="input-field" placeholder="https://api.anthropic.com/v1"></div></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveProvider('claude')" class="btn btn-primary">Save</button>
+                    <button @click="testProvider('claude')" class="btn btn-outline">Test</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div x-show="toast" :class="'toast '+(toastType==='success'?'toast-success':'toast-error')" x-text="toast" @click="toast=''" style="display:none" x-transition></div>
+    </div>
+</div>
+
+<script>
+function aiSettings() {
+    return {
+        activeProvider: 'deepseek',
+        deepseekKey: '', deepseekModel: 'deepseek-chat', deepseekURL: 'https://api.deepseek.com/v1',
+        openaiKey: '', openaiModel: 'gpt-4o', openaiURL: 'https://api.openai.com/v1',
+        claudeKey: '', claudeModel: 'claude-3-5-sonnet-20241022', claudeURL: 'https://api.anthropic.com/v1',
+        toast: '', toastType: 'success',
+        showToast(msg, type) { this.toast = msg; this.toastType = type || 'success'; setTimeout(() => this.toast = '', 3000); },
+        async saveProvider(p) {
+            try {
+                var body = { provider: p, active: this.activeProvider === p };
+                if (p === 'deepseek') { body.key = this.deepseekKey; body.model = this.deepseekModel; body.url = this.deepseekURL; }
+                if (p === 'openai') { body.key = this.openaiKey; body.model = this.openaiModel; body.url = this.openaiURL; }
+                if (p === 'claude') { body.key = this.claudeKey; body.model = this.claudeModel; body.url = this.claudeURL; }
+                var r = await fetch('/api/ai/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                if (r.ok) this.showToast('Settings saved');
+                else this.showToast('Save failed', 'error');
+            } catch(e) { this.showToast('Error: ' + e.message, 'error'); }
+        },
+        async testProvider(p) {
+            try {
+                this.showToast('Testing...', 'success');
+                var r = await fetch('/api/ai/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: p }) });
+                var d = await r.json();
+                if (r.ok) this.showToast('Connected! Response: ' + (d.message || 'OK'));
+                else this.showToast('Failed: ' + (d.error || 'Unknown'), 'error');
+            } catch(e) { this.showToast('Error: ' + e.message, 'error'); }
+        }
+    }
+}
+</script>
+
+</body>
+</html>

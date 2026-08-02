@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="{ sidebarOpen: false }">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span>🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span> Heatmap</a>
+            <a href="/market/sector-health" class="sidebar-link"><span>💚</span> Sector Health</a>
+            <a href="/market/waran" class="sidebar-link"><span>🎫</span> Waran Tracker</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/calculators" class="sidebar-link active"><span>🧮</span> Kalkulator</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span>🔧</span> Portfolio Tools</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1"><h1 class="text-lg font-bold text-white">Kalkulator Investasi</h1></div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="/calculators/right-issue" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">🎫</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Right Issue</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Hitung harga teoritis ex-rights (TERP), nilai rights, dilusi, dan rekomendasi exercise.</p>
+                </a>
+                <a href="/calculators/tax" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">📅</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Tax Optimizer</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Tax loss harvesting, kalender akhir tahun pajak, dan rekomendasi optimalisasi pajak.</p>
+                </a>
+                <a href="/dashboard/portfolios/tools" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">💵</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">DRIP Calculator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Simulasi Dividend Reinvestment Plan dengan compound growth tahunan.</p>
+                </a>
+                <a href="/dashboard/portfolios/tools" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Projection</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Proyeksi pertumbuhan investasi multi-tahun dengan berbagai skenario.</p>
+                </a>
+                <a href="/dashboard/portfolios/tools" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">🎲</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Monte Carlo</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Simulasi Monte Carlo ribuan skenario untuk estimasi risk-adjusted returns.</p>
+                </a>
+                <a href="/dashboard/portfolios/tools" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">&#x26A0;&#xFE0F;</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Stress Test</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Uji ketahanan portofolio terhadap berbagai skenario krisis dan market crash.</p>
+                </a>
+                <a href="/calculators/dcf-builder" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">&#x1F4B0;</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">DCF Builder</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Discounted Cash Flow valuation dengan 3 skenario (optimistic, base, pessimistic) dan fair value matrix.</p>
+                </a>
+                <a href="/calculators/conglomerate" class="card p-6 hover:border-blue-500/40 transition-all group">
+                    <div class="text-4xl mb-4">&#x1F3E2;</div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Conglomerate Discount</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Sum-of-the-Parts vs Market Cap. Hitung diskon/premium konglomerat untuk ASII, BMRI, UNTR, dll.</p>
+                </a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

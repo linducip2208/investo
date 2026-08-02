@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:30}
+        .sidebar{position:fixed;left:0;top:61px;bottom:0;width:240px;background:#0f172a;border-right:1px solid #1e293b;overflow-y:auto;z-index:20;transition:transform .3s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
+        @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
+    </style>
+</head>
+<body class="h-full" x-data="{ sidebarOpen: false, popup: null,
+    matrix: null, assets: null,
+    async init() {
+        try {
+            const resp = await fetch('/api/market/cross-asset');
+            const json = await resp.json();
+            this.matrix = json.matrix; this.assets = json.assets;
+            this.$nextTick(() => this.renderHeatmap());
+        } catch(e) {}
+    },
+    renderHeatmap() {
+        const container = document.getElementById('heatmap-container');
+        if (!container || !this.matrix || !this.assets) return;
+        let html = '<table class="w-full text-sm border-collapse"><thead><tr><th class="p-3 text-xs text-slate-500"></th>';
+        this.assets.forEach(a => { html += '<th class="p-3 text-center text-xs font-semibold text-slate-400">'+a+'</th>'; });
+        html += '</tr></thead><tbody>';
+        this.matrix.forEach(row => {
+            html += '<tr class="border-b border-slate-800">';
+            html += '<td class="p-3 font-semibold text-white text-sm">'+row.asset+'</td>';
+            this.assets.forEach(a => {
+                const v = row[a];
+                if (v === 1.0) { html += '<td class="p-3 text-center font-mono font-bold text-slate-400">1.00</td>'; }
+                else {
+                    const r = Math.round(Math.abs(v) * 255);
+                    const isPos = v >= 0;
+                    const bg = isPos ? `rgba(52,211,153,${Math.abs(v).toFixed(2)})` : `rgba(248,113,113,${Math.abs(v).toFixed(2)})`;
+                    const cl = isPos ? 'text-green-200' : 'text-red-200';
+                    html += '<td class="p-3 text-center font-mono font-semibold cursor-pointer hover:ring-1 hover:ring-white/20" style="background:'+bg+';color:white" onclick="document.querySelector('+"'"+'[x-data]'+"'"+').__x.$data.showPopup('+JSON.stringify(row.asset)+','+JSON.stringify(a)+','+v+')">'+(v>=0?'+':'')+v.toFixed(2)+'</td>';
+                }
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    },
+    showPopup(a, b, v) {
+        this.popup = { a, b, value: v };
+    }
+}">
+    <div class="topbar">
+        <div class="flex items-center gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-slate-300 font-semibold">Cross-Asset Correlation</span>
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
+            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+        </div>
+    </div>
+
+    <aside class="sidebar" :class="{ 'open': sidebarOpen }" @click.outside="sidebarOpen=false">
+        <div class="p-4 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+            <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
+            <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
+            <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
+            <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
+            <a href="/market/cross-asset" class="sidebar-link active"><span>🔗</span>Cross-Asset</a>
+        </div>
+    </aside>
+
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+
+    <div class="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">🔗 Cross-Asset Correlation Matrix</h1>
+                <p class="text-slate-400 text-sm mt-1">Korelasi antar aset: IHSG, Minyak, Emas, USD/IDR, SBN 10Y, Bitcoin</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="flex items-center gap-4 mb-4 text-xs">
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#34d399"></div><span class="text-slate-400">Positive</span></div>
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#f87171"></div><span class="text-slate-400">Negative</span></div>
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#64748b"></div><span class="text-slate-400">Neutral / Identity</span></div>
+                    <span class="text-slate-600 ml-auto">Click any cell for scatter plot detail</span>
+                </div>
+                <div id="heatmap-container" class="overflow-x-auto"></div>
+            </div>
+
+            <template x-if="popup">
+                <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" @click="popup=null">
+                    <div class="card p-6 max-w-md w-full" @click.stop>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-white">Scatter Plot Detail</h3>
+                            <button @click="popup=null" class="text-slate-400 hover:text-white text-xl">&times;</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Pair</span>
+                                <span class="font-mono font-bold text-white" x-text="popup.a + ' vs ' + popup.b"></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Correlation</span>
+                                <span class="font-mono font-bold text-2xl" :class="popup.value >= 0 ? 'text-success' : 'text-danger'" x-text="(popup.value>=0?'+':'')+popup.value.toFixed(2)"></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Strength</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="{'bg-success-dark text-success': Math.abs(popup.value) >= 0.5, 'bg-yellow-900 text-warning': Math.abs(popup.value) >= 0.3 && Math.abs(popup.value) < 0.5, 'bg-slate-700 text-slate-300': Math.abs(popup.value) < 0.3}"
+                                    x-text="Math.abs(popup.value) >= 0.7 ? 'Strong' : Math.abs(popup.value) >= 0.5 ? 'Moderate' : Math.abs(popup.value) >= 0.3 ? 'Weak' : 'Very Weak'"></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Direction</span>
+                                <span class="text-sm font-semibold" :class="popup.value >= 0 ? 'text-success' : 'text-danger'"
+                                    x-text="popup.value >= 0 ? 'Positive (both move same direction)' : 'Negative (inverse relationship)'"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="card p-6" x-show="!matrix">
+                <p class="text-slate-500 text-center">Loading correlation matrix...</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

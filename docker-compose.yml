@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8080"
+    environment:
+      - INVESTO_PORT=8080
+      - INVESTO_DB_HOST=db
+      - INVESTO_DB_PORT=3306
+      - INVESTO_DB_USER=investo
+      - INVESTO_DB_PASS=investo123
+      - INVESTO_DB_NAME=investo
+      - INVESTO_SESSION_SECRET=change-me-docker
+      - INVESTO_APP_ENV=production
+    depends_on:
+      - db
+  db:
+    image: mysql:8.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=investo
+      - MYSQL_USER=investo
+      - MYSQL_PASSWORD=investo123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:

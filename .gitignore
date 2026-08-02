@@ -1,0 +1,7 @@
+*.zip
+*.log
+.env
+storage/logs/
+data/backup/
+.DS_Store
+Thumbs.db

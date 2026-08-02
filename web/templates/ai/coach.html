@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .chat-message h2{font-size:1.15rem;font-weight:700;color:#e2e8f0;margin-top:1rem;margin-bottom:.5rem}
+        .chat-message h3{font-size:1rem;font-weight:600;color:#cbd5e1;margin-top:.75rem;margin-bottom:.4rem}
+        .chat-message p{margin-bottom:.5rem;line-height:1.7}
+        .chat-message ul,.chat-message ol{margin-bottom:.5rem;padding-left:1.5rem}
+        .chat-message li{margin-bottom:.2rem}
+        .chat-message strong{color:#e2e8f0;font-weight:600}
+        .chat-message code{background:#0f172a;padding:2px 6px;border-radius:4px;font-size:13px;color:#60a5fa;font-family:'JetBrains Mono',monospace}
+        .chat-container{display:flex;flex-direction:column;height:calc(100vh - 5rem)}
+        .typing-indicator{display:flex;gap:5px;align-items:center;padding:8px 0}
+        .typing-indicator span{width:8px;height:8px;background:#60a5fa;border-radius:50%;animation:typingBounce 1.4s ease-in-out infinite}
+        .typing-indicator span:nth-child(2){animation-delay:.2s}
+        .typing-indicator span:nth-child(3){animation-delay:.4s}
+        @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}.chat-container{height:calc(100vh - 4rem)}}
+    </style>
+</head>
+<body class="h-full flex" x-data="coachChat()">
+    <script>
+        function coachChat() {
+            return {
+                sidebarOpen: false,
+                messages: [],
+                input: '',
+                loading: false,
+                chatContainer: null,
+                init() {
+                    this.messages.push({
+                        role: 'assistant',
+                        content: 'Halo! 👋 Saya adalah **AI Trading Coach** Investo. Saya di sini untuk membantu perjalanan investasi Anda di pasar modal Indonesia.\n\nSaya bisa membantu Anda dengan:\n- 📊 Memahami analisis fundamental & teknikal\n- 🛡️ Manajemen risiko & portfolio\n- 📚 Menjelaskan istilah keuangan\n- 🧠 Psikologi trading\n- 📈 Strategi investasi\n\nSilakan tanya apa saja tentang investasi! *(Saya tidak memberikan rekomendasi beli/jual spesifik)*'
+                    });
+                    this.$nextTick(() => {
+                        this.scrollToBottom();
+                    });
+                },
+                async send() {
+                    const msg = this.input.trim();
+                    if (!msg || this.loading) return;
+                    this.messages.push({ role: 'user', content: msg });
+                    this.input = '';
+                    this.loading = true;
+                    this.$nextTick(() => this.scrollToBottom());
+
+                    const history = this.messages.slice(0, -1).map(m => ({ role: m.role, content: m.content }));
+
+                    try {
+                        const resp = await fetch('/api/ai/coach', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message: msg, history: history })
+                        });
+                        const data = await resp.json();
+                        if (data.error) {
+                            this.messages.push({ role: 'assistant', content: '⚠️ ' + data.error });
+                        } else {
+                            this.messages.push({ role: 'assistant', content: data.message || 'Maaf, saya tidak bisa merespons saat ini.' });
+                        }
+                    } catch(e) {
+                        this.messages.push({ role: 'assistant', content: '⚠️ Gagal menghubungi server. Pastikan AI Provider sudah dikonfigurasi dengan environment variable `AI_API_KEY`.' });
+                    }
+                    this.loading = false;
+                    this.$nextTick(() => this.scrollToBottom());
+                },
+                scrollToBottom() {
+                    const el = this.$refs.chatContainer;
+                    if (el) {
+                        el.scrollTop = el.scrollHeight;
+                    }
+                },
+                renderedContent(content) {
+                    if (!content) return '';
+                    return marked.parse(content);
+                },
+                handleKeydown(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.send();
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Intelligence</p>
+            <a href="/ai/compare" class="sidebar-link"><span class="icon">⚖️</span> Compare Stocks</a>
+            <a href="/ai/coach" class="sidebar-link active"><span class="icon">🎓</span> Trading Coach</a>
+            <a href="/ai/thesis" class="sidebar-link"><span class="icon">📝</span> Thesis Builder</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😱</span> Fear & Greed</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
+            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon">💡</span> Trade Ideas</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        </div>
+    </aside>
+
+    <!-- TOPBAR -->
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="text-sm text-slate-400">
+            <span class="text-slate-600">AI /</span> Trading Coach
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            </a>
+            [[end]]
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 ml-0 lg:ml-60 mt-16 flex flex-col" style="height:calc(100vh - 4rem)">
+        <!-- Chat Area -->
+        <div x-ref="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <template x-for="(msg, idx) in messages" :key="idx">
+                <div class="flex gap-3" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'">
+                    <template x-if="msg.role === 'assistant'">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white text-xs font-bold">AI</span>
+                        </div>
+                    </template>
+                    <div class="max-w-[80%] rounded-2xl px-4 py-3 chat-message"
+                         :class="msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-[#1e293b] border border-slate-700 text-slate-200'"
+                         x-html="msg.role === 'user' ? msg.content.replace(/\n/g, '<br>') : renderedContent(msg.content)">
+                    </div>
+                    <template x-if="msg.role === 'user'">
+                        <div class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white text-xs font-bold">[[if .User]][[slice .User.Name 0 1]][[else]]U[[end]]</span>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <!-- Typing Indicator -->
+            <template x-if="loading">
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xs font-bold">AI</span>
+                    </div>
+                    <div class="bg-[#1e293b] border border-slate-700 rounded-2xl px-4 py-3">
+                        <div class="typing-indicator">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Suggested Questions (when few messages) -->
+        <template x-if="messages.length <= 1">
+            <div class="px-6 pb-3">
+                <div class="flex flex-wrap gap-2">
+                    <button @click="input='Bagaimana cara memulai investasi saham untuk pemula?'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Bagaimana cara mulai investasi?
+                    </button>
+                    <button @click="input='Jelaskan perbedaan analisis fundamental dan teknikal'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Fundamental vs Teknikal?
+                    </button>
+                    <button @click="input='Apa itu cut loss dan bagaimana menentukan levelnya?'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Tips cut loss
+                    </button>
+                    <button @click="input='Bagaimana cara diversifikasi portfolio yang baik?'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Cara diversifikasi portfolio
+                    </button>
+                    <button @click="input='Apa itu PER, PBV, ROE dan bagaimana menggunakannya?'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Jelaskan PER, PBV, ROE
+                    </button>
+                    <button @click="input='Bagaimana psikologi yang baik dalam trading saham?'; send()"
+                            class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">
+                        Psikologi trading
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-end gap-3 max-w-4xl mx-auto">
+                <textarea x-model="input" @keydown="handleKeydown"
+                          placeholder="Tanyakan apa saja tentang investasi..."
+                          rows="2"
+                          :disabled="loading"
+                          class="flex-1 bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none disabled:opacity-50"
+                          style="min-height:44px;max-height:120px"></textarea>
+                <button @click="send()" :disabled="loading || !input.trim()"
+                        class="px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-600 mt-2 text-center">AI Trading Coach · Percakapan tidak disimpan · Bahasa Indonesia</p>
+        </div>
+    </main>
+
+    <!-- Mobile overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+</body>
+</html>

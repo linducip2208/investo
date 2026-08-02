@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Documentation — Investo</title>
+<meta name="description" content="Public REST API v1 documentation for Investo stock & forex data platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+            400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+            800: '#1e40af', 900: '#1e3a8a', 950: '#172554',
+          },
+          surface: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8' },
+        }
+      }
+    }
+  };
+</script>
+<style>
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  .endpoint-card { transition: border-color 0.2s, box-shadow 0.2s; }
+  .endpoint-card:hover { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+  .code-block { position: relative; }
+  .code-block .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    padding: 4px 10px; font-size: 11px; font-weight: 600;
+    background: rgba(255,255,255,0.12); color: #94a3b8;
+    border: 1px solid rgba(148,163,184,0.3); border-radius: 6px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .code-block .copy-btn:hover { background: rgba(255,255,255,0.2); color: #e2e8f0; }
+  .response-block { max-height: 400px; overflow-y: auto; }
+  .try-btn { transition: all 0.2s; }
+  .try-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
+  pre[class*="language-"] { overflow-x: auto; white-space: pre; }
+</style>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans antialiased">
+
+<header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="/" class="text-xl font-bold text-brand-600">Investo</a>
+      <span class="text-slate-300 dark:text-slate-600">|</span>
+      <span class="text-sm font-semibold text-slate-500">API v1 Documentation</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button onclick="toggleDark()" class="text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">Dark</button>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 py-8 flex gap-8">
+  <nav class="hidden lg:block w-56 flex-shrink-0">
+    <div class="sticky top-24 space-y-1">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Endpoints</div>
+      <a href="#stocks" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Stocks</a>
+      <a href="#forex" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Forex</a>
+      <a href="#market" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Market</a>
+      <a href="#news" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">News & Search</a>
+      <a href="#auth" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Authentication</a>
+      <a href="#ratelimit" class="block px-3 py-1.5 text-sm rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Rate Limiting</a>
+    </div>
+  </nav>
+
+  <main class="flex-1 min-w-0 space-y-16">
+
+    <section>
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">Investo API v1</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-lg">Public REST API for stocks, forex, market data, and news. JSON responses, no authentication required.</p>
+    </section>
+
+    <section id="stocks">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">Stocks</h2>
+
+      <div class="space-y-8">
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">List all stocks with latest prices and filtering.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">sector</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Filter by sector ID or slug</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">search</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Search by code or name</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">page</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Page number (default: 1)</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">limit</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Items per page (default: 50, max: 200)</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">sort_by</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">price, change, market_cap</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">sort_order</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">asc or desc</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks?sector=1&page=1&limit=10&sort_by=price&sort_order=desc" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks?limit=3')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks/{code}</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Single stock detail with latest price, fundamentals, and sector.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody><tr><td class="py-2 pr-4 font-mono text-brand-600">code</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Stock code (e.g. BBCA, TLKM, ASII)</td></tr></tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks/BBCA" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks/BBCA')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks/{code}/prices</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Historical price data with interval aggregation.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">start</td><td class="py-2 pr-4 text-slate-500">date</td><td class="py-2 text-slate-600 dark:text-slate-400">Start date (YYYY-MM-DD)</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">end</td><td class="py-2 pr-4 text-slate-500">date</td><td class="py-2 text-slate-600 dark:text-slate-400">End date (YYYY-MM-DD)</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">interval</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">1d, 1wk, 1mo</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks/BBCA/prices?start=2026-01-01&end=2026-08-02&interval=1mo" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks/BBCA/prices?start=2026-01-01&end=2026-08-02')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks/{code}/fundamentals</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Fundamental data history for a stock.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody><tr><td class="py-2 pr-4 font-mono text-brand-600">limit</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Number of periods (default: 40)</td></tr></tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks/BBCA/fundamentals?limit=8" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks/BBCA/fundamentals?limit=3')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks/{code}/indicators</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">All technical indicators: SMA, EMA, RSI, MACD, Bollinger Bands, Stochastic, ATR.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody><tr><td class="py-2 pr-4 font-mono text-brand-600">period</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Data period in days (default: 730)</td></tr></tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks/BBCA/indicators" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks/BBCA/indicators')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/stocks/{code}/patterns</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Detected candlestick patterns with reliability scores.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody><tr><td class="py-2 pr-4 font-mono text-brand-600">limit</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Max patterns to return (default: 20)</td></tr></tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/stocks/BBCA/patterns?limit=5" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/stocks/BBCA/patterns?limit=3')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="forex">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">Forex</h2>
+
+      <div class="space-y-8">
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/forex/pairs</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">All forex pairs with latest rates.</p>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/forex/pairs" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/forex/pairs')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/forex/pairs/{base}/{quote}</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Forex pair detail with historical rates.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">base</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Base currency (e.g. USD)</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">quote</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Quote currency (e.g. IDR)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/forex/pairs/USD/IDR" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/forex/pairs/USD/IDR')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="market">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">Market</h2>
+
+      <div class="space-y-8">
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/market/summary</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Market summary: breadth, IHSG sentiment, top gainers & losers.</p>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/market/summary" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/market/summary')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/market/heatmap</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Heatmap data grouped by sector with color-coded performance.</p>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/market/heatmap" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/market/heatmap')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/market/recap</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Daily market recap with advance/decline, foreign flow, and top movers.</p>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/market/recap" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/market/recap')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/sectors</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">All sectors with stock counts.</p>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/sectors" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/sectors')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="news">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">News & Search</h2>
+
+      <div class="space-y-8">
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/news</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Latest news with pagination and stock filter.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">page</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Page number</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">limit</td><td class="py-2 pr-4 text-slate-500">int</td><td class="py-2 text-slate-600 dark:text-slate-400">Items per page</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-brand-600">stock_code</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Filter by stock code</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/news?page=1&limit=10" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/news?limit=3')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+
+        <article class="endpoint-card border border-slate-200 dark:border-slate-800 rounded-xl p-5 bg-white dark:bg-slate-900">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/api/v1/search</code>
+          </div>
+          <p class="text-sm text-slate-500 mb-4">Search stocks by code or name.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left mb-4">
+              <thead><tr class="border-b border-slate-200 dark:border-slate-700"><th class="py-2 pr-4 font-semibold text-slate-500">Param</th><th class="py-2 pr-4 font-semibold text-slate-500">Type</th><th class="py-2 font-semibold text-slate-500">Description</th></tr></thead>
+              <tbody><tr><td class="py-2 pr-4 font-mono text-brand-600">q</td><td class="py-2 pr-4 text-slate-500">string</td><td class="py-2 text-slate-600 dark:text-slate-400">Search query</td></tr></tbody>
+            </table>
+          </div>
+          <div class="code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 relative">
+            <button class="copy-btn" onclick="copyCurl(this)">Copy</button>
+            <pre><code>curl -X GET "http://localhost:8000/api/v1/search?q=bank" \
+  -H "Accept: application/json"</code></pre>
+          </div>
+          <button class="try-btn mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700" onclick="tryEndpoint(this, '/api/v1/search?q=BCA')">Try it &rarr;</button>
+          <div class="try-response hidden mt-3"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="auth">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Authentication</h2>
+      <div class="bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800 rounded-xl p-5">
+        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+          The API v1 is <strong>public</strong> — no authentication is required. All endpoints return market data freely.
+        </p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          For future authenticated endpoints (portfolio, watchlist, alerts), an API key header <code class="text-xs font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">X-API-Key</code> will be required.
+        </p>
+      </div>
+    </section>
+
+    <section id="ratelimit">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Rate Limiting</h2>
+      <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-5">
+        <table class="w-full text-sm">
+          <tr><td class="py-2 pr-8 font-semibold text-slate-700 dark:text-slate-300">Tier</td><td class="py-2 text-slate-500 dark:text-slate-400">Public</td></tr>
+          <tr><td class="py-2 pr-8 font-semibold text-slate-700 dark:text-slate-300">Rate</td><td class="py-2 text-slate-500 dark:text-slate-400">100 requests per minute per IP</td></tr>
+          <tr><td class="py-2 pr-8 font-semibold text-slate-700 dark:text-slate-300">Header</td><td class="py-2 font-mono text-xs text-slate-500 dark:text-slate-400">X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Response Format</h2>
+      <div class="bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100">
+        <pre>{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "page": 1,
+    "limit": 50,
+    "total": 54
+  },
+  "timestamp": "2026-08-02T12:00:00Z"
+}</pre>
+      </div>
+      <p class="text-sm text-slate-500 mt-3">All timestamps are in UTC ISO 8601 format. Dates use <code class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">2006-01-02</code> format.</p>
+    </section>
+
+  </main>
+</div>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 mt-16 py-8 text-center text-sm text-slate-400">
+  <p>&copy; 2026 Investo &mdash; Stock & Forex Market Intelligence Platform</p>
+</footer>
+
+<script>
+function toggleDark() {
+  document.documentElement.classList.toggle('dark');
+  const btn = document.querySelector('[onclick="toggleDark()"]');
+  btn.textContent = document.documentElement.classList.contains('dark') ? 'Light' : 'Dark';
+}
+
+function copyCurl(btn) {
+  const pre = btn.parentElement.querySelector('code');
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 1500);
+  });
+}
+
+function tryEndpoint(btn, path) {
+  const responseDiv = btn.nextElementSibling;
+  const baseUrl = window.location.origin;
+  const url = baseUrl + path;
+
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+  responseDiv.classList.add('hidden');
+
+  fetch(url, { headers: { 'Accept': 'application/json' } })
+    .then(r => r.json())
+    .then(data => {
+      const pre = document.createElement('pre');
+      pre.className = 'code-block bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-100 overflow-x-auto';
+      pre.style.maxHeight = '300px';
+      pre.style.overflowY = 'auto';
+      pre.innerHTML = '<code>' + JSON.stringify(data, null, 2).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+      responseDiv.innerHTML = '';
+      responseDiv.appendChild(pre);
+      responseDiv.classList.remove('hidden');
+      responseDiv.classList.add('fade-in');
+    })
+    .catch(err => {
+      responseDiv.innerHTML = '<div class="text-xs text-red-500 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">Error: ' + err.message + '</div>';
+      responseDiv.classList.remove('hidden');
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = 'Try it →';
+    });
+}
+</script>
+
+</body>
+</html>

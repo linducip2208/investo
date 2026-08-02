@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .analysis-content h2{font-size:1.25rem;font-weight:700;color:#e2e8f0;margin-top:1.5rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid #334155}
+        .analysis-content h3{font-size:1.05rem;font-weight:600;color:#cbd5e1;margin-top:1rem;margin-bottom:.5rem}
+        .analysis-content p{margin-bottom:.75rem;line-height:1.7;color:#94a3b8}
+        .analysis-content ul,.analysis-content ol{margin-bottom:.75rem;padding-left:1.5rem}
+        .analysis-content li{margin-bottom:.25rem;color:#94a3b8}
+        .analysis-content strong{color:#e2e8f0;font-weight:600}
+        .analysis-content code{background:#0f172a;padding:2px 6px;border-radius:4px;font-size:13px;color:#60a5fa;font-family:'JetBrains Mono',monospace}
+        .analysis-content blockquote{border-left:3px solid #3b82f6;padding-left:1rem;margin:.75rem 0;color:#94a3b8;font-style:italic}
+        .analysis-content hr{border-color:#334155;margin:1.5rem 0}
+        .typing::after{content:'\u258C';animation:blink 1s step-end infinite;color:#60a5fa}
+        @keyframes blink{50%{opacity:0}}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="compareStocks()">
+    <script>
+        function compareStocks() {
+            return {
+                sidebarOpen: false,
+                codeA: 'BBCA',
+                codeB: 'BBRI',
+                analysis: '',
+                loading: false,
+                loaded: false,
+                poweredBy: '',
+                async compare() {
+                    if (!this.codeA || !this.codeB) return;
+                    this.loading = true;
+                    this.loaded = false;
+                    this.analysis = '';
+                    this.poweredBy = '';
+                    try {
+                        const resp = await fetch('/api/ai/compare/' + this.codeA.toUpperCase() + '/' + this.codeB.toUpperCase());
+                        const data = await resp.json();
+                        if (data.error) {
+                            this.analysis = '<p class="text-danger">' + data.error + '</p>';
+                        } else {
+                            this.analysis = data.analysis || 'Tidak ada hasil analisis.';
+                            this.poweredBy = data.powered_by || '';
+                        }
+                    } catch(e) {
+                        this.analysis = '<p class="text-danger">Gagal menghubungi server. Pastikan AI Provider sudah dikonfigurasi.</p>';
+                    }
+                    this.loading = false;
+                    this.loaded = true;
+                },
+                renderedAnalysis() {
+                    if (!this.analysis) return '';
+                    if (this.analysis.startsWith('<')) return this.analysis;
+                    return marked.parse(this.analysis);
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Intelligence</p>
+            <a href="/ai/compare" class="sidebar-link active"><span class="icon">⚖️</span> Compare Stocks</a>
+            <a href="/ai/coach" class="sidebar-link"><span class="icon">🎓</span> Trading Coach</a>
+            <a href="/ai/thesis" class="sidebar-link"><span class="icon">📝</span> Thesis Builder</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😱</span> Fear & Greed</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
+            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon">💡</span> Trade Ideas</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Market Recap</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        </div>
+    </aside>
+
+    <!-- TOPBAR -->
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
+        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="text-sm text-slate-400">
+            <span class="text-slate-600">AI /</span> Stock Comparison
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            </a>
+            [[end]]
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+        <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">AI Stock Comparison</h1>
+                    <p class="text-slate-400 text-sm mt-1">Bandingkan dua saham secara komprehensif dengan AI</p>
+                </div>
+            </div>
+
+            <!-- Stock Selector -->
+            <div class="card p-6">
+                <div class="flex flex-col sm:flex-row items-end gap-4">
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Saham A</label>
+                        <input type="text" x-model="codeA" placeholder="Contoh: BBCA"
+                               class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-white font-mono text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder-slate-600 uppercase">
+                    </div>
+                    <div class="flex items-center justify-center py-2">
+                        <span class="text-2xl text-slate-500">vs</span>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Saham B</label>
+                        <input type="text" x-model="codeB" placeholder="Contoh: BBRI"
+                               class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-white font-mono text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder-slate-600 uppercase">
+                    </div>
+                    <button @click="compare()" :disabled="loading || !codeA || !codeB"
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 whitespace-nowrap">
+                        <span x-show="!loading">Bandingkan</span>
+                        <span x-show="loading" class="flex items-center gap-2">
+                            <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            Menganalisis...
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Popular comparisons shortcuts -->
+            <div class="flex flex-wrap gap-2">
+                <button @click="codeA='BBCA'; codeB='BBRI'; compare()" class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">BBCA vs BBRI</button>
+                <button @click="codeA='TLKM'; codeB='EXCL'; compare()" class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">TLKM vs EXCL</button>
+                <button @click="codeA='ASII'; codeB='UNTR'; compare()" class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">ASII vs UNTR</button>
+                <button @click="codeA='ADRO'; codeB='ITMG'; compare()" class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">ADRO vs ITMG</button>
+                <button @click="codeA='ICBP'; codeB='MYOR'; compare()" class="px-3 py-1.5 text-xs bg-[#1e293b] border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500 hover:text-blue-400 transition-all">ICBP vs MYOR</button>
+            </div>
+
+            <!-- Loading state -->
+            <template x-if="loading">
+                <div class="card p-12 flex flex-col items-center justify-center space-y-4">
+                    <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-slate-400">AI sedang menganalisis perbandingan...</p>
+                    <p class="text-xs text-slate-600">Ini mungkin memerlukan waktu beberapa detik</p>
+                </div>
+            </template>
+
+            <!-- Results -->
+            <template x-if="loaded && !loading">
+                <div>
+                    <div x-show="poweredBy" class="mb-4 text-xs text-slate-600" x-text="'Powered by: ' + poweredBy"></div>
+                    <div class="card p-6 analysis-content" x-html="renderedAnalysis()"></div>
+                </div>
+            </template>
+
+            <!-- Empty state -->
+            <template x-if="!loaded && !loading">
+                <div class="card p-12 flex flex-col items-center justify-center space-y-4 text-center">
+                    <span class="text-6xl">⚖️</span>
+                    <h3 class="text-xl font-bold text-white">Bandingkan Dua Saham</h3>
+                    <p class="text-slate-400 max-w-md">Masukkan kode dua saham IDX untuk mendapatkan perbandingan AI yang komprehensif — fundamental, teknikal, valuasi, dividen, dan risiko.</p>
+                    <p class="text-xs text-slate-600">Powered by AI · Analisis dalam Bahasa Indonesia</p>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <!-- Mobile overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+</body>
+</html>

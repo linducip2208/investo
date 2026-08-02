@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisa Saham [[.Stock.Code]] — [[.Stock.Name]] | Investo</title>
+    <meta name="description" content="Analisa lengkap saham [[.Stock.Code]] ([[.Stock.Name]]). Data fundamental: PER [[.Stock.PER]]x, PBV [[.Stock.PBV]]x, ROE [[.Stock.ROE]]%, EPS Rp [[.Stock.EPS]]. Chart teknikal, berita terkini, dan perbandingan sektor.">
+    <meta property="og:title" content="Analisa Saham [[.Stock.Code]] — [[.Stock.Name]] | Investo">
+    <meta property="og:description" content="Analisa lengkap saham [[.Stock.Code]]. Fundamental, teknikal, berita, dan FAQ. PER [[.Stock.PER]]x, PBV [[.Stock.PBV]]x.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="[[.CanonicalUrl]]">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FinancialProduct",
+        "name": "[[.Stock.Code]] — [[.Stock.Name]]",
+        "description": "Analisa saham [[.Stock.Code]] ([[.Stock.Name]]) — sektor [[.Stock.Sector]]. Data fundamental, teknikal, dan perbandingan.",
+        "category": "[[.Stock.Sector]]",
+        "offers": { "@type": "Offer", "price": "[[.Stock.Price]]", "priceCurrency": "IDR" }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:16px}
+        .card-lift{transition:transform .35s cubic-bezier(0.16,1,0.3,1),box-shadow .35s cubic-bezier(0.16,1,0.3,1)}
+        .card-lift:hover{transform:translateY(-6px);box-shadow:0 20px 40px -12px rgba(0,0,0,.3)}
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+</head>
+<body>
+
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div>
+                <span class="font-bold text-xl text-white">Investo</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-6 text-sm">
+                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/docs" class="text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
+                <a href="/blog" class="text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            </div>
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+    <section class="mb-12 reveal">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+            <div>
+                <h1 class="text-3xl lg:text-4xl font-extrabold text-white">Saham [[.Stock.Code]] — [[.Stock.Name]]</h1>
+                <p class="text-slate-400 mt-2">[[.Stock.Description]]</p>
+            </div>
+            <div class="text-right shrink-0">
+                <div class="text-xs text-slate-400 uppercase tracking-wide">Harga Terakhir</div>
+                <div class="text-3xl font-extrabold text-white font-mono">Rp [[.Stock.Price]]</div>
+                <div class="text-sm font-semibold [[if .Stock.ChangeGt 0]]text-emerald-400[[else]]text-red-400[[end]]">[[if .Stock.ChangeGt 0]]&#9650;[[else]]&#9660;[[end]] [[.Stock.Change]]</div>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <span class="text-xs font-medium px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full">Sektor: [[.Stock.Sector]]</span>
+            <span class="text-xs font-medium px-3 py-1 bg-slate-800 text-slate-300 rounded-full">Tanggal IPO: [[.Stock.ListingDate]]</span>
+            <span class="text-xs font-medium px-3 py-1 bg-slate-800 text-slate-300 rounded-full">Market Cap: Rp [[.Stock.MarketCap]]</span>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Metrik Kunci [[.Stock.Code]]</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="card-lift card p-5 text-center">
+                <div class="text-xs text-slate-400 uppercase font-medium mb-1">PER</div>
+                <div class="text-2xl font-extrabold text-white font-mono">[[.Stock.PER]]x</div>
+                <div class="text-xs text-slate-400 mt-1">Price to Earnings</div>
+            </div>
+            <div class="card-lift card p-5 text-center">
+                <div class="text-xs text-slate-400 uppercase font-medium mb-1">PBV</div>
+                <div class="text-2xl font-extrabold text-white font-mono">[[.Stock.PBV]]x</div>
+                <div class="text-xs text-slate-400 mt-1">Price to Book</div>
+            </div>
+            <div class="card-lift card p-5 text-center">
+                <div class="text-xs text-slate-400 uppercase font-medium mb-1">ROE</div>
+                <div class="text-2xl font-extrabold text-white font-mono">[[.Stock.ROE]]%</div>
+                <div class="text-xs text-slate-400 mt-1">Return on Equity</div>
+            </div>
+            <div class="card-lift card p-5 text-center">
+                <div class="text-xs text-slate-400 uppercase font-medium mb-1">EPS</div>
+                <div class="text-2xl font-extrabold text-white font-mono">[[.Stock.EPS]]</div>
+                <div class="text-xs text-slate-400 mt-1">Earnings per Share</div>
+            </div>
+            <div class="card-lift card p-5 text-center">
+                <div class="text-xs text-slate-400 uppercase font-medium mb-1">Div Yield</div>
+                <div class="text-2xl font-extrabold text-white font-mono">[[.Stock.DividendYield]]%</div>
+                <div class="text-xs text-slate-400 mt-1">Dividend Yield</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Riwayat Harga [[.Stock.Code]]</h2>
+        <div class="card p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left text-slate-400 uppercase text-xs font-semibold tracking-wide">
+                            <th class="pb-3 pr-4">Periode</th><th class="pb-3 pr-4">Harga</th><th class="pb-3 pr-4">Perubahan</th><th class="pb-3">Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        [[range .Stock.PriceHistory]]
+                        <tr class="text-slate-300">
+                            <td class="py-3 pr-4 font-medium">[[.Period]]</td>
+                            <td class="py-3 pr-4 font-mono">Rp [[.Price]]</td>
+                            <td class="py-3 pr-4 font-mono [[if .ChangeGt 0]]text-emerald-400[[else]]text-red-400[[end]]">[[if .ChangeGt 0]]+[[end]][[.Change]]%</td>
+                            <td class="py-3 font-mono text-slate-500">[[.Volume]]</td>
+                        </tr>
+                        [[end]]
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-slate-500 mt-4">[[.Stock.PriceHistoryNote]]</p>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Analisa Fundamental [[.Stock.Code]]</h2>
+        <div class="max-w-none text-slate-400 leading-relaxed">
+            <p>[[.Stock.Code]] ([[.Stock.Name]]) adalah perusahaan yang bergerak di sektor [[.Stock.Sector]] dan tercatat di Bursa Efek Indonesia sejak [[.Stock.ListingDate]]. Saat ini, [[.Stock.Code]] diperdagangkan pada harga Rp [[.Stock.Price]] per lembar saham dengan kapitalisasi pasar sekitar Rp [[.Stock.MarketCap]].</p>
+            <p>Dari sisi valuasi, [[.Stock.Code]] memiliki Price to Earnings Ratio (PER) sebesar [[.Stock.PER]]x[[if .Stock.PERComment]][[.Stock.PERComment]][[end]]. Price to Book Value (PBV) berada di level [[.Stock.PBV]]x, yang mengindikasikan bahwa pasar menghargai perusahaan [[if .Stock.PBVGt 1]]di atas[[else]]di bawah[[end]] nilai bukunya.</p>
+            <p>Profitabilitas perusahaan tercermin dari Return on Equity (ROE) sebesar [[.Stock.ROE]]%, dengan Earnings per Share (EPS) sebesar Rp [[.Stock.EPS]]. [[.Stock.FundamentalComment]]</p>
+            <p>Bagi investor yang mencari dividen, [[.Stock.Code]] menawarkan dividend yield sebesar [[.Stock.DividendYield]]% berdasarkan harga saat ini. [[.Stock.DividendComment]]</p>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal" x-data="{ faqOpen: null }">
+        <h2 class="text-2xl font-bold text-white mb-6">Pertanyaan Umum tentang [[.Stock.Code]]</h2>
+        <div class="space-y-3">
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 1 ? null : 1)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apa itu saham [[.Stock.Code]]?</span>
+                    <svg :class="{'rotate-180': faqOpen === 1}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 1" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed">
+                    <p>[[.Stock.Code]] adalah kode saham dari [[.Stock.Name]], perusahaan yang bergerak di sektor [[.Stock.Sector]] di Indonesia. Perusahaan ini terdaftar di Bursa Efek Indonesia (IDX) dan dapat diperdagangkan oleh investor ritel maupun institusi melalui sekuritas yang terdaftar di OJK.</p>
+                </div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 2 ? null : 2)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Bagaimana cara membeli saham [[.Stock.Code]]?</span>
+                    <svg :class="{'rotate-180': faqOpen === 2}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 2" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed">
+                    <p>Untuk membeli saham [[.Stock.Code]], Anda perlu membuka rekening efek di sekuritas yang terdaftar di OJK. Setelah memiliki RDN (Rekening Dana Nasabah) dan SID (Single Investor ID), Anda dapat membeli saham [[.Stock.Code]] melalui aplikasi trading sekuritas tersebut. Minimal pembelian adalah 1 lot (100 lembar saham).</p>
+                </div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 3 ? null : 3)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apakah [[.Stock.Code]] bagus untuk investasi jangka panjang?</span>
+                    <svg :class="{'rotate-180': faqOpen === 3}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 3" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed">
+                    <p>[[.Stock.LongTermComment]] Perlu diingat bahwa semua investasi saham memiliki risiko, dan keputusan investasi sepenuhnya ada di tangan investor. Lakukan riset mandiri atau konsultasikan dengan penasihat keuangan sebelum berinvestasi.</p>
+                </div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 4 ? null : 4)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Kapan [[.Stock.Code]] membagikan dividen?</span>
+                    <svg :class="{'rotate-180': faqOpen === 4}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 4" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed">
+                    <p>[[.Stock.DividendSchedule]]</p>
+                </div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 5 ? null : 5)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Siapa kompetitor utama [[.Stock.Code]]?</span>
+                    <svg :class="{'rotate-180': faqOpen === 5}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 5" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed">
+                    <p>[[.Stock.CompetitorsComment]] Anda dapat membandingkan [[.Stock.Code]] dengan kompetitornya di halaman perbandingan saham kami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
+            <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
+            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Dapatkan aplikasi saham & forex dengan data [[.Stock.Code]] dan 600+ saham IDX lainnya. Whitelabel ready, pSEO built-in, admin panel lengkap.</p>
+            <a href="/beli-aplikasi-saham" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">
+                Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+        </div>
+    </section>
+
+    [[if .SameSectorStocks]]
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Saham Lain di Sektor [[.Stock.Sector]]</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            [[range .SameSectorStocks]]
+            <a href="/saham/[[.Code]]" class="card-lift card rounded-xl p-4 hover:border-blue-500 transition-all group">
+                <div class="font-mono font-bold text-blue-400 text-sm">[[.Code]]</div>
+                <div class="text-xs text-slate-500 mt-0.5 truncate">[[.Name]]</div>
+                <div class="text-sm font-semibold text-white mt-2 font-mono">Rp [[.Price]]</div>
+            </a>
+            [[end]]
+        </div>
+    </section>
+    [[end]]
+
+    [[if .SimilarStocks]]
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Saham Serupa dengan [[.Stock.Code]]</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            [[range .SimilarStocks]]
+            <a href="/saham/[[.Code]]" class="card-lift card rounded-xl p-4 hover:border-blue-500 transition-all group">
+                <div class="font-mono font-bold text-blue-400 text-sm">[[.Code]]</div>
+                <div class="text-xs text-slate-500 mt-0.5 truncate">[[.Name]]</div>
+                <div class="text-sm font-semibold text-white mt-2 font-mono">Rp [[.Price]]</div>
+            </a>
+            [[end]]
+        </div>
+    </section>
+    [[end]]
+</div>
+
+<footer class="border-t border-slate-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+});
+</script>
+</body>
+</html>

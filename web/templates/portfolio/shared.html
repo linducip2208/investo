@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <meta name="description" content="[[.Portfolio.Name]] - Portfolio investasi dibagikan melalui Investo.">
+    <meta property="og:title" content="[[.Portfolio.Name]] - Portfolio di Investo">
+    <meta property="og:description" content="Lihat portfolio investasi [[.Portfolio.Name]] di Investo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px}
+        .gradient-blue{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+    <nav class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2.5 shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+                <span class="font-bold text-lg text-white">Investo</span>
+            </a>
+            <div class="flex items-center gap-3">
+                [[if .User]]
+                <a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Dashboard</a>
+                [[else]]
+                <a href="/login" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-colors">Masuk</a>
+                <a href="/register" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Daftar</a>
+                [[end]]
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-900/30">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white">[[.Portfolio.Name]]</h1>
+                <p class="text-sm text-slate-400 mt-0.5">Portofolio dibagikan via Investo</p>
+            </div>
+        </div>
+
+        [[if .Portfolio.Description]]
+        <div class="card p-5 mb-6"><p class="text-slate-400 text-sm">[[.Portfolio.Description]]</p></div>
+        [[end]]
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="card p-4"><span class="text-xs text-slate-500 uppercase tracking-wider">Total Holdings</span><p class="text-2xl font-bold text-white mt-1">[[len .Holdings]]</p></div>
+            <div class="card p-4"><span class="text-xs text-slate-500 uppercase tracking-wider">Dibagikan</span><p class="text-2xl font-bold text-white mt-1">[[.Share.ViewsCount]]x dilihat</p></div>
+        </div>
+
+        <div class="card overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700/50 bg-slate-800/30">
+                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kode</th>
+                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
+                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Jumlah</th>
+                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Harga Rata</th>
+                            [[if .Holdings]][[range .Holdings]][[if .Notes]]<th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Catatan</th>[[end]][[end]][[end]]
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/30">
+                        [[range .Holdings]]
+                        <tr class="hover:bg-slate-700/20 transition-colors">
+                            <td class="px-4 py-3.5"><span class="font-bold text-white">[[.Code]]</span></td>
+                            <td class="px-4 py-3.5 text-slate-400 hidden sm:table-cell max-w-[150px] truncate">[[.Name]]</td>
+                            <td class="px-4 py-3.5 text-right font-mono text-white">[[.Quantity]]</td>
+                            <td class="px-4 py-3.5 text-right font-mono text-slate-400">[[.AvgPriceFormatted]]</td>
+                            [[if .Notes]]<td class="px-4 py-3.5 text-right text-slate-500 text-xs hidden md:table-cell">[[.Notes]]</td>[[end]]
+                        </tr>
+                        [[end]]
+                        [[if not .Holdings]]
+                        <tr><td colspan="5" class="px-6 py-12 text-center text-slate-500">Portofolio ini belum memiliki holding.</td></tr>
+                        [[end]]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="gradient-blue rounded-2xl shadow-xl p-8 text-center">
+            <h2 class="text-2xl font-bold mb-2 text-white">Kelola Portofolio Sendiri</h2>
+            <p class="text-blue-200 mb-6 max-w-md mx-auto">Buat dan lacak portofolio investasi Anda sendiri dengan Investo. Gratis!</p>
+            [[if .User]]
+            <a href="/dashboard/portfolios" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl shadow-md transition-all">Portofolio Saya</a>
+            [[else]]
+            <a href="/register" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl shadow-md transition-all">Buat Akun Gratis</a>
+            [[end]]
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 mt-12">
+        <div class="max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-500">Portofolio ini dibagikan melalui <a href="/" class="text-blue-400 hover:underline">Investo</a>. Data bersumber dari IDX.</div>
+    </footer>
+</body>
+</html>

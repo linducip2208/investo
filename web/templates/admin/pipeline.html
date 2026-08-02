@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pipeline · Admin · Investo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace !important;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        @media (max-width: 767px) {
+            .sidebar {
+                position: fixed;
+                z-index: 50;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 45;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+        @media (prefers-color-scheme: dark) {
+            .bg-main { background-color: #0f172a; }
+            .text-main { color: #e2e8f0; }
+            .card { background-color: #1e293b; border-color: #334155; }
+            .table-head { background-color: #1e293b; }
+            .table-row-hover tr:hover { background-color: #334155; }
+        }
+        @media (prefers-color-scheme: light) {
+            .bg-main { background-color: #f1f5f9; }
+            .text-main { color: #0f172a; }
+            .card { background-color: #ffffff; border-color: #e2e8f0; }
+            .table-head { background-color: #f8fafc; }
+            .table-row-hover tr:hover { background-color: #e2e8f0; }
+        }
+        .status-badge.fresh { background: #dcfce7; color: #166534; }
+        .status-badge.stale { background: #fef3c7; color: #92400e; }
+        .status-badge.outdated { background: #fee2e2; color: #991b1b; }
+        .severity-badge.critical { background: #fee2e2; color: #991b1b; font-weight: 600; }
+        .severity-badge.warning { background: #fef3c7; color: #92400e; font-weight: 600; }
+        .severity-badge.info { background: #dbeafe; color: #1e40af; font-weight: 600; }
+        @media (prefers-color-scheme: dark) {
+            .status-badge.fresh { background: rgba(22,163,74,0.2); color: #86efac; }
+            .status-badge.stale { background: rgba(217,119,6,0.2); color: #fcd34d; }
+            .status-badge.outdated { background: rgba(220,38,38,0.2); color: #fca5a5; }
+            .severity-badge.critical { background: rgba(220,38,38,0.2); color: #fca5a5; }
+            .severity-badge.warning { background: rgba(217,119,6,0.2); color: #fcd34d; }
+            .severity-badge.info { background: rgba(37,99,235,0.2); color: #93c5fd; }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, confirmBackfill: false, confirmFetch: false }" x-init="document.documentElement.classList.toggle('dark', darkMode);">
+
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
+
+    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
+            <div>
+                <div class="font-bold text-base leading-tight">Investo</div>
+                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 py-4 space-y-1">
+            <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <a href="/admin/pipeline" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z"/><circle cx="10" cy="6" r="1" fill="white" stroke="none"/><circle cx="10" cy="12" r="1" fill="white" stroke="none"/><circle cx="10" cy="18" r="1" fill="white" stroke="none"/></svg>
+                <span class="text-sm">Data Pipeline</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+            </button>
+            <div class="text-sm text-slate-500 font-medium hidden sm:block">Data Pipeline Monitor</div>
+            <div class="flex items-center gap-4">
+                [[if .LastRunTime]]
+                <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">Last: [[.LastRunTime]]</span>
+                [[end]]
+            </div>
+        </header>
+
+        <div class="px-6 py-6 max-w-7xl mx-auto space-y-8">
+            <div>
+                <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Data Pipeline</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Monitor kualitas data, freshness, dan integritas data saham</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card rounded-2xl border p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-slate-600 dark:text-slate-300">Total Saham</div>
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5"/><rect x="1" y="3" width="22" height="18" rx="3"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">[[.TotalStocks]]</div>
+                </div>
+                <div class="card rounded-2xl border p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-slate-600 dark:text-slate-300">Data Fresh</div>
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-2xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400">[[.FreshCount]]</div>
+                </div>
+                <div class="card rounded-2xl border p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-slate-600 dark:text-slate-300">Data Stale</div>
+                        <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-2xl font-extrabold tracking-tight text-amber-600 dark:text-amber-400">[[.StaleCount]]</div>
+                </div>
+                <div class="card rounded-2xl border p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-slate-600 dark:text-slate-300">Integrity Issues</div>
+                        <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-2xl font-extrabold tracking-tight text-red-600 dark:text-red-400">[[.IntegrityIssueCount]]</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button @click="confirmFetch = true" class="card rounded-xl border p-4 hover:shadow-md hover:border-blue-400 transition-all group flex items-center justify-center gap-3 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span class="font-semibold text-sm text-blue-700 dark:text-blue-300">Fetch All Data</span>
+                </button>
+                <button @click="confirmBackfill = true" class="card rounded-xl border p-4 hover:shadow-md hover:border-emerald-400 transition-all group flex items-center justify-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800">
+                    <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/><path d="M21 10V8a2 2 0 00-2-2h-3.17a2 2 0 01-1.42-.59L12.83 3.83A2 2 0 0011.41 3H8a2 2 0 00-2 2v12a2 2 0 002 2h5"/></svg>
+                    <span class="font-semibold text-sm text-emerald-700 dark:text-emerald-300">Backfill Historical</span>
+                </button>
+                <a href="/admin/pipeline?refresh=1" class="card rounded-xl border p-4 hover:shadow-md hover:border-slate-400 transition-all group flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    <span class="font-semibold text-sm text-slate-700 dark:text-slate-300">Refresh View</span>
+                </a>
+            </div>
+
+            <div x-show="confirmFetch" x-cloak class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div class="card rounded-2xl border p-6 max-w-md w-full shadow-2xl" @click.outside="confirmFetch = false">
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Fetch All Data</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Ini akan memicu pengambilan data harga terbaru dari sumber eksternal untuk semua saham. Proses ini mungkin memakan waktu beberapa menit.</p>
+                    <div class="flex gap-3">
+                        <button @click="confirmFetch = false" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-sm font-medium">Batal</button>
+                        <form method="POST" action="/admin/pipeline/fetch" class="flex-1">
+                            <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">Ya, Fetch Data</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="confirmBackfill" x-cloak class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div class="card rounded-2xl border p-6 max-w-md w-full shadow-2xl" @click.outside="confirmBackfill = false">
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Backfill Historical Data</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Ini akan mengunduh 5 tahun data historis dari Yahoo Finance untuk semua saham. Proses ini memakan waktu lama (beberapa menit hingga jam). Lanjutkan?</p>
+                    <div class="flex gap-3">
+                        <button @click="confirmBackfill = false" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-sm font-medium">Batal</button>
+                        <form method="POST" action="/admin/pipeline/backfill" class="flex-1">
+                            <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors">Ya, Backfill</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-2xl border shadow-sm overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                    <div>
+                        <h2 class="font-bold text-base text-slate-900 dark:text-white">Data Freshness</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Status update data per saham</p>
+                    </div>
+                    <div class="flex gap-2 text-[11px]">
+                        <span class="px-2 py-1 rounded-full status-badge fresh">Fresh (&lt;24h)</span>
+                        <span class="px-2 py-1 rounded-full status-badge stale">Stale (24-72h)</span>
+                        <span class="px-2 py-1 rounded-full status-badge outdated">Outdated (&gt;72h)</span>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm table-row-hover">
+                        <thead class="table-head border-b border-slate-200 dark:border-slate-700">
+                            <tr>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Last Update</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Age</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            [[range .FreshnessData]]
+                            <tr>
+                                <td class="px-5 py-3 font-mono font-semibold text-brand-600 dark:text-brand-400">[[.StockCode]]</td>
+                                <td class="px-5 py-3 text-slate-700 dark:text-slate-300">[[.StockName]]</td>
+                                <td class="px-5 py-3 font-mono text-xs text-slate-500 dark:text-slate-400">[[.LastPriceUpdate]]</td>
+                                <td class="px-5 py-3 font-mono text-xs text-slate-500 dark:text-slate-400">[[.Age]]</td>
+                                <td class="px-5 py-3">
+                                    <span class="inline-flex px-2 py-1 rounded-full text-[11px] font-semibold status-badge [[.Status]]">[[.StatusLabel]]</span>
+                                </td>
+                            </tr>
+                            [[end]]
+                            [[if not .FreshnessData]]
+                            <tr>
+                                <td colspan="5" class="px-5 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">Tidak ada data freshness. Lakukan fetch data terlebih dahulu.</td>
+                            </tr>
+                            [[end]]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card rounded-2xl border shadow-sm overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
+                    <h2 class="font-bold text-base text-slate-900 dark:text-white">Data Integrity Issues</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Masalah integritas data yang terdeteksi</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm table-row-hover">
+                        <thead class="table-head border-b border-slate-200 dark:border-slate-700">
+                            <tr>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Issue</th>
+                                <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            [[range .IntegrityIssues]]
+                            <tr>
+                                <td class="px-5 py-3 font-mono font-semibold text-slate-800 dark:text-slate-200">[[.StockCode]]</td>
+                                <td class="px-5 py-3 text-slate-700 dark:text-slate-300">[[.StockName]]</td>
+                                <td class="px-5 py-3 text-slate-600 dark:text-slate-400 text-sm max-w-xs">[[.Issue]]</td>
+                                <td class="px-5 py-3">
+                                    <span class="inline-flex px-2 py-1 rounded-full text-[11px] font-semibold severity-badge [[.Severity]]">[[.Severity]]</span>
+                                </td>
+                            </tr>
+                            [[end]]
+                            [[if not .IntegrityIssues]]
+                            <tr>
+                                <td colspan="4" class="px-5 py-10 text-center text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+                                    <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                                    Tidak ada isu integritas data. Semua data valid.
+                                </td>
+                            </tr>
+                            [[end]]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            [[if .Message]]
+            <div class="card rounded-xl border p-4 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 text-sm font-medium">
+                [[.Message]]
+            </div>
+            [[end]]
+
+        </div>
+    </main>
+
+</body>
+</html>
