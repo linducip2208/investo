@@ -1,0 +1,16 @@
+[Unit]
+Description=Investo - Stock & Forex Intelligence Platform
+After=network.target mysql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/www/wwwroot/investo
+ExecStart=/www/wwwroot/investo/investo-linux
+Restart=always
+RestartSec=3
+User=investo
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
