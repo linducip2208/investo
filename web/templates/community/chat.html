@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/static/manifest.json">
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/static/sw.js')}</script>
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .chat-bubble-sent{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border-radius:16px 16px 4px 16px}
+        .chat-bubble-received{background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:16px 16px 16px 4px}
+        @media(max-width:768px){.rooms-sidebar{display:none}.rooms-sidebar.open{display:flex!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="chatApp()" x-init="init()">
+    <aside class="rooms-sidebar fixed md:relative inset-y-0 left-0 z-40 w-64 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{'open': sidebarOpen}">
+        <div class="flex items-center justify-between px-5 h-16 border-b border-slate-800">
+            <a href="/dashboard" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+                <span class="font-bold text-lg text-white">Investo</span>
+            </a>
+            <button @click="sidebarOpen=false" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Rooms</p>
+            <template x-for="room in rooms" :key="room">
+                <a href="#" @click.prevent="joinRoom(room)" class="sidebar-link" :class="{'active': currentRoom === room}">
+                    <span class="text-sm" x-text="'#' + room"></span>
+                    <span class="ml-auto w-2 h-2 rounded-full" :class="roomHasActivity(room) ? 'bg-blue-500' : 'bg-slate-700'"></span>
+                </a>
+            </template>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Menu</p>
+            <a href="/ideas" class="sidebar-link"><span>💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span>🏆</span> Leaderboard</a>
+            <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 border-b border-slate-800 bg-[#0b1120] flex items-center px-4 gap-4 shrink-0">
+            <button @click="sidebarOpen=!sidebarOpen" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="flex-1">
+                <h2 class="font-semibold text-white" x-text="currentRoom ? '#' + currentRoom : 'Obrolan Komunitas'"></h2>
+                <p class="text-xs text-slate-500" x-text="currentRoom ? 'Diskusi saham ' + currentRoom : 'Pilih room untuk memulai chat'"></p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button @click="showDMs=!showDMs" class="px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors">
+                    <template x-if="unreadDMCount > 0">
+                        <span class="inline-flex items-center justify-center w-5 h-5 bg-blue-600 text-white text-[10px] font-bold rounded-full mr-1" x-text="unreadDMCount"></span>
+                    </template>
+                    DM
+                </button>
+                <a href="/dashboard" class="px-3 py-1.5 text-xs font-medium text-blue-400 bg-blue-900/20 hover:bg-blue-900/40 rounded-lg transition-colors">Dashboard</a>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <div class="flex-1 flex flex-col min-w-0">
+                <div class="flex-1 overflow-y-auto px-4 py-4 space-y-3" id="chatMessages" x-ref="messagesContainer">
+                    <template x-for="msg in messages" :key="msg.id">
+                        <div class="flex" :class="msg.sender_id === currentUserID ? 'justify-end' : 'justify-start'">
+                            <div class="max-w-[70%]">
+                                <div class="flex items-end gap-2" :class="msg.sender_id === currentUserID ? 'flex-row-reverse' : ''">
+                                    <div class="px-4 py-2.5 text-sm" :class="msg.sender_id === currentUserID ? 'chat-bubble-sent' : 'chat-bubble-received'">
+                                        <p x-text="msg.message"></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 mt-1" :class="msg.sender_id === currentUserID ? 'justify-end' : ''">
+                                    <span class="text-[11px] text-slate-500" x-text="msg.sender_name"></span>
+                                    <span class="text-[10px] text-slate-600" x-text="formatTime(msg.created_at)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template x-if="messages.length === 0 && currentRoom">
+                        <div class="text-center py-12 text-slate-500">
+                            <div class="text-4xl mb-3">💬</div>
+                            <p class="text-sm">Belum ada pesan di room ini.</p>
+                            <p class="text-xs mt-1">Jadilah yang pertama memulai diskusi!</p>
+                        </div>
+                    </template>
+                    <template x-if="!currentRoom && !showDMs">
+                        <div class="text-center py-12 text-slate-500">
+                            <div class="text-4xl mb-3">👋</div>
+                            <p class="text-sm font-medium text-slate-300">Selamat datang di Chat Komunitas</p>
+                            <p class="text-xs mt-1">Pilih stock room di sidebar untuk bergabung diskusi</p>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="border-t border-slate-800 p-4" x-show="currentRoom || showDMs">
+                    <form @submit.prevent="sendMessage()" class="flex gap-3">
+                        <input type="text" x-model="newMessage" placeholder="Ketik pesan..."
+                               class="flex-1 px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all text-sm"
+                               :disabled="!currentRoom && !showDMs">
+                        <button type="submit"
+                                class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98] disabled:opacity-50"
+                                :disabled="!newMessage.trim() || (!currentRoom && !showDMs)">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex flex-col w-72 border-l border-slate-800 p-4 space-y-4" x-show="showDMs" x-transition>
+                <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Direct Messages</h3>
+                <div class="space-y-1">
+                    <template x-for="conv in dmConversations" :key="conv.user_id">
+                        <a href="#" @click.prevent="openDM(conv.user_id)" class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-800 transition-colors">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold" x-text="conv.user_name.charAt(0)"></div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-white truncate" x-text="conv.user_name"></p>
+                                <p class="text-xs text-slate-500 truncate" x-text="conv.last_message"></p>
+                            </div>
+                            <span x-show="conv.unread_count > 0" class="w-5 h-5 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center" x-text="conv.unread_count"></span>
+                        </a>
+                    </template>
+                    <template x-if="dmConversations.length === 0">
+                        <p class="text-xs text-slate-600 text-center py-4">Belum ada percakapan</p>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" class="md:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+</body>
+<script>
+function chatApp() {
+    return {
+        rooms: [[.Rooms | toJson]],
+        messages: [],
+        dmConversations: [],
+        currentRoom: null,
+        currentDMUserID: null,
+        showDMs: false,
+        sidebarOpen: false,
+        newMessage: '',
+        currentUserID: [[if .User]][[.User.ID]][[else]]0[[end]],
+        unreadDMCount: 0,
+        ws: null,
+        activeRooms: {},
+
+        init() {
+            this.connectWS();
+            this.loadDMs();
+        },
+
+        connectWS() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsURL = protocol + '//' + window.location.host + '/ws';
+            this.ws = new WebSocket(wsURL);
+            this.ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'chat_message') {
+                        if ((this.currentRoom && data.room === this.currentRoom) ||
+                            (this.currentDMUserID && !data.room && (data.sender_id === this.currentDMUserID || data.receiver_id === this.currentDMUserID))) {
+                            this.messages.push(data);
+                            this.$nextTick(() => this.scrollToBottom());
+                        }
+                        if (data.room) {
+                            this.activeRooms[data.room] = Date.now();
+                        }
+                    }
+                } catch(e) {}
+            };
+            this.ws.onclose = () => {
+                setTimeout(() => this.connectWS(), 3000);
+            };
+        },
+
+        async joinRoom(room) {
+            this.currentRoom = room;
+            this.showDMs = false;
+            this.currentDMUserID = null;
+            this.messages = [];
+            try {
+                const resp = await fetch('/api/chat/room/' + room);
+                this.messages = await resp.json();
+                this.$nextTick(() => this.scrollToBottom());
+            } catch(e) {}
+        },
+
+        async sendMessage() {
+            if (!this.newMessage.trim()) return;
+            const payload = { message: this.newMessage.trim() };
+            if (this.currentRoom) {
+                payload.room = this.currentRoom;
+            } else if (this.currentDMUserID) {
+                payload.receiver_id = this.currentDMUserID;
+            } else return;
+
+            try {
+                const resp = await fetch('/api/chat/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const msg = await resp.json();
+                this.messages.push(msg);
+                this.newMessage = '';
+                this.$nextTick(() => this.scrollToBottom());
+            } catch(e) {}
+        },
+
+        async openDM(userID) {
+            this.currentDMUserID = userID;
+            this.currentRoom = null;
+            this.showDMs = true;
+            this.messages = [];
+            try {
+                const resp = await fetch('/api/dm/' + userID);
+                this.messages = await resp.json();
+                this.$nextTick(() => this.scrollToBottom());
+            } catch(e) {}
+        },
+
+        async loadDMs() {
+            try {
+                const resp = await fetch('/api/dm/conversations');
+                this.dmConversations = await resp.json();
+                this.dmConversations.forEach(c => {
+                    if (c.unread_count > 0) this.unreadDMCount += c.unread_count;
+                });
+            } catch(e) {}
+        },
+
+        roomHasActivity(room) {
+            return this.activeRooms[room] && (Date.now() - this.activeRooms[room] < 60000);
+        },
+
+        formatTime(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        },
+
+        scrollToBottom() {
+            const container = this.$refs.messagesContainer;
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+    }
+}
+</script>
+</html>

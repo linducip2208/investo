@@ -61,7 +61,7 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" >
         <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
@@ -186,7 +186,7 @@
             </div>
 
             <!-- TEMPLATES TAB -->
-            <div x-show="activeTab==='templates'" x-cloak>
+            <div x-show="activeTab==='templates'">
                 [[if .Templates]]
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     [[range .Templates]]
@@ -204,7 +204,7 @@
             </div>
 
             <!-- HISTORY TAB -->
-            <div x-show="activeTab==='history'" x-cloak>
+            <div x-show="activeTab==='history'">
                 [[if .TriggeredAlerts]]
                 <div class="card overflow-hidden">
                     <div class="overflow-x-auto">
@@ -240,7 +240,7 @@
     </div>
 
     <!-- CREATE ALERT MODAL -->
-    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="modalOpen = false">
+    <div x-show="modalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="modalOpen = false">
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="modalOpen = false"></div>
         <div class="relative card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.outside="modalOpen = false">
             <div class="flex items-center justify-between mb-5">
@@ -274,7 +274,7 @@
     </div>
 
     <!-- ADVANCED ALERT MODAL -->
-    <div x-show="templateModalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="templateModalOpen = false">
+    <div x-show="templateModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="templateModalOpen = false">
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="templateModalOpen = false"></div>
         <div class="relative card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.outside="templateModalOpen = false">
             <div class="flex items-center justify-between mb-5">

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .table-header{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em}
+        .table-row{transition:background .15s}
+        .table-row:hover{background:rgba(16,185,129,.05)}
+        .table-row-red:hover{background:rgba(239,68,68,.05)}
+        .badge{border-radius:6px;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.03em}
+        .badge-days{background:rgba(59,130,246,.18);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+        @keyframes fadeSlideUp{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        .animate-fade-slide{animation:fadeSlideUp .4s ease-out forwards}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:768px){.table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+    </style>
+</head>
+<body class="h-full flex" x-data="newHighLow()" x-init="init()">
+    <script>
+        function newHighLow() {
+            return {
+                sidebarOpen: false, highs: [], lows: [], loading: true, lastUpdate: '--:--:--',
+                init() { this.fetchData(); },
+                async fetchData() {
+                    this.loading = true;
+                    try {
+                        var res = await fetch('/api/market/new-highs'); var data = await res.json();
+                        this.highs = data.highs || [];
+                        this.lows = data.lows || [];
+                        this.loading = false;
+                        this.lastUpdate = new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                    } catch(err) { this.loading = false; }
+                },
+                formatPrice(v) { if(!v) return '-'; return 'Rp '+Number(v).toLocaleString('id-ID'); },
+                formatVolume(v) { if(!v) return '-'; v=Number(v); if(v>=1e9) return (v/1e9).toFixed(1)+' B'; if(v>=1e6) return (v/1e6).toFixed(1)+' M'; if(v>=1e3) return (v/1e3).toFixed(0)+' rb'; return v.toLocaleString('id-ID'); },
+                daysLabel(n) {
+                    if (n >= 7) return n + ' days &#x1F525;';
+                    if (n >= 3) return n + ' days';
+                    return n + ' day';
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" id="sidebar">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/gap-scanner" class="sidebar-link"><span class="icon">&#x26A1;</span> Gap Scanner</a>
+            <a href="/market/rs-ranking" class="sidebar-link"><span class="icon">&#x1F3AF;</span> RS Ranking</a>
+            <a href="/market/new-high-low" class="sidebar-link active"><span class="icon">&#x1F4C8;</span> New High/Low</a>
+            <a href="/market/pre-market" class="sidebar-link"><span class="icon">&#x1F550;</span> Pre-Market</a>
+            <a href="/market/block-trades" class="sidebar-link"><span class="icon">&#x1F4E6;</span> Block Trades</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/market/live-signals" class="sidebar-link"><span class="icon">&#x26A1;</span> Live Signals</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Trend Scanner</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">&#x1F50E;</span> Pattern Scan</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">&#x1F4C8; New High / New Low</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">Saham yang membuat new 52-week high atau new 52-week low hari ini.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">&#x1F504; Refresh</button>
+                    <span class="text-xs text-slate-500 font-mono" x-text="'Updated: '+lastUpdate"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-green-400" x-text="highs.length"></div>
+                    <div class="text-xs text-slate-500 mt-1">New Highs</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-red-400" x-text="lows.length"></div>
+                    <div class="text-xs text-slate-500 mt-1">New Lows</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-400" x-text="highs.length + lows.length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Total</div>
+                </div>
+            </div>
+
+            <template x-if="highs.length > 0">
+            <div class="card overflow-hidden">
+                <div class="px-4 py-3 border-b border-slate-700 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                    <h3 class="font-semibold text-green-400 text-sm">&#x1F680; 52-Week Highs</h3>
+                    <span class="text-xs text-slate-500 ml-2" x-text="highs.length + ' stocks'"></span>
+                </div>
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="table-header text-left px-4 py-3">Saham</th>
+                                <th class="table-header text-right px-4 py-3">New High</th>
+                                <th class="table-header text-right px-4 py-3">Price</th>
+                                <th class="table-header text-center px-4 py-3">Consecutive</th>
+                                <th class="table-header text-right px-4 py-3 hidden sm:table-cell">Volume</th>
+                                <th class="table-header text-left px-4 py-3 hidden md:table-cell">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(h, idx) in highs" :key="h.code">
+                            <tr class="table-row border-b border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.015)+'s'">
+                                <td class="px-4 py-3">
+                                    <a :href="'/saham/'+h.code" class="font-mono font-bold text-sm text-green-400 hover:text-green-300" x-text="h.code"></a>
+                                    <div class="text-xs text-slate-500" x-text="h.name"></div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-mono text-sm text-green-400" x-text="formatPrice(h.new_high)"></td>
+                                <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="formatPrice(h.price)"></td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge badge-days font-mono" x-html="daysLabel(h.consecutive_days)"></span>
+                                </td>
+                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-400 hidden sm:table-cell" x-text="formatVolume(h.volume)"></td>
+                                <td class="px-4 py-3 font-mono text-xs text-slate-500 hidden md:table-cell" x-text="h.date"></td>
+                            </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </template>
+
+            <template x-if="lows.length > 0">
+            <div class="card overflow-hidden">
+                <div class="px-4 py-3 border-b border-slate-700 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                    <h3 class="font-semibold text-red-400 text-sm">&#x1F4C9; 52-Week Lows</h3>
+                    <span class="text-xs text-slate-500 ml-2" x-text="lows.length + ' stocks'"></span>
+                </div>
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="table-header text-left px-4 py-3">Saham</th>
+                                <th class="table-header text-right px-4 py-3">New Low</th>
+                                <th class="table-header text-right px-4 py-3">Price</th>
+                                <th class="table-header text-center px-4 py-3">Consecutive</th>
+                                <th class="table-header text-right px-4 py-3 hidden sm:table-cell">Volume</th>
+                                <th class="table-header text-left px-4 py-3 hidden md:table-cell">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(l, idx) in lows" :key="l.code">
+                            <tr class="table-row-red border-b border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.015)+'s'">
+                                <td class="px-4 py-3">
+                                    <a :href="'/saham/'+l.code" class="font-mono font-bold text-sm text-red-400 hover:text-red-300" x-text="l.code"></a>
+                                    <div class="text-xs text-slate-500" x-text="l.name"></div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-mono text-sm text-red-400" x-text="formatPrice(l.new_low)"></td>
+                                <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="formatPrice(l.price)"></td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge badge-days font-mono" x-html="daysLabel(l.consecutive_days)"></span>
+                                </td>
+                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-400 hidden sm:table-cell" x-text="formatVolume(l.volume)"></td>
+                                <td class="px-4 py-3 font-mono text-xs text-slate-500 hidden md:table-cell" x-text="l.date"></td>
+                            </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </template>
+
+            <template x-if="loading">
+            <div class="p-8 space-y-3">
+                <template x-for="i in 6" :key="i">
+                    <div style="width:100%;height:40px;background:#1e293b;border-radius:6px" class="animate-shimmer"></div>
+                </template>
+            </div>
+            </template>
+
+            <template x-if="!loading && highs.length === 0 && lows.length === 0">
+            <div class="card text-center py-16">
+                <div class="text-4xl mb-3">&#x1F4CA;</div>
+                <p class="text-slate-400 font-medium">No new highs or lows detected</p>
+                <p class="text-slate-500 text-sm mt-1">Belum ada saham yang mencapai 52-week high atau low baru.</p>
+            </div>
+            </template>
+        </main>
+    </div>
+    <style>@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}.animate-shimmer{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}</style>
+    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+</body>
+</html>

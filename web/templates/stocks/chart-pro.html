@@ -323,7 +323,7 @@ function addSRLines(srLevels) {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-700/50 flex flex-col" :class="{ 'open': sidebarOpen }">
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-700/50 flex flex-col" class="max-md:hidden">
     <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-700/50">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
         <span class="font-bold text-lg text-white">Investo</span>
@@ -353,7 +353,7 @@ function addSRLines(srLevels) {
 <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
     <!-- TOPBAR -->
     <header class="sticky top-0 z-40 h-12 bg-[#0b1120]/95 backdrop-blur-xl border-b border-slate-700/50 flex items-center px-3 lg:px-6 gap-3">
-        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-1.5 text-slate-400 hover:text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-1.5 text-slate-400 hover:text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex items-center gap-2 text-xs">
             <span class="font-bold text-[#f8fafc] font-mono">[[.Stock.Code]]</span>
             <span class="text-slate-500">[[.Stock.Name]]</span>
@@ -373,7 +373,7 @@ function addSRLines(srLevels) {
     <!-- CONTENT: CHART PRO LAYOUT -->
     <div class="flex flex-col lg:flex-row flex-1 overflow-hidden">
         <!-- SIDE PANEL -->
-        <aside class="w-full lg:w-64 shrink-0 bg-[#0b1120] border-r border-slate-700/50 overflow-y-auto">
+        <aside class="w-full lg:w-64 shrink-0 bg-[#0b1120] border-r border-slate-700/50 overflow-y-auto max-md:hidden">
             <div class="p-3">
                 <div class="flex rounded-lg bg-slate-800 p-0.5 mb-3">
                     <button @click="sidebarTab='patterns'" :class="sidebarTab==='patterns'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Pola</button>
@@ -508,5 +508,5 @@ function addSRLines(srLevels) {
     </div>
 </div>
 
-</body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
 </html>

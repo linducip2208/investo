@@ -126,7 +126,7 @@
                 </button>
             </div>
 
-            <div x-show="showAddForm" x-cloak x-transition class="card rounded-2xl border shadow-sm p-6">
+            <div x-show="showAddForm" x-transition class="card rounded-2xl border shadow-sm p-6">
                 <h2 class="font-bold text-base text-slate-900 dark:text-white mb-4">Tambah Sektor Baru</h2>
                 <form method="POST" action="/admin/sektor/create" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
@@ -179,7 +179,7 @@
                 [[end]]
             </div>
 
-            <div x-show="editSectorId" x-cloak x-transition class="card rounded-2xl border shadow-sm p-6 border-blue-300 dark:border-blue-600">
+            <div x-show="editSectorId" x-transition class="card rounded-2xl border shadow-sm p-6 border-blue-300 dark:border-blue-600">
                 <h2 class="font-bold text-base text-slate-900 dark:text-white mb-4">Edit Sektor</h2>
                 <form method="POST" :action="'/admin/sektor/' + editSectorId + '/edit'" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>

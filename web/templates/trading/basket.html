@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basket Trading · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .input-field{width:100%;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:14px;font-family:'JetBrains Mono',Consolas,monospace;outline:none}
+        .input-field:focus{border-color:#3b82f6}
+        .input-field::placeholder{color:#475569}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(37,99,235,.35)}
+        .btn-success{background:linear-gradient(135deg,#059669,#047857);color:#fff}
+        .btn-success:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(5,150,105,.35)}
+        .btn-danger{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff}
+        .btn-sm{padding:6px 14px;font-size:12px}
+        .badge{font-size:10px;padding:2px 8px;border-radius:8px;font-weight:600}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="basketTrading()" x-init="init()">
+
+<aside class="sidebar w-64 shrink-0 bg-[#0f172a] border-r border-[#1e293b] flex flex-col h-full overflow-y-auto" :class="{ 'open fixed inset-y-0 left-0 z-50 shadow-2xl': sidebarOpen }">
+    <div class="p-5">
+        <div class="flex items-center gap-2 mb-6">
+            <span class="text-2xl">💹</span>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex flex-col gap-1">
+            <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span>📈</span> Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span>🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span>🔥</span> Heatmap</a>
+            <a href="/paper-trading" class="sidebar-link"><span>🎯</span> Paper Trading</a>
+            <a href="/trading/basket" class="sidebar-link active"><span>🧺</span> Basket Trading</a>
+            <a href="/trading/orders" class="sidebar-link"><span>🎯</span> Conditional Orders</a>
+        </nav>
+    </div>
+</aside>
+
+<div class="flex-1 flex flex-col min-w-0" @click="sidebarOpen=false">
+    <header class="h-14 bg-[#0f172a] border-b border-[#1e293b] flex items-center justify-between px-5 shrink-0">
+        <div class="flex items-center gap-3">
+            <button @click.stop="sidebarOpen=!sidebarOpen" class="lg:hidden text-slate-400 hover:text-white p-1 btn-touch">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <span class="font-semibold text-white text-base">🧺 Basket Trading</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="/trading/orders" class="text-sm text-blue-400 hover:text-blue-300">Conditional Orders →</a>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-5 space-y-5">
+
+        <div x-show="message" x-transition class="px-4 py-3 rounded-xl text-sm font-medium" :class="messageType==='success'?'bg-emerald-900/50 text-emerald-300 border border-emerald-700':'bg-red-900/50 text-red-300 border border-red-700'" x-text="message"></div>
+
+        <div class="card p-5">
+            <h2 class="text-lg font-bold text-white mb-4">📝 Buat Basket Baru</h2>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Basket</label>
+                    <input type="text" x-model="basketName" placeholder="e.g. Big Banks Basket" class="input-field">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-2">Saham dalam Basket</label>
+                    <div class="space-y-2" id="stock-rows">
+                        <template x-for="(item, idx) in stocks" :key="idx">
+                            <div class="flex items-center gap-2">
+                                <input type="text" x-model="item.code" placeholder="Kode" class="input-field w-24" @input="calcEstimate()">
+                                <input type="number" x-model="item.quantity" placeholder="Qty (lot)" class="input-field w-28" @input="calcEstimate()" min="1" step="100">
+                                <select x-model="item.type" class="input-field w-24">
+                                    <option value="buy">Buy</option>
+                                    <option value="sell">Sell</option>
+                                </select>
+                                <button @click="removeStock(idx)" class="btn btn-danger btn-sm" x-show="stocks.length > 1">✕</button>
+                            </div>
+                        </template>
+                    </div>
+                    <button @click="addStock()" class="btn btn-sm mt-2" style="background:#334155;color:#e2e8f0">+ Tambah Saham</button>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    <button @click="createBasket()" class="btn btn-primary" :disabled="loading">
+                        <span x-show="!loading">💾 Simpan Basket</span>
+                        <span x-show="loading" class="animate-pulse">⏳ Menyimpan...</span>
+                    </button>
+                    <button @click="executeAll()" class="btn btn-success" :disabled="loading || savedBaskets.length === 0">
+                        <span>🚀 Execute All Pending</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-5">
+            <h2 class="text-lg font-bold text-white mb-4">📋 Basket Tersimpan</h2>
+            <div x-show="savedBaskets.length === 0" class="text-slate-500 text-sm py-4 text-center">Belum ada basket tersimpan</div>
+            <div class="space-y-3" x-show="savedBaskets.length > 0">
+                <template x-for="basket in savedBaskets" :key="basket.id">
+                    <div class="bg-[#0f172a] border border-[#334155] rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <span class="font-semibold text-white" x-text="basket.name"></span>
+                                <span class="ml-2 badge" :class="basket.status==='executed'?'bg-emerald-900 text-emerald-300':'bg-amber-900 text-amber-300'" x-text="basket.status"></span>
+                            </div>
+                            <button @click="executeBasket(basket.id)" x-show="basket.status==='pending'" class="btn btn-success btn-sm">▶ Execute</button>
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                            <template x-for="item in basket.items" :key="item.code">
+                                <span class="text-xs bg-[#1e293b] text-slate-300 px-2 py-1 rounded-lg" x-text="item.type.toUpperCase() + ' ' + item.quantity + ' × ' + item.code"></span>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="card p-5">
+            <h2 class="text-lg font-bold text-white mb-4">🧮 Estimasi Biaya</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-[#0f172a] rounded-xl p-3 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Total Lot</div>
+                    <div class="text-xl font-bold text-blue-400" x-text="totalLots"></div>
+                </div>
+                <div class="bg-[#0f172a] rounded-xl p-3 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Jumlah Saham</div>
+                    <div class="text-xl font-bold text-blue-400" x-text="stockCount"></div>
+                </div>
+                <div class="bg-[#0f172a] rounded-xl p-3 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Estimasi (Rp)</div>
+                    <div class="text-xl font-bold text-emerald-400" x-text="estimatedCost"></div>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">* Estimasi berdasarkan harga terakhir. Harga aktual bisa berbeda saat eksekusi.</p>
+        </div>
+
+    </main>
+</div>
+
+<script>
+function basketTrading() {
+    return {
+        sidebarOpen: false,
+        basketName: '',
+        stocks: [{ code: '', quantity: 100, type: 'buy' }],
+        savedBaskets: [],
+        loading: false,
+        message: '',
+        messageType: 'success',
+        totalLots: 0,
+        stockCount: 0,
+        estimatedCost: '—',
+
+        init() {
+            this.fetchBaskets();
+        },
+
+        addStock() {
+            this.stocks.push({ code: '', quantity: 100, type: 'buy' });
+        },
+
+        removeStock(idx) {
+            if (this.stocks.length > 1) {
+                this.stocks.splice(idx, 1);
+            }
+            this.calcEstimate();
+        },
+
+        calcEstimate() {
+            var lots = 0;
+            var count = 0;
+            for (var i = 0; i < this.stocks.length; i++) {
+                if (this.stocks[i].code) {
+                    lots += this.stocks[i].quantity;
+                    count++;
+                }
+            }
+            this.totalLots = lots;
+            this.stockCount = count;
+            this.estimatedCost = lots > 0 ? '~' + (lots * 100).toLocaleString('id-ID') + ' lot' : '—';
+        },
+
+        async createBasket() {
+            if (!this.basketName || this.stocks.length === 0) {
+                this.showMessage('Nama basket dan minimal 1 saham wajib diisi', 'error');
+                return;
+            }
+            var validStocks = this.stocks.filter(function(s) { return s.code && s.quantity > 0; });
+            if (validStocks.length === 0) {
+                this.showMessage('Minimal 1 saham dengan kode valid', 'error');
+                return;
+            }
+            this.loading = true;
+            try {
+                var r = await fetch('/api/trading/basket', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: this.basketName, stocks: validStocks })
+                });
+                var d = await r.json();
+                if (r.ok) {
+                    this.showMessage('Basket berhasil dibuat!', 'success');
+                    this.basketName = '';
+                    this.stocks = [{ code: '', quantity: 100, type: 'buy' }];
+                    this.fetchBaskets();
+                } else {
+                    this.showMessage(d.error || 'Gagal membuat basket', 'error');
+                }
+            } catch(e) {
+                this.showMessage('Gagal membuat basket', 'error');
+            }
+            this.loading = false;
+        },
+
+        async executeBasket(id) {
+            this.loading = true;
+            try {
+                var r = await fetch('/api/trading/basket/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ basket_id: id })
+                });
+                var d = await r.json();
+                if (r.ok) {
+                    this.showMessage('Basket berhasil dieksekusi!', 'success');
+                    this.fetchBaskets();
+                } else {
+                    this.showMessage(d.error || 'Gagal eksekusi', 'error');
+                }
+            } catch(e) {
+                this.showMessage('Gagal eksekusi basket', 'error');
+            }
+            this.loading = false;
+        },
+
+        async executeAll() {
+            var pending = this.savedBaskets.filter(function(b) { return b.status === 'pending'; });
+            if (pending.length === 0) {
+                this.showMessage('Tidak ada basket pending', 'error');
+                return;
+            }
+            this.loading = true;
+            for (var i = 0; i < pending.length; i++) {
+                try {
+                    await fetch('/api/trading/basket/execute', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ basket_id: pending[i].id })
+                    });
+                } catch(e) {}
+            }
+            this.showMessage('Semua basket dieksekusi!', 'success');
+            this.fetchBaskets();
+            this.loading = false;
+        },
+
+        async fetchBaskets() {
+            try {
+                var r = await fetch('/api/trading/basket/list');
+                var d = await r.json();
+                this.savedBaskets = d.baskets || [];
+            } catch(e) {}
+        },
+
+        showMessage(msg, type) {
+            this.message = msg;
+            this.messageType = type;
+            setTimeout(() => { this.message = ''; }, 4000);
+        }
+    };
+}
+</script>
+
+</body>
+</html>

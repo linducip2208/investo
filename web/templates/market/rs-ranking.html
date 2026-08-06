@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <meta name="description" content="Relative Strength Ranking saham IDX. Bandingkan performa saham terhadap IHSG.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .table-header{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em}
+        .table-row{transition:background .15s}
+        .table-row:hover{background:rgba(59,130,246,.05)}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .progress-bar{height:8px;border-radius:4px;background:#0f172a;overflow:hidden}
+        .progress-fill{height:100%;border-radius:4px;transition:width 1.2s ease}
+        .rs-strong{background:linear-gradient(90deg,#10b981,#34d399)}
+        .rs-good{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+        .rs-neutral{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+        .rs-weak{background:linear-gradient(90deg,#ef4444,#f87171)}
+        .leader-card{background:linear-gradient(135deg,#1e293b 0%,#1e3a5f 100%);border:1px solid #334155;border-radius:14px;padding:20px;transition:all .2s}
+        .leader-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(59,130,246,.15);border-color:#3b82f6}
+        .badge-filter{border-radius:6px;font-size:11px;font-weight:600;padding:5px 12px;letter-spacing:.02em;cursor:pointer;transition:all .15s}
+        .badge-filter:hover{filter:brightness(1.2)}
+        @keyframes fadeSlideUp{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        .animate-fade-slide{animation:fadeSlideUp .4s ease-out forwards}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:768px){.table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+    </style>
+</head>
+<body class="h-full flex" x-data="rsRanking()" x-init="init()">
+    <script>
+        function rsRanking() {
+            return {
+                sidebarOpen: false, results: [], filtered: [], leaders: [], filterSector: 'ALL', loading: true,
+                sortKey: 'rs_rating', sortAsc: false, lastUpdate: '--:--:--',
+                sectors: new Set(),
+                init() { this.fetchData(); },
+                async fetchData() {
+                    this.loading = true;
+                    try {
+                        var res = await fetch('/api/market/rs-ranking'); var data = await res.json();
+                        this.results = data.results || [];
+                        var self = this;
+                        this.results.forEach(function(r) { self.sectors.add(r.sector); });
+                        this.leaders = this.results.slice(0, 10);
+                        this.applyFilter();
+                        this.loading = false;
+                        this.lastUpdate = new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                    } catch(err) { this.loading = false; }
+                },
+                applyFilter() {
+                    var arr = this.results.slice();
+                    if (this.filterSector !== 'ALL') {
+                        arr = arr.filter(function(r) { return r.sector === this.filterSector; }.bind(this));
+                    }
+                    this.filtered = arr;
+                    this.doSort();
+                },
+                doSort() {
+                    var self = this;
+                    this.filtered.sort(function(a, b) {
+                        var va = a[self.sortKey], vb = b[self.sortKey];
+                        if (typeof va === 'string') { va = va || ''; vb = vb || ''; return self.sortAsc ? va.localeCompare(vb) : vb.localeCompare(va); }
+                        return self.sortAsc ? (va||0) - (vb||0) : (vb||0) - (va||0);
+                    });
+                },
+                sortBy(key) {
+                    if (this.sortKey === key) { this.sortAsc = !this.sortAsc; } else { this.sortKey = key; this.sortAsc = false; }
+                    this.doSort();
+                },
+                rsClass(v) { if(v>=80) return 'rs-strong'; if(v>=60) return 'rs-good'; if(v>=40) return 'rs-neutral'; return 'rs-weak'; },
+                formatPrice(v) { if(!v) return '-'; return 'Rp '+Number(v).toLocaleString('id-ID'); },
+                formatPct(v) { if(v===null||v===undefined) return '-'; var sign = v>=0?'+':''; return sign+v.toFixed(2)+'%'; },
+                formatBigNum(v) { if(!v) return '-'; v=Number(v); if(v>=1e12) return (v/1e12).toFixed(1)+' T'; if(v>=1e9) return (v/1e9).toFixed(1)+' B'; return v.toLocaleString('id-ID'); },
+                sortLabel() {
+                    var m = {rs_rating:'RS Rating',price:'Price',change_pct:'Change %',sector:'Sector',return_1mo:'1M Return',return_3mo:'3M Return'};
+                    return m[this.sortKey] || 'RS Rating';
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" id="sidebar">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/gap-scanner" class="sidebar-link"><span class="icon">&#x26A1;</span> Gap Scanner</a>
+            <a href="/market/rs-ranking" class="sidebar-link active"><span class="icon">&#x1F3AF;</span> RS Ranking</a>
+            <a href="/market/new-high-low" class="sidebar-link"><span class="icon">&#x1F4C8;</span> New High/Low</a>
+            <a href="/market/pre-market" class="sidebar-link"><span class="icon">&#x1F550;</span> Pre-Market</a>
+            <a href="/market/block-trades" class="sidebar-link"><span class="icon">&#x1F4E6;</span> Block Trades</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/market/live-signals" class="sidebar-link"><span class="icon">&#x26A1;</span> Live Signals</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Trend Scanner</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">&#x1F50E;</span> Pattern Scan</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">&#x1F3AF; Relative Strength Ranking</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">Saham dengan performa terkuat vs benchmark. Diurutkan berdasarkan RS Rating 0-100.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">&#x1F504; Refresh</button>
+                    <span class="text-xs text-slate-500 font-mono" x-text="'Updated: '+lastUpdate"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-green-400" x-text="results.filter(r => r.rs_rating >= 80).length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Strong (80-100)</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-400" x-text="results.filter(r => r.rs_rating >= 60 && r.rs_rating < 80).length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Good (60-79)</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-yellow-400" x-text="results.filter(r => r.rs_rating >= 40 && r.rs_rating < 60).length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Neutral (40-59)</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-red-400" x-text="results.filter(r => r.rs_rating < 40).length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Weak (0-39)</div>
+                </div>
+            </div>
+
+            <template x-if="leaders.length > 0">
+            <div>
+                <h3 class="widget-title px-1">&#x1F3C6; Top 10 Leaders</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-3">
+                    <template x-for="(l, idx) in leaders" :key="l.code">
+                    <a :href="'/saham/'+l.code" class="leader-card">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono font-bold text-sm text-blue-400" x-text="l.code"></span>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full"
+                                  :class="idx===0?'bg-yellow-500/20 text-yellow-400':idx===1?'bg-slate-400/20 text-slate-300':idx===2?'bg-amber-600/20 text-amber-400':'bg-slate-700 text-slate-500'"
+                                  x-text="idx+1"></span>
+                        </div>
+                        <div class="text-xs text-slate-400 truncate mb-2" x-text="l.name"></div>
+                        <div class="text-lg font-bold" :class="l.rs_rating>=60?'text-green-400':l.rs_rating>=40?'text-yellow-400':'text-red-400'" x-text="l.rs_rating"></div>
+                        <div class="text-[10px] text-slate-500 uppercase tracking-wider">RS Rating</div>
+                        <div class="mt-1 text-xs font-mono text-slate-400" x-text="formatPrice(l.price)"></div>
+                    </a>
+                    </template>
+                </div>
+            </div>
+            </template>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs text-slate-500 uppercase tracking-wider mr-1">Sector:</span>
+                <button @click="filterSector='ALL';applyFilter()" class="badge-filter border"
+                        :class="filterSector==='ALL'?'bg-blue-600 text-white border-blue-500':'bg-slate-800 text-slate-400 border-slate-700'">ALL</button>
+                <template x-for="s in [...sectors].sort()" :key="s">
+                <button @click="filterSector=s;applyFilter()" class="badge-filter border"
+                        :class="filterSector===s?'bg-blue-600 text-white border-blue-500':'bg-slate-800 text-slate-400 border-slate-700'"
+                        x-text="s"></button>
+                </template>
+            </div>
+
+            <div class="card overflow-hidden">
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="table-header text-left px-4 py-3 w-8">#</th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('code')">Saham</th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('rs_rating')">RS Rating</th>
+                                <th class="table-header text-right px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('price')">Price</th>
+                                <th class="table-header text-right px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('change_pct')">Change %</th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white hidden md:table-cell" @click="sortBy('sector')">Sector</th>
+                                <th class="table-header text-right px-4 py-3 cursor-pointer hover:text-white hidden sm:table-cell" @click="sortBy('return_1mo')">1M</th>
+                                <th class="table-header text-right px-4 py-3 cursor-pointer hover:text-white hidden sm:table-cell" @click="sortBy('return_3mo')">3M</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(r, idx) in filtered" :key="r.code">
+                            <tr class="table-row border-b border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.01)+'s'">
+                                <td class="px-4 py-3 text-xs font-mono text-slate-500" x-text="idx+1"></td>
+                                <td class="px-4 py-3">
+                                    <a :href="'/saham/'+r.code" class="font-mono font-bold text-sm text-white hover:text-blue-400" x-text="r.code"></a>
+                                    <div class="text-xs text-slate-500 truncate max-w-[140px]" x-text="r.name"></div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="progress-bar flex-1 min-w-[80px]">
+                                            <div class="progress-fill" :class="rsClass(r.rs_rating)" :style="'width:'+r.rs_rating+'%'"></div>
+                                        </div>
+                                        <span class="font-mono text-sm font-bold w-10 text-right" :class="r.rs_rating>=60?'text-green-400':r.rs_rating>=40?'text-yellow-400':'text-red-400'" x-text="r.rs_rating"></span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="formatPrice(r.price)"></td>
+                                <td class="px-4 py-3 text-right font-mono text-sm" :class="r.change_pct>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.change_pct)"></td>
+                                <td class="px-4 py-3 font-mono text-xs text-slate-400 hidden md:table-cell" x-text="r.sector || '-'"></td>
+                                <td class="px-4 py-3 text-right font-mono text-xs hidden sm:table-cell" :class="r.return_1mo>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.return_1mo)"></td>
+                                <td class="px-4 py-3 text-right font-mono text-xs hidden sm:table-cell" :class="r.return_3mo>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.return_3mo)"></td>
+                            </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <template x-if="loading">
+                <div class="p-8 space-y-3">
+                    <template x-for="i in 8" :key="i">
+                        <div style="width:100%;height:40px;background:#1e293b;border-radius:6px" class="animate-shimmer"></div>
+                    </template>
+                </div>
+                </template>
+
+                <template x-if="!loading && filtered.length === 0">
+                <div class="text-center py-12">
+                    <div class="text-4xl mb-3">&#x1F50D;</div>
+                    <p class="text-slate-400 font-medium">No results</p>
+                    <p class="text-slate-500 text-sm mt-1">Coba ganti filter sektor</p>
+                </div>
+                </template>
+            </div>
+        </main>
+    </div>
+    <style>@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}.animate-shimmer{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}</style>
+    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+</body>
+</html>

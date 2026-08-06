@@ -1,634 +1,248 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-<script>
-  var dm = localStorage.getItem('investo-dark-mode');
-  if (dm === 'true' || (!dm && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark');
-  }
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investo — Analisa Saham & Forex Indonesia Jadi Lebih Cerdas</title>
-    <meta name="description" content="Platform all-in-one untuk investor ritel Indonesia. Chart teknikal lengkap, fundamental IDX, screener canggih, dan portfolio tracker dalam satu dashboard.">
-    <meta property="og:title" content="Investo — Analisa Saham & Forex Indonesia">
-    <meta property="og:description" content="Chart teknikal lengkap, fundamental IDX, screener canggih, portfolio tracker. Semua dalam satu dashboard.">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Investo — Analisa Saham & Forex Indonesia">
-    <meta name="twitter:description" content="Chart teknikal lengkap, fundamental IDX, screener canggih, portfolio tracker. Semua dalam satu dashboard.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Investo — Platform Analisa Saham & Forex Indonesia</title>
+    <meta name="description" content="Platform all-in-one untuk investor ritel Indonesia. 125+ saham IDX, chart teknikal, AI signals, screener, portfolio tracker — gratis.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{display:['Playfair Display','Georgia','serif'],sans:['Inter','system-ui','sans-serif']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-16px); }
-        }
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        @keyframes scanLine {
-            0% { top: 0; }
-            50% { top: 92%; }
-            100% { top: 0; }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes fadeSlideUp {
-            0% { transform: translateY(40px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes scaleIn {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes pingSlow {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        @keyframes countUp {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-float { animation: float 4s ease-in-out infinite; }
-        .animate-float-slow { animation: floatSlow 5s ease-in-out infinite; }
-        .animate-scan-line { animation: scanLine 2.8s ease-in-out infinite; }
-        .animate-shimmer { background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.12) 50%, transparent 75%); background-size: 200% 100%; animation: shimmer 1.8s ease-in-out infinite; }
-        .animate-ping-slow { animation: pingSlow 2.2s ease-in-out infinite; }
-        .card-lift { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-        .card-lift:hover { transform: translateY(-8px); box-shadow: 0 28px 56px -16px rgba(0,0,0,0.18); }
-        .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-        .reveal-delay-5 { transition-delay: 0.5s; }
-        .dark .reveal { transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        .dark ::-webkit-scrollbar-track { background: #1e293b; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-        }
+        .gradient-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .glass{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;padding:14px 32px;border-radius:12px;font-weight:600;font-size:15px;transition:all .3s;display:inline-block;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.5)}
+        .btn-outline{border:2px solid rgba(255,255,255,.2);color:#fff;padding:14px 32px;border-radius:12px;font-weight:600;font-size:15px;transition:all .3s;display:inline-block;text-decoration:none}
+        .btn-outline:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4)}
+        .card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:32px;transition:all .3s}
+        .card:hover{border-color:#3b82f6;transform:translateY(-4px)}
+        .stat-num{font-size:2.5rem;font-weight:900;font-family:'Playfair Display',serif;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        @keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(59,130,246,.3)}50%{box-shadow:0 0 40px rgba(139,92,246,.5)}}
+        .float-anim{animation:float 5s ease-in-out infinite}
+        .pulse-glow{animation:pulse-glow 3s ease-in-out infinite}
+        @media(max-width:768px){h1{font-size:2rem!important}.stat-num{font-size:1.8rem}}
     </style>
 </head>
-<body class="bg-white text-slate-800 font-sans antialiased dark:bg-slate-950 dark:text-slate-200">
+<body class="bg-[#0a0a1a] text-white font-sans">
 
 <!-- NAV -->
-<nav x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = window.scrollY > 20" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" :class="scrolled ? 'bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl shadow-sm shadow-slate-200/40 dark:shadow-slate-800/30 border-b border-slate-200/50 dark:border-slate-800/50' : 'bg-transparent'">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 lg:h-18">
-            <a href="/" class="flex items-center gap-2.5 shrink-0">
-                <span class="text-3xl">🏦</span>
-                <span class="font-display font-bold text-2xl text-brand-600 dark:text-brand-400">Investo</span>
-            </a>
-            <div class="hidden lg:flex items-center gap-8">
-                <a href="#fitur" class="text-sm font-medium text-slate-600 hover:text-brand-600 dark:text-slate-300 dark:hover:text-brand-400 transition-colors">Fitur</a>
-                <a href="#harga" class="text-sm font-medium text-slate-600 hover:text-brand-600 dark:text-slate-300 dark:hover:text-brand-400 transition-colors">Harga</a>
-                <a href="/blog" class="text-sm font-medium text-slate-600 hover:text-brand-600 dark:text-slate-300 dark:hover:text-brand-400 transition-colors">Blog</a>
-                <a href="/docs" class="text-sm font-medium text-slate-600 hover:text-brand-600 dark:text-slate-300 dark:hover:text-brand-400 transition-colors">Docs</a>
-            </div>
-            <div class="hidden lg:flex items-center gap-3">
-                <a href="/login" class="text-sm font-semibold text-slate-700 hover:text-brand-600 dark:text-slate-200 dark:hover:text-brand-400 px-4 py-2 rounded-xl transition-colors">Masuk</a>
-                <a href="/register" class="text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 px-5 py-2.5 rounded-xl shadow-md shadow-brand-500/25 hover:shadow-lg hover:shadow-brand-500/30 transition-all hover:-translate-y-0.5">Daftar Gratis</a>
-            </div>
-            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors">
-                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
+<nav class="fixed top-0 w-full z-50 glass border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2.5 font-bold text-xl"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-sm">I</span>Investo</a>
+        <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+            <a href="#features" class="hover:text-white transition-colors">Fitur</a>
+            <a href="#pricing" class="hover:text-white transition-colors">Harga</a>
+            <a href="/blog" class="hover:text-white transition-colors">Blog</a>
+            <a href="/docs" class="hover:text-white transition-colors">Docs</a>
         </div>
-    </div>
-    <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="lg:hidden border-t border-slate-200/60 dark:border-slate-800/60 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl" style="display:none;">
-        <div class="px-4 py-4 space-y-3">
-            <a href="#fitur" @click="open=false" class="block px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors">Fitur</a>
-            <a href="#harga" @click="open=false" class="block px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors">Harga</a>
-            <a href="/blog" @click="open=false" class="block px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors">Blog</a>
-            <a href="/docs" @click="open=false" class="block px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors">Docs</a>
-            <div class="pt-3 flex flex-col gap-2">
-                <a href="/login" class="block text-center text-sm font-semibold text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 px-4 py-2.5 rounded-xl transition-colors hover:border-brand-300 dark:hover:border-brand-700">Masuk</a>
-                <a href="/register" class="block text-center text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 px-4 py-2.5 rounded-xl shadow-md">Daftar Gratis</a>
-            </div>
+        <div class="flex items-center gap-3">
+            <a href="/login" class="text-sm text-gray-300 hover:text-white transition-colors">Masuk</a>
+            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors">Daftar Gratis</a>
         </div>
     </div>
 </nav>
 
 <!-- HERO -->
-<section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 pt-16">
-    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147,197,253,0.3) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(59,130,246,0.25) 0%, transparent 50%);"></div>
-    <div class="absolute top-32 left-12 text-8xl opacity-10 animate-float select-none">💹</div>
-    <div class="absolute top-48 right-16 text-7xl opacity-10 animate-float-slow select-none hidden lg:block">📊</div>
-    <div class="absolute bottom-32 left-1/4 text-6xl opacity-10 animate-float select-none hidden lg:block" style="animation-delay: 1.2s;">📈</div>
-    <div class="absolute bottom-20 right-1/3 text-7xl opacity-10 animate-float-slow select-none hidden lg:block" style="animation-delay: 2s;">💱</div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 w-full">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div class="text-center lg:text-left">
-                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-1.5 text-sm text-blue-200 mb-6 reveal">
-                    <span class="relative flex h-2.5 w-2.5"><span class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span></span>
-                    Live Market Data — IDX & Forex Real-time
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,.15),transparent_50%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,.1),transparent_50%)]"></div>
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl float-anim"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl float-anim" style="animation-delay:2s"></div>
+    <div class="relative max-w-4xl mx-auto px-4 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 125+ Saham IDX • 12 Pair Forex • AI-Powered
+        </div>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6">
+            Analisa Saham & Forex<br><span class="gradient-text">Jadi Lebih Cerdas</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Platform all-in-one untuk investor Indonesia. Chart teknikal profesional, AI multi-agent signals, fundamental IDX, screener 30+ filter, dan portfolio tracker — dalam satu dashboard.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/register" class="btn-primary pulse-glow">🚀 Mulai Gratis</a>
+            <a href="/demo" class="btn-outline">📊 Lihat Demo</a>
+        </div>
+        <div class="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto text-center">
+            <div><div class="text-3xl font-black font-display gradient-text">125+</div><div class="text-sm text-gray-500 mt-1">Saham IDX</div></div>
+            <div><div class="text-3xl font-black font-display gradient-text">70+</div><div class="text-sm text-gray-500 mt-1">Fitur Analisa</div></div>
+            <div><div class="text-3xl font-black font-display gradient-text">24/7</div><div class="text-sm text-gray-500 mt-1">Auto Update</div></div>
+        </div>
+        
+        <!-- Dashboard Preview -->
+        <div class="mt-20 max-w-5xl mx-auto">
+            <div class="glass rounded-2xl overflow-hidden shadow-2xl">
+                <div class="flex items-center gap-2 px-4 py-3 bg-[#0f0f23] border-b border-white/5">
+                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    <span class="ml-4 text-xs text-gray-500 bg-white/5 rounded px-3 py-1 font-mono">📊 Dashboard · Investo</span>
                 </div>
-                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight reveal reveal-delay-1">
-                    Analisa Saham & Forex Indonesia<br class="hidden sm:block">Jadi Lebih <span class="text-blue-400">Cerdas</span>
-                </h1>
-                <p class="text-lg text-blue-100/90 mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed reveal reveal-delay-2">
-                    Platform all-in-one untuk investor ritel. Chart teknikal lengkap, fundamental IDX, screener canggih, dan portfolio tracker — semuanya dalam satu dashboard.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center gap-4 mt-8 justify-center lg:justify-start reveal reveal-delay-3">
-                    <a href="/register" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-500 hover:to-brand-600 text-white font-bold text-lg rounded-2xl shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:shadow-brand-500/40 transition-all hover:-translate-y-1">
-                        Coba Gratis
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                    </a>
-                    <a href="/docs" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/30 hover:border-white/60 text-white font-semibold text-lg rounded-2xl transition-all hover:bg-white/10 backdrop-blur-sm">
-                        Lihat Demo
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </a>
-                </div>
-                <div class="flex items-center gap-6 mt-8 justify-center lg:justify-start text-blue-200/70 text-sm reveal reveal-delay-4">
-                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Tanpa kartu kredit</span>
-                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Akses penuh 14 hari</span>
-                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Batal kapan saja</span>
-                </div>
-            </div>
-            <div class="reveal reveal-delay-3">
-                <div class="relative rounded-2xl border border-slate-700/50 bg-slate-800/80 backdrop-blur-sm shadow-2xl shadow-black/40 overflow-hidden">
-                    <div class="flex items-center gap-1.5 px-4 py-3 border-b border-slate-700/50 bg-slate-800/90">
-                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                        <div class="ml-3 flex-1 flex items-center justify-center">
-                            <div class="bg-slate-700 rounded-lg px-4 py-1 text-xs text-slate-400 w-full max-w-xs text-center">app.investo.id/dashboard</div>
-                        </div>
+                <div class="p-5 grid grid-cols-4 gap-3 bg-gradient-to-br from-[#0a0a1a] to-[#0f0f28]">
+                    <div class="col-span-1 space-y-1.5">
+                        <div class="bg-blue-500/20 rounded-lg h-4 w-3/4"></div>
+                        <div class="bg-white/5 rounded-lg h-3 w-full"></div>
+                        <div class="bg-white/5 rounded-lg h-3 w-5/6"></div>
+                        <div class="bg-white/5 rounded-lg h-3 w-4/6"></div>
+                        <div class="bg-white/5 rounded-lg h-3 w-full mt-3"></div>
+                        <div class="bg-white/5 rounded-lg h-3 w-3/4"></div>
                     </div>
-                    <div class="p-4 sm:p-6 space-y-4 bg-gradient-to-br from-slate-800 to-slate-850">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Portfolio Value</div>
-                                <div class="text-2xl font-extrabold text-white font-mono">Rp 128.450.000</div>
-                                <div class="text-sm text-emerald-400 font-semibold mt-0.5">▲ 4.28% (Rp 5.2jt)</div>
+                    <div class="col-span-3 grid grid-cols-4 gap-3">
+                        <div class="bg-gradient-to-br from-blue-900/30 to-transparent rounded-xl p-3 border border-blue-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient-to-br from-cyan-900/30 to-transparent rounded-xl p-3 border border-cyan-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient-to-br from-emerald-900/30 to-transparent rounded-xl p-3 border border-emerald-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient-to-br from-violet-900/30 to-transparent rounded-xl p-3 border border-violet-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
+                        <div class="col-span-4 grid grid-cols-5 gap-3">
+                            <div class="col-span-3 bg-white/[0.02] rounded-xl p-3 border border-white/5">
+                                <div class="text-[10px] text-gray-500 mb-2">📈 IHSG · 1 Tahun</div>
+                                <svg viewBox="0 0 300 80" class="w-full h-16"><rect width="300" height="80" fill="none"/><polyline points="0,60 20,55 40,62 60,40 80,45 100,30 120,35 140,22 160,28 180,18 200,25 220,12 240,20 260,8 280,15 300,5" fill="none" stroke="url(#g1)" stroke-width="2"/><defs><linearGradient id="g1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs></svg>
                             </div>
-                            <div class="text-right">
-                                <div class="text-xs text-slate-400">IHSG</div>
-                                <div class="text-lg font-bold text-white font-mono">7.245</div>
-                                <div class="text-sm text-emerald-400">+0.82%</div>
+                            <div class="col-span-2 space-y-2">
+                                <div class="bg-white/5 rounded-lg p-2"><div class="text-[9px] text-green-400">▲ BBCA +2.3%</div><div class="text-[9px] text-green-400">▲ BBRI +1.8%</div><div class="text-[9px] text-green-400">▲ TLKM +1.5%</div></div>
+                                <div class="bg-white/5 rounded-lg p-2"><div class="text-[9px] text-gray-500">📰 BBCA Cetak Laba Rp28T</div><div class="text-[9px] text-gray-500">📰 IHSG Menguat 0.8%</div></div>
                             </div>
-                        </div>
-                        <div class="h-32 bg-gradient-to-b from-blue-500/10 to-transparent rounded-lg border border-slate-700/50 flex items-center justify-center relative overflow-hidden">
-                            <svg class="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
-                                <path d="M0,70 L40,65 L80,55 L120,60 L160,30 L200,35 L240,15 L280,25 L320,20 L360,10 L400,15" fill="none" stroke="rgba(59,130,246,0.7)" stroke-width="2.5"/>
-                                <path d="M0,70 L40,65 L80,55 L120,60 L160,30 L200,35 L240,15 L280,25 L320,20 L360,10 L400,15 L400,100 L0,100 Z" fill="url(#chartGrad)"/>
-                                <defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(59,130,246,0.3)"/><stop offset="100%" stop-color="rgba(59,130,246,0.01)"/></linearGradient></defs>
-                            </svg>
-                            <div class="absolute top-2 left-2 text-[10px] text-slate-500 font-mono">BBRI · 4.580 · +2.3%</div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-slate-700/50 rounded-lg p-3 text-center">
-                                <div class="text-[10px] text-slate-400 uppercase font-medium">TLKM</div>
-                                <div class="text-sm font-bold text-white font-mono">3.870</div>
-                                <div class="text-xs text-emerald-400">+1.4%</div>
-                            </div>
-                            <div class="bg-slate-700/50 rounded-lg p-3 text-center">
-                                <div class="text-[10px] text-slate-400 uppercase font-medium">ASII</div>
-                                <div class="text-sm font-bold text-white font-mono">5.125</div>
-                                <div class="text-xs text-red-400">-0.6%</div>
-                            </div>
-                            <div class="bg-slate-700/50 rounded-lg p-3 text-center">
-                                <div class="text-[10px] text-slate-400 uppercase font-medium">BBCA</div>
-                                <div class="text-sm font-bold text-white font-mono">9.850</div>
-                                <div class="text-xs text-emerald-400">+0.9%</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 pt-2">
-                            <div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-brand-500 rounded-full" style="width:65%"></div></div>
-                            <div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:42%"></div></div>
-                            <div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-amber-500 rounded-full" style="width:78%"></div></div>
-                            <div class="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-red-500 rounded-full" style="width:23%"></div></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg class="w-6 h-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-    </div>
-</section>
-
-<!-- TRUST STRIP -->
-<section class="py-16 lg:py-20 bg-white dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Dibuat untuk Setiap Tipe Investor</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3 text-lg max-w-2xl mx-auto">Dari pemula sampai profesional, Investo punya tools yang kamu butuhkan.</p>
-        </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="card-lift bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 text-center reveal reveal-delay-1">
-                <div class="text-5xl mb-4">🌱</div>
-                <h3 class="font-semibold text-lg text-slate-900 dark:text-white mb-2">Investor Pemula</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Mulai dari nol dengan panduan interaktif, data fundamental yang mudah dipahami, dan komunitas yang suportif.</p>
-            </div>
-            <div class="card-lift bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 text-center reveal reveal-delay-2">
-                <div class="text-5xl mb-4">⚡</div>
-                <h3 class="font-semibold text-lg text-slate-900 dark:text-white mb-2">Trader Aktif</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Chart real-time, 20+ indikator teknikal, price alert instan, dan eksekusi analisa dalam hitungan detik.</p>
-            </div>
-            <div class="card-lift bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 text-center reveal reveal-delay-3">
-                <div class="text-5xl mb-4">🔍</div>
-                <h3 class="font-semibold text-lg text-slate-900 dark:text-white mb-2">Analis Fundamental</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Laporan keuangan lengkap, rasio-rasio kunci, corporate action tracker, dan data historis multi-tahun.</p>
-            </div>
-            <div class="card-lift bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 text-center reveal reveal-delay-4">
-                <div class="text-5xl mb-4">👥</div>
-                <h3 class="font-semibold text-lg text-slate-900 dark:text-white mb-2">Komunitas Saham</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Sharing analisa, screening bersama, dan belajar kolektif dengan fellow investor Indonesia.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- PROBLEM / SOLUTION -->
-<section class="py-16 lg:py-24 bg-slate-50 dark:bg-slate-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Stop Trading dengan Excel & WhatsApp Grup</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3 text-lg">Dari chaos ke clarity — satu platform untuk semua kebutuhan investasi kamu.</p>
-        </div>
-        <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <div class="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900/40 rounded-2xl p-8 lg:p-10 reveal">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-xl">😰</div>
-                    <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Sebelum Investo</h3>
-                </div>
-                <ul class="space-y-4">
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                        <span>Buka 5+ tab browser: IDX, Yahoo Finance, TradingView, RTI, dan Google Sheets</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                        <span>Cek laporan keuangan manual dari PDF, masukin ke Excel satu-satu, update formula tiap kuartal</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                        <span>Notifikasi price level dari grup WhatsApp — telat, rame, dan sering kelewat</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                        <span>Data terpecah di banyak tempat, tidak bisa lihat big picture portfolio kamu</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                        <span>Screen saham pakai filter manual: sektor apa? PER berapa? Dividend yield di atas X? Bisa sejam sendiri</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-900/40 rounded-2xl p-8 lg:p-10 reveal">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-xl">🚀</div>
-                    <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Dengan Investo</h3>
-                </div>
-                <ul class="space-y-4">
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>Satu dashboard terpusat: chart, fundamental, berita, portfolio — semua dalam satu layar</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>Fundamental auto-update tiap kuartal — laporan keuangan, rasio, corporate action langsung muncul</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>Price alert real-time via email — kamu tentukan level, Investo yang pantau</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>Portfolio tracker dengan real-time gain/loss, dividend tracking, dan alokasi sektor</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>Screener canggih: filter 15+ parameter, sort, dan simpan kriteria favorit kamu</span>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
 </section>
 
 <!-- FEATURES -->
-<section id="fitur" class="py-16 lg:py-24 bg-white dark:bg-slate-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Fitur Lengkap untuk Analisa Profesional</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3 text-lg max-w-2xl mx-auto">Dari chart sampai screener, semua tools yang kamu butuhkan dalam satu platform.</p>
+<section id="features" class="py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl font-bold mb-4">Semua yang Anda Butuhkan</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Dari analisa teknikal sampai AI signals — semua tools trading dalam satu platform.</p>
         </div>
-
-        [[range .Features]]
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 lg:mb-28 last:mb-0 reveal">
-            [[if .ImageLeft]]
-            <div class="order-2 lg:order-1">
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg shadow-slate-200/40 dark:shadow-black/20">
-                    <div class="flex items-center gap-1.5 px-4 py-2.5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
-                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                        <div class="ml-2 text-xs text-slate-400 truncate">[[.UrlPlaceholder]]</div>
-                    </div>
-                    <div class="aspect-video bg-blue-50 dark:bg-slate-800 flex items-center justify-center">
-                        <span class="text-6xl opacity-30">[[.Emoji]]</span>
-                    </div>
-                </div>
-            </div>
-            [[else]]
-            <div class="order-2">
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg shadow-slate-200/40 dark:shadow-black/20">
-                    <div class="flex items-center gap-1.5 px-4 py-2.5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
-                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                        <div class="ml-2 text-xs text-slate-400 truncate">[[.UrlPlaceholder]]</div>
-                    </div>
-                    <div class="aspect-video bg-blue-50 dark:bg-slate-800 flex items-center justify-center">
-                        <span class="text-6xl opacity-30">[[.Emoji]]</span>
-                    </div>
-                </div>
-            </div>
-            [[end]]
-            <div class="order-1 [[if .ImageLeft]]lg:order-2[[end]]">
-                <h3 class="font-display text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-4">[[.Title]]</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-5">[[.Description]]</p>
-                <ul class="space-y-2.5">
-                    [[range .Bullets]]
-                    <li class="flex items-start gap-2.5 text-slate-600 dark:text-slate-300 text-sm">
-                        <svg class="w-5 h-5 text-brand-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        <span>[[.]]</span>
-                    </li>
-                    [[end]]
-                </ul>
-            </div>
-        </div>
-        [[end]]
-    </div>
-</section>
-
-<!-- STATS COUNTER -->
-<section class="py-16 lg:py-20 bg-gradient-to-r from-brand-600 to-brand-800 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 10% 50%, white 0%, transparent 50%), radial-gradient(circle at 90% 50%, white 0%, transparent 50%);"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div class="reveal reveal-delay-1">
-                <div class="text-4xl sm:text-5xl font-extrabold text-white font-display">600+</div>
-                <div class="text-blue-200 mt-2 font-medium">Saham IDX</div>
-            </div>
-            <div class="reveal reveal-delay-2">
-                <div class="text-4xl sm:text-5xl font-extrabold text-white font-display">12+</div>
-                <div class="text-blue-200 mt-2 font-medium">Pair Forex</div>
-            </div>
-            <div class="reveal reveal-delay-3">
-                <div class="text-4xl sm:text-5xl font-extrabold text-white font-display">20+</div>
-                <div class="text-blue-200 mt-2 font-medium">Indikator Teknikal</div>
-            </div>
-            <div class="reveal reveal-delay-4">
-                <div class="text-4xl sm:text-5xl font-extrabold text-white font-display">11</div>
-                <div class="text-blue-200 mt-2 font-medium">Sektor IDX-IC</div>
-            </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="card"><div class="text-3xl mb-4">📈</div><h3 class="font-bold text-lg mb-2">Chart Teknikal Pro</h3><p class="text-gray-400 text-sm">Candlestick, 9+ indikator (Ichimoku, SAR, ADX, VWAP), drawing tools, multi-timeframe.</p></div>
+            <div class="card"><div class="text-3xl mb-4">🤖</div><h3 class="font-bold text-lg mb-2">AI Multi-Agent</h3><p class="text-gray-400 text-sm">9 agent analisa: Fundamental, Technical, Sentiment, Foreign Flow — plus debate system.</p></div>
+            <div class="card"><div class="text-3xl mb-4">🔍</div><h3 class="font-bold text-lg mb-2">Screener 30+ Filter</h3><p class="text-gray-400 text-sm">PER, PBV, ROE, DER, sector, market cap + Natural Language screener AI.</p></div>
+            <div class="card"><div class="text-3xl mb-4">💼</div><h3 class="font-bold text-lg mb-2">Portfolio Tracker</h3><p class="text-gray-400 text-sm">Multi-portfolio, gain/loss real-time, Monte Carlo, stress test, tax-loss harvesting.</p></div>
+            <div class="card"><div class="text-3xl mb-4">💱</div><h3 class="font-bold text-lg mb-2">Forex Pro Terminal</h3><p class="text-gray-400 text-sm">Strength meter, carry trade, arbitrage, correlation matrix, swap calculator.</p></div>
+            <div class="card"><div class="text-3xl mb-4">📡</div><h3 class="font-bold text-lg mb-2">Live Signals</h3><p class="text-gray-400 text-sm">AI-generated trading signals dengan confidence score, entry/exit, stop loss.</p></div>
         </div>
     </div>
 </section>
 
-<!-- USE CASES -->
-<section class="py-16 lg:py-24 bg-slate-50 dark:bg-slate-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Siapa yang Cocok Pakai Investo?</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3 text-lg">Investo dirancang fleksibel untuk berbagai kebutuhan — kamu yang mana?</p>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
-            <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-1">
-                <div class="text-4xl mb-4">🎓</div>
-                <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-3">Mahasiswa Belajar Investasi</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">Baru mulai kenal saham? Investo bantu kamu pahami fundamental analysis, baca laporan keuangan, dan tracking portfolio pertama dengan interface yang ramah pemula. Belajar investasi sambil praktik langsung.</p>
-            </div>
-            <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-2">
-                <div class="text-4xl mb-4">💼</div>
-                <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-3">Karyawan Tracking Portfolio</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">Punya saham di beberapa sekuritas? Investo jadi satu tempat untuk pantau semua portfolio kamu. Auto-sync gain/loss, dividend tracker, dan rekap alokasi sektor — semua dalam satu dashboard rapi.</p>
-            </div>
-            <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-3">
-                <div class="text-4xl mb-4">📊</div>
-                <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-3">Trader Harian Analisa Teknikal</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">Candlestick chart dengan 6 timeframe, 20+ indikator (MACD, RSI, Bollinger, Fibonacci), drawing tools lengkap, dan multi-chart layout untuk analisa teknikal yang presisi setiap hari.</p>
-            </div>
-            <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-4">
-                <div class="text-4xl mb-4">🤝</div>
-                <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-3">Komunitas Saham Screening</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">Screening bareng komunitas dengan custom criteria. Filter saham berdasarkan PER, PBV, ROE, dividend yield, market cap — lalu diskusikan hasilnya di grup. Data-driven discussion, bukan gosip.</p>
-            </div>
-        </div>
+<!-- STATS -->
+<section class="py-20 bg-white/[0.02]">
+    <div class="max-w-4xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div><div class="stat-num">125+</div><div class="text-gray-500 mt-2 text-sm">Saham IDX</div></div>
+        <div><div class="stat-num">12</div><div class="text-gray-500 mt-2 text-sm">Pair Forex</div></div>
+        <div><div class="stat-num">9</div><div class="text-gray-500 mt-2 text-sm">AI Agents</div></div>
+        <div><div class="stat-num">30+</div><div class="text-gray-500 mt-2 text-sm">Filter Screener</div></div>
     </div>
 </section>
 
 <!-- DEMO ACCOUNTS -->
-<section class="py-16 lg:py-20 bg-white dark:bg-slate-950">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Coba Langsung — Akun Demo</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3">Login dengan akun demo untuk eksplorasi semua fitur Investo tanpa perlu daftar.</p>
+<section class="py-24 px-4">
+    <div class="max-w-2xl mx-auto text-center">
+        <h2 class="font-display text-4xl font-bold mb-4">Coba Sekarang</h2>
+        <p class="text-gray-400 mb-8">Akun demo — semua fitur gratis.</p>
+        <div class="card text-left">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-700"><th class="py-3 text-left">Role</th><th class="py-3 text-left">Email</th><th class="py-3 text-left">Password</th></tr></thead>
+                <tbody>
+                    <tr class="border-b border-gray-800"><td class="py-3"><span class="px-2 py-0.5 bg-blue-900/30 text-blue-300 rounded text-xs font-semibold">Admin</span></td><td class="py-3 font-mono text-sm">admin@investo.test</td><td class="py-3 font-mono text-sm">password</td></tr>
+                    <tr><td class="py-3"><span class="px-2 py-0.5 bg-gray-700 text-gray-300 rounded text-xs font-semibold">User</span></td><td class="py-3 font-mono text-sm">demo@investo.test</td><td class="py-3 font-mono text-sm">password</td></tr>
+                </tbody>
+            </table>
         </div>
-        <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden reveal">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-700">
-                            <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">Role</th>
-                            <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">Email</th>
-                            <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">Password</th>
-                            <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">Cakupan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
-                            <td class="px-6 py-4"><span class="font-semibold text-brand-600 dark:text-brand-400">Admin</span></td>
-                            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">admin@investo.test</td>
-                            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">password</td>
-                            <td class="px-6 py-4 text-slate-500 dark:text-slate-400">Full access — semua fitur, data, dan pengaturan</td>
-                        </tr>
-                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
-                            <td class="px-6 py-4"><span class="font-semibold text-emerald-600 dark:text-emerald-400">User</span></td>
-                            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">demo@investo.test</td>
-                            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">password</td>
-                            <td class="px-6 py-4 text-slate-500 dark:text-slate-400">Investor access — chart, portfolio, screener, alert</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <a href="/login" class="btn-primary mt-8 inline-block">🔑 Masuk Sekarang</a>
+    </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section class="py-24 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+        <h2 class="font-display text-4xl font-bold mb-4">Tampilan Dashboard</h2>
+        <p class="text-gray-400 mb-12">Interface profesional untuk analisa saham & forex.</p>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass rounded-2xl overflow-hidden">
+                <img src="/static/screens/dashboard.png" alt="Dashboard Investo" class="w-full" loading="lazy">
+                <div class="p-3 text-sm text-gray-400">📊 Dashboard Bloomberg-style</div>
             </div>
-            <div class="px-6 py-4 bg-blue-50 dark:bg-brand-900/20 border-t border-blue-100 dark:border-brand-800/30">
-                <p class="text-sm text-slate-600 dark:text-slate-400 text-center">
-                    <a href="/login" class="text-brand-600 dark:text-brand-400 font-semibold hover:underline">Klik di sini untuk login →</a>
-                </p>
+            <div class="glass rounded-2xl overflow-hidden">
+                <img src="/static/screens/saham.png" alt="Daftar Saham IDX" class="w-full" loading="lazy">
+                <div class="p-3 text-sm text-gray-400">📈 Daftar Saham IDX — 125+ emiten</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VIDEO DEMO -->
+<section class="py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="font-display text-4xl font-bold mb-4">Lihat Cara Kerjanya</h2>
+        <p class="text-gray-400 mb-8">Video singkat cara analisa saham dengan Investo.</p>
+        <div class="glass rounded-2xl overflow-hidden">
+            <div class="aspect-video bg-[#0a0a1a] flex items-center justify-center cursor-pointer hover:bg-[#0f0f23] transition-colors" onclick="this.innerHTML='<iframe class=\'w-full h-full\' src=\'https://www.youtube.com/embed/dQw4w9WgXcQ\' frameborder=\'0\' allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                    </div>
+                    <p class="text-gray-400 text-sm">Tonton Demo (2:30)</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- PRICING -->
-<section id="harga" class="py-16 lg:py-24 bg-slate-50 dark:bg-slate-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 reveal">
-            <h2 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">Harga yang Transparan</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-3 text-lg">Mulai gratis, upgrade kapan saja sesuai kebutuhan kamu.</p>
-        </div>
-        <div class="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-1 relative flex flex-col">
-                <div class="mb-6">
-                    <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Free</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Untuk investor pemula</p>
-                </div>
-                <div class="mb-6">
-                    <span class="text-4xl font-extrabold text-slate-900 dark:text-white font-display">Rp 0</span>
-                    <span class="text-slate-500 dark:text-slate-400">/bulan</span>
-                </div>
-                <ul class="space-y-3 mb-8 flex-1 text-sm text-slate-600 dark:text-slate-300">
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Watchlist 20 saham</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Basic chart (line & candlestick)</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5 Price alert</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>1 Portfolio</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Berita pasar</li>
-                </ul>
-                <a href="/register" class="block text-center font-semibold py-3 px-6 rounded-xl border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-brand-400 dark:hover:border-brand-500 hover:text-brand-600 transition-all">Mulai Gratis</a>
-            </div>
-            <div class="bg-gradient-to-b from-brand-600 to-brand-700 border-2 border-brand-500 rounded-2xl p-8 card-lift reveal reveal-delay-2 relative flex flex-col text-white shadow-2xl shadow-brand-500/30 scale-[1.03] lg:scale-105">
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 text-xs font-bold px-4 py-1 rounded-full">POPULER</div>
-                <div class="mb-6">
-                    <h3 class="font-display text-xl font-bold">Pro</h3>
-                    <p class="text-blue-100 text-sm mt-1">Untuk investor serius</p>
-                </div>
-                <div class="mb-6">
-                    <span class="text-4xl font-extrabold font-display">Rp 99rb</span>
-                    <span class="text-blue-200">/bulan</span>
-                </div>
-                <ul class="space-y-3 mb-8 flex-1 text-sm text-blue-100">
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Unlimited portfolio</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Full chart + 20+ indikator</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Stock screener 15+ filter</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Unlimited price alert</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Data fundamental lengkap</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Forex market data</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Export data ke CSV/Excel</li>
-                </ul>
-                <a href="/register?plan=pro" class="block text-center font-semibold py-3 px-6 rounded-xl bg-white text-brand-700 hover:bg-blue-50 transition-all shadow-lg">Coba Pro Gratis 14 Hari</a>
-            </div>
-            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 card-lift reveal reveal-delay-3 relative flex flex-col">
-                <div class="mb-6">
-                    <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Enterprise</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Untuk bisnis & komunitas</p>
-                </div>
-                <div class="mb-6">
-                    <span class="text-4xl font-extrabold text-slate-900 dark:text-white font-display">Custom</span>
-                </div>
-                <ul class="space-y-3 mb-8 flex-1 text-sm text-slate-600 dark:text-slate-300">
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Whitelabel dengan brand sendiri</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>API access untuk integrasi</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Custom data source</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Priority support 24/7</li>
-                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Dedicated server option</li>
-                </ul>
-                <a href="/contact" class="block text-center font-semibold py-3 px-6 rounded-xl border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-brand-400 dark:hover:border-brand-500 hover:text-brand-600 transition-all">Hubungi Kami</a>
-            </div>
+<section id="pricing" class="py-24 px-4 bg-white/[0.02]">
+    <div class="max-w-5xl mx-auto text-center">
+        <h2 class="font-display text-4xl font-bold mb-4">Harga Sederhana</h2>
+        <p class="text-gray-400 mb-12">Mulai gratis. Upgrade sesuai kebutuhan.</p>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="card text-left"><div class="text-sm text-gray-400 mb-2">Free</div><div class="text-3xl font-black mb-1">Rp 0</div><div class="text-sm text-gray-500 mb-6">/bulan</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Chart dasar + 5 indikator</li><li>✅ 1 Portfolio + 1 Watchlist</li><li>✅ 5 Alert harga</li><li>✅ Data delayed 15 menit</li><li class="text-gray-600">❌ AI Signals</li><li class="text-gray-600">❌ Screener advanced</li></ul><a href="/register" class="block text-center py-3 border border-gray-600 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors">Mulai Gratis</a></div>
+            <div class="card text-left border-blue-500/50 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-600 rounded-full text-xs font-bold">POPULER</div><div class="text-sm text-gray-400 mb-2 mt-2">Pro</div><div class="text-3xl font-black mb-1">Rp 99K</div><div class="text-sm text-gray-500 mb-6">/bulan</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Semua fitur Free</li><li>✅ AI Multi-Agent Signals</li><li>✅ Screener 30+ filter</li><li>✅ Unlimited Portfolio</li><li>✅ Export PDF & CSV</li><li>✅ Backtesting</li></ul><a href="/register" class="block text-center py-3 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg text-sm font-semibold hover:from-blue-500 hover:to-violet-500 transition-colors">Upgrade Pro</a></div>
+            <div class="card text-left"><div class="text-sm text-gray-400 mb-2">Whitelabel</div><div class="text-3xl font-black mb-1">Custom</div><div class="text-sm text-gray-500 mb-6">one-time</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Semua fitur Pro</li><li>✅ Source code</li><li>✅ Custom domain</li><li>✅ API key</li><li>✅ Priority support</li><li>✅ Self-hosted</li></ul><a href="https://wa.me/6281234567890" class="block text-center py-3 border border-gray-600 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors">Hubungi Kami</a></div>
         </div>
     </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="py-20 lg:py-28 bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.5) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(147,197,253,0.4) 0%, transparent 50%);"></div>
-    <div class="absolute top-20 left-16 text-8xl opacity-8 animate-float select-none">📈</div>
-    <div class="absolute bottom-16 right-16 text-7xl opacity-8 animate-float-slow select-none hidden lg:block">💹</div>
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 reveal">Siap Analisa Lebih Cerdas?</h2>
-        <p class="text-lg text-blue-200/80 mb-10 max-w-2xl mx-auto reveal reveal-delay-1">Gabung dengan ribuan investor Indonesia yang sudah upgrade cara mereka analisa saham. Mulai gratis — tanpa kartu kredit.</p>
-        <div class="flex flex-col sm:flex-row items-center gap-4 justify-center reveal reveal-delay-2">
-            <a href="/register" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-white text-brand-700 font-bold text-lg rounded-2xl shadow-2xl shadow-black/30 hover:shadow-2xl hover:shadow-black/40 transition-all hover:-translate-y-1">
-                Mulai Gratis Sekarang
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-            </a>
-        </div>
-        <p class="text-blue-300/60 text-sm mt-5 reveal reveal-delay-3">Tidak perlu kartu kredit · Batal kapan saja · Free plan selamanya</p>
+<!-- CTA -->
+<section class="py-24 px-4 text-center">
+    <div class="max-w-2xl mx-auto">
+        <h2 class="font-display text-4xl font-bold mb-4">Siap Analisa Lebih Cerdas?</h2>
+        <p class="text-gray-400 mb-8">Gabung dengan ribuan investor Indonesia yang sudah pakai Investo.</p>
+        <a href="/register" class="btn-primary pulse-glow">🚀 Mulai Gratis Sekarang</a>
+        <p class="text-gray-600 text-sm mt-4">Tidak perlu kartu kredit.</p>
     </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="bg-slate-900 text-slate-300 pt-16 lg:pt-20 pb-8 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
-            <div class="lg:col-span-2">
-                <a href="/" class="flex items-center gap-2.5 mb-4">
-                    <span class="text-2xl">🏦</span>
-                    <span class="font-display font-bold text-2xl text-white">Investo</span>
-                </a>
-                <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Platform analisa saham & forex Indonesia. Chart teknikal, fundamental IDX, screener, dan portfolio tracker — satu dashboard untuk semua.</p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Produk</h4>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="/saham" class="text-slate-400 hover:text-white transition-colors">Saham</a></li>
-                    <li><a href="/forex" class="text-slate-400 hover:text-white transition-colors">Forex</a></li>
-                    <li><a href="/screener" class="text-slate-400 hover:text-white transition-colors">Screener</a></li>
-                    <li><a href="/alert" class="text-slate-400 hover:text-white transition-colors">Alert</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Perusahaan</h4>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="/tentang" class="text-slate-400 hover:text-white transition-colors">Tentang</a></li>
-                    <li><a href="/blog" class="text-slate-400 hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="/contact" class="text-slate-400 hover:text-white transition-colors">Kontak</a></li>
-                    <li><a href="/faq" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Legal</h4>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="/privacy" class="text-slate-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
-                    <li><a href="/terms" class="text-slate-400 hover:text-white transition-colors">Syarat Layanan</a></li>
-                    <li><a href="/disclaimer" class="text-slate-400 hover:text-white transition-colors">Disclaimer</a></li>
-                </ul>
-                <div class="flex items-center gap-3 mt-6">
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-600 flex items-center justify-center text-slate-400 hover:text-white transition-all"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-600 flex items-center justify-center text-slate-400 hover:text-white transition-all"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-600 flex items-center justify-center text-slate-400 hover:text-white transition-all"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                </div>
-            </div>
+<footer class="border-t border-gray-800 py-12 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-400">
+        <div>
+            <div class="font-bold text-white mb-3">Investo</div>
+            <p class="text-xs">Platform analisa saham & forex Indonesia. AI-powered, real-time data.</p>
         </div>
-        <div class="border-t border-slate-800 pt-8 text-center">
-            <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go.</p>
-            <p class="text-slate-600 text-xs mt-3 max-w-2xl mx-auto leading-relaxed">Disclaimer: Investo adalah platform analisa dan informasi pasar modal. Semua data, chart, dan analisa disediakan untuk tujuan edukasi dan informasi saja. Investo tidak memberikan rekomendasi investasi, saran keuangan, atau ajakan untuk membeli/menjual efek. Keputusan investasi sepenuhnya merupakan tanggung jawab pengguna. Kinerja masa lalu tidak menjamin hasil di masa depan.</p>
+        <div>
+            <div class="font-semibold text-gray-300 mb-3">Produk</div>
+            <a href="/saham" class="block hover:text-white mb-1">Saham IDX</a>
+            <a href="/forex" class="block hover:text-white mb-1">Forex</a>
+            <a href="/screener" class="block hover:text-white mb-1">Screener</a>
+            <a href="/ai/signal-center" class="block hover:text-white mb-1">AI Signals</a>
+        </div>
+        <div>
+            <div class="font-semibold text-gray-300 mb-3">Perusahaan</div>
+            <a href="/blog" class="block hover:text-white mb-1">Blog</a>
+            <a href="/docs" class="block hover:text-white mb-1">Dokumentasi</a>
+            <a href="/pricing" class="block hover:text-white mb-1">Harga</a>
+            <a href="/kontak" class="block hover:text-white mb-1">Kontak</a>
+        </div>
+        <div>
+            <div class="font-semibold text-gray-300 mb-3">Legal</div>
+            <p class="text-xs mb-2">© 2026 Investo.<br>Powered by Go.</p>
+            <p class="text-xs text-gray-600">Investo adalah platform analisa, bukan rekomendasi investasi.</p>
         </div>
     </div>
 </footer>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.reveal').forEach(function(el) {
-        observer.observe(el);
-    });
-});
-</script>
 </body>
 </html>

@@ -62,15 +62,15 @@
     </style>
 </head>
 <body class="h-full flex" x-data="agentSystem()">
-    <aside class="sidebar fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-surface-border flex flex-col" :class="{ 'open': sidebarOpen }">
+    <aside class="sidebar fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-surface-border flex flex-col" class="max-md:hidden">
         [[template "components/sidebar.html" .]]
     </aside>
-    <div class="sidebar-overlay fixed inset-0 bg-black/50 z-30 hidden" :class="{ '!block': sidebarOpen }" @click="sidebarOpen = false"></div>
+    <div class="sidebar-overlay fixed inset-0 bg-black/50 z-30 hidden"  onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')"></div>
 
     <div class="main-content flex-1 ml-0 lg:ml-64 flex flex-col min-h-screen">
         <header class="topbar sticky top-0 z-20 bg-surface/90 backdrop-blur-xl border-b border-surface-border px-4 lg:px-6 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-surface-hover text-slate-400">
+                <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 rounded-lg hover:bg-surface-hover text-slate-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div>
@@ -850,5 +850,5 @@
             }
         }
     </script>
-</body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
 </html>

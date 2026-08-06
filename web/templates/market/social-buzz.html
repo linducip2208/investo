@@ -30,7 +30,7 @@
 <body class="h-full" x-data="{ sidebarOpen: false, selectedCode: '[[.QueryCode]]' }">
     <div class="topbar">
         <div class="flex items-center gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <aside class="sidebar" :class="{ 'open': sidebarOpen }" @click.outside="sidebarOpen=false">
+    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
         <div class="p-4 space-y-1">
             <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
@@ -62,7 +62,7 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
 
     <div class="main-content">
         <div class="max-w-7xl mx-auto space-y-6">
@@ -170,5 +170,5 @@
             [[end]]
         </div>
     </div>
-</body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
 </html>

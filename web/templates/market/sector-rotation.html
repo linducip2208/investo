@@ -110,7 +110,7 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" :class="{ 'open': sidebarOpen }">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
         <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
@@ -141,7 +141,7 @@
 
     <!-- TOPBAR -->
     <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
-        <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div class="text-sm text-slate-400"><span class="text-slate-600">Market /</span> Sector Rotation Radar</div>
@@ -256,6 +256,6 @@
         </template>
     </main>
 
-    <div x-show="sidebarOpen" @click="sidebarOpen=false" x-cloak class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-</body>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
 </html>

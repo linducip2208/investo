@@ -187,7 +187,7 @@
                 </a>
             </div>
 
-            <div x-show="confirmFetch" x-cloak class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div x-show="confirmFetch" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                 <div class="card rounded-2xl border p-6 max-w-md w-full shadow-2xl" @click.outside="confirmFetch = false">
                     <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Fetch All Data</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Ini akan memicu pengambilan data harga terbaru dari sumber eksternal untuk semua saham. Proses ini mungkin memakan waktu beberapa menit.</p>
@@ -200,7 +200,7 @@
                 </div>
             </div>
 
-            <div x-show="confirmBackfill" x-cloak class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div x-show="confirmBackfill" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                 <div class="card rounded-2xl border p-6 max-w-md w-full shadow-2xl" @click.outside="confirmBackfill = false">
                     <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Backfill Historical Data</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Ini akan mengunduh 5 tahun data historis dari Yahoo Finance untuk semua saham. Proses ini memakan waktu lama (beberapa menit hingga jam). Lanjutkan?</p>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COT Data (Commitment of Traders) · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .sentiment-badge{padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="cotPage()">
+    <script>
+        function cotPage() {
+            return {
+                sidebarOpen: false, clock: '', selectedPair: '', report: null,
+                chart: null,
+                init() {
+                    var self = this;
+                    this.updateClock(); setInterval(() => this.updateClock(), 1000);
+                    [[range .Reports]]
+                    [[if .Pair]]
+                    if (!self.selectedPair) { self.selectedPair = '[[.Pair]]'; self.loadCOT('[[.Pair]]'); }
+                    [[end]]
+                    [[end]]
+                },
+                updateClock() {
+                    var d = new Date();
+                    this.clock = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'}) + ' WIB';
+                },
+                async loadCOT(pair) {
+                    this.selectedPair = pair;
+                    try {
+                        var resp = await fetch('/api/forex/cot/' + encodeURIComponent(pair));
+                        this.report = await resp.json();
+                    } catch(e) { this.report = {error: e.message}; }
+                    var self = this;
+                    this.$nextTick(function() { self.renderChart(); });
+                },
+                fmt(v) { return v ? parseFloat(v).toLocaleString('id-ID',{minimumFractionDigits:0}) : '0'; },
+                renderChart() {
+                    var self = this;
+                    if (!this.report || !this.report.historical_positions) return;
+                    var data = this.report.historical_positions;
+                    var ctx = document.getElementById('cotChart');
+                    if (this.chart) this.chart.destroy();
+                    this.chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.map(function(d){return d.week_start;}),
+                            datasets: [
+                                {label: 'Long', data: data.map(function(d){return d.long_positions;}), backgroundColor: 'rgba(52,211,153,0.6)', borderColor: '#34d399', borderWidth: 1, borderRadius: 4},
+                                {label: 'Short', data: data.map(function(d){return d.short_positions;}), backgroundColor: 'rgba(248,113,113,0.6)', borderColor: '#f87171', borderWidth: 1, borderRadius: 4}
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: {legend: {labels: {color: '#94a3b8', usePointStyle: true, pointStyleWidth: 8}}},
+                            scales: {
+                                x: {grid: {color: 'rgba(148,163,184,0.1)'}, ticks: {color: '#94a3b8', font: {size: 10}}},
+                                y: {grid: {color: 'rgba(148,163,184,0.1)'}, ticks: {color: '#94a3b8', callback: function(v){return (v/1000).toFixed(0)+'k';}}}
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col max-md:hidden" id="sidebar">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link active"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <div class="pl-8 space-y-0.5">
+                <a href="/forex/swap-calc" class="sidebar-link !pl-6">Swap Calc</a>
+                <a href="/forex/margin-calc" class="sidebar-link !pl-6">Margin Calc</a>
+                <a href="/forex/pip-calc" class="sidebar-link !pl-6">Pip Value</a>
+                <a href="/forex/volume-profile" class="sidebar-link !pl-6">Volume Profile</a>
+                <a href="/forex/cot" class="sidebar-link !pl-6 text-blue-400 bg-blue-900/20">COT Data</a>
+            </div>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Risk</p>
+            <a href="/risk/wash-sale" class="sidebar-link"><span class="icon">&#x26A0;</span> Wash Sale</a>
+            <a href="/risk/beta-weighted" class="sidebar-link"><span class="icon">&#x0392;</span> Beta Weighted</a>
+            <a href="/risk/hedge-finder" class="sidebar-link"><span class="icon">&#x1F6E1;</span> Hedge Finder</a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block"><input type="text" placeholder="Cari saham, forex..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"></div>
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="text-xs text-slate-500 font-mono" x-text="clock"></div>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">COT Data — Commitment of Traders</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">Posisi trader institusional di pasar futures forex</p>
+                </div>
+            </div>
+
+            <div class="bg-amber-900/20 border border-amber-900/40 rounded-xl p-3 text-sm text-amber-300 flex items-start gap-2">
+                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Data ilustrasi. COT real membutuhkan API berbayar dari CFTC (Commodity Futures Trading Commission) atau ICE. Data di sini adalah simulasi untuk edukasi.</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                [[range .Reports]]
+                <button @click="loadCOT('[[.Pair]]')" :class="selectedPair==='[[.Pair]]'?'bg-blue-600 text-white':'bg-slate-700 text-slate-400'" class="px-4 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-slate-600">[[.Pair]]</button>
+                [[end]]
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5" x-show="report && !report.error">
+                <div class="card p-4 lg:col-span-2">
+                    <div class="widget-title" x-text="'Long vs Short Positions — ' + selectedPair"></div>
+                    <div style="height:300px"><canvas id="cotChart"></canvas></div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="card p-5 space-y-3">
+                        <div class="widget-title">Ringkasan Posisi</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                                <span class="text-[10px] text-slate-500">Long</span>
+                                <span class="font-mono text-base font-bold text-emerald-400 block" x-text="fmt(report.long_positions)"></span>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                                <span class="text-[10px] text-slate-500">Short</span>
+                                <span class="font-mono text-base font-bold text-red-400 block" x-text="fmt(report.short_positions)"></span>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                                <span class="text-[10px] text-slate-500">Net Positions</span>
+                                <span class="font-mono text-base font-bold block" :class="report.net_positions >= 0 ? 'text-emerald-400' : 'text-red-400'" x-text="fmt(report.net_positions)"></span>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                                <span class="text-[10px] text-slate-500">Open Interest</span>
+                                <span class="font-mono text-base font-bold text-blue-400 block" x-text="fmt(report.open_interest)"></span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-900/20 border border-blue-900/40 rounded-xl p-3 text-center">
+                            <span class="block text-[10px] text-blue-400 mb-1">COT Index</span>
+                            <span class="font-mono text-2xl font-bold text-blue-300" x-text="report.cot_index ? report.cot_index.toFixed(0) : '--'"></span>
+                            <span class="block text-xs font-semibold mt-0.5" :class="report.sentiment" x-text="report.sentiment || ''"></span>
+                        </div>
+                        <div class="text-[10px] text-slate-600">Last updated: <span x-text="report.last_updated || ''"></span></div>
+                    </div>
+
+                    <div class="card p-5">
+                        <div class="widget-title">Cara Membaca COT</div>
+                        <ul class="text-xs text-slate-400 space-y-1.5">
+                            <li><b class="text-white">COT Index 80+</b> = posisi long ekstrem, risiko reversal bearish</li>
+                            <li><b class="text-white">COT Index 20-</b> = posisi short ekstrem, risiko reversal bullish</li>
+                            <li>Net position positif = spekulator bullish</li>
+                            <li>Perubahan mingguan besar = momentum shift</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="report && report.error" class="card p-6 text-center">
+                <p class="text-red-400" x-text="report.error"></p>
+            </div>
+        </main>
+    </div>
+    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+</body>
+</html>
