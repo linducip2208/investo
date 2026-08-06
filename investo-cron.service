@@ -6,6 +6,5 @@ After=network.target mysql.service
 Type=oneshot
 WorkingDirectory=/www/wwwroot/investo
 ExecStart=/www/wwwroot/investo/cron-fetch
-User=www
 StandardOutput=journal
 StandardError=journal
