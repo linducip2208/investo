@@ -9,6 +9,3 @@ ExecStart=/opt/investo/cron-fetch
 User=investo
 StandardOutput=journal
 StandardError=journal
-
-[Install]
-WantedBy=multi-user.target
