@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi — Investo | Panduan Penggunaan Aplikasi Saham & Forex</title>
+    <meta name="description" content="Dokumentasi lengkap aplikasi Investo. Tutorial langkah demi langkah, demo account, struktur menu, dan fitur lengkap dengan screenshot.">
+    <meta property="og:title" content="Dokumentasi — Investo">
+    <meta property="og:description" content="Panduan lengkap penggunaan aplikasi Investo — saham & forex platform.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:16px}
+        .card-lift{transition:transform .35s cubic-bezier(0.16,1,0.3,1),box-shadow .35s cubic-bezier(0.16,1,0.3,1)}
+        .card-lift:hover{transform:translateY(-6px);box-shadow:0 20px 40px -12px rgba(0,0,0,.3)}
+        @keyframes fadeSlideUp{0%{transform:translateY(28px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+        @media(max-width:768px){.jump-nav{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+    </style>
+</head>
+<body>
+
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">I</span>
+                </div>
+                <span class="font-bold text-xl text-white">Investo</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-6 text-sm">
+                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/docs" class="text-blue-400 font-semibold">Docs</a>
+                <a href="/blog" class="text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+                <a href="/faq" class="text-slate-300 hover:text-blue-400 transition-colors">FAQ</a>
+                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            </div>
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="sticky top-16 z-40 bg-[#0b1120]/90 backdrop-blur-lg border-b border-slate-700/50 jump-nav" x-data="{searchTerm:''}">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-1 sm:gap-2 py-3 text-sm overflow-x-auto whitespace-nowrap">
+            <a href="#search" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">Cari</a>
+            <a href="#demo" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">Akun Demo</a>
+            <a href="#menu" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">Struktur Menu</a>
+            <a href="#tutorial" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">Tutorial</a>
+            <a href="#fitur" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">Fitur</a>
+            <a href="#faq" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-900/20 font-medium transition-all">FAQ</a>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16" x-data="docsPage()">
+
+    <div class="text-center mb-16 reveal">
+        <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4">Dokumentasi Investo</h1>
+        <p class="text-slate-400 text-base max-w-2xl mx-auto">Panduan lengkap penggunaan aplikasi. Dari login pertama hingga analisa saham profesional.</p>
+    </div>
+
+    <section id="search" class="mb-12 reveal">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6">Cari Tutorial</h2>
+        <p class="text-slate-400 mb-4">Ketik kata kunci untuk memfilter langkah tutorial.</p>
+        <input type="text" placeholder="Cari topik ... contoh: chart, alert, portfolio, screener" x-model="searchQuery" @input="filterTutorial()" class="w-full max-w-2xl px-5 py-3.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+        <p class="text-xs text-slate-500 mt-2" x-text="'Menampilkan '+visibleTutorials+' dari '+totalTutorials+' langkah'"></p>
+    </section>
+
+    <section id="demo" class="mb-20 reveal">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6">Akun Demo</h2>
+        <p class="text-slate-400 mb-6">Gunakan akun berikut untuk mencoba semua fitur Investo tanpa perlu registrasi.</p>
+        <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800">Role</th>
+                            <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800">Email</th>
+                            <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800">Password</th>
+                            <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800">Cakupan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        <tr>
+                            <td class="px-6 py-4"><span class="font-semibold text-blue-400">Admin</span></td>
+                            <td class="px-6 py-4 font-mono text-slate-300">admin@investo.test</td>
+                            <td class="px-6 py-4 font-mono text-slate-300">password</td>
+                            <td class="px-6 py-4 text-slate-400">Full access — semua fitur, data, dan pengaturan sistem</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4"><span class="font-semibold text-emerald-400">User</span></td>
+                            <td class="px-6 py-4 font-mono text-slate-300">demo@investo.test</td>
+                            <td class="px-6 py-4 font-mono text-slate-300">password</td>
+                            <td class="px-6 py-4 text-slate-400">Investor access — chart, portfolio, screener, alert</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="mb-20 reveal">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6">Struktur Menu Admin</h2>
+        <p class="text-slate-400 mb-6">Berikut adalah struktur navigasi di panel admin Investo.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Master Data</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Saham</li>
+                    <li>Pair Forex</li>
+                    <li>Sektor IDX-IC</li>
+                    <li>Indeks Pasar</li>
+                    <li>Pengguna</li>
+                </ul>
+            </div>
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Analisa</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Chart Teknikal</li>
+                    <li>Analisa Fundamental</li>
+                    <li>Stock Screener</li>
+                    <li>Price Alert</li>
+                </ul>
+            </div>
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Portfolio</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Portfolio Tracker</li>
+                    <li>Transaksi Beli/Jual</li>
+                    <li>Dividend Tracker</li>
+                    <li>Alokasi Sektor</li>
+                </ul>
+            </div>
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Berita</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Agregator Berita</li>
+                    <li>Sentiment Analysis</li>
+                    <li>Sumber Berita</li>
+                </ul>
+            </div>
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Marketing</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Blog Posts</li>
+                    <li>Halaman pSEO</li>
+                    <li>Banner Promosi</li>
+                </ul>
+            </div>
+            <div class="card-lift card p-5">
+                <h3 class="text-lg font-bold text-white mb-3">Sistem</h3>
+                <ul class="space-y-1.5 text-sm text-slate-400">
+                    <li>Pengaturan</li>
+                    <li>Audit Log</li>
+                    <li>Backup Database</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="tutorial" class="mb-20">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6 reveal">Tutorial Langkah Demi Langkah</h2>
+        <p class="text-slate-400 mb-8 reveal">Ikuti panduan berikut untuk menguasai Investo dari awal hingga mahir.</p>
+
+        <div class="space-y-10" id="tutorialSteps">
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="registrasi login daftar akun signup register">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">1</div>
+                    <h3 class="text-xl font-bold text-white">Registrasi & Login</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Buka halaman login di <code class="bg-slate-800 px-1.5 py-0.5 rounded text-blue-400 text-xs">/login</code>. Klik "Daftar Gratis" jika belum punya akun. Isi nama, email, dan password. Setelah verifikasi email, Anda bisa langsung login dan masuk ke dashboard utama. Dashboard menampilkan ringkasan portfolio, indeks pasar, dan berita terkini.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="watchlist pantau saham favorit monitoring">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">2</div>
+                    <h3 class="text-xl font-bold text-white">Setup Watchlist</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Navigasi ke menu Watchlist di sidebar. Klik "Tambah Saham" dan cari saham yang ingin Anda pantau — bisa berdasarkan kode (misal: BBRI, TLKM) atau nama perusahaan. Tambahkan ke watchlist. Anda bisa membuat multiple watchlist untuk kategori berbeda: "Blue Chip", "Dividen Tinggi", "Spekulasi", dll.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="chart teknikal analisa grafik indikator candlestick rsi macd bollinger fibonacci">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">3</div>
+                    <h3 class="text-xl font-bold text-white">Analisa Chart Teknikal</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Buka halaman saham dari watchlist, klik tab "Chart". Pilih timeframe (1H, 4H, 1D, 1W, 1M, 1Y). Tambahkan indikator teknikal: MA (SMA/EMA), Bollinger Bands, MACD, RSI, Stochastic, Fibonacci Retracement. Drawing tools tersedia untuk trend line, support/resistance, dan channel. Semua pengaturan chart disimpan otomatis.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="fundamental laporan keuangan neraca laba rugi arus kas per pbv roe eps der">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">4</div>
+                    <h3 class="text-xl font-bold text-white">Analisa Fundamental</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Di halaman detail saham, buka tab "Fundamental". Anda akan melihat: laporan laba rugi, neraca, arus kas, rasio keuangan (PER, PBV, ROE, ROA, DER, EPS), dan corporate action (dividen, stock split, right issue). Data diambil dari laporan keuangan resmi IDX dan diperbaharui setiap kuartal.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="portfolio tracker untung rugi gain loss alokasi sektor transaksi">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">5</div>
+                    <h3 class="text-xl font-bold text-white">Portfolio Tracker</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Ke menu Portfolio di sidebar. Klik "Buat Portfolio Baru", beri nama, lalu tambahkan saham yang Anda miliki. Masukkan harga beli, jumlah lot, dan tanggal transaksi. Sistem otomatis menghitung: gain/loss real-time, persentase return, alokasi per sektor, total nilai portfolio, dan dividend yang sudah diterima. Anda bisa memiliki multiple portfolio.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="screener filter screening market cap per pbv roe eps growth dividend yield">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">6</div>
+                    <h3 class="text-xl font-bold text-white">Stock Screener</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Buka Screener dari menu Analisa. Gunakan 15+ filter: sektor, market cap, PER, PBV, ROE, EPS growth, dividend yield, DER, current ratio, net profit margin. Atur rentang nilai untuk setiap filter. Hasil bisa disort berdasarkan kolom manapun. Klik "Simpan Screener" untuk menyimpan kriteria favorit Anda agar bisa digunakan kembali.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="alert notifikasi harga target atas bawah pause">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">7</div>
+                    <h3 class="text-xl font-bold text-white">Price Alert</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Navigasi ke Alert di sidebar. Klik "Buat Alert Baru". Pilih saham, tentukan kondisi (di atas / di bawah), masukkan harga target, dan pilih metode notifikasi (email). Sistem akan mengirimkan notifikasi otomatis saat harga saham mencapai target yang Anda tentukan. Anda bisa mengelola semua alert — edit, pause, atau hapus kapan saja.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="forex mata uang valas eur usd idr jpy gbp sgd kurs">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">8</div>
+                    <h3 class="text-xl font-bold text-white">Forex Market</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Buka menu Forex untuk melihat pasangan mata uang. Tersedia major pairs (EUR/USD, GBP/USD, USD/JPY) dan exotic pairs dengan IDR (USD/IDR, EUR/IDR, SGD/IDR, JPY/IDR). Data rate real-time, chart multi-timeframe, dan kalkulator konversi mata uang. Cocok untuk trader forex dan pelaku bisnis yang perlu pantau kurs.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="berita sentiment agregator positif negatif netral filter sumber">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">9</div>
+                    <h3 class="text-xl font-bold text-white">Berita & Sentiment</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Menu Berita menampilkan agregator berita dari berbagai sumber terpercaya. Berita dikategorikan berdasarkan saham terkait. Sistem sentiment analysis otomatis mengklasifikasikan berita sebagai positif, negatif, atau netral. Gunakan filter untuk mencari berita berdasarkan saham, sektor, atau sumber tertentu.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="perbandingan komparasi vs bandingkan side by side value growth income">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">10</div>
+                    <h3 class="text-xl font-bold text-white">Perbandingan Saham</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Dari halaman saham manapun, klik "Bandingkan" dan pilih saham kedua. Atau langsung akses <code class="bg-slate-800 px-1.5 py-0.5 rounded text-blue-400 text-xs">/compare/{A}-vs-{B}</code>. Anda akan melihat tabel perbandingan 15+ metrik side-by-side, analisa untuk value/growth/income investor, dan kesimpulan mana yang lebih cocok untuk strategi Anda.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="ekspor export csv excel pdf download laporan">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">11</div>
+                    <h3 class="text-xl font-bold text-white">Ekspor Data</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Dari halaman screener, portfolio, atau list saham, klik tombol "Ekspor". Pilih format: CSV, Excel (XLSX), atau PDF. Untuk laporan PDF, Anda bisa memilih template laporan yang sudah disediakan — cocok untuk presentasi atau arsip pribadi.</p>
+            </div>
+
+            <div class="card p-6 lg:p-8 reveal tutorial-step" x-ref="step" data-keywords="mobile hp smartphone responsive chrome safari">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-900/30 text-blue-400 flex items-center justify-center font-bold text-lg">12</div>
+                    <h3 class="text-xl font-bold text-white">Akses Mobile</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-sm">Investo sepenuhnya responsive — Anda bisa mengakses semua fitur dari browser HP tanpa install aplikasi. Buka domain Investo dari Chrome/Safari di HP, login, dan dashboard akan menyesuaikan otomatis ke layar kecil. Semua fitur termasuk chart, screener, dan portfolio tracker berfungsi penuh di mobile.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="fitur" class="mb-20">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 reveal">Fitur Lengkap Investo</h2>
+
+        <div class="space-y-16">
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center reveal">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Dashboard Overview</h3>
+                    <p class="text-slate-400 leading-relaxed mb-4">Halaman pertama yang Anda lihat setelah login. Menampilkan ringkasan penting: total portfolio value, gain/loss hari ini, indeks IHSG terbaru, top gainers & losers, kalender ekonomi, dan berita terkini. Semua dalam satu layar yang rapi dan informatif.</p>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Ringkasan portfolio real-time</li>
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Index market overview (IHSG, LQ45, IDX30)</li>
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Top gainers & losers harian</li>
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Kalender ekonomi & corporate action</li>
+                    </ul>
+                </div>
+                <div class="card overflow-hidden shadow-lg">
+                    <div class="flex items-center gap-1.5 px-4 py-2.5 border-b border-slate-700 bg-slate-800">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                        <div class="ml-2 text-xs text-slate-400">Dashboard Overview</div>
+                    </div>
+                    <div class="aspect-video bg-slate-800 flex items-center justify-center">
+                        <span class="text-5xl opacity-25">📊</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center reveal">
+                <div class="order-2 lg:order-1">
+                    <div class="card overflow-hidden shadow-lg">
+                        <div class="flex items-center gap-1.5 px-4 py-2.5 border-b border-slate-700 bg-slate-800">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                            <div class="ml-2 text-xs text-slate-400">Chart Teknikal</div>
+                        </div>
+                        <div class="aspect-video bg-slate-800 flex items-center justify-center">
+                            <span class="text-5xl opacity-25">📈</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <h3 class="text-2xl font-bold text-white mb-3">Chart Teknikal</h3>
+                    <p class="text-slate-400 leading-relaxed mb-4">Chart interaktif dengan 20+ indikator teknikal. Candlestick dengan 6 timeframe (1H sampai 1Y). Drawing tools: trend line, horizontal line, Fibonacci, channel. Multi-chart layout untuk membandingkan beberapa saham sekaligus.</p>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Candlestick & OHLC chart types</li>
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>MACD, RSI, Bollinger, Moving Average</li>
+                        <li class="flex items-start gap-2"><svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Volume profile & timeframes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="mb-20 reveal">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6">Pertanyaan Umum (FAQ)</h2>
+        <div class="space-y-3" x-data="{openFaq:null}">
+            <template x-for="(faq,i) in faqs" :key="i">
+                <div class="card overflow-hidden">
+                    <button class="w-full flex items-center justify-between p-5 text-left hover:bg-slate-800/50 transition-colors" @click="openFaq = openFaq===i ? null : i">
+                        <span class="font-semibold text-white text-sm" x-text="faq.q"></span>
+                        <svg class="w-5 h-5 text-slate-400 shrink-0 transition-transform" :class="{'rotate-180':openFaq===i}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="px-5 pb-5" x-show="openFaq===i" x-collapse>
+                        <p class="text-sm text-slate-400 leading-relaxed" x-text="faq.a"></p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <section id="videos" class="mb-20 reveal">
+        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6">Video Tutorial</h2>
+        <p class="text-slate-400 mb-6">Tonton panduan video untuk setiap fitur utama Investo.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card p-4 text-center">
+                <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-12 h-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h4 class="font-semibold text-white text-sm mb-1">Getting Started</h4>
+                <p class="text-xs text-slate-500">5 menit &bull; Segera hadir</p>
+            </div>
+            <div class="card p-4 text-center">
+                <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-12 h-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h4 class="font-semibold text-white text-sm mb-1">Analisa Teknikal</h4>
+                <p class="text-xs text-slate-500">12 menit &bull; Segera hadir</p>
+            </div>
+            <div class="card p-4 text-center">
+                <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-12 h-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h4 class="font-semibold text-white text-sm mb-1">Portfolio Management</h4>
+                <p class="text-xs text-slate-500">8 menit &bull; Segera hadir</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal text-center">
+        <h2 class="text-2xl font-bold text-white mb-4">Butuh Bantuan?</h2>
+        <p class="text-slate-400 text-sm max-w-lg mx-auto mb-6">Tim support Investo siap membantu pertanyaan seputar penggunaan aplikasi, bug report, atau feature request.</p>
+        <a href="/kontak" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold shadow-lg hover:shadow-xl hover:from-blue-500 hover:to-blue-700 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            Hubungi Support
+        </a>
+    </section>
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
+            <h2 class="text-2xl font-bold mb-3">Siap Mencoba?</h2>
+            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Login dengan akun demo atau daftar gratis untuk memulai perjalanan investasi Anda.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/login" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">Masuk ke Admin Panel</a>
+                <a href="/register" class="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white/60 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-all">Daftar Gratis</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer class="border-t border-slate-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">I</span>
+            </div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go.</p>
+    </div>
+</footer>
+
+<script>
+function docsPage() {
+    return {
+        searchQuery: '',
+        totalTutorials: 12,
+        visibleTutorials: 12,
+        openFaq: null,
+        faqs: [
+            {q:'Apakah Investo gratis?',a:'Ya, plan Free selamanya gratis dengan fitur dasar: basic chart, 5 alert, 1 portfolio, 1 watchlist, dan data delayed 15 menit. Upgrade ke Pro (Rp 99K/bln) untuk akses semua fitur.'},
+            {q:'Dari mana data harga saham diambil?',a:'Data harga saham real-time diambil dari Yahoo Finance API dengan delay maksimal 15 menit (sesuai kebijakan IDX). Data fundamental dari laporan keuangan resmi yang dipublikasikan emiten.'},
+            {q:'Apakah saya bisa koneksi ke broker saya?',a:'Fitur koneksi broker sedang dalam pengembangan. Saat ini Anda bisa melakukan analisa, screening, dan tracking portfolio tanpa koneksi broker. Data harga tetap real-time.'},
+            {q:'Bagaimana cara mengganti password?',a:'Login ke dashboard, buka Pengaturan (ikon gear di sidebar bawah), scroll ke bagian "Ganti Password". Masukkan password lama dan baru, lalu klik Simpan.'},
+            {q:'Apakah ada batasan jumlah saham yang bisa dipantau?',a:'Di plan Free: 1 watchlist dengan maksimal 20 saham. Di plan Pro: unlimited watchlists dan saham.'},
+            {q:'Bagaimana cara menghubungi support?',a:'Kunjungi halaman /kontak atau email ke support@investo.test. Respon dalam 1x24 jam di hari kerja. Untuk pelanggan Whitelabel: prioritas respon dalam 2 jam.'},
+            {q:'Apakah ada API untuk developer?',a:'Ya, plan Pro dan Whitelabel mendapatkan akses REST API. Dokumentasi lengkap di /api/docs. Rate limit: 60 request/menit untuk Pro, unlimited untuk Whitelabel.'},
+            {q:'Apakah bisa self-hosted?',a:'Hanya tersedia di plan Whitelabel. Anda mendapatkan full source code, panduan deployment, dan docker-compose untuk production environment.'},
+        ],
+        filterTutorial() {
+            var q = this.searchQuery.toLowerCase().trim();
+            var steps = document.querySelectorAll('#tutorialSteps .tutorial-step');
+            var count = 0;
+            steps.forEach(function(step) {
+                if (!q) {
+                    step.style.display = '';
+                    count++;
+                } else {
+                    var kw = (step.getAttribute('data-keywords') || '').toLowerCase();
+                    var title = (step.querySelector('h3')?.textContent || '').toLowerCase();
+                    var body = (step.querySelector('p')?.textContent || '').toLowerCase();
+                    if (title.includes(q) || body.includes(q) || kw.includes(q)) {
+                        step.style.display = '';
+                        count++;
+                    } else {
+                        step.style.display = 'none';
+                    }
+                }
+            });
+            this.visibleTutorials = count;
+        }
+    };
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+});
+</script>
+</body>
+</html>

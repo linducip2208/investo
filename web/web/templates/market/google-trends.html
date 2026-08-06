@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:30}
+        .sidebar{position:fixed;left:0;top:61px;bottom:0;width:240px;background:#0f172a;border-right:1px solid #1e293b;overflow-y:auto;z-index:20;transition:transform .3s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
+        .stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:20px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .bg-success-dark{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
+        .corr-bar{height:8px;border-radius:4px;background:#334155;overflow:hidden}
+        .corr-fill{height:100%;border-radius:4px;transition:width .5s}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
+        @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
+    </style>
+</head>
+<body class="h-full" x-data="{ sidebarOpen: false }">
+    <div class="topbar">
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-slate-300 font-semibold">Google Trends</span>
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
+            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+        </div>
+    </div>
+
+    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
+        <div class="p-4 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+            <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
+            <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
+            <a href="/market/bandarmologi" class="sidebar-link"><span>🕵️</span>Bandarmologi</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tools</div>
+            <a href="/screener" class="sidebar-link"><span>🔍</span>Screener</a>
+            <a href="/berita" class="sidebar-link"><span>📰</span>Berita</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span>📈</span>Trend Scanner</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <a href="/market/google-trends" class="sidebar-link active"><span>📈</span>Google Trends</a>
+            <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
+            <a href="/market/economic-proxy" class="sidebar-link"><span>🏭</span>Economic Proxy</a>
+            <a href="/market/job-postings" class="sidebar-link"><span>💼</span>Job Postings</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
+            <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
+            <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
+            <a href="/market/cross-asset" class="sidebar-link"><span>🔗</span>Cross-Asset</a>
+            <a href="/ai/research-paper" class="sidebar-link"><span>📝</span>Research Paper</a>
+        </div>
+    </aside>
+
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+
+    <div class="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">🔍 Google Trends Correlation</h1>
+                <p class="text-slate-400 text-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
+            </div>
+
+            [[range $i, $c := .Correlations]]
+            <div class="card p-6">
+                <div class="flex items-start justify-between flex-wrap gap-4 mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-lg font-bold text-white">"[[$c.Keyword]]"</h2>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold [[if ge $c.Correlation 0.6]]bg-success-dark text-success[[else if ge $c.Correlation 0.3]]bg-yellow-900 text-warning[[else]]bg-danger-dark text-danger[[end]]">
+                                r = [[$c.Correlation]]
+                            </span>
+                            [[if eq $c.Direction "inverse"]]
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-900/50 text-red-400">INVERSE</span>
+                            [[end]]
+                        </div>
+                        <p class="text-slate-400 text-sm mt-2">[[$c.Description]]</p>
+                        <div class="flex items-center gap-4 mt-3">
+                            <span class="text-xs text-slate-500">Significance: <span class="font-semibold [[if eq $c.Significance "high"]]text-success[[else if eq $c.Significance "medium"]]text-warning[[else]]text-danger[[end]]">[[$c.Significance | toUpper]]</span></span>
+                            <span class="text-xs text-slate-500">Direction: <span class="font-semibold text-white">[[$c.Direction]]</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <canvas id="trendChart[[$i]]" height="200"></canvas>
+                </div>
+            </div>
+            [[end]]
+
+            [[if not .Correlations]]
+            <div class="card p-12 text-center">
+                <p class="text-slate-500 text-lg">Data belum tersedia</p>
+            </div>
+            [[end]]
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('alpine:init', () => {
+        [[range $i, $c := .Correlations]]
+        (function(){
+            const ctx = document.getElementById('trendChart[[$i]]');
+            if(!ctx) return;
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [[range $c.InterestData]][[.Date]],[[end]],
+                    datasets: [
+                        {
+                            label: '"[[$c.Keyword]]" Interest',
+                            data: [[range $c.InterestData]][[.Value]],[[end]],
+                            borderColor: '#60a5fa',
+                            backgroundColor: 'rgba(96,165,250,0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'IHSG',
+                            data: [[range $c.IHSGData]][[.Value]],[[end]],
+                            borderColor: '#34d399',
+                            backgroundColor: 'rgba(52,211,153,0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+                    scales: {
+                        x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#1e293b' } },
+                        y: { type: 'linear', position: 'left', ticks: { color: '#60a5fa', font: { size: 10 } }, grid: { color: '#1e293b' } },
+                        y1: { type: 'linear', position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { display: false } }
+                    }
+                }
+            });
+        })();
+        [[end]]
+    });
+    </script>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

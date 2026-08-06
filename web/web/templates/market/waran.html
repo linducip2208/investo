@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waran Tracker · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#f59e0b}
+        table{width:100%;border-collapse:collapse}
+        th{text-align:left;padding:10px 14px;font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #334155;white-space:nowrap}
+        td{padding:10px 14px;border-bottom:1px solid #1e293b;font-size:13px;white-space:nowrap}
+        tr:hover td{background:rgba(59,130,246,.05)}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+    </style>
+</head>
+<body class="h-full flex" x-data="waranPage()" x-init="init()">
+    <script>
+    function waranPage() {
+        return {
+            sidebarOpen: false, warans: [], loading: true,
+            async init() { await this.fetch(); this.tickCountdowns(); setInterval(() => this.tickCountdowns(), 60000); },
+            async fetch() { this.loading=true; try{var r=await fetch('/api/market/waran');var d=await r.json();this.warans=d.warans||[]}catch(e){} this.loading=false; },
+            tickCountdowns() { this.warans = this.warans.map(function(w){ w._days = Math.max(0, Math.floor((new Date(w.expiry_date).getTime() - Date.now()) / 86400000)); return w; }); },
+            statusClass(s) { return s === 'In the Money' ? 'text-success' : 'text-danger'; },
+            getBadge(s) { return s === 'In the Money' ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'; },
+            fmtPrice(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; }
+        }
+    }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span>🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span>📋</span> Market Recap</a>
+            <a href="/market/sector-health" class="sidebar-link"><span>💚</span> Sector Health</a>
+            <a href="/market/waran" class="sidebar-link active"><span>🎫</span> Waran Tracker</a>
+            <a href="/market/economic-calendar" class="sidebar-link"><span>📅</span> Economic Calendar</a>
+            <a href="/calculators" class="sidebar-link"><span>🧮</span> Kalkulator</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/ideas" class="sidebar-link"><span>💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span>🏆</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span>📝</span> Blog</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <!-- TOPBAR -->
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-white">Waran Tracker</h1>
+            </div>
+            [[template "components/market-clock.html" .]]
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
+            <div class="card p-5 overflow-hidden">
+                <div class="table-wrap" style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Waran</th>
+                                <th>Mother Stock</th>
+                                <th>Exercise Price</th>
+                                <th>Stock Price</th>
+                                <th>Waran Price</th>
+                                <th>Expiry</th>
+                                <th>Premium</th>
+                                <th>Gearing</th>
+                                <th>Break Even</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="w in warans" :key="w.waran_code">
+                                <tr>
+                                    <td>
+                                        <span class="font-semibold text-white font-mono" x-text="w.waran_code"></span>
+                                    </td>
+                                    <td>
+                                        <a :href="'/saham/'+w.stock_code" class="text-blue-400 hover:underline font-mono" x-text="w.stock_code"></a>
+                                    </td>
+                                    <td class="font-mono text-slate-300" x-text="'Rp '+Math.round(w.exercise_price).toLocaleString('id-ID')"></td>
+                                    <td class="font-mono text-white" x-text="'Rp '+Math.round(w.current_stock_price).toLocaleString('id-ID')"></td>
+                                    <td class="font-mono text-white" x-text="'Rp '+Math.round(w.waran_price).toLocaleString('id-ID')"></td>
+                                    <td class="text-slate-400 text-xs">
+                                        <div x-text="w.expiry_date"></div>
+                                        <div class="text-[10px]" :class="w._days <= 30 ? 'text-danger' : 'text-slate-500'" x-text="(w._days || 0) + ' hari lagi'" x-show="w._days >= 0"></div>
+                                        <div class="text-[10px] text-danger" x-show="w._days <= 0">Expired</div>
+                                    </td>
+                                    <td class="font-mono text-sm" :class="w.premium > 0 ? 'text-danger' : 'text-success'" x-text="(w.premium > 0 ? '+' : '') + w.premium.toFixed(1) + '%'"></td>
+                                    <td class="font-mono text-sm text-slate-300" x-text="w.gearing.toFixed(1) + 'x'"></td>
+                                    <td class="font-mono text-sm text-slate-300" x-text="'Rp '+Math.round(w.break_even).toLocaleString('id-ID')"></td>
+                                    <td>
+                                        <span class="badge px-2 py-0.5 rounded text-[10px] font-semibold" :class="w.status==='In the Money'?'bg-green-900/30 text-green-400':'bg-red-900/30 text-red-400'" x-text="w.status"></span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div x-show="!loading && warans.length === 0" class="text-center py-12 text-slate-500">Belum ada data waran</div>
+            </div>
+        </main>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

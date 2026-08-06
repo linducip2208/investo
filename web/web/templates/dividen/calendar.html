@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <meta name="description" content="Kalender dividen saham IDX. Lihat jadwal ex-date, payment date, dividend yield, dan leaderboard saham dividen tertinggi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
+                    },
+                    colors: {
+                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
+                        card: { DEFAULT:'#1e293b',border:'#334155' },
+                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
+                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
+                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .tab-btn{transition:all .15s}
+        .yield-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;transition:all .2s}
+        .yield-card:hover{background:#1e293b;border-color:#475569}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="divCalendar()" x-init="init()">
+    <script>
+        function divCalendar() {
+            return {
+                sidebarOpen: false, activeTab: 'upcoming', clock: '',
+                init() { this.updateClock(); setInterval(() => this.updateClock(), 1000); },
+                updateClock() {
+                    var d = new Date();
+                    this.clock = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'}) + ' WIB · ' + d.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Jakarta'});
+                }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX <span class="ml-auto text-[10px] bg-slate-700 px-1.5 py-0.5 rounded text-slate-300">[[.TotalStocks]]</span></a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/dividen" class="sidebar-link active"><span class="icon">&#x1F4B5;</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <!-- TOPBAR -->
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-white">Kalender Dividen</h1>
+                <p class="text-sm text-slate-400 mt-0.5" x-text="clock"></p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card overflow-hidden">
+                        <!-- TABS -->
+                        <div class="flex border-b border-slate-700">
+                            <button @click="activeTab='upcoming'" :class="activeTab==='upcoming'?'border-blue-500 text-blue-400':'border-transparent text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors">Mendatang</button>
+                            <button @click="activeTab='history'" :class="activeTab==='history'?'border-blue-500 text-blue-400':'border-transparent text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors">Riwayat</button>
+                        </div>
+
+                        <!-- UPCOMING TAB -->
+                        <div x-show="activeTab==='upcoming'">
+                            [[if .Calendar.Upcoming]]
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-slate-700 bg-slate-800/30">
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Saham</th>
+                                            <th class="text-right px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Dividen</th>
+                                            <th class="text-right px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Yield</th>
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Ex-Date</th>
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Payment</th>
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden lg:table-cell">Tipe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700/50">
+                                        [[range .Calendar.Upcoming]]
+                                        <tr class="hover:bg-slate-700/30 transition-colors">
+                                            <td class="px-4 sm:px-6 py-3">
+                                                <a href="/saham/[[.StockCode]]" class="font-bold text-blue-400 hover:underline">[[.StockCode]]</a>
+                                                <span class="block text-xs text-slate-500 mt-0.5">[[.StockName]]</span>
+                                            </td>
+                                            <td class="px-4 sm:px-6 py-3 text-right font-mono font-semibold text-success">Rp [[.Dividend | formatPrice]]</td>
+                                            <td class="px-4 sm:px-6 py-3 text-right font-mono">
+                                                [[if ge .Yield 4.0]]
+                                                <span class="font-semibold text-success">[[.Yield]]%</span>
+                                                [[else]]
+                                                <span class="text-slate-300">[[.Yield]]%</span>
+                                                [[end]]
+                                            </td>
+                                            <td class="px-4 sm:px-6 py-3 font-mono text-slate-300 hidden sm:table-cell">[[.ExDate]]</td>
+                                            <td class="px-4 sm:px-6 py-3 font-mono text-slate-300 hidden md:table-cell">[[.PaymentDate]]</td>
+                                            <td class="px-4 sm:px-6 py-3 hidden lg:table-cell">
+                                                <span class="px-2 py-0.5 bg-emerald-900/30 text-emerald-400 rounded-md text-[11px] font-medium">Tunai</span>
+                                            </td>
+                                        </tr>
+                                        [[end]]
+                                    </tbody>
+                                </table>
+                            </div>
+                            [[else]]
+                            <div class="p-12 text-center text-slate-500">
+                                <svg class="mx-auto h-12 w-12 mb-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="font-medium">Belum ada jadwal dividen mendatang</p>
+                            </div>
+                            [[end]]
+                        </div>
+
+                        <!-- HISTORY TAB -->
+                        <div x-show="activeTab==='history'">
+                            [[if .Calendar.History]]
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-slate-700 bg-slate-800/30">
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Saham</th>
+                                            <th class="text-right px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Dividen</th>
+                                            <th class="text-right px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Yield</th>
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Ex-Date</th>
+                                            <th class="text-left px-4 sm:px-6 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Payment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700/50">
+                                        [[range .Calendar.History]]
+                                        <tr class="hover:bg-slate-700/30 transition-colors">
+                                            <td class="px-4 sm:px-6 py-3">
+                                                <a href="/saham/[[.StockCode]]" class="font-bold text-blue-400 hover:underline">[[.StockCode]]</a>
+                                                <span class="block text-xs text-slate-500 mt-0.5">[[.StockName]]</span>
+                                            </td>
+                                            <td class="px-4 sm:px-6 py-3 text-right font-mono font-semibold text-success">Rp [[.Dividend | formatPrice]]</td>
+                                            <td class="px-4 sm:px-6 py-3 text-right font-mono text-slate-300">[[.Yield]]%</td>
+                                            <td class="px-4 sm:px-6 py-3 font-mono text-slate-300 hidden sm:table-cell">[[.ExDate]]</td>
+                                            <td class="px-4 sm:px-6 py-3 font-mono text-slate-300 hidden md:table-cell">[[.PaymentDate]]</td>
+                                        </tr>
+                                        [[end]]
+                                    </tbody>
+                                </table>
+                            </div>
+                            [[else]]
+                            <div class="p-12 text-center text-slate-500">
+                                <p class="font-medium">Belum ada data riwayat dividen</p>
+                            </div>
+                            [[end]]
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YIELD LEADERS -->
+                <div class="lg:col-span-1">
+                    <div class="card p-6 sticky top-24">
+                        <h2 class="font-bold text-white text-lg mb-4">Yield Tertinggi</h2>
+                        [[if .YieldLeaders]]
+                        <div class="space-y-2">
+                            [[range $i, $yl := .YieldLeaders]]
+                            <a href="/saham/[[.Code]]" class="yield-card flex items-center justify-between group">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-6 h-6 rounded-full bg-blue-900/30 text-blue-300 text-xs font-bold flex items-center justify-center">[[add $i 1]]</span>
+                                    <div>
+                                        <span class="font-bold text-white group-hover:text-blue-400 text-sm">[[.Code]]</span>
+                                        <span class="block text-xs text-slate-500">[[.Name]]</span>
+                                    </div>
+                                </div>
+                                <span class="font-mono font-bold text-success text-sm">[[.Yield]]%</span>
+                            </a>
+                            [[end]]
+                        </div>
+                        [[else]]
+                        <div class="text-center py-8 text-slate-500 text-sm">
+                            <p>Data yield belum tersedia</p>
+                        </div>
+                        [[end]]
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Kalender Dividen Saham IDX",
+        "description": "Pantau jadwal pembagian dividen saham IDX, dividend yield tertinggi, dan riwayat dividen.",
+        "url": "https://investo.id/dividen"
+    }
+    </script>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

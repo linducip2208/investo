@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:30}
+        .sidebar{position:fixed;left:0;top:61px;bottom:0;width:240px;background:#0f172a;border-right:1px solid #1e293b;overflow-y:auto;z-index:20;transition:transform .3s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .bg-success-dark{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
+        input[type=range]{width:100%;accent-color:#3b82f6}
+        input,select{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 12px;color:#e2e8f0;font-size:13px;width:100%}
+        input:focus,select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px -4px rgba(37,99,235,0.4)}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
+        @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
+    </style>
+</head>
+<body class="h-full" x-data="{ sidebarOpen: false, eventType: 'dividend_announcement', daysBefore: 10, daysAfter: 10,
+    loading: false, result: null, error: null,
+    events: [
+        {id:'dividend_announcement', name:'Dividend Announcement', icon:'💰'},
+        {id:'earnings_surprise', name:'Earnings Surprise', icon:'📊'},
+        {id:'director_buy', name:'Director Buy', icon:'🟢'},
+        {id:'director_sell', name:'Director Sell', icon:'🔴'},
+        {id:'stock_split', name:'Stock Split', icon:'✂️'}
+    ],
+    async runStudy() {
+        this.loading = true; this.error = null; this.result = null;
+        try {
+            const params = new URLSearchParams({ event_type: this.eventType, days_before: this.daysBefore, days_after: this.daysAfter });
+            const resp = await fetch('/api/event-study?' + params);
+            const json = await resp.json();
+            if (json.error) { this.error = json.error; } else { this.result = json; this.$nextTick(() => this.renderChart()); }
+        } catch(e) { this.error = e.message; }
+        this.loading = false;
+    },
+    renderChart() {
+        if(!this.result) return;
+        const existing = Chart.getChart('eventChart');
+        if(existing) existing.destroy();
+        const ctx = document.getElementById('eventChart');
+        if(!ctx) return;
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: this.result.days,
+                datasets: [{
+                    label: 'Cumulative Abnormal Return (CAR)',
+                    data: this.result.car_series,
+                    borderColor: '#60a5fa',
+                    backgroundColor: function(ctx) {
+                        const v = ctx.raw; return v >= 0 ? 'rgba(52,211,153,0.15)' : 'rgba(248,113,113,0.15)';
+                    },
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    segment: {
+                        borderColor: ctx => ctx.p0.raw >= 0 ? '#34d399' : '#f87171'
+                    }
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+                    annotation: {
+                        annotations: {
+                            eventLine: { type: 'line', xMin: 0, xMax: 0, borderColor: '#fbbf24', borderWidth: 2, borderDash: [5,5], label: { display: true, content: 'Event Day', position: 'start', backgroundColor:'#1e293b',color:'#fbbf24',font:{size:10}} }
+                        }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Days from Event', color: '#94a3b8' }, ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#1e293b' } },
+                    y: { title: { display: true, text: 'CAR (%)', color: '#94a3b8' }, ticks: { color: '#64748b', callback: v => v + '%', font: { size: 10 } }, grid: { color: '#1e293b' } }
+                }
+            }
+        });
+    }
+}">
+    <div class="topbar">
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-slate-300 font-semibold">Event Study</span>
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
+            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+        </div>
+    </div>
+
+    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
+        <div class="p-4 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+            <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
+            <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
+            <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
+            <a href="/market/event-study" class="sidebar-link active"><span>📅</span>Event Study</a>
+            <a href="/market/cross-asset" class="sidebar-link"><span>🔗</span>Cross-Asset</a>
+        </div>
+    </aside>
+
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+
+    <div class="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">📅 Event Study Engine</h1>
+                <p class="text-slate-400 text-sm mt-1">Analisis dampak corporate events terhadap harga saham menggunakan metodologi event study</p>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-lg font-bold text-white mb-4">⚙️ Study Parameters</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Event Type</label>
+                        <select x-model="eventType">
+                            <template x-for="e in events" :key="e.id">
+                                <option :value="e.id" x-text="e.icon + ' ' + e.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Days Before: <span class="text-white font-mono" x-text="daysBefore"></span></label>
+                        <input type="range" min="5" max="30" step="1" x-model="daysBefore" class="w-full">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Days After: <span class="text-white font-mono" x-text="daysAfter"></span></label>
+                        <input type="range" min="5" max="30" step="1" x-model="daysAfter" class="w-full">
+                    </div>
+                    <button @click="runStudy()" :disabled="loading" class="btn-primary" x-text="loading ? '⏳ Running...' : '🔬 Run Study'"></button>
+                </div>
+            </div>
+
+            <template x-if="result">
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="card p-4 text-center">
+                            <p class="text-slate-500 text-xs">Event Type</p>
+                            <p class="text-lg font-bold text-white mt-1 capitalize" x-text="result.event_type.replace('_',' ')"></p>
+                        </div>
+                        <div class="card p-4 text-center">
+                            <p class="text-slate-500 text-xs">Sample Size</p>
+                            <p class="text-xl font-mono font-bold text-white mt-1" x-text="result.sample_size"></p>
+                        </div>
+                        <div class="card p-4 text-center">
+                            <p class="text-slate-500 text-xs">Average CAR</p>
+                            <p class="text-xl font-mono font-bold mt-1" :class="result.avg_car >= 0 ? 'text-success' : 'text-danger'" x-text="(result.avg_car >= 0 ? '+' : '') + result.avg_car + '%'"></p>
+                        </div>
+                        <div class="card p-4 text-center">
+                            <p class="text-slate-500 text-xs">Significance</p>
+                            <p class="text-xl font-bold mt-1" :class="{'text-success': result.significance==='high', 'text-warning': result.significance==='medium', 'text-danger': result.significance==='low'}" x-text="result.significance.toUpperCase()"></p>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <h3 class="text-sm font-semibold text-white mb-4">📈 Cumulative Abnormal Return (CAR)</h3>
+                        <canvas id="eventChart" height="300"></canvas>
+                    </div>
+
+                    <div class="card p-6">
+                        <h3 class="text-sm font-semibold text-white mb-2">📝 Analysis</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed" x-text="result.description"></p>
+                    </div>
+                </div>
+            </template>
+
+            <div x-show="!result && !loading" class="card p-12 text-center">
+                <p class="text-slate-500 text-lg">🔬 Pilih event type dan jalankan study untuk melihat hasil</p>
+                <p class="text-slate-600 text-sm mt-1">Event study menggunakan cumulative abnormal return (CAR) methodology</p>
+            </div>
+        </div>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

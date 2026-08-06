@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:30}
+        .sidebar{position:fixed;left:0;top:61px;bottom:0;width:240px;background:#0f172a;border-right:1px solid #1e293b;overflow-y:auto;z-index:20;transition:transform .3s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
+        .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+        .badge-high{background:#7f1d1d;color:#fca5a5}
+        .badge-medium{background:#78350f;color:#fcd34d}
+        .badge-low{background:#064e3b;color:#6ee7b7}
+        .warning-banner{background:linear-gradient(135deg,#7f1d1d,#450a0a);border:1px solid #ef4444;border-radius:14px;padding:20px 24px}
+        .reason-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:#1e293b;color:#94a3b8;margin:2px}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
+        @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
+    </style>
+</head>
+<body class="h-full" x-data="{ sidebarOpen: false }">
+    <div class="topbar">
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg">
+                <span>💹</span><span class="font-display">Investo</span>
+            </a>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-slate-300 font-semibold">Saham Gorengan</span>
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
+            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+        </div>
+    </div>
+
+    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
+        <div class="p-4 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+            <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
+            <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
+            <a href="/market/bandarmologi" class="sidebar-link"><span>🕵️</span>Bandarmologi</a>
+            <a href="/market/saham-gorengan" class="sidebar-link active"><span>⚠️</span>Saham Gorengan</a>
+            <a href="/market/foreign-flow" class="sidebar-link"><span>🌏</span>Foreign Flow</a>
+            <a href="/market/syariah" class="sidebar-link"><span>☪️</span>Syariah</a>
+            <a href="/market/ipo" class="sidebar-link"><span>🚀</span>IPO Watch</a>
+            <a href="/market/rebalance" class="sidebar-link"><span>⚖️</span>Rebalance</a>
+            <a href="/market/insider" class="sidebar-link"><span>👤</span>Insider</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tools</div>
+            <a href="/screener" class="sidebar-link"><span>🔍</span>Screener</a>
+            <a href="/berita" class="sidebar-link"><span>📰</span>Berita</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span>📈</span>Trend Scanner</a>
+            <a href="/market/economic-calendar" class="sidebar-link"><span>📅</span>Kalender Ekonomi</a>
+            <a href="/market/live-signals" class="sidebar-link"><span>⚡</span>Live Signals</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span>🔬</span>Pattern Scan</a>
+        </div>
+    </aside>
+
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+
+    <div class="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">⚠️ Saham Gorengan</h1>
+                <p class="text-slate-400 text-sm mt-1">Deteksi saham dengan risiko tinggi berdasarkan pola perdagangan</p>
+            </div>
+
+            <div class="warning-banner">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">⚠️</span>
+                    <div>
+                        <h3 class="text-red-400 font-bold text-lg">PERHATIAN: Saham dengan Risiko Tinggi</h3>
+                        <p class="text-red-200/80 text-sm mt-1 max-w-3xl">Saham-saham di bawah ini menunjukkan karakteristik "saham gorengan" — volatilitas ekstrem, volume rendah, market cap kecil, dan rentan manipulasi. <strong>Investasi dengan sangat hati-hati.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Saham</th>
+                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Risk Level</th>
+                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alasan</th>
+                            <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        [[range .Signals]]
+                        <tr class="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4">
+                                <a href="/saham/[[.StockCode]]" class="text-white font-semibold hover:text-blue-400">[[.StockCode]]</a>
+                                <p class="text-slate-500 text-xs">[[.StockName]]</p>
+                            </td>
+                            <td class="p-4">
+                                <span class="badge badge-[[.RiskLevel]]">[[.RiskLevel]]</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex flex-wrap gap-1">
+                                    [[range .Reasons]]
+                                    <span class="reason-tag">[[.]]</span>
+                                    [[end]]
+                                </div>
+                            </td>
+                            <td class="p-4 text-right">
+                                <a href="/saham/[[.StockCode]]" class="text-blue-400 hover:text-blue-300 text-sm">Analisa →</a>
+                            </td>
+                        </tr>
+                        [[end]]
+                    </tbody>
+                </table>
+            </div>
+
+            [[if not .Signals]]
+            <div class="card p-12 text-center">
+                <p class="text-slate-500 text-lg">Tidak ada saham gorengan terdeteksi</p>
+                <p class="text-slate-600 text-sm mt-1">Pasar dalam kondisi normal</p>
+            </div>
+            [[end]]
+
+            <div class="card p-6 text-sm text-slate-500 leading-relaxed">
+                <p class="font-semibold text-slate-400 mb-2">📋 Disclaimer</p>
+                <p>Data di atas dihasilkan oleh algoritma otomatis berdasarkan kriteria teknikal dan fundamental. Label "saham gorengan" bukan merupakan rekomendasi jual atau beli. Selalu lakukan riset mandiri sebelum berinvestasi. Investasi mengandung risiko, termasuk kemungkinan kehilangan seluruh modal.</p>
+            </div>
+        </div>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

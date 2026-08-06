@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .event-btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;border:2px solid #334155;color:#94a3b8;background:transparent;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .event-btn:hover{border-color:#3b82f6;color:#e2e8f0}
+        .event-btn.active{background:#1e3a8a;border-color:#3b82f6;color:#93c5fd}
+        .impact-bar{height:8px;border-radius:4px;transition:width .5s ease}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="macroSpillover()" x-init="init()">
+
+<script>
+function macroSpillover() {
+    return {
+        sidebarOpen: false,
+        selectedEvent: '',
+        scenarios: [],
+        result: null,
+        loading: false,
+        init() {
+            var el = document.querySelector('[x-ref="eventBtns"]');
+            if (el && el.children.length) {
+                this.selectedEvent = el.children[0].textContent.trim();
+                this.analyze();
+            }
+        },
+        selectEvent(ev) { this.selectedEvent = ev; this.analyze(); },
+        async analyze() {
+            this.loading = true;
+            try {
+                var resp = await fetch('/api/market/macro-spillover?event=' + encodeURIComponent(this.selectedEvent));
+                var data = await resp.json();
+                this.result = data;
+                this.loading = false;
+            } catch(e) { this.loading = false; }
+        },
+        impactWidth(label) {
+            if (!label) return '0%';
+            label = label.toLowerCase();
+            if (label.includes('negatif') || label.includes('negative')) return '75%';
+            if (label.includes('positif') || label.includes('positive')) return '60%';
+            if (label.includes('mixed')) return '40%';
+            if (label.includes('volatile')) return '65%';
+            return '50%';
+        },
+        impactColor(label) {
+            if (!label) return '#475569';
+            label = label.toLowerCase();
+            if (label.includes('negatif') || label.includes('negative')) return '#ef4444';
+            if (label.includes('positif') || label.includes('positive')) return '#22c55e';
+            if (label.includes('mixed')) return '#f59e0b';
+            return '#64748b';
+        }
+    }
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
+        <a href="/market/macro-dashboard" class="sidebar-link"><span>&#x1F30D;</span> Macro Dashboard</a>
+        <a href="/market/yield-curve" class="sidebar-link"><span>&#x1F4C9;</span> Yield Curve</a>
+        <a href="/market/liquidity-flow" class="sidebar-link"><span>&#x1F4A7;</span> Liquidity Flow</a>
+        <a href="/market/leading-indicators" class="sidebar-link"><span>&#x1F4C8;</span> Leading Indicators</a>
+        <a href="/market/macro-spillover" class="sidebar-link active"><span>&#x1F310;</span> Macro Spillover</a>
+        <a href="/market/ma-targets" class="sidebar-link"><span>&#x1F91D;</span> M&A Targets</a>
+    </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-1 max-w-md hidden sm:block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+            [[if .User]]
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+            [[else]]
+            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <div>
+            <h1 class="text-xl lg:text-2xl font-bold text-white">Global Macro Spillover</h1>
+            <p class="text-sm text-slate-400 mt-0.5">Analyze how global macro events spill over to Indonesian markets (IHSG & Rupiah).</p>
+        </div>
+
+        <div class="card p-4">
+            <div class="flex flex-wrap items-center gap-2" x-ref="eventBtns">
+                <button @click="selectEvent('Fed Hike 25bps')" :class="selectedEvent==='Fed Hike 25bps' ? 'event-btn active' : 'event-btn'">Fed Hike 25bps</button>
+                <button @click="selectEvent('China Slowdown')" :class="selectedEvent==='China Slowdown' ? 'event-btn active' : 'event-btn'">China Slowdown</button>
+                <button @click="selectEvent('Oil Price Spike')" :class="selectedEvent==='Oil Price Spike' ? 'event-btn active' : 'event-btn'">Oil Price Spike</button>
+                <button @click="selectEvent('US Recession')" :class="selectedEvent==='US Recession' ? 'event-btn active' : 'event-btn'">US Recession</button>
+                <button @click="selectEvent('Commodity Supercycle')" :class="selectedEvent==='Commodity Supercycle' ? 'event-btn active' : 'event-btn'">Commodity Supercycle</button>
+            </div>
+        </div>
+
+        <template x-if="loading">
+            <div class="card p-6 space-y-4 animate-pulse">
+                <div class="h-6 bg-slate-700/50 rounded w-1/2"></div>
+                <div class="h-4 bg-slate-700/50 rounded w-3/4"></div>
+                <div class="h-24 bg-slate-700/30 rounded"></div>
+            </div>
+        </template>
+
+        <template x-if="!loading && result">
+            <div class="space-y-4">
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-white" x-text="result.event"></h3>
+                            <p class="text-sm text-slate-400 mt-1">Global Event Impact Analysis</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                              :class="{'bg-red-900/40 text-red-400 border border-red-700/50': result.impact_level==='Very High', 'bg-amber-900/40 text-amber-400 border border-amber-700/50': result.impact_level==='High'}"
+                              x-text="result.impact_level + ' Impact'"></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-slate-800/60 rounded-xl p-4">
+                            <p class="text-xs text-slate-500 mb-2">IDX (IHSG) Impact</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 bg-slate-700/50 rounded-full h-4 overflow-hidden">
+                                    <div class="impact-bar h-full rounded-full transition-all duration-700" :style="{width: impactWidth(result.idx_impact), backgroundColor: impactColor(result.idx_impact)}"></div>
+                                </div>
+                                <span class="text-sm font-semibold font-mono" :style="{color: impactColor(result.idx_impact)}" x-text="result.idx_impact"></span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/60 rounded-xl p-4">
+                            <p class="text-xs text-slate-500 mb-2">Rupiah (USD/IDR) Impact</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 bg-slate-700/50 rounded-full h-4 overflow-hidden">
+                                    <div class="impact-bar h-full rounded-full transition-all duration-700" :style="{width: impactWidth(result.rupiah_impact), backgroundColor: impactColor(result.rupiah_impact)}"></div>
+                                </div>
+                                <span class="text-sm font-semibold font-mono" :style="{color: impactColor(result.rupiah_impact)}" x-text="result.rupiah_impact"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Affected Sectors</p>
+                        <div class="flex flex-wrap gap-2">
+                            <template x-for="sector in result.affected_sectors" :key="sector">
+                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-blue-900/30 text-blue-300 border border-blue-700/40" x-text="sector"></span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-3">Narrative & Analysis</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed" x-text="result.narrative"></p>
+                </div>
+            </div>
+        </template>
+    </main>
+</div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

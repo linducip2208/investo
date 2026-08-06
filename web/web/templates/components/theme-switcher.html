@@ -1,0 +1,84 @@
+<!-- Theme Preset Switcher Component -->
+<div x-data="themeSwitcher()" x-init="initTheme()" class="relative" @click.outside="open = false">
+    <button @click="open = !open"
+            class="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            title="Ganti tema">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+    </button>
+
+    <div x-show="open"  x-transition:enter-start="opacity-0 scale-95"
+         class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
+        <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+            <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Tema Tampilan</h3>
+        </div>
+        <div class="p-2 space-y-1">
+            <template x-for="t in themes" :key="t.key">
+                <button @click="setTheme(t.key); open = false"
+                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                        :class="activeTheme === t.key ? 'bg-blue-50 dark:bg-blue-900/20 ring-1 ring-blue-200 dark:ring-blue-800' : ''">
+                    <div class="flex gap-1 shrink-0">
+                        <div class="w-4 h-4 rounded" :style="{ background: t.colors[0] }"></div>
+                        <div class="w-4 h-4 rounded" :style="{ background: t.colors[1] }"></div>
+                        <div class="w-4 h-4 rounded" :style="{ background: t.colors[2] }"></div>
+                    </div>
+                    <div>
+                        <span class="font-medium text-slate-800 dark:text-slate-200" x-text="t.name"></span>
+                        <span x-show="activeTheme === t.key" class="ml-1.5 text-xs text-blue-600 dark:text-blue-400">&#10003;</span>
+                    </div>
+                </button>
+            </template>
+        </div>
+    </div>
+</div>
+
+<script>
+function themeSwitcher() {
+    return {
+        open: false,
+        activeTheme: 'bloomberg-dark',
+        themes: [
+            { key: 'bloomberg-dark', name: 'Bloomberg Dark', colors: ['#1e293b', '#3b82f6', '#94a3b8'] },
+            { key: 'terminal-green', name: 'Terminal Green', colors: ['#0a0a0a', '#00ff41', '#003b00'] },
+            { key: 'minimal-white', name: 'Minimal White', colors: ['#ffffff', '#f8fafc', '#3b82f6'] },
+            { key: 'midnight-blue', name: 'Midnight Blue', colors: ['#0f172a', '#1e3a8a', '#eab308'] },
+            { key: 'soft-grey', name: 'Soft Grey', colors: ['#f8fafc', '#64748b', '#475569'] },
+        ],
+        initTheme() {
+            const saved = localStorage.getItem('investo-theme');
+            if (saved) {
+                this.activeTheme = saved;
+            }
+            this.applyTheme(this.activeTheme);
+        },
+        setTheme(key) {
+            this.activeTheme = key;
+            localStorage.setItem('investo-theme', key);
+            this.applyTheme(key);
+        },
+        applyTheme(key) {
+            const root = document.documentElement;
+            const presets = {
+                'bloomberg-dark': { '--bg-primary': '#0f172a', '--bg-secondary': '#1e293b', '--text-primary': '#f8fafc', '--text-secondary': '#94a3b8', '--accent': '#3b82f6', '--border': '#334155', '--card-bg': '#1e293b', '--card-shadow': '0 4px 24px rgba(0,0,0,0.3)' },
+                'terminal-green': { '--bg-primary': '#0a0a0a', '--bg-secondary': '#0d1117', '--text-primary': '#00ff41', '--text-secondary': '#008800', '--accent': '#00ff41', '--border': '#1a3a1a', '--card-bg': '#0d1117', '--card-shadow': '0 0 12px rgba(0,255,65,0.1)' },
+                'minimal-white': { '--bg-primary': '#ffffff', '--bg-secondary': '#f8fafc', '--text-primary': '#0f172a', '--text-secondary': '#64748b', '--accent': '#2563eb', '--border': '#e2e8f0', '--card-bg': '#ffffff', '--card-shadow': '0 1px 3px rgba(0,0,0,0.08)' },
+                'midnight-blue': { '--bg-primary': '#0f172a', '--bg-secondary': '#1e3a8a', '--text-primary': '#f0f9ff', '--text-secondary': '#94a3b8', '--accent': '#eab308', '--border': '#1e3a5f', '--card-bg': '#172554', '--card-shadow': '0 4px 24px rgba(0,0,0,0.4)' },
+                'soft-grey': { '--bg-primary': '#f8fafc', '--bg-secondary': '#f1f5f9', '--text-primary': '#334155', '--text-secondary': '#64748b', '--accent': '#475569', '--border': '#e2e8f0', '--card-bg': '#ffffff', '--card-shadow': '0 1px 3px rgba(0,0,0,0.06)' },
+            };
+
+            const vars = presets[key] || presets['bloomberg-dark'];
+            Object.entries(vars).forEach(([k, v]) => {
+                root.style.setProperty(k, v);
+            });
+
+            if (key === 'terminal-green') {
+                root.classList.add('dark');
+                root.style.setProperty('font-family', "'JetBrains Mono', 'Consolas', monospace", null);
+            } else if (key === 'minimal-white' || key === 'soft-grey') {
+                root.classList.remove('dark');
+            } else {
+                root.classList.add('dark');
+            }
+        }
+    }
+}
+</script>

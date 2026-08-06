@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .input-field{width:100%;background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:10px 14px;color:#e2e8f0;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .2s}
+        .input-field:focus{border-color:#3b82f6}
+        .input-label{font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.04em}
+        .cong-select{width:100%;background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:10px 14px;color:#e2e8f0;font-size:14px;outline:none;cursor:pointer;transition:border-color .2s}
+        .cong-select:focus{border-color:#3b82f6}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="conglomerateCalc()">
+
+<script>
+function conglomerateCalc() {
+    return {
+        sidebarOpen: false,
+        selectedCong: '',
+        marketCap: 0,
+        segments: [],
+        newSegmentName: '',
+        newSegmentValue: '',
+        sumOfParts: 0,
+        discount: 0,
+        premium: false,
+        addSegment() {
+            if (!this.newSegmentName || !this.newSegmentValue || parseFloat(this.newSegmentValue) <= 0) return;
+            this.segments.push({
+                name: this.newSegmentName,
+                value: parseFloat(this.newSegmentValue)
+            });
+            this.newSegmentName = '';
+            this.newSegmentValue = '';
+            this.recalculate();
+        },
+        removeSegment(idx) {
+            this.segments.splice(idx, 1);
+            this.recalculate();
+        },
+        recalculate() {
+            var total = 0;
+            this.segments.forEach(function(s) { total += s.value; });
+            this.sumOfParts = total;
+            if (this.marketCap > 0 && total > 0) {
+                this.discount = Math.abs(((total - this.marketCap) / total) * 100);
+                this.premium = this.marketCap > total;
+            }
+        },
+        formatT(v) {
+            return 'Rp ' + v.toLocaleString('id-ID') + ' T';
+        },
+        formatPct(v) {
+            return v.toFixed(1) + '%';
+        },
+        selectCong(c) {
+            this.selectedCong = c;
+            this.segments = [];
+            this.marketCap = 0;
+            switch(c) {
+                case 'ASII':
+                    this.marketCap = 280;
+                    this.segments = [
+                        {name: 'Automotive (Toyota, Daihatsu)', value: 150},
+                        {name: 'Financial Services (Astra Financial)', value: 60},
+                        {name: 'Heavy Equipment (United Tractors)', value: 100},
+                        {name: 'Agribusiness (Astra Agro)', value: 30},
+                        {name: 'Infrastructure (Toll Roads)', value: 25},
+                        {name: 'Technology (Astra Digital)', value: 15}
+                    ];
+                    break;
+                case 'BMRI':
+                    this.marketCap = 520;
+                    this.segments = [
+                        {name: 'Corporate Banking', value: 200},
+                        {name: 'Retail Banking', value: 160},
+                        {name: 'Treasury & Markets', value: 90},
+                        {name: 'Syariah (Bank Syariah Indonesia stake)', value: 130},
+                        {name: 'Anak Usaha (Mandiri Sekuritas, AXA, etc)', value: 45}
+                    ];
+                    break;
+                case 'UNTR':
+                    this.marketCap = 85;
+                    this.segments = [
+                        {name: 'Construction Machinery (Komatsu)', value: 50},
+                        {name: 'Mining Contracting (Pama)', value: 55},
+                        {name: 'Coal Mining (TUAH)', value: 15},
+                        {name: 'Gold Mining (AGincourt)', value: 10}
+                    ];
+                    break;
+            }
+            this.recalculate();
+        }
+    }
+}
+</script>
+
+<!-- SIDEBAR -->
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+        <span class="font-bold text-lg text-white">Investo</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
+        <a href="/calculators" class="sidebar-link active"><span>&#x1F9EE;</span> Kalkulator</a>
+        <a href="/calculators/right-issue" class="sidebar-link"><span>&#x1F4C8;</span> Right Issue</a>
+        <a href="/calculators/tax" class="sidebar-link"><span>&#x1F4C5;</span> Tax Optimizer</a>
+        <a href="/calculators/dcf-builder" class="sidebar-link"><span>&#x1F4B0;</span> DCF Builder</a>
+        <a href="/calculators/conglomerate" class="sidebar-link active" style="background:#1e3a8a;color:#93c5fd;font-weight:600"><span>&#x1F3E2;</span> Conglomerate</a>
+    </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-1 max-w-md hidden sm:block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+            [[if .User]]
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            </div>
+            [[else]]
+            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <div>
+            <h1 class="text-xl lg:text-2xl font-bold text-white">Conglomerate Discount Calculator</h1>
+            <p class="text-sm text-slate-400 mt-0.5">Calculate Sum-of-the-Parts (SOTP) valuation vs market cap to find conglomerate discount or premium.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="card p-6 space-y-4">
+                <h3 class="text-sm font-semibold text-slate-300 mb-3">Holding Company</h3>
+
+                <div>
+                    <label class="input-label">Select Holding</label>
+                    <select x-model="selectedCong" @change="selectCong($event.target.value)" class="cong-select">
+                        <option value="">-- Pilih Holding --</option>
+                        <option value="ASII">ASII - Astra International</option>
+                        <option value="BMRI">BMRI - Bank Mandiri (Group)</option>
+                        <option value="UNTR">UNTR - United Tractors</option>
+                    </select>
+                </div>
+
+                <template x-if="selectedCong">
+                    <div>
+                        <label class="input-label">Market Cap (Rp Triliun)</label>
+                        <input type="number" x-model.number="marketCap" @input="recalculate()" class="input-field" step="1">
+                    </div>
+                </template>
+
+                <template x-if="selectedCong">
+                    <div class="border-t border-slate-700 pt-4">
+                        <label class="input-label mb-2">Add Segment</label>
+                        <div class="flex gap-2">
+                            <input type="text" x-model="newSegmentName" placeholder="Nama segmen" class="input-field flex-1">
+                            <input type="number" x-model="newSegmentValue" placeholder="Nilai (T)" class="input-field w-24" step="0.1">
+                        </div>
+                        <button @click="addSegment()" class="mt-2 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors">Add Segment</button>
+                    </div>
+                </template>
+            </div>
+
+            <div class="lg:col-span-2">
+                <template x-if="!selectedCong">
+                    <div class="card p-12 text-center">
+                        <p class="text-5xl mb-4">&#x1F3E2;</p>
+                        <p class="text-slate-400 text-sm">Pilih holding company untuk memulai kalkulasi SOTP.</p>
+                    </div>
+                </template>
+
+                <template x-if="selectedCong">
+                    <div class="space-y-4">
+                        <div class="card p-5">
+                            <h3 class="text-sm font-semibold text-slate-300 mb-3">Segment Valuations</h3>
+                            <div class="space-y-2">
+                                <template x-for="(seg, idx) in segments" :key="idx">
+                                    <div class="flex items-center justify-between bg-slate-800/50 rounded-xl p-3">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-slate-200" x-text="seg.name"></p>
+                                        </div>
+                                        <div class="text-right flex items-center gap-3">
+                                            <span class="text-sm font-mono font-bold text-blue-400" x-text="formatT(seg.value)"></span>
+                                            <button @click="removeSegment(idx)" class="text-red-400 hover:text-red-300 text-sm px-2 py-1 rounded-lg hover:bg-red-900/20 transition-colors">&#x2715;</button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            <template x-if="segments.length > 0">
+                                <div class="mt-3 pt-3 border-t border-slate-700 flex justify-between">
+                                    <span class="text-sm font-bold text-slate-300">Sum of Parts (SOTP)</span>
+                                    <span class="text-sm font-mono font-bold text-green-400" x-text="formatT(sumOfParts)"></span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <template x-if="sumOfParts > 0 && marketCap > 0">
+                            <div class="card p-6 text-center" :class="{'bg-gradient-to-br from-green-900/30 to-green-800/20 border-green-700/50': !premium, 'bg-gradient-to-br from-red-900/30 to-red-800/20 border-red-700/50': premium}">
+                                <h3 class="text-sm text-slate-400 mb-2">Result</h3>
+                                <div class="text-3xl font-extrabold font-mono mb-2" :class="{'text-green-400': !premium, 'text-red-400': premium}">
+                                    <span x-show="!premium" x-text="formatPct(discount) + ' DISCOUNT'"></span>
+                                    <span x-show="premium" x-text="formatPct(discount) + ' PREMIUM'"></span>
+                                </div>
+                                <p class="text-sm text-slate-400">SOTP: <span class="font-mono text-slate-200" x-text="formatT(sumOfParts)"></span> vs Market Cap: <span class="font-mono text-slate-200" x-text="formatT(marketCap)"></span></p>
+                                <p class="text-xs text-slate-500 mt-2" x-show="!premium">Conglomerate discount &mdash; pasar menilai holding di bawah nilai aset bersihnya. Potensi value unlock melalui spin-off atau divestasi.</p>
+                                <p class="text-xs text-slate-500 mt-2" x-show="premium">Conglomerate premium &mdash; pasar menilai sinergi grup di atas nilai aset individu.</p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </main>
+</div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

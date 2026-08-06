@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .pricing-card{border:1px solid #334155;border-radius:16px;padding:32px 24px;transition:all .3s cubic-bezier(.16,1,.3,1)}
+        .pricing-card.featured{border-color:#3b82f6;background:linear-gradient(180deg,rgba(37,99,235,.08) 0%,rgba(30,58,138,.04) 100%);box-shadow:0 0 0 1px rgba(59,130,246,.2),0 8px 32px rgba(37,99,235,.12)}
+        .pricing-card.featured:hover{transform:translateY(-4px);box-shadow:0 0 0 1px rgba(59,130,246,.3),0 16px 48px rgba(37,99,235,.2)}
+        .pricing-card.current{background:linear-gradient(180deg,rgba(16,185,129,.08) 0%,rgba(6,78,59,.04) 100%);border-color:#10b981}
+        .btn-pricing{padding:12px 24px;border-radius:12px;font-weight:600;font-size:14px;transition:all .2s;text-align:center;display:block;cursor:pointer;border:none}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{box-shadow:0 4px 20px rgba(37,99,235,.35);transform:translateY(-1px)}
+        .btn-outline{background:transparent;border:1.5px solid #3b82f6;color:#60a5fa}
+        .btn-outline:hover{background:rgba(59,130,246,.1)}
+        .btn-current{background:#064e3b;color:#34d399;cursor:default}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+</head>
+<body class="h-full flex" x-data="pricing()">
+    <script>
+        function pricing() {
+            return {
+                sidebarOpen: false,
+                currentPlan: '[[.CurrentPlan]]',
+                async subscribe(plan) {
+                    if (plan === this.currentPlan) return;
+                    try {
+                        var r = await fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({plan:plan}) });
+                        if (r.ok) { this.currentPlan = plan; }
+                    } catch(e) {}
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">&#x1F4C9;</span> Pattern Scan</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Otomasi</p>
+            <a href="/bots" class="sidebar-link"><span class="icon">&#x1F916;</span> Bot Center</a>
+            <a href="/market/exchanges" class="sidebar-link"><span class="icon">&#x1F3E6;</span> Exchanges</a>
+            <a href="/pricing" class="sidebar-link active"><span class="icon">&#x1F4B3;</span> Paket</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <form method="POST" action="/logout" style="margin:0">
+                <button type="submit" class="sidebar-link text-danger w-full text-left"><span class="icon">&#x1F6AA;</span> Keluar</button>
+            </form>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            [[if .User]]
+            <div class="flex items-center gap-2 ml-auto">
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+            [[end]]
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-8 overflow-y-auto">
+            <div class="text-center max-w-2xl mx-auto mb-4">
+                <h1 class="text-2xl lg:text-3xl font-bold text-white mb-2">Pilih Paket Investo</h1>
+                <p class="text-slate-400 text-sm">Mulai gratis, upgrade seiring kebutuhan analisa Anda bertumbuh.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Free -->
+                <div class="pricing-card" :class="{'current':currentPlan==='free'}" :style="currentPlan==='free'?'border-color:#10b981':''">
+                    <div class="text-center mb-6">
+                        <h3 class="text-lg font-bold text-white mb-1">Free</h3>
+                        <div class="text-3xl font-extrabold text-white mb-1">Rp 0</div>
+                        <p class="text-xs text-slate-500">Selamanya gratis</p>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Basic chart (candlestick, line)
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            5 price alerts
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            1 portfolio
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            1 watchlist
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Delayed data (15 menit)
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-500">AI signals</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-500">Backtesting</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-500">All indicators</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-500">Telegram alerts</span>
+                        </li>
+                    </ul>
+                    <button class="btn-pricing w-full" :class="currentPlan==='free'?'btn-current':'btn-outline'" @click="subscribe('free')">
+                        <span x-text="currentPlan==='free'?'Paket Saat Ini':'Downgrade ke Free'"></span>
+                    </button>
+                </div>
+
+                <!-- Pro -->
+                <div class="pricing-card featured" :class="{'current':currentPlan==='pro'}">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">POPULER</div>
+                    <div class="text-center mb-6">
+                        <h3 class="text-lg font-bold text-white mb-1">Pro</h3>
+                        <div class="text-3xl font-extrabold text-white mb-1">Rp 99K</div>
+                        <p class="text-xs text-slate-400">per bulan</p>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <strong class="text-white">Semua fitur Free</strong>
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Unlimited portfolios
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Unlimited alerts & watchlists
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            AI trading signals
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Backtesting engine
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Advanced stock screener
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            REST API access
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Telegram alerts + bot forwarder
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            All technical indicators
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Real-time data (delay &lt; 1m)
+                        </li>
+                    </ul>
+                    <button class="btn-pricing w-full" :class="currentPlan==='pro'?'btn-current':'btn-primary'" @click="subscribe('pro')">
+                        <span x-text="currentPlan==='pro'?'Paket Saat Ini':'Upgrade ke Pro'"></span>
+                    </button>
+                </div>
+
+                <!-- Whitelabel -->
+                <div class="pricing-card" :class="{'current':currentPlan==='whitelabel'}">
+                    <div class="text-center mb-6">
+                        <h3 class="text-lg font-bold text-white mb-1">Whitelabel</h3>
+                        <div class="text-3xl font-extrabold text-white mb-1">Custom</div>
+                        <p class="text-xs text-slate-400">Harga satu kali</p>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <strong class="text-white">Semua fitur Pro</strong>
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Full source code
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            White label branding
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Custom domain
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Priority support
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Dedicated API key
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Self-hosted deployment
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-300">
+                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Unlimited users
+                        </li>
+                    </ul>
+                    <a href="/beli-aplikasi-saham" class="btn-pricing w-full" :class="currentPlan==='whitelabel'?'btn-current':'btn-primary'" @click.prevent="currentPlan!=='whitelabel'&&subscribe('whitelabel')">
+                        <span x-text="currentPlan==='whitelabel'?'Paket Saat Ini':'Hubungi Kami'"></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card max-w-5xl mx-auto overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800">Fitur</th>
+                                <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800 text-center">Free</th>
+                                <th class="px-6 py-4 font-semibold text-blue-300 bg-blue-900/20 text-center">Pro</th>
+                                <th class="px-6 py-4 font-semibold text-slate-300 bg-slate-800 text-center">Whitelabel</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Chart interaktif</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Basic</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Full</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Full</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Indikator teknikal</td>
+                                <td class="px-6 py-3 text-center text-slate-500 text-xs">5</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">20+</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">20+</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Price alerts</td>
+                                <td class="px-6 py-3 text-center text-slate-300">5</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Portfolio</td>
+                                <td class="px-6 py-3 text-center text-slate-300">1</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Watchlist</td>
+                                <td class="px-6 py-3 text-center text-slate-300">1</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">AI signals</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Backtesting</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Screener</td>
+                                <td class="px-6 py-3 text-center text-xs text-slate-500">Basic</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Advanced</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">Advanced</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">REST API</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Telegram alerts</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Data real-time</td>
+                                <td class="px-6 py-3 text-center text-xs text-slate-500">Delay 15m</td>
+                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">&lt; 1m delay</td>
+                                <td class="px-6 py-3 text-center text-success text-xs">&lt; 1m delay</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Source code</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">White label</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-3 text-slate-300">Self-hosted</td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-center pb-8">
+                <p class="text-sm text-slate-500">Butuh paket khusus untuk tim atau perusahaan? <a href="/kontak" class="text-blue-400 hover:underline">Hubungi kami</a>.</p>
+            </div>
+        </main>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>
