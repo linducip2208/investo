@@ -1,0 +1,11 @@
+[Unit]
+Description=Investo Cron Fetch Timer - Every 10 min during market hours
+Requires=investo-cron.service
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 09..15:00/10
+Persistent=true
+RandomizedDelaySec=30
+
+[Install]
+WantedBy=timers.target

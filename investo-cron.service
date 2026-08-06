@@ -1,0 +1,14 @@
+[Unit]
+Description=Investo Cron Fetch - Daily price data updater
+After=network.target mysql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/investo
+ExecStart=/opt/investo/cron-fetch
+User=investo
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
