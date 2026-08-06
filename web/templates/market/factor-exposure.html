@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        .bar-fill{height:6px;border-radius:3px;transition:width .6s ease}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="factorExposure()" x-init="fetch()">
+    <script>
+        function factorExposure() {
+            return {
+                sidebarOpen: false,
+                exposures: [],
+                filtered: [],
+                search: '',
+                sortKey: 'composite',
+                sortDir: -1,
+                loaded: false,
+                async fetch() {
+                    try {
+                        const resp = await fetch('/api/market/factor-exposure');
+                        const data = await resp.json();
+                        this.exposures = data.exposures || [];
+                        this.filter();
+                        this.loaded = true;
+                    } catch(e) { this.loaded = true; }
+                },
+                filter() {
+                    let items = this.exposures;
+                    if (this.search) {
+                        const q = this.search.toUpperCase();
+                        items = items.filter(e => e.stock_code.toUpperCase().includes(q) || e.stock_name.toUpperCase().includes(q));
+                    }
+                    items.sort((a,b) => (a[this.sortKey] - b[this.sortKey]) * this.sortDir);
+                    this.filtered = items;
+                },
+                sort(key) {
+                    if (this.sortKey === key) { this.sortDir *= -1; } else { this.sortKey = key; this.sortDir = -1; }
+                    this.filter();
+                },
+                barColor(v) {
+                    if (v > 70) return 'bg-green-500';
+                    if (v > 40) return 'bg-yellow-500';
+                    return 'bg-red-500';
+                },
+                scoreColor(v) {
+                    if (v > 70) return 'text-green-400';
+                    if (v > 40) return 'text-yellow-400';
+                    return 'text-red-400';
+                }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Quantitative Research</p>
+            <a href="/market/factor-exposure" class="sidebar-link active"><span class="icon">📐</span> Factor Exposure</a>
+            <a href="/market/factor-timing" class="sidebar-link"><span class="icon">⏱️</span> Factor Timing</a>
+            <a href="/market/smart-beta" class="sidebar-link"><span class="icon">🧬</span> Smart Beta</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Supply Chain</p>
+            <a href="/market/supply-chain" class="sidebar-link"><span class="icon">🔗</span> Supply Chain</a>
+            <a href="/market/industry-lifecycle" class="sidebar-link"><span class="icon">🌱</span> Industry Lifecycle</a>
+            <a href="/market/competitive" class="sidebar-link"><span class="icon">🏆</span> Competitive</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        </div>
+    </aside>
+
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="text-sm text-slate-400"><span class="text-slate-600">Quant /</span> Factor Exposure</div>
+        <div class="flex items-center gap-3">
+            <button @click="fetch()" class="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Refresh">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+            [[if .User]]
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            </a>
+            [[end]]
+        </div>
+    </header>
+
+    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+        <template x-if="!loaded">
+            <div class="card p-8 flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-slate-400">Loading factor exposures...</p>
+            </div>
+        </template>
+
+        <template x-if="loaded">
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Factor Exposure Report</h1>
+                        <p class="text-slate-400 text-sm mt-1">Multi-factor decomposition: Value, Size, Momentum, Quality, Low Vol, Growth</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="text" placeholder="Search stock..." x-model="search" @input="filter()"
+                               class="bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none w-48">
+                        <span class="text-xs text-slate-500 font-mono" x-text="filtered.length + ' stocks'"></span>
+                    </div>
+                </div>
+
+                <div class="card overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="text-left p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Stock</th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('value')">Value <span x-text="sortKey==='value' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('size')">Size <span x-text="sortKey==='size' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('momentum')">Momentum <span x-text="sortKey==='momentum' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('quality')">Quality <span x-text="sortKey==='quality' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('low_vol')">Low Vol <span x-text="sortKey==='low_vol' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('growth')">Growth <span x-text="sortKey==='growth' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                                <th class="text-right p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white" @click="sort('composite')">Composite <span x-text="sortKey==='composite' ? (sortDir>0?'▴':'▾') : ''"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="exp in filtered" :key="exp.stock_code">
+                                <tr class="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
+                                    <td class="p-3">
+                                        <span class="font-mono font-bold text-white" x-text="exp.stock_code"></span>
+                                        <span class="text-slate-500 text-xs ml-2" x-text="exp.stock_name"></span>
+                                    </td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.value)" x-text="exp.value.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.size)" x-text="exp.size.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.momentum)" x-text="exp.momentum.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.quality)" x-text="exp.quality.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.low_vol)" x-text="exp.low_vol.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono" :class="scoreColor(exp.growth)" x-text="exp.growth.toFixed(1)"></span></td>
+                                    <td class="p-3 text-right"><span class="font-mono font-bold text-blue-400" x-text="exp.composite.toFixed(1)"></span></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <template x-if="filtered.length === 0">
+                        <div class="p-12 text-center text-slate-500">No stocks match your search.</div>
+                    </template>
+                </div>
+
+                <div class="card p-6">
+                    <h2 class="text-lg font-bold text-white mb-4">Factor Methodology</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="space-y-2">
+                            <div class="font-semibold text-blue-400">Value (0-100)</div>
+                            <p class="text-slate-400">PER&lt;15 (+30), PBV&lt;1.5 (+40), Div Yield&gt;3% (+30)</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-green-400">Quality (0-100)</div>
+                            <p class="text-slate-400">ROE&gt;20% (+40), DER&lt;1 (+30), Stable earnings (+30)</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-purple-400">Momentum (0-100)</div>
+                            <p class="text-slate-400">6-month price return normalized to 0-100 scale</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-yellow-400">Size (0-100)</div>
+                            <p class="text-slate-400">Small cap=100, Mega cap=0. Market cap-based scoring</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-teal-400">Low Vol (0-100)</div>
+                            <p class="text-slate-400">Beta&lt;0.8 (+50), Low daily volatility (+50)</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="font-semibold text-orange-400">Growth (0-100)</div>
+                            <p class="text-slate-400">EPS growth&gt;15% (+50), Revenue growth&gt;10% (+50)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </main>
+
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Market · Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="predictionApp()" x-init="init()">
+    <script>
+        function predictionApp() {
+            return {
+                sidebarOpen: false,
+                code: '',
+                price: 0,
+                date: '',
+                predictions: [],
+                leaderboard: [],
+                stocks: [],
+                loading: false,
+                msg: '', msgType: 'success',
+                async init() {
+                    await this.fetchPredictions();
+                    await this.fetchLeaderboard();
+                    await this.fetchStocks();
+                    this.date = new Date(Date.now()+86400000).toISOString().slice(0,10);
+                },
+                async fetchStocks() {
+                    try {
+                        var r = await fetch('/api/stocks/search?q=');
+                        var d = await r.json();
+                        this.stocks = (d||[]).slice(0,100);
+                    } catch(e) {}
+                },
+                async fetchPredictions() {
+                    try {
+                        var r = await fetch('/api/predictions');
+                        var d = await r.json();
+                        this.predictions = d || [];
+                    } catch(e) {}
+                },
+                async fetchLeaderboard() {
+                    try {
+                        var r = await fetch('/api/predictions/leaderboard');
+                        var d = await r.json();
+                        this.leaderboard = d || [];
+                    } catch(e) {}
+                },
+                async submitPrediction() {
+                    if (!this.code || !this.price || !this.date) { this.msg = 'Lengkapi semua field'; this.msgType='danger'; return; }
+                    this.loading = true;
+                    try {
+                        var r = await fetch('/api/predictions', {
+                            method: 'POST',
+                            headers: {'Content-Type':'application/json'},
+                            body: JSON.stringify({code:this.code.toUpperCase(),price:parseFloat(this.price),date:this.date})
+                        });
+                        var d = await r.json();
+                        if (r.ok) { this.msg='Prediksi berhasil disimpan!'; this.msgType='success'; this.code=''; this.price=0; await this.fetchPredictions(); await this.fetchLeaderboard(); }
+                        else { this.msg = d.error || 'Gagal menyimpan prediksi'; this.msgType='danger'; }
+                    } catch(e) { this.msg='Gagal menghubungi server'; this.msgType='danger'; }
+                    this.loading = false;
+                },
+                fmt(v) { return v ? 'Rp '+Math.round(v).toLocaleString('id-ID') : '-'; },
+                fmtAcc(v) { return v != null ? v.toFixed(2)+'%' : '-'; },
+                getMedal(i) { return i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1); }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">📋</span> Market Recap</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon">💵</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Engagement</p>
+            <a href="/market/prediction" class="sidebar-link active"><span class="icon">🎯</span> Prediction Market</a>
+            <a href="/achievements" class="sidebar-link"><span class="icon">🏅</span> Achievements</a>
+            <a href="/market/whatsapp-bot" class="sidebar-link"><span class="icon">🤖</span> WhatsApp Bot</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">📝</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                [[if .User]]
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+                [[else]]
+                <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+                [[end]]
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-white">🎯 Prediction Market</h1>
+                <p class="text-sm text-slate-400 mt-0.5">Prediksi harga saham, kumpulkan poin, dan raih puncak leaderboard.</p>
+            </div>
+
+            <div x-show="msg" :class="msgType==='success'?'bg-emerald-900/30 border-emerald-700/50 text-emerald-300':'bg-red-900/30 border-red-700/50 text-red-300'" class="border px-4 py-3 rounded-xl text-sm" x-text="msg" @click="msg=''"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-2">
+                    <div class="card p-5" style="background:linear-gradient(135deg,#1e3a8a,#4c1d95)">
+                        <h2 class="text-lg font-bold text-white mb-1">Prediksi Hari Ini</h2>
+                        <p class="text-sm text-blue-200 mb-5">Tebak harga penutupan saham besok dan dapatkan poin!</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs text-blue-200 mb-1">Kode Saham</label>
+                                <input type="text" x-model="code" placeholder="BBCA" class="w-full px-3 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent uppercase">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-blue-200 mb-1">Harga Prediksi (Rp)</label>
+                                <input type="number" x-model="price" placeholder="10500" step="1" class="w-full px-3 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-blue-200 mb-1">Tanggal Prediksi</label>
+                                <input type="date" x-model="date" class="w-full px-3 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+                            </div>
+                        </div>
+                        <button @click="submitPrediction()" :disabled="loading" class="mt-4 px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg disabled:opacity-50">
+                            <span x-show="!loading">Submit Prediksi</span>
+                            <span x-show="loading">Menyimpan...</span>
+                        </button>
+                    </div>
+
+                    <div class="card p-5 mt-4">
+                        <h2 class="widget-title mb-4">Prediksi Saya</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-slate-700/50 bg-slate-800/30">
+                                        <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tanggal</th>
+                                        <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Saham</th>
+                                        <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Prediksi</th>
+                                        <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Aktual</th>
+                                        <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Akurasi</th>
+                                        <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Poin</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700/30">
+                                    <template x-for="p in predictions" :key="p.id">
+                                        <tr class="hover:bg-slate-700/20 transition-colors">
+                                            <td class="px-4 py-3 text-slate-300 font-mono text-xs" x-text="p.predicted_date"></td>
+                                            <td class="px-4 py-3"><span class="font-bold text-blue-400" x-text="p.stock_code"></span><span class="text-xs text-slate-500 ml-1" x-text="p.stock_name"></span></td>
+                                            <td class="px-4 py-3 text-right font-mono text-white" x-text="fmt(p.predicted_price)"></td>
+                                            <td class="px-4 py-3 text-right font-mono text-slate-300" x-text="p.actual_price ? fmt(p.actual_price) : 'Menunggu'"></td>
+                                            <td class="px-4 py-3 text-right font-mono">
+                                                <span :class="(p.accuracy||0)>=80?'text-success':(p.accuracy||0)>=50?'text-warning':'text-danger'" x-text="fmtAcc(p.accuracy)"></span>
+                                            </td>
+                                            <td class="px-4 py-3 text-right font-mono font-bold">
+                                                <span :class="p.points>=10?'text-success':p.points>=5?'text-warning':'text-slate-500'" x-text="p.points || '-'"></span>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <tr x-show="predictions.length===0">
+                                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">Belum ada prediksi. Mulai prediksi sekarang!</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card p-5">
+                        <h2 class="widget-title mb-4">🏆 Leaderboard</h2>
+                        <p class="text-xs text-slate-500 mb-3">Sistem poin: &le;1% = 10pts | &le;3% = 5pts | &le;5% = 2pts</p>
+                        <div class="space-y-1">
+                            <template x-for="(l,i) in leaderboard" :key="l.user_id">
+                                <div class="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-slate-700/30 transition-colors">
+                                    <span class="text-lg w-7 text-center" x-text="getMedal(i)"></span>
+                                    <div class="flex-1 min-w-0">
+                                        <span class="text-sm font-semibold text-white block truncate" x-text="l.user_name"></span>
+                                        <span class="text-xs text-slate-500" x-text="l.predictions+' prediksi · Akurasi '+(l.avg_accuracy||0).toFixed(1)+'%'"></span>
+                                    </div>
+                                    <span class="font-mono font-bold text-lg text-amber-400 shrink-0" x-text="l.total_points+' pts'"></span>
+                                </div>
+                            </template>
+                            <div x-show="leaderboard.length===0" class="py-8 text-center text-slate-500 text-sm">Belum ada data leaderboard.</div>
+                        </div>
+                    </div>
+
+                    <div class="card p-5 mt-4" style="background:linear-gradient(135deg,#1e293b,#0f172a)">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Cara Kerja</h3>
+                        <div class="space-y-3 text-xs text-slate-400">
+                            <div class="flex gap-2"><span class="text-amber-400">1.</span> Pilih saham dan masukkan harga prediksi penutupan besok</div>
+                            <div class="flex gap-2"><span class="text-amber-400">2.</span> Setelah market tutup, sistem cek harga aktual</div>
+                            <div class="flex gap-2"><span class="text-amber-400">3.</span> Selisih &le;1% = 10 poin, &le;3% = 5 poin, &le;5% = 2 poin</div>
+                            <div class="flex gap-2"><span class="text-amber-400">4.</span> Kumpulkan poin dan naik ke puncak leaderboard!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

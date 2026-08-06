@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS agent_decisions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ticker VARCHAR(10) NOT NULL,
+    decision_date DATE NOT NULL,
+    final_signal VARCHAR(10) NOT NULL,
+    entry_price DECIMAL(15,2),
+    target_price DECIMAL(15,2),
+    stop_loss DECIMAL(15,2),
+    position_pct DECIMAL(5,2),
+    confidence DECIMAL(5,2),
+    risk_score DECIMAL(5,2),
+    reports_json LONGTEXT,
+    debate_log TEXT,
+    rationale TEXT,
+    outcome VARCHAR(20),
+    realized_return DECIMAL(10,4),
+    reflection TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_ticker_date (ticker, decision_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

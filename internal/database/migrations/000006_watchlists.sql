@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS watchlists (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS watchlist_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    watchlist_id BIGINT NOT NULL,
+    stock_id BIGINT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_watchlist_stock (watchlist_id, stock_id),
+    FOREIGN KEY (watchlist_id) REFERENCES watchlists(id) ON DELETE CASCADE,
+    FOREIGN KEY (stock_id) REFERENCES stocks(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

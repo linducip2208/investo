@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark'); initData()" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Settings — Investo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
+        .nav-link{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s}
+        .nav-link:hover{background:#1e293b;color:#e2e8f0}
+        .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .input-field{width:100%;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:14px;font-family:'JetBrains Mono',Consolas,monospace;outline:none}
+        .input-field:focus{border-color:#3b82f6}
+        .input-field::placeholder{color:#475569}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-block}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{transform:translateY(-1px)}
+        .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
+        .btn-outline:hover{background:#1e293b}
+        .btn-sm{padding:4px 10px;font-size:11px;border-radius:8px}
+        .toast{position:fixed;top:16px;right:16px;z-index:9999;padding:10px 18px;border-radius:10px;font-size:13px}
+        .toast-success{background:#064e3b;color:#6ee7b7}
+        .toast-error{background:#7f1d1d;color:#fca5a5}
+        .health-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+        .health-dot.healthy{background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,0.5)}
+        .health-dot.unhealthy{background:#ef4444;box-shadow:0 0 8px rgba(239,68,68,0.5)}
+        .health-dot.unknown{background:#64748b}
+        .star-btn{font-size:18px;cursor:pointer;color:#475569;background:none;border:none;padding:2px}
+        .star-btn.active{color:#eab308}
+    </style>
+</head>
+<body class="bg-[#0b1120] text-slate-200 flex">
+
+<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
+        <span class="font-bold text-white">Investo</span>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/saham" class="nav-link">📈 Saham</a>
+        <a href="/forex" class="nav-link">💱 Forex</a>
+        <a href="/screener" class="nav-link">🔍 Screener</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
+        <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
+        <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
+        <a href="/ai/agents" class="nav-link">🧠 Agents</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
+        <a href="/pengaturan/ai" class="nav-link active">🔑 AI Settings</a>
+        <a href="/ai/usage" class="nav-link">📊 AI Usage</a>
+        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+    </nav>
+</aside>
+
+<div class="flex-1 min-w-0" x-data="aiSettings()">
+    <div class="max-w-3xl mx-auto px-6 py-6">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-xl font-bold text-white">AI Provider Settings</h1>
+            <a href="/ai/usage" class="btn btn-outline btn-sm">📊 View Usage</a>
+        </div>
+        <p class="text-sm text-slate-400 mb-6">BYOK — masukkan API key dari provider Anda sendiri. Data key dienkripsi AES-256.</p>
+
+        <div class="space-y-4">
+
+            <template x-for="p in providers" :key="p.name">
+                <div class="card p-5" :class="{'border-blue-500': p.name === activeProvider}">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg" x-text="p.icon"></span>
+                            <h3 class="font-semibold text-white" x-text="p.displayName"></h3>
+                            <span class="health-dot" :class="healthStatus[p.name] || 'unknown'" :title="healthStatus[p.name] || 'unknown'"></span>
+                        </div>
+                        <button @click="activeProvider=p.name" class="text-xs px-3 py-1 rounded-lg" :class="activeProvider===p.name?'bg-blue-600 text-white':'bg-slate-700 text-slate-400'">Active</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">API Key (Primary)</label>
+                            <input type="password" :id="p.name+'_key_0'" class="input-field" :placeholder="p.placeholder" @input="updateProviderField(p.name, 'key', $event.target.value)">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2" x-show="p.name !== 'ollama'">
+                            <div><label class="text-xs text-slate-400 block mb-1">Key 2</label><input type="password" :id="p.name+'_key_1'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 2, $event.target.value)"></div>
+                            <div><label class="text-xs text-slate-400 block mb-1">Key 3</label><input type="password" :id="p.name+'_key_2'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 3, $event.target.value)"></div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Model</label><input :id="p.name+'_model'" class="input-field" :value="p.model" @input="updateProviderField(p.name, 'model', $event.target.value)"></div>
+                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Base URL</label><input :id="p.name+'_url'" class="input-field" :value="p.base_url" @input="updateProviderField(p.name, 'url', $event.target.value)"></div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Monthly Budget ($)</label><input :id="p.name+'_budget'" class="input-field" type="number" step="0.01" :placeholder="'e.g. 50.00'" @input="updateProviderField(p.name, 'budget', $event.target.value)"></div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                        <button @click="saveProvider(p.name)" class="btn btn-primary">Save</button>
+                        <button @click="testProvider(p.name)" class="btn btn-outline">Test</button>
+                        <button @click="checkHealth(p.name)" class="btn btn-outline btn-sm">Health</button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+
+        <div class="card p-5 mt-6">
+            <h3 class="font-semibold text-white mb-3">⭐ Rate Recent AI Responses</h3>
+            <p class="text-xs text-slate-400 mb-3">Beri rating untuk meningkatkan kualitas respons AI.</p>
+            <div class="space-y-2" x-show="recentResponses.length > 0">
+                <template x-for="r in recentResponses" :key="r.id">
+                    <div class="flex items-center justify-between bg-[#0f172a] rounded-xl px-4 py-3 border border-slate-700">
+                        <div class="flex-1">
+                            <div class="text-sm text-white" x-text="r.provider + ' · ' + r.feature"></div>
+                            <div class="text-xs text-slate-400" x-text="r.created_at"></div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-0.5">
+                                <button @click="rateResponse(r.id, n)" class="star-btn" :class="{ active: r.my_rating >= n }" x-data x-text="'★'" x-for="n in 5" :key="n"></button>
+                            </div>
+                            <span class="text-xs text-slate-500" x-text="'$' + parseFloat(r.cost).toFixed(5)"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="text-center text-slate-500 py-4 text-sm" x-show="recentResponses.length === 0">
+                No recent AI responses to rate. Make some AI calls first!
+            </div>
+        </div>
+
+        <div x-show="toast" :class="'toast '+(toastType==='success'?'toast-success':'toast-error')" x-text="toast" @click="toast=''" style="display:none" x-transition></div>
+    </div>
+</div>
+
+<script>
+function aiSettings() {
+    return {
+        providers: [],
+        activeProvider: 'deepseek',
+        healthStatus: {},
+        recentResponses: [],
+        toast: '', toastType: 'success',
+        providerFields: {},
+
+        showToast(msg, type) { this.toast = msg; this.toastType = type || 'success'; setTimeout(() => this.toast = '', 3000); },
+
+        async initData() {
+            try {
+                var r = await fetch('/api/ai/usage?days=1');
+                var d = await r.json();
+                this.recentResponses = (d.recent_logs || []).slice(0, 10).map(l => ({...l, my_rating: l.rating || 0}));
+            } catch(e) {}
+
+            try {
+                var hr = await fetch('/api/ai/health-check');
+                var hd = await hr.json();
+                for (var k in hd) {
+                    this.healthStatus[k] = hd[k].status === 'healthy' ? 'healthy' : 'unhealthy';
+                }
+            } catch(e) {}
+
+            this.providers = [
+                { name: 'deepseek', displayName: 'DeepSeek', icon: '🧠', placeholder: 'sk-...', model: 'deepseek-chat', base_url: 'https://api.deepseek.com/v1', key: '' },
+                { name: 'openai', displayName: 'OpenAI', icon: '🤖', placeholder: 'sk-...', model: 'gpt-4o', base_url: 'https://api.openai.com/v1', key: '' },
+                { name: 'claude', displayName: 'Claude', icon: '🔮', placeholder: 'sk-ant-...', model: 'claude-3-5-sonnet-20241022', base_url: 'https://api.anthropic.com/v1', key: '' },
+                { name: 'ollama', displayName: 'Ollama (Local)', icon: '🦙', placeholder: 'No key needed', model: 'llama3.2', base_url: 'http://localhost:11434/v1', key: '' }
+            ];
+        },
+
+        updateProviderField(name, field, value) {
+            var p = this.providers.find(x => x.name === name);
+            if (p) p[field] = value;
+        },
+
+        updateMultiKey(name, num, value) {
+            if (!this.providerFields[name]) this.providerFields[name] = {};
+            this.providerFields[name]['key' + num] = value;
+        },
+
+        async saveProvider(pname) {
+            try {
+                var p = this.providers.find(x => x.name === pname);
+                if (!p) return;
+                var body = {
+                    provider: pname,
+                    api_key: p.key || '',
+                    model: p.model,
+                    base_url: p.base_url,
+                    active: this.activeProvider === pname,
+                    budget: p.budget || '',
+                    multi_keys: []
+                };
+
+                if (pname !== 'ollama') {
+                    for (var i = 2; i <= 3; i++) {
+                        var v = (this.providerFields[pname] || {})['key' + i] || '';
+                        if (v) body.multi_keys.push({ num: i, key: v });
+                    }
+                }
+
+                if (p.budget) {
+                    await fetch('/api/ai/budget', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: pname, monthly_limit: parseFloat(p.budget) }) });
+                }
+
+                var r = await fetch('/api/ai/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                var d = await r.json();
+                if (r.ok) this.showToast('Settings saved!');
+                else this.showToast('Save failed: ' + (d.error || 'Unknown'), 'error');
+            } catch(e) { this.showToast('Error: ' + e.message, 'error'); }
+        },
+
+        async testProvider(pname) {
+            try {
+                this.showToast('Testing...', 'success');
+                var r = await fetch('/api/ai/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: pname }) });
+                var d = await r.json();
+                if (r.ok) this.showToast('Connected! ' + (d.response || 'OK'));
+                else this.showToast('Failed: ' + (d.error || 'Unknown'), 'error');
+            } catch(e) { this.showToast('Error: ' + e.message, 'error'); }
+        },
+
+        async checkHealth(pname) {
+            try {
+                this.showToast('Checking health...', 'success');
+                var r = await fetch('/api/ai/health-check?provider=' + pname);
+                var d = await r.json();
+                this.healthStatus[pname] = d.status || 'unhealthy';
+                this.showToast(pname + ': ' + (d.healthy ? 'Healthy ✅' : 'Unhealthy ❌'), d.healthy ? 'success' : 'error');
+            } catch(e) { this.showToast('Error: ' + e.message, 'error'); }
+        },
+
+        async rateResponse(logId, rating) {
+            try {
+                var r = await fetch('/api/ai/rate-response', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usage_log_id: logId, rating: rating, comment: '' }) });
+                if (r.ok) {
+                    var resp = this.recentResponses.find(x => x.id === logId);
+                    if (resp) resp.my_rating = rating;
+                }
+            } catch(e) {}
+        }
+    }
+}
+</script>
+
+</body>
+</html>

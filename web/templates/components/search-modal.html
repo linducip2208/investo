@@ -1,0 +1,162 @@
+<!-- Global Search Modal (Cmd+K / Ctrl+K) -->
+<div x-data="searchModal()" x-init="init()" @keydown.window.cmd.k.prevent="openSearch()" @keydown.window.ctrl.k.prevent="openSearch()">
+    <div x-show="open" @click.self="closeSearch()" @keydown.escape.window="closeSearch()"
+         class="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
+          x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <div class="relative w-full max-w-lg mx-4 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+             @click.outside="closeSearch()">
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+                <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" x-ref="searchInput" x-model="query" @input.debounce.200ms="search()" @keydown.down.prevent="moveDown()" @keydown.up.prevent="moveUp()" @keydown.enter.prevent="selectResult()"
+                       placeholder="Cari saham, halaman..."
+                       class="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white placeholder-slate-400">
+            </div>
+
+            <div class="max-h-72 overflow-y-auto">
+                <template x-if="results.stocks && results.stocks.length > 0">
+                    <div>
+                        <div class="px-4 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Saham</div>
+                        <template x-for="(s, idx) in results.stocks" :key="'stock-'+s.id">
+                            <div @click="goTo('/saham/' + s.code)" @mouseenter="activeIndex = idx"
+                                 class="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                                 :class="activeIndex === idx ? 'bg-blue-50 dark:bg-blue-900/20' : ''">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 w-12" x-text="s.code"></span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px]" x-text="s.name"></span>
+                                </div>
+                                <span class="text-xs font-mono" :class="s.change_percent >= 0 ? 'text-emerald-600' : 'text-red-500'"
+                                      x-text="(s.change_percent >= 0 ? '+' : '') + s.change_percent.toFixed(2) + '%'"></span>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <div>
+                    <div class="px-4 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Halaman</div>
+                    <template x-for="(page, idx) in pageResults" :key="'page-'+idx">
+                        <div @click="goTo(page.url)" @mouseenter="activeIndex = (results.stocks ? results.stocks.length : 0) + idx"
+                             class="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                             :class="activeIndex === ((results.stocks ? results.stocks.length : 0) + idx) ? 'bg-blue-50 dark:bg-blue-900/20' : ''">
+                            <span class="text-sm" x-text="page.icon"></span>
+                            <div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-slate-200" x-text="page.label"></span>
+                                <span class="text-xs text-slate-400 ml-1.5" x-text="'/'+page.url"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-show="noResults && query.length > 0" class="px-4 py-8 text-center text-slate-400 text-sm">
+                    Tidak ada hasil untuk "<span x-text="query"></span>"
+                </div>
+            </div>
+
+            <div class="px-4 py-2.5 border-t border-slate-100 dark:border-slate-700 flex items-center gap-4 text-[11px] text-slate-400">
+                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">ESC</kbd> tutup</span>
+                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">↑↓</kbd> navigasi</span>
+                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">↵</kbd> pilih</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function searchModal() {
+    return {
+        open: false,
+        query: '',
+        results: { stocks: [] },
+        activeIndex: -1,
+        noResults: false,
+        pages: [
+            { url: 'dashboard', label: 'Dashboard', icon: '🏠' },
+            { url: 'dashboard/portfolios', label: 'Portofolio', icon: '💼' },
+            { url: 'dashboard/watchlists', label: 'Watchlist', icon: '⭐' },
+            { url: 'dashboard/alerts', label: 'Alert', icon: '🔔' },
+            { url: 'saham', label: 'Daftar Saham', icon: '📈' },
+            { url: 'forex', label: 'Forex', icon: '💱' },
+            { url: 'screener', label: 'Screener', icon: '🔍' },
+            { url: 'berita', label: 'Berita', icon: '📰' },
+            { url: 'ideas', label: 'Ide Investasi', icon: '💡' },
+            { url: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
+            { url: 'profil', label: 'Profil', icon: '👤' },
+            { url: 'pengaturan', label: 'Pengaturan', icon: '⚙️' },
+            { url: 'market/heatmap', label: 'Market Heatmap', icon: '🗺️' },
+            { url: 'market/recap', label: 'Market Recap', icon: '🧠' },
+            { url: 'blog', label: 'Blog', icon: '📝' },
+            { url: 'docs', label: 'Dokumentasi', icon: '📚' },
+        ],
+        get pageResults() {
+            if (!this.query || this.query.length < 1) return this.pages;
+            const q = this.query.toLowerCase();
+            return this.pages.filter(p => p.label.toLowerCase().includes(q) || p.url.toLowerCase().includes(q));
+        },
+        init() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    this.openSearch();
+                }
+            });
+        },
+        openSearch() {
+            this.open = true;
+            this.query = '';
+            this.results = { stocks: [] };
+            this.activeIndex = -1;
+            this.noResults = false;
+            this.$nextTick(() => { this.$refs.searchInput.focus(); });
+        },
+        closeSearch() {
+            this.open = false;
+        },
+        async search() {
+            if (this.query.length < 1) {
+                this.results = { stocks: [] };
+                this.noResults = false;
+                return;
+            }
+            try {
+                const res = await fetch('/api/v1/search?q=' + encodeURIComponent(this.query));
+                const data = await res.json();
+                this.results = { stocks: Array.isArray(data) ? data : (data.data || []) };
+                this.noResults = (!this.results.stocks || this.results.stocks.length === 0) && this.pageResults.length === 0;
+                this.activeIndex = -1;
+            } catch(e) { console.error('Search error:', e) }
+        },
+        goTo(url) {
+            window.location.href = '/' + url.replace(/^\//, '');
+        },
+        moveDown() {
+            const max = (this.results.stocks ? this.results.stocks.length : 0) + this.pageResults.length - 1;
+            if (this.activeIndex < max) {
+                this.activeIndex++;
+            } else {
+                this.activeIndex = 0;
+            }
+        },
+        moveUp() {
+            const max = (this.results.stocks ? this.results.stocks.length : 0) + this.pageResults.length - 1;
+            if (this.activeIndex > 0) {
+                this.activeIndex--;
+            } else {
+                this.activeIndex = max;
+            }
+        },
+        selectResult() {
+            if (this.activeIndex === -1) return;
+            const stockLen = this.results.stocks ? this.results.stocks.length : 0;
+            if (this.activeIndex < stockLen) {
+                const s = this.results.stocks[this.activeIndex];
+                this.goTo('saham/' + s.code);
+            } else {
+                const p = this.pageResults[this.activeIndex - stockLen];
+                if (p) this.goTo(p.url);
+            }
+        }
+    }
+}
+</script>

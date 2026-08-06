@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beli Aplikasi Saham & Forex — Source Code Investo | Investo</title>
+    <meta name="description" content="Dapatkan source code lengkap aplikasi saham & forex Indonesia. Laravel/Go backend, admin panel Filament, whitelabel ready, pSEO built-in. Harga terjangkau, bisa dijual kembali.">
+    <meta property="og:title" content="Beli Aplikasi Saham & Forex — Source Code Investo">
+    <meta property="og:description" content="Source code aplikasi saham & forex lengkap. Backend Go/Laravel, admin panel, whitelabel ready, pSEO 1 juta halaman.">
+    <meta property="og:type" content="product">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://investo.id/beli-aplikasi-saham">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:16px}
+        .card-lift{transition:transform .35s cubic-bezier(0.16,1,0.3,1),box-shadow .35s cubic-bezier(0.16,1,0.3,1)}
+        .card-lift:hover{transform:translateY(-6px);box-shadow:0 20px 40px -12px rgba(0,0,0,.3)}
+        @keyframes fadeSlideUp{0%{transform:translateY(28px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        .animate-float{animation:float 5s ease-in-out infinite}
+        .animate-shimmer{background:linear-gradient(90deg,transparent 25%,rgba(255,255,255,.12) 50%,transparent 75%);background-size:200% 100%;animation:shimmer 1.8s ease-in-out infinite}
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+</head>
+<body>
+
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div>
+                <span class="font-bold text-xl text-white">Investo</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-6 text-sm">
+                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/docs" class="text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
+                <a href="/blog" class="text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            </div>
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<section class="py-16 lg:py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-15" style="background-image:radial-gradient(circle at 30% 50%,rgba(59,130,246,.5) 0%,transparent 50%),radial-gradient(circle at 70% 40%,rgba(147,197,253,.4) 0%,transparent 50%)"></div>
+    <div class="absolute top-16 left-16 text-8xl opacity-10 animate-float select-none">💻</div>
+    <div class="absolute bottom-16 right-16 text-7xl opacity-10 animate-float select-none hidden lg:block" style="animation-delay:1.5s">📊</div>
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center gap-2 bg-emerald-500/80 text-white px-4 py-1.5 rounded-full text-sm font-semibold mb-6 reveal">
+            <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span></span>
+            Tersedia — Source Code Lengkap
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-6 reveal reveal-delay-1">Aplikasi Saham & Forex<br class="hidden sm:block"> Siap Pakai</h1>
+        <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto reveal reveal-delay-2">Source code lengkap aplikasi investasi — chart teknikal, fundamental IDX, screener, portfolio tracker, pSEO 1 juta halaman. Whitelabel ready.</p>
+        <div class="reveal reveal-delay-3">
+            <div class="text-5xl font-extrabold text-white mb-2">Rp 2.499.000</div>
+            <div class="text-blue-200 text-sm mb-8">One-time payment · Lifetime license · Free update 1 tahun</div>
+            <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20source%20code%20Investo" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-10 py-4 rounded-2xl shadow-2xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40 transition-all hover:-translate-y-1">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                Beli via WhatsApp
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 reveal">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white">Yang Anda Dapatkan</h2>
+            <p class="text-slate-400 mt-3 text-base max-w-2xl mx-auto">Source code lengkap dengan semua fitur production-ready.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="card-lift card p-6 reveal reveal-delay-1"><div class="text-3xl mb-3">🖥️</div><h3 class="font-bold text-white mb-2">Full Source Code</h3><p class="text-sm text-slate-400 leading-relaxed">Kode lengkap backend dan frontend. Tidak ada enkripsi, tidak ada obfuscation.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-2"><div class="text-3xl mb-3">🐹</div><h3 class="font-bold text-white mb-2">Go / Laravel Backend</h3><p class="text-sm text-slate-400 leading-relaxed">Backend performa tinggi dengan Go, atau opsi Laravel + Filament admin panel.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-3"><div class="text-3xl mb-3">🏷️</div><h3 class="font-bold text-white mb-2">Whitelabel Ready</h3><p class="text-sm text-slate-400 leading-relaxed">Ganti logo, warna, nama, dan domain dengan mudah. Jual kembali ke klien Anda.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-4"><div class="text-3xl mb-3">🔍</div><h3 class="font-bold text-white mb-2">pSEO 1 Juta Halaman</h3><p class="text-sm text-slate-400 leading-relaxed">Programmatic SEO built-in. Traffic organik compounding.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-1"><div class="text-3xl mb-3">📱</div><h3 class="font-bold text-white mb-2">Responsive + Mobile</h3><p class="text-sm text-slate-400 leading-relaxed">UI mobile-first dengan TailwindCSS + Alpine.js.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-2"><div class="text-3xl mb-3">📚</div><h3 class="font-bold text-white mb-2">Dokumentasi Lengkap</h3><p class="text-sm text-slate-400 leading-relaxed">Setup guide, API docs, deployment instructions, dan tutorial.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-3"><div class="text-3xl mb-3">🔌</div><h3 class="font-bold text-white mb-2">API Ready</h3><p class="text-sm text-slate-400 leading-relaxed">REST API untuk integrasi dengan mobile apps atau third-party.</p></div>
+            <div class="card-lift card p-6 reveal reveal-delay-4"><div class="text-3xl mb-3">🛡️</div><h3 class="font-bold text-white mb-2">Security Best Practice</h3><p class="text-sm text-slate-400 leading-relaxed">CSRF protection, XSS sanitization, SQL injection prevention.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 lg:py-20 bg-[#0f1424]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 reveal">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white">Tech Stack</h2>
+            <p class="text-slate-400 mt-3">Dibangun dengan teknologi modern yang scalable.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🐹</span><div><div class="font-semibold text-white text-sm">Go 1.22+</div><div class="text-xs text-slate-400">Backend API & web server</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🐘</span><div><div class="font-semibold text-white text-sm">Laravel 11</div><div class="text-xs text-slate-400">Admin panel (opsional)</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🗄️</span><div><div class="font-semibold text-white text-sm">MySQL / PostgreSQL</div><div class="text-xs text-slate-400">Database relasional</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🎨</span><div><div class="font-semibold text-white text-sm">TailwindCSS v3</div><div class="text-xs text-slate-400">Utility-first CSS</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">⚡</span><div><div class="font-semibold text-white text-sm">Alpine.js</div><div class="text-xs text-slate-400">Lightweight reactivity</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">📊</span><div><div class="font-semibold text-white text-sm">Chart.js / ApexCharts</div><div class="text-xs text-slate-400">Interactive charts</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🐳</span><div><div class="font-semibold text-white text-sm">Docker</div><div class="text-xs text-slate-400">Containerized deployment</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">🔐</span><div><div class="font-semibold text-white text-sm">JWT / OAuth2</div><div class="text-xs text-slate-400">Authentication</div></div></div>
+            <div class="card rounded-xl p-4 flex items-center gap-3"><span class="text-2xl">📝</span><div><div class="font-semibold text-white text-sm">Swagger / OpenAPI</div><div class="text-xs text-slate-400">API documentation</div></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 reveal">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white">Lihat Tampilannya</h2>
+            <p class="text-slate-400 mt-3">Screenshot asli dari aplikasi yang berjalan.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Dashboard</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">📊</span></div>
+            </div>
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Chart Teknikal</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">📈</span></div>
+            </div>
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Portfolio</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">💼</span></div>
+            </div>
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Screener</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">🔍</span></div>
+            </div>
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Admin Panel</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">⚙️</span></div>
+            </div>
+            <div class="card overflow-hidden shadow-lg">
+                <div class="flex items-center gap-1.5 px-3 py-2 border-b border-slate-700 bg-slate-800"><div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-emerald-400"></div><div class="ml-2 text-xs text-slate-400">Landing Page</div></div>
+                <div class="aspect-video bg-slate-800 flex items-center justify-center"><span class="text-4xl opacity-25">🏦</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 lg:py-24 bg-[#0f1424]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 reveal">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white">Pilih Paket</h2>
+            <p class="text-slate-400 mt-3 text-base">Sesuaikan dengan kebutuhan Anda.</p>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-6 lg:gap-8">
+            <div class="card p-8 card-lift reveal reveal-delay-1 flex flex-col">
+                <h3 class="text-xl font-bold text-white mb-2">Source Code Only</h3>
+                <p class="text-sm text-slate-400 mb-4">Anda setup sendiri</p>
+                <div class="text-3xl font-extrabold text-white mb-6">Rp 2.499K</div>
+                <ul class="space-y-3 mb-8 flex-1 text-sm text-slate-300">
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Full source code (Go/Laravel)</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Dokumentasi setup</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Free update 1 tahun</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Lisensi lifetime</li>
+                </ul>
+                <a href="https://wa.me/6281234567890" class="block text-center font-semibold py-3 rounded-xl border border-slate-600 text-slate-200 hover:border-blue-500 transition-all">Beli Sekarang</a>
+            </div>
+            <div class="bg-gradient-to-b from-blue-600 to-blue-800 rounded-2xl p-8 card-lift reveal reveal-delay-2 text-white flex flex-col shadow-2xl shadow-blue-500/30 scale-[1.02]">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 text-xs font-bold px-4 py-1 rounded-full">REKOMENDASI</div>
+                <h3 class="text-xl font-bold mb-2">Source Code + Setup</h3>
+                <p class="text-sm text-blue-100 mb-4">Kami bantu install</p>
+                <div class="text-3xl font-extrabold mb-6">Rp 3.999K</div>
+                <ul class="space-y-3 mb-8 flex-1 text-sm text-blue-100">
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Semua di Source Code Only</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Install & setup di server Anda</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Konfigurasi domain + SSL</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-blue-200 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Support prioritas 3 bulan</li>
+                </ul>
+                <a href="https://wa.me/6281234567890" class="block text-center font-semibold py-3 rounded-xl bg-white text-blue-700 hover:bg-blue-50 transition-all">Beli Sekarang</a>
+            </div>
+            <div class="card p-8 card-lift reveal reveal-delay-3 flex flex-col">
+                <h3 class="text-xl font-bold text-white mb-2">Whitelabel Package</h3>
+                <p class="text-sm text-slate-400 mb-4">Custom branding</p>
+                <div class="text-3xl font-extrabold text-white mb-6">Custom</div>
+                <ul class="space-y-3 mb-8 flex-1 text-sm text-slate-300">
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Semua di Source Code + Setup</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Rebranding UI (warna, logo, nama)</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Custom domain + email setup</li>
+                    <li class="flex items-start gap-2"><svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Support 1 tahun</li>
+                </ul>
+                <a href="https://wa.me/6281234567890" class="block text-center font-semibold py-3 rounded-xl border border-slate-600 text-slate-200 hover:border-blue-500 transition-all">Hubungi Kami</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 lg:py-24" x-data="{ faqOpen: null }">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 reveal"><h2 class="text-3xl lg:text-4xl font-bold text-white">FAQ Pembeli</h2></div>
+        <div class="space-y-3 reveal">
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 1 ? null : 1)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apa yang termasuk dalam source code?</span>
+                    <svg :class="{'rotate-180': faqOpen === 1}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 1" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>Source code lengkap backend (Go/Laravel), frontend (HTML templates TailwindCSS), database migrations, seed data, dokumentasi, deployment scripts, dan semua aset statis. Tidak ada kode yang dienkripsi atau di-obfuscate.</p></div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 2 ? null : 2)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apakah saya boleh menjual kembali aplikasi ini?</span>
+                    <svg :class="{'rotate-180': faqOpen === 2}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 2" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>Ya, dengan lisensi whitelabel Anda bebas menjual kembali aplikasi ke klien Anda dengan brand sendiri. Tidak ada royalti atau biaya tambahan per penjualan.</p></div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 3 ? null : 3)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apakah data saham real-time?</span>
+                    <svg :class="{'rotate-180': faqOpen === 3}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 3" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>Aplikasi menyediakan data dari IDX dan sumber publik. Untuk data real-time streaming, Anda perlu berlangganan data feed dari vendor penyedia data pasar.</p></div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 4 ? null : 4)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Bagaimana dengan update dan maintenance?</span>
+                    <svg :class="{'rotate-180': faqOpen === 4}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 4" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>Free update selama 1 tahun dari tanggal pembelian. Setelah itu, Anda dapat memperpanjang update dengan biaya tahunan. Update mencakup bug fixes, security patches, dan new feature releases.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 bg-[#0f1424]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center reveal">
+            <div class="flex flex-col items-center gap-2"><span class="text-3xl">🔒</span><span class="text-sm font-medium text-slate-400">Lisensi Lifetime</span></div>
+            <div class="flex flex-col items-center gap-2"><span class="text-3xl">🔄</span><span class="text-sm font-medium text-slate-400">Free Update 1 Thn</span></div>
+            <div class="flex flex-col items-center gap-2"><span class="text-3xl">📚</span><span class="text-sm font-medium text-slate-400">Dokumentasi Lengkap</span></div>
+            <div class="flex flex-col items-center gap-2"><span class="text-3xl">💬</span><span class="text-sm font-medium text-slate-400">Support WhatsApp</span></div>
+        </div>
+    </div>
+</section>
+
+<footer class="border-t border-slate-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Pro Terminal · Investo</title>
+    <meta name="description" content="Forex Pro Terminal: currency strength meter, live rates matrix, carry trade, correlation heatmap, arbitrage detection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
+                    },
+                    colors: {
+                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
+                        card: { DEFAULT:'#1e293b',border:'#334155' },
+                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
+                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
+                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .rate-cell{transition:background-color .3s ease;cursor:pointer;border-radius:6px}
+        .rate-cell:hover{filter:brightness(1.25)}
+        .chart-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)}
+        .chart-modal{background:#1e293b;width:90vw;max-width:1100px;height:80vh;border-radius:16px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);display:flex;flex-direction:column;border:1px solid #334155}
+        .session-dot{width:8px;height:8px;border-radius:50%}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="forexPro()" x-init="init()">
+    <script>
+        function forexPro() {
+            return {
+                sidebarOpen: false, session: 'tokyo', chartPair: '', chartOverlay: false, clock: '',
+                init() {
+                    this.updateClock(); setInterval(() => this.updateClock(), 1000);
+                    this.initSession();
+                },
+                updateClock() {
+                    var d = new Date();
+                    this.clock = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'}) + ' WIB · ' + d.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Jakarta'});
+                },
+                initSession() {
+                    var h = new Date().getUTCHours();
+                    if (h >= 0 && h < 8) this.session = 'tokyo';
+                    else if (h >= 8 && h < 15) this.session = 'london';
+                    else this.session = 'ny';
+                },
+                openChart(pair) { this.chartPair = pair; this.chartOverlay = true; },
+                closeChart() { this.chartOverlay = false; if(window.chartInstance){ window.chartInstance.remove(); window.chartInstance=null; } }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX <span class="ml-auto text-[10px] bg-slate-700 px-1.5 py-0.5 rounded text-slate-300">[[.TotalStocks]]</span></a>
+            <a href="/forex" class="sidebar-link active"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon">&#x1F4B5;</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <!-- TOPBAR -->
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <!-- SESSION INDICATORS -->
+            <div class="hidden sm:flex items-center gap-2 text-xs">
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
+                     :class="session==='tokyo'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
+                    <span class="session-dot" :class="session==='tokyo'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> Tokyo
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
+                     :class="session==='london'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
+                    <span class="session-dot" :class="session==='london'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> London
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
+                     :class="session==='ny'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
+                    <span class="session-dot" :class="session==='ny'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> New York
+                </div>
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="flex-1 p-4 lg:p-6 space-y-4 overflow-y-auto" x-data="{chartPair:'',chartOverlay:false}">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">Forex Pro Terminal</h1>
+                    <p class="text-sm text-slate-400 mt-0.5" x-text="clock"></p>
+                </div>
+                <div class="flex gap-2">
+                    <a href="/forex" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-xl transition-colors">Daftar Pair</a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <!-- STRENGTH METER -->
+                <div class="card p-4 lg:col-span-1">
+                    <div class="widget-title">Currency Strength Meter</div>
+                    <div class="space-y-2">
+                        [[if .Strength]][[range .Strength]]
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 text-xs font-bold text-slate-300">[[.Currency]]</span>
+                            <div class="flex-1 h-5 bg-slate-700/50 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500 flex items-center justify-end pr-1.5"
+                                     style="width:[[.Strength]]%; background:[[if ge .Change 0.0]]linear-gradient(90deg,#10b981,#34d399)[[else]]linear-gradient(90deg,#ef4444,#f87171)[[end]]">
+                                    <span class="text-[10px] font-bold text-white drop-shadow">[[printf "%.0f" .Strength]]</span>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-mono w-12 text-right [[if ge .Change 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Change 0.0]]+[[end]][[printf "%.1f" .Change]]%</span>
+                        </div>
+                        [[end]][[end]]
+                    </div>
+                </div>
+
+                <!-- RATES MATRIX -->
+                <div class="card p-4 lg:col-span-2 overflow-x-auto">
+                    <div class="widget-title">Live Rates Matrix</div>
+                    <table class="w-full text-xs font-mono border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="p-1.5 text-slate-400 font-medium"></th>
+                                [[range .Currencies]]<th class="p-1.5 text-center font-bold text-slate-300">[[.]]</th>[[end]]
+                            </tr>
+                        </thead>
+                        <tbody>
+                        [[if .Grid]][[range $i, $row := .Grid]]
+                            <tr>
+                                <td class="p-1.5 font-bold text-slate-300">[[$row.Base]]</td>
+                                [[range $j, $rate := $row.Rates]]
+                                <td class="p-1 text-center rate-cell [[if eq $row.Base (index $.Currencies $j)]]bg-slate-800 text-slate-500[[else if gt $rate 0.0]]bg-blue-900/20 text-blue-300[[end]]"
+                                    [[if gt $rate 0.0]]@click="openChart('[[$row.Base]]/[[index $.Currencies $j]]')" title="[[$row.Base]]/[[index $.Currencies $j]]"[[end]]>
+                                    [[if eq $row.Base (index $.Currencies $j)]]1[[else if gt $rate 0.0]][[printf "%.4f" $rate]][[else]]--[[end]]
+                                </td>
+                                [[end]]
+                            </tr>
+                        [[end]][[end]]
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CARRY TRADE -->
+                <div class="card p-4 lg:col-span-1">
+                    <div class="widget-title">Carry Trade Opportunities</div>
+                    <div class="space-y-2 max-h-[400px] overflow-y-auto">
+                        [[if .CarryTrades]][[range .CarryTrades]]
+                        <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-700/30">
+                            <div>
+                                <div class="text-xs font-bold text-white">[[.Pair]]</div>
+                                <div class="text-[10px] text-slate-400">[[.Direction]]</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs font-mono font-bold [[if ge .Return 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Return 0.0]]+[[end]][[printf "%.2f" .Return]]%</div>
+                                <div class="text-[10px] text-slate-400">Spread [[printf "%.2f" .Spread]]%</div>
+                            </div>
+                        </div>
+                        [[end]][[end]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- ARBITRAGE -->
+            [[if .Arbitrage]]
+            <div class="card p-4">
+                <div class="widget-title">Triangular Arbitrage</div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                    [[range .Arbitrage]]
+                    <div class="flex items-center justify-between p-2.5 rounded-lg [[if ge .ProfitPercent 1.0]]bg-emerald-900/20 border border-emerald-800[[else]]bg-slate-700/30[[end]]">
+                        <div class="text-xs font-mono">
+                            <span class="font-bold text-slate-200">[[index .Path 0]]</span>
+                            <span class="text-slate-500"> &#x2192; </span>
+                            <span class="font-bold text-slate-200">[[index .Path 1]]</span>
+                            <span class="text-slate-500"> &#x2192; </span>
+                            <span class="font-bold text-slate-200">[[index .Path 2]]</span>
+                        </div>
+                        <span class="text-xs font-mono font-bold [[if ge .ProfitPercent 1.0]]text-success[[else]]text-slate-500[[end]]">[[printf "%.4f" .ProfitPercent]]%</span>
+                    </div>
+                    [[end]]
+                </div>
+            </div>
+            [[end]]
+
+            <!-- PAIR LIST -->
+            <div class="card p-4">
+                <div class="widget-title">Pair List &mdash; Click for Chart</div>
+                <div class="flex flex-wrap gap-1.5">
+                    [[if .Pairs]][[range .Pairs]]
+                    <button @click="openChart('[[.Base]]/[[.Quote]]')"
+                            class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-700/50 text-slate-300 hover:bg-blue-900/30 hover:text-blue-400 transition-colors border border-slate-600/50">
+                        [[.Base]]/[[.Quote]]
+                        <span class="ml-1 text-[10px] text-slate-500 font-mono">[[printf "%.4f" .Rate]]</span>
+                    </button>
+                    [[end]][[end]]
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CHART OVERLAY -->
+    <div x-show="chartOverlay" class="chart-overlay" @click.self="closeChart()">
+        <div class="chart-modal" @click.stop>
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700">
+                <h3 class="font-bold text-lg text-white" x-text="chartPair"></h3>
+                <button @click="closeChart()"
+                        class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="chart-container" class="flex-1 w-full"></div>
+        </div>
+    </div>
+
+    <script>
+        var pairIDMap = {};
+        [[if .PairIDs]][[range $key, $val := .PairIDs]]
+        pairIDMap["[[$key]]"] = [[$val]];
+        [[end]][[end]]
+
+        window.chartInstance = null;
+
+        document.addEventListener('alpine:initialized', function() {
+            var mainEl = document.querySelector('main');
+            if (!mainEl || !mainEl.__x) return;
+            var data = mainEl.__x.$data;
+            data.chartPair = '';
+            data.chartOverlay = false;
+            data.$watch('chartOverlay', function(open) {
+                if (!open) return;
+                setTimeout(function() {
+                    var pair = data.chartPair;
+                    if (!pair) return;
+                    var parts = pair.split('/');
+                    if (parts.length !== 2) return;
+                    renderChart(parts[0], parts[1]);
+                }, 100);
+            });
+        });
+
+        function renderChart(base, quote) {
+            var container = document.getElementById('chart-container');
+            if (!container) return;
+            if (window.chartInstance) { window.chartInstance.remove(); window.chartInstance = null; }
+            container.innerHTML = '';
+
+            var chart = LightweightCharts.createChart(container, {
+                layout: { background: { type:'solid', color:'#1e293b' }, textColor:'#94a3b8' },
+                grid: { vertLines:{ color:'rgba(148,163,184,0.1)' }, horzLines:{ color:'rgba(148,163,184,0.1)' } },
+                crosshair: { mode:0 },
+                rightPriceScale: { borderColor:'rgba(148,163,184,0.3)' },
+                timeScale: { borderColor:'rgba(148,163,184,0.3)' }
+            });
+            window.chartInstance = chart;
+
+            var apiUrl = '/api/forex/' + base + '-' + quote;
+            fetch(apiUrl + '?start=' + new Date(Date.now()-365*24*60*60*1000).toISOString().slice(0,10) + '&end=' + new Date().toISOString().slice(0,10))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (!data || data.error) {
+                        container.innerHTML = '<div class="flex items-center justify-center h-full text-slate-400">No chart data available for ' + base + '/' + quote + '</div>';
+                        return;
+                    }
+                    if (!Array.isArray(data) || data.length === 0) return;
+                    var candleData = data.map(function(d) {
+                        return { time:d.date, open:d.open, high:d.high, low:d.low, close:d.close };
+                    });
+                    var candleSeries = chart.addCandlestickSeries({ upColor:'#34d399', downColor:'#f87171', borderUpColor:'#34d399', borderDownColor:'#f87171', wickUpColor:'#34d399', wickDownColor:'#f87171' });
+                    candleSeries.setData(candleData);
+                    chart.timeScale().fitContent();
+                })
+                .catch(function() {
+                    container.innerHTML = '<div class="flex items-center justify-center h-full text-slate-400">Error loading chart</div>';
+                });
+        }
+    </script>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

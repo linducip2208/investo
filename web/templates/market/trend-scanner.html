@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Scanner · Investo</title>
+    <meta name="description" content="Scanner tren pasar saham Indonesia. Deteksi uptrend, downtrend, sideways dengan MA alignment dan ADX.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .badge{border-radius:6px;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.03em}
+        .badge-uptrend{background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+        .badge-downtrend{background:rgba(239,68,68,.18);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+        .badge-sideways{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid rgba(148,163,184,.25)}
+        .progress-bar{height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
+        .progress-fill{height:100%;border-radius:3px;transition:width 1s ease}
+        .strength-high{background:linear-gradient(90deg,#10b981,#34d399)}
+        .strength-medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+        .strength-low{background:linear-gradient(90deg,#ef4444,#f87171)}
+        .table-header{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em}
+        .table-row{transition:background .15s}
+        .table-row:hover{background:#1e293b}
+        @keyframes fadeSlideUp{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        .animate-fade-slide{animation:fadeSlideUp .4s ease-out forwards}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:768px){.table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+    </style>
+</head>
+<body class="h-full flex" x-data="trendScanner()" x-init="init()">
+    <script>
+        function trendScanner() {
+            return {
+                sidebarOpen: false, trends: [], filtered: [], filter: 'ALL', loading: true, lastUpdate: '--:--:--',
+                sortKey: 'strength', sortAsc: false,
+                init() { this.fetchData(); },
+                async fetchData() {
+                    this.loading = true;
+                    try {
+                        var res = await fetch('/api/market/trends'); var data = await res.json();
+                        this.trends = data || []; this.applyFilter(); this.loading = false;
+                        this.lastUpdate = new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                    } catch(err) { this.loading = false; }
+                },
+                applyFilter() {
+                    var arr = this.trends.slice();
+                    if (this.filter !== 'ALL') {
+                        arr = arr.filter(function(t) { return t.trend === this.filter; }.bind(this));
+                    }
+                    this.filtered = arr;
+                    this.doSort();
+                },
+                doSort() {
+                    var self = this;
+                    this.filtered.sort(function(a, b) {
+                        var va = a[self.sortKey], vb = b[self.sortKey];
+                        if (typeof va === 'string') { va = va || ''; vb = vb || ''; return self.sortAsc ? va.localeCompare(vb) : vb.localeCompare(va); }
+                        return self.sortAsc ? (va||0) - (vb||0) : (vb||0) - (va||0);
+                    });
+                },
+                sortBy(key) {
+                    if (this.sortKey === key) { this.sortAsc = !this.sortAsc; } else { this.sortKey = key; this.sortAsc = false; }
+                    this.doSort();
+                },
+                badgeClass(t) { if(t==='UPTREND')return'badge-uptrend'; if(t==='DOWNTREND')return'badge-downtrend'; return'badge-sideways'; },
+                trendIcon(t) { if(t==='UPTREND')return'&#x1F4C8;'; if(t==='DOWNTREND')return'&#x1F4C9;'; return'&#x27F7;'; },
+                strengthClass(v) { if(v>=65)return'strength-high'; if(v>=35)return'strength-medium'; return'strength-low'; },
+                formatPrice(v) {
+                    if (!v && v !== 0) return 'N/A';
+                    var p = Number(v);
+                    if (p >= 1000) return 'Rp ' + p.toLocaleString('id-ID');
+                    return 'Rp ' + p;
+                },
+                formatChange(v) {
+                    if (v === null || v === undefined) return '-';
+                    var sign = v >= 0 ? '+' : '';
+                    return sign + v.toFixed(2) + '%';
+                },
+                get uptrendCount() { return this.trends.filter(function(t){return t.trend==='UPTREND'}).length; },
+                get downtrendCount() { return this.trends.filter(function(t){return t.trend==='DOWNTREND'}).length; },
+                get sidewaysCount() { return this.trends.filter(function(t){return t.trend==='SIDEWAYS'}).length; }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/live-signals" class="sidebar-link"><span class="icon">&#x26A1;</span> Live Signals</a>
+            <a href="/market/signal-generator" class="sidebar-link"><span class="icon">&#x1F9E0;</span> AI Signal Generator</a>
+            <a href="/market/trend-scanner" class="sidebar-link active"><span class="icon">&#x1F4C8;</span> Trend Scanner</a>
+            <a href="/market/price-action" class="sidebar-link"><span class="icon">&#x1F4AC;</span> Price Action</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">&#x1F50E;</span> Pattern Scan</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/market/anomalies" class="sidebar-link"><span class="icon">&#x26A0;</span> Anomalies</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dividen" class="sidebar-link"><span class="icon">&#x1F4B5;</span> Dividen</a>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">Trend Scanner</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">Deteksi tren seluruh saham IDX dengan MA alignment dan ADX strength.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">Refresh</button>
+                    <span class="text-xs text-slate-500 font-mono" x-text="'Updated: '+lastUpdate"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-green-400" x-text="uptrendCount"></div>
+                    <div class="text-xs text-slate-500 mt-1">Uptrend</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-red-400" x-text="downtrendCount"></div>
+                    <div class="text-xs text-slate-500 mt-1">Downtrend</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-slate-400" x-text="sidewaysCount"></div>
+                    <div class="text-xs text-slate-500 mt-1">Sideways</div>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-400" x-text="trends.length"></div>
+                    <div class="text-xs text-slate-500 mt-1">Total</div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <button @click="filter='ALL';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='ALL'?'bg-blue-600 text-white':'bg-slate-800 text-slate-400 border border-slate-700 hover:text-white'">All</button>
+                <button @click="filter='UPTREND';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='UPTREND'?'bg-green-600 text-white':'bg-slate-800 text-green-400 border border-slate-700 hover:text-green-300'">
+                    UPTREND <span x-text="uptrendCount"></span>
+                </button>
+                <button @click="filter='DOWNTREND';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='DOWNTREND'?'bg-red-600 text-white':'bg-slate-800 text-red-400 border border-slate-700 hover:text-red-300'">
+                    DOWNTREND <span x-text="downtrendCount"></span>
+                </button>
+                <button @click="filter='SIDEWAYS';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='SIDEWAYS'?'bg-slate-600 text-white':'bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-300'">
+                    SIDEWAYS <span x-text="sidewaysCount"></span>
+                </button>
+            </div>
+
+            <div class="card overflow-hidden">
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('stock_code')">
+                                    Stock <span class="text-[9px] ml-1" x-text="sortKey==='stock_code' ? (sortAsc ? '&#x25B2;' : '&#x25BC;') : ''"></span>
+                                </th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('trend')">
+                                    Trend <span class="text-[9px] ml-1" x-text="sortKey==='trend' ? (sortAsc ? '&#x25B2;' : '&#x25BC;') : ''"></span>
+                                </th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('strength')">
+                                    Strength <span class="text-[9px] ml-1" x-text="sortKey==='strength' ? (sortAsc ? '&#x25B2;' : '&#x25BC;') : ''"></span>
+                                </th>
+                                <th class="table-header text-left px-4 py-3 cursor-pointer hover:text-white hidden sm:table-cell" @click="sortBy('duration')">
+                                    Duration <span class="text-[9px] ml-1" x-text="sortKey==='duration' ? (sortAsc ? '&#x25B2;' : '&#x25BC;') : ''"></span>
+                                </th>
+                                <th class="table-header text-left px-4 py-3 hidden md:table-cell">MA Status</th>
+                                <th class="table-header text-right px-4 py-3 cursor-pointer hover:text-white" @click="sortBy('price')">
+                                    Price <span class="text-[9px] ml-1" x-text="sortKey==='price' ? (sortAsc ? '&#x25B2;' : '&#x25BC;') : ''"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(t, idx) in filtered" :key="t.stock_code">
+                            <tr class="table-row border-b border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.02)+'s'">
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-2">
+                                        <a :href="'/saham/'+t.stock_code" class="font-mono font-bold text-sm text-white hover:text-blue-400 transition-colors" x-text="t.stock_code"></a>
+                                        <span class="text-xs text-slate-500 truncate max-w-[120px] hidden sm:inline" x-text="t.stock_name"></span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="badge" :class="badgeClass(t.trend)">
+                                        <span x-html="trendIcon(t.trend)"></span>
+                                        <span x-text="t.trend"></span>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="progress-bar flex-1 min-w-[60px]">
+                                            <div class="progress-fill" :class="strengthClass(t.strength)" :style="'width:'+t.strength+'%'"></div>
+                                        </div>
+                                        <span class="font-mono text-xs text-slate-400 w-8 text-right" x-text="t.strength"></span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 hidden sm:table-cell">
+                                    <span class="font-mono text-sm text-slate-300" x-text="t.duration > 0 ? t.duration + 'd' : 'N/A'"></span>
+                                </td>
+                                <td class="px-4 py-3 hidden md:table-cell">
+                                    <span class="text-xs text-slate-400 font-mono" x-text="t.ma_status || '-'"></span>
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <div class="font-mono text-sm font-semibold text-white" x-text="formatPrice(t.price)"></div>
+                                    <div class="text-xs font-mono" :class="t.change_pct >= 0 ? 'text-green-400' : 'text-red-400'" x-text="formatChange(t.change_pct)"></div>
+                                </td>
+                            </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <template x-if="loading">
+                <div class="p-8 space-y-3">
+                    <template x-for="i in 8" :key="i">
+                        <div style="width:100%;height:40px;background:#1e293b;border-radius:6px;animation:shimmer 1.8s infinite"></div>
+                    </template>
+                </div>
+                </template>
+
+                <template x-if="!loading && filtered.length === 0">
+                <div class="text-center py-12">
+                    <div class="text-4xl mb-3">&#x1F4C8;</div>
+                    <p class="text-slate-400 font-medium">No trend data</p>
+                    <p class="text-slate-500 text-sm mt-1">Coba ganti filter atau refresh</p>
+                </div>
+                </template>
+            </div>
+        </main>
+    </div>
+    <style>@keyframes shimmer{0%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}100%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}}</style>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

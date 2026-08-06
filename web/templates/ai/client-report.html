@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Client Report &mdash; Investo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}
+        ::-webkit-scrollbar{width:5px}
+        ::-webkit-scrollbar-track{background:#0b1120}
+        ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .gradient-blue{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .report-content h2{font-size:20px;font-weight:700;color:#93c5fd;border-bottom:2px solid #1e3a8a;padding-bottom:8px;margin:30px 0 15px}
+        .report-content h3{font-size:16px;font-weight:600;color:#cbd5e1;margin:20px 0 10px}
+        .report-content p{line-height:1.8;margin-bottom:1rem;color:#cbd5e1}
+        .report-content strong{color:#93c5fd}
+        .report-content table{width:100%;border-collapse:collapse;margin:15px 0}
+        .report-content th{background:#1e3a8a;color:#e2e8f0;padding:10px 14px;text-align:left;font-weight:600;font-size:13px}
+        .report-content td{padding:10px 14px;border-bottom:1px solid #334155;font-size:13px;color:#cbd5e1}
+        @media print{.sidebar,header,button.fab{display:none!important}.flex-1{margin-left:0!important}.card{border:none!important}}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.report-content h2{font-size:17px}.report-content table{font-size:11px}.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="{ sidebarOpen: false, reportHTML: '', reportData: null, loading: false }">
+    <aside x-data :class="{'open': sidebarOpen}" class="sidebar fixed left-0 top-0 h-full w-64 bg-[#0f172a] border-r border-[#1e293b] z-40 flex flex-col overflow-y-auto max-md:hidden">
+        <div class="p-5 border-b border-[#1e293b]"><a href="/dashboard" class="flex items-center gap-3 text-white no-underline"><span class="text-2xl">💹</span><span class="font-display font-bold text-lg">Investo</span></a></div>
+        <div class="p-4 space-y-1 flex-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">AI Tools</div>
+            <a href="/ai/client-report" class="sidebar-link active"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Client Report</a>
+            <a href="/ai/report-generator" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Report Generator</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Menu Utama</div>
+            <a href="/dashboard" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+        </div>
+        <div class="p-4 border-t border-[#1e293b]"><div class="flex items-center gap-3"><span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">[[slice .User.Name 0 1]]</span><div><div class="text-sm font-medium text-white">[[.User.Name]]</div><form action="/logout" method="POST" class="mt-1"><button class="text-xs text-slate-500 hover:text-red-400 transition-colors">Keluar</button></form></div></div></div>
+    </aside>
+
+    <div class="flex-1 ml-64 max-lg:ml-0 flex flex-col min-h-full">
+        <header class="sticky top-0 z-30 bg-[#0b1120]/90 backdrop-blur-md border-b border-[#1e293b]">
+            <div class="flex items-center justify-between px-6 py-3">
+                <div class="flex items-center gap-3">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-[#1e293b] transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <h1 class="text-lg font-semibold text-white">Client Report Generator</h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="printReport()" class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-[#1e293b] rounded-lg transition-colors">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        Print/Cetak
+                    </button>
+                    <button @click="downloadHTML()" class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-[#1e293b] rounded-lg transition-colors">Download HTML</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6">
+            <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="card p-8 text-center" x-show="!reportHTML">
+                    <div class="w-16 h-16 gradient-blue rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-6">📄</div>
+                    <h2 class="text-xl font-bold text-white mb-2">Generate Laporan Klien</h2>
+                    <p class="text-sm text-slate-400 mb-6">AI akan menghasilkan laporan profesional untuk portofolio Anda.</p>
+                    <div class="flex gap-3 justify-center">
+                        <select id="reportPortfolioSelect" class="bg-[#0f172a] border border-[#334155] rounded-xl px-4 py-2.5 text-white text-sm">
+                            <option value="1">Portfolio 1</option>
+                            <option value="2">Portfolio 2</option>
+                        </select>
+                        <button @click="generateReport()" :disabled="loading"
+                                class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                            <span x-text="loading ? 'Generating...' : 'Generate Report'">Generate Report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-show="loading" class="flex justify-center py-8">
+                    <div class="animate-spin w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full"></div>
+                </div>
+
+                <div x-show="reportHTML" class="card p-8">
+                    <div class="report-content" x-html="reportHTML"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden fixed bottom-6 left-6 z-50 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+        <svg x-show="!sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg x-show="sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    window.generateReport = function() {
+        const el = document.querySelector('[x-data]');
+        Alpine.evaluate(el, 'loading = true');
+        const portfolioId = document.getElementById('reportPortfolioSelect')?.value || 1;
+        fetch('/api/ai/client-report/' + portfolioId)
+            .then(r => r.json())
+            .then(data => {
+                Alpine.evaluate(el, 'loading = false');
+                if (data.success) {
+                    Alpine.evaluate(el, `reportHTML = '${data.html.replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\$/g, "\\$")}'`);
+                    Alpine.evaluate(el, 'reportData = ' + JSON.stringify(data.data));
+                }
+            })
+            .catch(() => Alpine.evaluate(el, 'loading = false'));
+    };
+
+    window.printReport = function() { window.print(); };
+    window.downloadHTML = function() {
+        const el = document.querySelector('[x-data]');
+        const html = Alpine.evaluate(el, 'reportHTML');
+        if (!html) return;
+        const blob = new Blob(['<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Investo Client Report</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{font-family:Inter,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#0f172a}section{margin-bottom:30px}h2{color:#1e3a8a;border-bottom:2px solid #1e3a8a;padding-bottom:8px}table{width:100%;border-collapse:collapse;margin:15px 0}th{background:#1e3a8a;color:white;padding:10px;text-align:left}td{padding:10px;border-bottom:1px solid #e2e8f0}</style></head><body>' + html + '<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body></html>'], {type:'text/html'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'investo-client-report.html'; a.click();
+        URL.revokeObjectURL(url);
+    };
+});
+</script>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

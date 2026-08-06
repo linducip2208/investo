@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sources — Investo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
+        .nav-link{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s}
+        .nav-link:hover{background:#1e293b;color:#e2e8f0}
+        .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .input-field{width:100%;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:14px;font-family:'JetBrains Mono',Consolas,monospace;outline:none}
+        .input-field:focus{border-color:#3b82f6}
+        .input-field::placeholder{color:#475569}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{transform:translateY(-1px)}
+        .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
+        .btn-outline:hover{background:#1e293b}
+    </style>
+</head>
+<body class="bg-[#0b1120] text-slate-200 flex">
+
+<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
+        <span class="font-bold text-white">Investo</span>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/saham" class="nav-link">📈 Saham</a>
+        <a href="/forex" class="nav-link">💱 Forex</a>
+        <a href="/screener" class="nav-link">🔍 Screener</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
+        <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
+        <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
+        <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
+        <a href="/pengaturan/data-sources" class="nav-link active">📡 Data Sources</a>
+        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+    </nav>
+</aside>
+
+<div class="flex-1 min-w-0" x-data="dataSources()">
+    <div class="max-w-3xl mx-auto px-6 py-6">
+        <h1 class="text-xl font-bold text-white mb-1">Data Sources</h1>
+        <p class="text-sm text-slate-400 mb-6">BYOK — semua data source optional. Kalau kosong, pakai fallback gratis.</p>
+
+        <div class="space-y-4">
+
+            <!-- Invezgo -->
+            <div class="card p-5">
+                <h3 class="font-semibold text-white mb-1">🇮🇩 Invezgo / GOAPI (BEI Real-time)</h3>
+                <p class="text-xs text-slate-400 mb-3">Data real-time BEI: harga, fundamental, foreign flow. <a href="https://invezgo.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="invezgoKey" class="input-field" placeholder="Masukkan API key..."></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">Base URL</label><input x-model="invezgoURL" class="input-field" placeholder="https://api.invezgo.com/v1"></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveDS('invezgo')" class="btn btn-primary">Save</button>
+                    <button @click="testDS('invezgo')" class="btn btn-outline">Test</button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">⚠️ Kalau kosong: fallback ke Yahoo Finance (.JK) + MCP server</p>
+            </div>
+
+            <!-- OANDA -->
+            <div class="card p-5">
+                <h3 class="font-semibold text-white mb-1">💱 OANDA (Forex Real-time)</h3>
+                <p class="text-xs text-slate-400 mb-3">Data forex real-time + historical. <a href="https://oanda.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="oandaKey" class="input-field" placeholder="Masukkan API key..."></div>
+                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Account ID</label><input x-model="oandaAccount" class="input-field" placeholder="XXX-XXX-XXXXXX"></div><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Environment</label><select x-model="oandaEnv" class="input-field"><option value="practice">Practice</option><option value="live">Live</option></select></div></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveDS('oanda')" class="btn btn-primary">Save</button>
+                    <button @click="testDS('oanda')" class="btn btn-outline">Test</button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">⚠️ Kalau kosong: fallback ke Yahoo Finance</p>
+            </div>
+
+            <!-- Midtrans Payment Gateway -->
+            <div class="card p-5">
+                <h3 class="font-semibold text-white mb-1">💳 Midtrans Payment Gateway</h3>
+                <p class="text-xs text-slate-400 mb-3">Pembayaran subscription paket Investo. <a href="https://dashboard.midtrans.com" class="text-blue-400" target="_blank">Dashboard Midtrans →</a></p>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">Server Key</label><input type="password" x-model="midtransServer" class="input-field" placeholder="Masukkan Server Key..."></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">Client Key</label><input type="password" x-model="midtransClient" class="input-field" placeholder="Masukkan Client Key..."></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">Merchant ID</label><input x-model="midtransMerchant" class="input-field" placeholder="G123456"></div>
+                    <div class="flex items-center gap-2"><input type="checkbox" x-model="midtransActive" id="midtransActive"><label for="midtransActive" class="text-xs text-slate-400">Aktifkan Midtrans</label></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveDS('midtrans')" class="btn btn-primary">Save</button>
+                    <button @click="testDS('midtrans')" class="btn btn-outline">Test</button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">⚠️ Kalau kosong: paket gratis akan digunakan. BYOK — user bawa key sendiri.</p>
+            </div>
+
+            <!-- WA Business -->
+            <div class="card p-5">
+                <h3 class="font-semibold text-white mb-1">📱 WhatsApp Business API</h3>
+                <p class="text-xs text-slate-400 mb-3">Kirim sinyal trading ke WhatsApp user. <a href="https://business.whatsapp.com" class="text-blue-400" target="_blank">Setup →</a></p>
+                <div class="space-y-3">
+                    <div><label class="text-xs text-slate-400 block mb-1">Phone Number ID</label><input type="password" x-model="waPhoneID" class="input-field" placeholder="Masukkan Phone Number ID..."></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">Access Token</label><input type="password" x-model="waToken" class="input-field" placeholder="Masukkan Access Token..."></div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button @click="saveDS('wa')" class="btn btn-primary">Save</button>
+                    <button @click="testDS('wa')" class="btn btn-outline">Test</button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">⚠️ Kalau kosong: sinyal hanya tampil di dashboard + webhook</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function dataSources() {
+    return {
+        invezgoKey: '', invezgoURL: 'https://api.invezgo.com/v1',
+        oandaKey: '', oandaAccount: '', oandaEnv: 'practice',
+        midtransServer: '', midtransClient: '', midtransMerchant: '', midtransActive: false,
+        waPhoneID: '', waToken: '',
+        async saveDS(ds) {
+            var body = {};
+            if (ds === 'midtrans') {
+                body = {type:'midtrans', server_key:this.midtransServer, client_key:this.midtransClient, merchant_id:this.midtransMerchant, active:this.midtransActive};
+            }
+            try {
+                var r = await fetch('/api/settings/data-sources', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+                if (r.ok) alert('Saved: ' + ds); else alert('Save failed');
+            } catch(e) { alert('Error: ' + e.message); }
+        },
+        async testDS(ds) { alert('Test: ' + ds); }
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard · Admin · [[.AppName]]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace !important;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        @media (max-width: 767px) {
+            .sidebar {
+                position: fixed;
+                z-index: 50;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 45;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+        @media (prefers-color-scheme: dark) {
+            .bg-main { background-color: #0f172a; }
+            .text-main { color: #e2e8f0; }
+            .card { background-color: #1e293b; border-color: #334155; }
+            .table-head { background-color: #1e293b; }
+            .table-stripe tr:nth-child(even) { background-color: #1e293b; }
+            .table-stripe tr:hover { background-color: #334155; }
+            .input-dark { background-color: #1e293b; border-color: #475569; color: #e2e8f0; }
+            .input-dark:focus { border-color: #3b82f6; ring-color: rgba(59,130,246,0.25); }
+        }
+        @media (prefers-color-scheme: light) {
+            .bg-main { background-color: #f1f5f9; }
+            .text-main { color: #0f172a; }
+            .card { background-color: #ffffff; border-color: #e2e8f0; }
+            .table-head { background-color: #f8fafc; }
+            .table-stripe tr:nth-child(even) { background-color: #f8fafc; }
+            .table-stripe tr:hover { background-color: #e2e8f0; }
+            .input-dark { background-color: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+            .input-dark:focus { border-color: #3b82f6; ring-color: rgba(59,130,246,0.25); }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
+
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
+
+    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
+            <div>
+                <div class="font-bold text-base leading-tight">[[.AppName]]</div>
+                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                <span class="text-sm">Pengguna</span>
+            </a>
+            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+                <span class="text-sm">Saham</span>
+            </a>
+            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="text-sm">Sektor</span>
+            </a>
+            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
+                <span class="text-sm">Berita</span>
+            </a>
+            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="text-sm">Blog</span>
+            </a>
+            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span class="text-sm">Pengaturan</span>
+            </a>
+        </nav>
+
+        <div class="px-6 py-4 border-t border-slate-700/60 space-y-3">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm">
+                <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+                <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
+            </button>
+            <div class="flex items-center gap-3 px-3 py-2 text-slate-400 text-xs">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
+                <div>
+                    <div class="text-slate-300 text-xs font-medium">[[.AdminName]]</div>
+                    <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+            </button>
+            <div class="text-sm text-slate-500 font-medium hidden sm:block">Selamat datang, [[.AdminName]]</div>
+            <div class="flex items-center gap-4">
+                <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+            </div>
+        </header>
+
+        <div class="px-6 py-6 max-w-7xl mx-auto space-y-8">
+            <div>
+                <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Dashboard</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Ringkasan sistem Investo</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="card rounded-2xl border p-5 bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-500/20">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-blue-100">Total Pengguna</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-3xl font-extrabold tracking-tight">[[.TotalUsers]]</div>
+                    <div class="mt-1 text-xs text-blue-200">Akun terdaftar</div>
+                </div>
+
+                <div class="card rounded-2xl border p-5 bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-lg shadow-emerald-500/20">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-emerald-100">Total Saham</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="3" width="22" height="18" rx="3"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-3xl font-extrabold tracking-tight">[[.TotalStocks]]</div>
+                    <div class="mt-1 text-xs text-emerald-200">Emiten tercatat</div>
+                </div>
+
+                <div class="card rounded-2xl border p-5 bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow-lg shadow-amber-500/20">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-amber-100">Total Berita</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-3xl font-extrabold tracking-tight">[[.TotalNews]]</div>
+                    <div class="mt-1 text-xs text-amber-200">Artikel berita</div>
+                </div>
+
+                <div class="card rounded-2xl border p-5 bg-gradient-to-br from-violet-500 to-violet-700 text-white shadow-lg shadow-violet-500/20">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-medium text-violet-100">Total Artikel Blog</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 font-mono text-3xl font-extrabold tracking-tight">[[.TotalBlogPosts]]</div>
+                    <div class="mt-1 text-xs text-violet-200">Artikel blog</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="/admin/berita/create" class="card rounded-xl border p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 transition-all group flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14" stroke-linecap="round"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800 dark:text-slate-200">Tambah Berita</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Input berita pasar baru</div>
+                    </div>
+                </a>
+                <a href="/admin/blog/create" class="card rounded-xl border p-4 hover:shadow-md hover:border-violet-300 dark:hover:border-violet-600 transition-all group flex items-center gap-3">
+                    <div class="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800 dark:text-slate-200">Tulis Blog</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Artikel edukasi & analisis</div>
+                    </div>
+                </a>
+                <a href="/admin/saham" class="card rounded-xl border p-4 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-600 transition-all group flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800 dark:text-slate-200">Kelola Saham</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Data emiten & sektor</div>
+                    </div>
+                </a>
+                <a href="/admin/users" class="card rounded-xl border p-4 hover:shadow-md hover:border-slate-400 dark:hover:border-slate-500 transition-all group flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800 dark:text-slate-200">Lihat Pengguna</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Manajemen akun user</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="card rounded-2xl border shadow-sm overflow-hidden">
+                    <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
+                        <h2 class="font-bold text-base text-slate-900 dark:text-white">Pengguna Terbaru</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">5 pendaftaran terakhir</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm table-stripe">
+                            <thead class="table-head border-b border-slate-200 dark:border-slate-700">
+                                <tr>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                                [[range .RecentUsers]]
+                                <tr>
+                                    <td class="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">[[.Name]]</td>
+                                    <td class="px-5 py-3 text-slate-500 dark:text-slate-400 font-mono text-xs">[[.Email]]</td>
+                                    <td class="px-5 py-3">
+                                        <span class="inline-flex px-2 py-0.5 rounded-md text-[11px] font-semibold [[if eq .Role "admin"]]bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300[[else]]bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300[[end]]">[[.Role]]</span>
+                                    </td>
+                                    <td class="px-5 py-3 text-slate-500 dark:text-slate-400 text-xs">[[.CreatedAt]]</td>
+                                </tr>
+                                [[end]]
+                                [[if not .RecentUsers]]
+                                <tr>
+                                    <td colspan="4" class="px-5 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">Belum ada pengguna terdaftar</td>
+                                </tr>
+                                [[end]]
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl border shadow-sm overflow-hidden">
+                    <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
+                        <h2 class="font-bold text-base text-slate-900 dark:text-white">Artikel Blog Terbaru</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">5 artikel terakhir</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm table-stripe">
+                            <thead class="table-head border-b border-slate-200 dark:border-slate-700">
+                                <tr>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Judul</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Penulis</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                                [[range .RecentBlogPosts]]
+                                <tr>
+                                    <td class="px-5 py-3 font-medium text-slate-800 dark:text-slate-200 max-w-[200px] truncate">[[.Title]]</td>
+                                    <td class="px-5 py-3 text-slate-500 dark:text-slate-400 text-xs">[[.AuthorName]]</td>
+                                    <td class="px-5 py-3">
+                                        <span class="inline-flex px-2 py-0.5 rounded-md text-[11px] font-semibold [[if eq .Status "published"]]bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300[[else]]bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300[[end]]">[[.StatusLabel]]</span>
+                                    </td>
+                                    <td class="px-5 py-3 text-slate-500 dark:text-slate-400 text-xs">[[.PublishedAt]]</td>
+                                </tr>
+                                [[end]]
+                                [[if not .RecentBlogPosts]]
+                                <tr>
+                                    <td colspan="4" class="px-5 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">Belum ada artikel blog</td>
+                                </tr>
+                                [[end]]
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-2xl border shadow-sm p-6">
+                <h2 class="font-bold text-base text-slate-900 dark:text-white mb-4">Info Sistem</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Go Version</div>
+                            <div class="font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">[[.GoVersion]]</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/><path d="M3 5v7c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12v7c0 1.66 4.03 3 9 3s9-1.34 9-3v-7"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Database</div>
+                            <div class="font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">[[if .DBConnected]]<span class="text-emerald-600 dark:text-emerald-400">Connected</span>[[else]]<span class="text-red-500">Disconnected</span>[[end]]</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/><path d="M12 5l-7 7"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold">App Version</div>
+                            <div class="font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">[[.AppVersion]]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

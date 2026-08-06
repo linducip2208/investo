@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screener Saham · Investo</title>
+    <meta name="description" content="Screener saham IDX dengan filter fundamental lengkap. Cari saham berdasarkan PER, PBV, ROE, DER, dividend yield, EPS growth, dan market cap.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
+                    },
+                    colors: {
+                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
+                        card: { DEFAULT:'#1e293b',border:'#334155' },
+                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
+                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
+                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .preset-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:16px;transition:all .2s;cursor:pointer}
+        .preset-card:hover{border-color:#475569;transform:translateY(-2px)}
+        .preset-card.active{border-color:#3b82f6;background:rgba(59,130,246,0.1);box-shadow:0 0 0 1px #3b82f6}
+        .input-dark{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:8px 12px;color:#e2e8f0;font-size:13px;outline:none;width:100%}
+        .input-dark:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+        .input-dark::placeholder{color:#475569}
+        .select-dark{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:8px 12px;color:#e2e8f0;font-size:13px;outline:none;width:100%;appearance:none;-webkit-appearance:none;cursor:pointer}
+        .select-dark:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+        .select-wrapper{position:relative}
+        .select-wrapper::after{content:'\25BC';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#64748b;font-size:10px;pointer-events:none}
+        @keyframes fadeSlideUp{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+        .animate-row{animation:fadeSlideUp .35s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.card{padding:14px!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="screener()" x-init="init()">
+    <script>
+        function screener() {
+            return {
+                sidebarOpen: false, showFilters: true, loading: false, count: 0, activePreset: '', nlQuery: '', nlLoading: false, nlMessage: '',
+                results: [], sortKey: '', sortAsc: true, clock: '',
+                init() { this.updateClock(); setInterval(() => this.updateClock(), 1000); },
+                updateClock() {
+                    var d = new Date();
+                    this.clock = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'}) + ' WIB · ' + d.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Jakarta'});
+                },
+                async presetScreen(preset) {
+                    this.activePreset = preset; this.loading = true; this.results = []; this.count = 0;
+                    try {
+                        var resp = await fetch('/api/screener/quick?preset=' + preset);
+                        var data = await resp.json();
+                        this.results = (data.stocks || []).map(function(s) { return { ...s, sector: s.sector_name || s.subsector || '', change_percent: s.change_percent || 0, div_yield: s.div_yield || s.dividend_yield || 0 }; });
+                        this.count = data.total || 0;
+                    } catch(e) { console.error(e); } finally { this.loading = false; }
+                },
+                async runNLScreener() {
+                    var q = this.nlQuery.trim(); if (!q) return;
+                    this.nlLoading = true; this.nlMessage = 'Menganalisa query...'; this.loading = true; this.results = []; this.count = 0; this.activePreset = '';
+                    try {
+                        var resp = await fetch('/api/screener/nl?q=' + encodeURIComponent(q));
+                        var data = await resp.json();
+                        this.results = (data.stocks || []).map(function(s) { return { ...s, sector: s.sector_name || s.subsector || '', change_percent: s.change_percent || 0, div_yield: s.div_yield || s.dividend_yield || 0 }; });
+                        this.count = data.total || 0;
+                        this.nlMessage = data.total > 0 ? 'Ditemukan ' + data.total + ' saham' : 'Tidak ada hasil';
+                    } catch(e) { this.nlMessage = 'Gagal memproses query'; } finally { this.loading = false; this.nlLoading = false; }
+                },
+                async runScreener() {
+                    var form = document.getElementById('screener-form'); var formData = new FormData(form); var params = new URLSearchParams();
+                    for (var pair of formData.entries()) { if (pair[1]) params.append(pair[0], pair[1]); }
+                    this.loading = true; this.results = []; this.count = 0; this.activePreset = '';
+                    try {
+                        var resp = await fetch('/api/screener/results?' + params.toString()); var data = await resp.json();
+                        this.results = (data.stocks || []).map(function(s) { return { ...s, sector: s.sector_name || s.subsector || '', change_percent: s.change_percent || 0, div_yield: s.div_yield || s.dividend_yield || 0 }; });
+                        this.count = data.total || 0;
+                    } catch(e) { console.error(e); } finally { this.loading = false; }
+                },
+                sortBy(key) { if (this.sortKey === key) { this.sortAsc = !this.sortAsc; } else { this.sortKey = key; this.sortAsc = true; }
+                    this.results.sort((a, b) => { var va = a[key] || 0, vb = b[key] || 0; return this.sortAsc ? va - vb : vb - va; }); },
+                sortIndicator(key) { return this.sortKey !== key ? '' : (this.sortAsc ? ' \u25B2' : ' \u25BC'); },
+                resetForm() { document.getElementById('screener-form').reset(); this.results = []; this.count = 0; this.activePreset = ''; },
+                exportCSV() {
+                    if (!this.results || !this.results.length) return;
+                    var headers = ['Kode','Nama','Sektor','Harga','Chg%','PER','PBV','ROE','DER','NPM','Div%','M.Cap','Score'];
+                    var csv = headers.join(',') + '\n';
+                    this.results.forEach(function(r) {
+                        csv += [r.code, '"'+(r.name||'')+'"', '"'+(r.sector_name||'')+'"', r.price, r.change_percent||0, r.per, r.pbv, r.roe, r.der, r.npm||0, r.div_yield||0, r.market_cap||0, r.score||0].join(',') + '\n';
+                    });
+                    var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' }); var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob); link.download = 'screener-results.csv'; link.click();
+                },
+                scoreColor(score) { if (score >= 80) return 'bg-emerald-500'; if (score >= 60) return 'bg-blue-500'; if (score >= 40) return 'bg-amber-500'; return 'bg-red-500'; }
+            }
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX <span class="ml-auto text-[10px] bg-slate-700 px-1.5 py-0.5 rounded text-slate-300">[[.TotalStocks]]</span></a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link active"><span class="icon">&#x1F50D;</span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon">&#x1F4B5;</span> Dividen</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <!-- TOPBAR -->
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">Screener Saham</h1>
+                    <p class="text-sm text-slate-400 mt-0.5" x-text="clock"></p>
+                </div>
+            </div>
+
+            <!-- NL SEARCH -->
+            <form @submit.prevent="runNLScreener()" class="flex items-stretch gap-0 max-w-2xl">
+                <div class="relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.286 4.143L13.428 21 12 12l-2.286-6.857z"/></svg>
+                    </div>
+                    <input type="text" x-model="nlQuery" placeholder="Coba: cari saham per&lt;10 pbv&lt;1 roe&gt;15% sektor bank" class="input-dark pl-12 pr-4 py-3 rounded-l-xl">
+                </div>
+                <button type="submit" :disabled="nlLoading" class="px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-semibold rounded-r-xl transition-all disabled:opacity-70 flex items-center gap-2">
+                    <span x-show="!nlLoading">&#x2728; Cari</span>
+                    <span x-show="nlLoading" class="flex items-center gap-2">
+                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                    </span>
+                </button>
+            </form>
+            <p x-show="nlLoading" x-text="nlMessage" class="text-xs text-slate-400 animate-pulse"></p>
+            <p x-show="!nlLoading && nlMessage" x-text="nlMessage" class="text-xs text-slate-400"></p>
+
+            <!-- PRESET BUTTONS -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="preset-card" :class="{ active: activePreset==='value' }" @click="presetScreen('value')">
+                    <div class="text-lg mb-1">&#x1F48E;</div>
+                    <div class="text-sm font-semibold text-white">Value</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">PER rendah, PBV rendah</div>
+                </div>
+                <div class="preset-card" :class="{ active: activePreset==='growth' }" @click="presetScreen('growth')">
+                    <div class="text-lg mb-1">&#x1F680;</div>
+                    <div class="text-sm font-semibold text-white">Growth</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">ROE tinggi</div>
+                </div>
+                <div class="preset-card" :class="{ active: activePreset==='dividend' }" @click="presetScreen('dividend')">
+                    <div class="text-lg mb-1">&#x1F4B5;</div>
+                    <div class="text-sm font-semibold text-white">Dividend</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Yield tinggi</div>
+                </div>
+                <div class="preset-card" :class="{ active: activePreset==='momentum' }" @click="presetScreen('momentum')">
+                    <div class="text-lg mb-1">&#x1F4C8;</div>
+                    <div class="text-sm font-semibold text-white">Momentum</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Trend kuat</div>
+                </div>
+                <div class="preset-card" :class="{ active: activePreset==='defensive' }" @click="presetScreen('defensive')">
+                    <div class="text-lg mb-1">&#x1F6E1;</div>
+                    <div class="text-sm font-semibold text-white">Defensive</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">DER rendah, big cap</div>
+                </div>
+                <div class="preset-card" :class="{ active: activePreset==='turnaround' }" @click="presetScreen('turnaround')">
+                    <div class="text-lg mb-1">&#x1F504;</div>
+                    <div class="text-sm font-semibold text-white">Turnaround</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Recovery play</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- FILTER PANEL -->
+                <div class="lg:col-span-1">
+                    <div class="card p-5 sticky top-24">
+                        <div class="flex items-center justify-between mb-5">
+                            <h2 class="font-bold text-white text-lg">Filter</h2>
+                            <button @click="showFilters=!showFilters" class="lg:hidden text-sm text-blue-400 hover:underline" x-text="showFilters?'Sembunyikan':'Tampilkan'"></button>
+                        </div>
+                        <form id="screener-form" x-show="showFilters || window.innerWidth >= 1024" @submit.prevent="runScreener()" class="space-y-4">
+                            <div class="select-wrapper">
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Sektor</label>
+                                <select name="sector_id" class="select-dark">
+                                    <option value="">Semua Sektor</option>
+                                    [[range .Sectors]]
+                                    <option value="[[.ID]]">[[.Name]]</option>
+                                    [[end]]
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">PER Min</label><input type="number" name="min_per" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                                <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">PER Max</label><input type="number" name="max_per" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">PBV Min</label><input type="number" name="min_pbv" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                                <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">PBV Max</label><input type="number" name="max_pbv" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                            </div>
+                            <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">ROE Min (%)</label><input type="number" name="min_roe" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">DER Max</label><input type="number" name="max_der" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                            <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Dividend Yield Min (%)</label><input type="number" name="min_dividend_yield" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">EPS Growth Min (%)</label><input type="number" name="min_eps_growth" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="select-wrapper"><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">MCap Min</label><select name="mcap_min" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
+                                <div class="select-wrapper"><label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">MCap Max</label><select name="mcap_max" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
+                            </div>
+                            <div class="flex items-center gap-3 pt-2">
+                                <button type="submit" class="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors">
+                                    <span x-show="!loading">Cari</span>
+                                    <span x-show="loading" class="flex items-center gap-2 justify-center">
+                                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                                    </span>
+                                </button>
+                                <button type="button" @click="resetForm()" class="px-4 py-2.5 text-sm font-medium text-slate-300 bg-slate-700 rounded-xl hover:bg-slate-600 transition-colors">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- RESULTS TABLE -->
+                <div class="lg:col-span-3">
+                    <div x-show="loading" class="space-y-3">
+                        <template x-for="i in 5" :key="i">
+                            <div class="card p-5" style="background:linear-gradient(90deg,transparent 25%,rgba(148,163,184,.08) 50%,transparent 75%);background-size:200% 100%;animation:shimmer 1.6s ease-in-out infinite">
+                                <div class="h-5 bg-slate-700 rounded w-1/4 mb-3"></div><div class="h-4 bg-slate-700/50 rounded w-1/3"></div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div x-show="!loading && results.length > 0">
+                        <div class="flex items-center justify-between mb-4">
+                            <p class="text-sm text-slate-400">Ditemukan <span class="font-semibold text-white" x-text="count"></span> saham</p>
+                            <button @click="exportCSV()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-400 bg-blue-900/20 rounded-lg hover:bg-blue-900/40 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> CSV
+                            </button>
+                        </div>
+                        <div class="card overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-slate-700 bg-slate-800/30">
+                                            <th @click="sortBy('code')" class="text-left px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none">Kode<span x-text="sortIndicator('code')"></span></th>
+                                            <th @click="sortBy('name')" class="text-left px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none">Nama<span x-text="sortIndicator('name')"></span></th>
+                                            <th class="text-left px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Sektor</th>
+                                            <th @click="sortBy('price')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none">Harga<span x-text="sortIndicator('price')"></span></th>
+                                            <th @click="sortBy('change_percent')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none">Chg%<span x-text="sortIndicator('change_percent')"></span></th>
+                                            <th @click="sortBy('per')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none hidden md:table-cell">PER<span x-text="sortIndicator('per')"></span></th>
+                                            <th @click="sortBy('pbv')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none hidden md:table-cell">PBV<span x-text="sortIndicator('pbv')"></span></th>
+                                            <th @click="sortBy('roe')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none hidden lg:table-cell">ROE<span x-text="sortIndicator('roe')"></span></th>
+                                            <th @click="sortBy('der')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none hidden lg:table-cell">DER<span x-text="sortIndicator('der')"></span></th>
+                                            <th @click="sortBy('div_yield')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none hidden lg:table-cell">Div%<span x-text="sortIndicator('div_yield')"></span></th>
+                                            <th @click="sortBy('score')" class="text-right px-3 sm:px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-blue-400 select-none">Score<span x-text="sortIndicator('score')"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700/50">
+                                        <template x-for="(stock, idx) in results" :key="stock.code">
+                                            <tr class="hover:bg-slate-700/30 transition-colors cursor-pointer animate-row" :style="'animation-delay:'+(idx*0.04)+'s'" @click="window.location='/saham/'+stock.code">
+                                                <td class="px-3 sm:px-5 py-3"><span class="font-bold text-blue-400" x-text="stock.code"></span></td>
+                                                <td class="px-3 sm:px-5 py-3 text-white font-medium max-w-[150px] truncate" x-text="stock.name"></td>
+                                                <td class="px-3 sm:px-5 py-3 hidden sm:table-cell"><span class="px-2 py-0.5 bg-blue-900/30 text-blue-300 rounded-md text-[11px] font-medium" x-text="stock.sector_name || ''"></span></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm font-semibold text-white" x-text="'Rp '+stock.price"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm">
+                                                    <span x-show="stock.change_percent >= 0" class="text-success font-semibold" x-text="'+'+(stock.change_percent||0).toFixed(1)+'%'"></span>
+                                                    <span x-show="stock.change_percent < 0" class="text-danger font-semibold" x-text="(stock.change_percent||0).toFixed(1)+'%'"></span>
+                                                </td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm text-slate-300 hidden md:table-cell" x-text="(stock.per||0).toFixed(1)+'x'"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm text-slate-300 hidden md:table-cell" x-text="(stock.pbv||0).toFixed(1)+'x'"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm text-slate-300 hidden lg:table-cell" x-text="(stock.roe||0).toFixed(1)+'%'"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm text-slate-300 hidden lg:table-cell" x-text="(stock.der||0).toFixed(1)+'x'"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right font-mono text-sm text-slate-300 hidden lg:table-cell" x-text="(stock.div_yield||0).toFixed(1)+'%'"></td>
+                                                <td class="px-3 sm:px-5 py-3 text-right">
+                                                    <div class="flex items-center gap-2 justify-end">
+                                                        <span class="font-mono text-xs font-semibold text-slate-300" x-text="stock.score||0"></span>
+                                                        <div class="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                                            <div class="h-full rounded-full transition-all duration-500" :class="scoreColor(stock.score||0)" :style="'width:'+(stock.score||0)+'%'"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div x-show="!loading && results.length === 0 && count === 0" class="card p-16 text-center">
+                        <svg class="mx-auto h-16 w-16 text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <p class="text-base font-medium text-slate-400">Gunakan screener untuk mencari saham</p>
+                        <p class="text-sm text-slate-500 mt-1">Klik preset di atas atau atur filter manual dan klik "Cari"</p>
+                    </div>
+
+                    <div x-show="!loading && results.length === 0 && count > 0" class="card p-16 text-center">
+                        <svg class="mx-auto h-16 w-16 text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p class="text-base font-medium text-slate-400">Tidak ada saham yang cocok</p>
+                        <p class="text-sm text-slate-500 mt-1">Coba longgarkan filter atau ubah kriteria pencarian</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

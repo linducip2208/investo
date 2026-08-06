@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Usage Dashboard — Investo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
+        .stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:18px 20px}
+        .stat-value{font-size:28px;font-weight:800;color:#fff}
+        .stat-label{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+        .nav-link{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s}
+        .nav-link:hover{background:#1e293b;color:#e2e8f0}
+        .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        table{width:100%;border-collapse:collapse}
+        th{text-align:left;padding:10px 14px;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #334155}
+        td{padding:10px 14px;font-size:13px;border-bottom:1px solid #1e293b}
+        tr:hover td{background:#1e293b}
+        .badge{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+        .badge-green{background:#064e3b;color:#6ee7b7}
+        .badge-red{background:#7f1d1d;color:#fca5a5}
+        .badge-blue{background:#1e3a8a;color:#93c5fd}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-block}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+        .btn-primary:hover{transform:translateY(-1px)}
+        .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
+        .btn-outline:hover{background:#1e293b}
+    </style>
+</head>
+<body class="bg-[#0b1120] text-slate-200 flex" x-data="usageDashboard()" x-init="loadData()">
+
+<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
+        <span class="font-bold text-white">Investo</span>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/saham" class="nav-link">📈 Saham</a>
+        <a href="/forex" class="nav-link">💱 Forex</a>
+        <a href="/screener" class="nav-link">🔍 Screener</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
+        <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
+        <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
+        <a href="/ai/agents" class="nav-link">🧠 Agents</a>
+        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
+        <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
+        <a href="/ai/usage" class="nav-link active">📊 AI Usage</a>
+        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+    </nav>
+</aside>
+
+<div class="flex-1 min-w-0">
+    <div class="max-w-6xl mx-auto px-6 py-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-xl font-bold text-white">AI Usage Dashboard</h1>
+                <p class="text-sm text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
+            </div>
+            <div class="flex gap-2">
+                <select x-model="days" @change="loadData()" class="bg-[#0f172a] border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm">
+                    <option value="7">7 hari</option>
+                    <option value="14">14 hari</option>
+                    <option value="30" selected>30 hari</option>
+                    <option value="90">90 hari</option>
+                </select>
+                <a href="/pengaturan/ai" class="btn btn-outline">AI Settings</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-value" x-text="formatNumber(stats.total_tokens)">0</div>
+                <div class="stat-label">Total Tokens</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" x-text="'$'+stats.total_cost.toFixed(4)">$0</div>
+                <div class="stat-label">Total Cost</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" x-text="callsToday">0</div>
+                <div class="stat-label">Calls Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" x-text="fastestProvider">-</div>
+                <div class="stat-label">Fastest Provider</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 mb-6">
+            <div class="card p-4">
+                <h3 class="text-sm font-semibold text-white mb-3">Token Usage per Day</h3>
+                <canvas id="tokenChart" height="200"></canvas>
+            </div>
+            <div class="card p-4">
+                <h3 class="text-sm font-semibold text-white mb-3">Cost per Provider</h3>
+                <canvas id="costChart" height="200"></canvas>
+            </div>
+            <div class="card p-4">
+                <h3 class="text-sm font-semibold text-white mb-3">Latency Trend</h3>
+                <canvas id="latencyChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="card p-4 mb-6">
+            <h3 class="text-sm font-semibold text-white mb-3">Provider Health</h3>
+            <div class="grid grid-cols-4 gap-4" x-show="keyHealth">
+                <template x-for="(info, name) in keyHealth" :key="name">
+                    <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-semibold text-sm text-white" x-text="name"></span>
+                            <span class="w-2 h-2 rounded-full" :class="info.status === 'healthy' ? 'bg-green-400' : 'bg-red-400'"></span>
+                        </div>
+                        <div class="text-xs text-slate-400 space-y-1">
+                            <div x-text="info.status"></div>
+                            <div>Latency: <span x-text="(info.latency||0).toFixed(0)"></span>ms</div>
+                            <div>Budget OK: <span x-text="info.budget_ok ? 'Yes' : 'No'"></span></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="card p-4">
+            <h3 class="text-sm font-semibold text-white mb-3">Recent AI Calls</h3>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Provider</th>
+                            <th>Feature</th>
+                            <th>Model</th>
+                            <th>Tokens In</th>
+                            <th>Tokens Out</th>
+                            <th>Cost</th>
+                            <th>Latency</th>
+                            <th>Status</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="log in recentLogs" :key="log.id">
+                            <tr>
+                                <td class="text-xs text-slate-400" x-text="log.created_at"></td>
+                                <td><span class="badge badge-blue" x-text="log.provider"></span></td>
+                                <td class="text-xs" x-text="log.feature"></td>
+                                <td class="text-xs text-slate-400" x-text="log.model || '-'"></td>
+                                <td x-text="log.tokens_in"></td>
+                                <td x-text="log.tokens_out"></td>
+                                <td x-text="'$'+parseFloat(log.cost).toFixed(6)"></td>
+                                <td x-text="log.latency_ms+'ms'"></td>
+                                <td><span class="badge" :class="log.success ? 'badge-green' : 'badge-red'" x-text="log.success ? 'OK' : 'FAIL'"></span></td>
+                                <td>
+                                    <span x-show="log.rating > 0" x-text="'⭐'.repeat(log.rating)" class="text-yellow-400 text-xs"></span>
+                                    <span x-show="!log.rating" class="text-slate-600 text-xs">-</span>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="recentLogs.length === 0">
+                            <td colspan="10" class="text-center text-slate-500 py-8">No AI calls recorded yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function usageDashboard() {
+    return {
+        stats: { total_tokens: 0, total_cost: 0, by_provider: {}, by_feature: {}, daily_breakdown: [] },
+        recentLogs: [],
+        keyHealth: {},
+        fastestProvider: '-',
+        callsToday: 0,
+        days: 30,
+        tokenChart: null,
+        costChart: null,
+        latencyChart: null,
+
+        formatNumber(n) { return n ? n.toLocaleString() : '0'; },
+
+        async loadData() {
+            try {
+                var r = await fetch('/api/ai/usage?days=' + this.days);
+                var d = await r.json();
+                this.stats = d.stats || { total_tokens: 0, total_cost: 0, by_provider: {}, by_feature: {}, daily_breakdown: [] };
+                this.recentLogs = d.recent_logs || [];
+                this.fastestProvider = d.fastest_provider || '-';
+                this.callsToday = d.calls_today || 0;
+
+                var hr = await fetch('/api/ai/health-check');
+                this.keyHealth = (await hr.json()) || {};
+
+                this.$nextTick(() => this.renderCharts());
+            } catch(e) {
+                console.error('Failed to load usage data:', e);
+            }
+        },
+
+        renderCharts() {
+            if (this.tokenChart) this.tokenChart.destroy();
+            if (this.costChart) this.costChart.destroy();
+            if (this.latencyChart) this.latencyChart.destroy();
+
+            var daily = this.stats.daily_breakdown || [];
+            var labels = daily.map(d => d.date);
+            var tokenData = daily.map(d => (d.tokens_in || 0) + (d.tokens_out || 0));
+            var callData = daily.map(d => d.calls_count || 0);
+
+            var providerLabels = Object.keys(this.stats.by_provider || {});
+            var providerCosts = providerLabels.map(p => this.stats.by_provider[p]?.cost || 0);
+            var providerColors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+
+            var ctx1 = document.getElementById('tokenChart');
+            if (ctx1) {
+                this.tokenChart = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Tokens',
+                            data: tokenData,
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } },
+                            y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#1e293b' } }
+                        }
+                    }
+                });
+            }
+
+            var ctx2 = document.getElementById('costChart');
+            if (ctx2) {
+                this.costChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: providerLabels,
+                        datasets: [{
+                            data: providerCosts,
+                            backgroundColor: providerColors.slice(0, providerLabels.length),
+                            borderWidth: 2,
+                            borderColor: '#1e293b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 }, padding: 12 } } }
+                    }
+                });
+            }
+
+            var ctx3 = document.getElementById('latencyChart');
+            if (ctx3) {
+                this.latencyChart = new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Calls',
+                            data: callData,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139,92,246,0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } },
+                            y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#1e293b' } }
+                        }
+                    }
+                });
+            }
+        }
+    }
+}
+</script>
+
+</body>
+</html>

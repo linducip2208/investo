@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:30}
+        .sidebar{position:fixed;left:0;top:61px;bottom:0;width:240px;background:#0f172a;border-right:1px solid #1e293b;overflow-y:auto;z-index:20;transition:transform .3s}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
+        .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
+        input,textarea{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 12px;color:#e2e8f0;font-size:13px;width:100%}
+        input:focus,textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px -4px rgba(37,99,235,0.4)}
+        .paper-content h2{font-size:1.4em;font-weight:700;color:#e2e8f0;margin-top:24px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #334155}
+        .paper-content h3{font-size:1.1em;font-weight:600;color:#cbd5e1;margin-top:16px;margin-bottom:6px}
+        .paper-content p{color:#94a3b8;line-height:1.8;margin-bottom:12px}
+        .paper-content ul{list-style:disc;padding-left:20px;color:#94a3b8;margin-bottom:12px}
+        .paper-content li{margin-bottom:4px}
+        @media print{body>.topbar,body>.sidebar,form{display:none!important}.main-content{margin-left:0!important}}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
+        @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
+    </style>
+</head>
+<body class="h-full" x-data="{ sidebarOpen: false, topic: '', content: '', loading: false, error: null, downloadUrl: '',
+    async generate() {
+        if(!this.topic.trim()) { this.error = 'Please enter a topic'; return; }
+        this.loading = true; this.error = null; this.content = '';
+        try {
+            const params = new URLSearchParams({ topic: this.topic });
+            const resp = await fetch('/api/ai/research-paper', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: params });
+            const json = await resp.json();
+            if (json.error) { this.error = json.error; }
+            else { this.content = json.content; this.downloadUrl = json.download_url; }
+        } catch(e) { this.error = e.message; }
+        this.loading = false;
+    }
+}">
+    <div class="topbar">
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-slate-300 font-semibold">Research Paper</span>
+        </div>
+        <div class="flex items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
+            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+        </div>
+    </div>
+
+    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
+        <div class="p-4 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+            <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
+            <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
+            <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
+            <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
+            <a href="/market/cross-asset" class="sidebar-link"><span>🔗</span>Cross-Asset</a>
+            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">AI</div>
+            <a href="/ai/research-paper" class="sidebar-link active"><span>📝</span>Research Paper</a>
+        </div>
+    </aside>
+
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+
+    <div class="main-content">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">📝 AI Research Paper Generator</h1>
+                <p class="text-slate-400 text-sm mt-1">Generate laporan riset analitis terstruktur untuk topik investasi apapun</p>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-lg font-bold text-white mb-4">🎯 Research Topic</h2>
+                <div class="flex gap-3">
+                    <input type="text" x-model="topic" placeholder="Contoh: Analisis Sektor Perbankan Indonesia 2026" class="flex-1 text-base" @keydown.enter="generate()">
+                    <button @click="generate()" :disabled="loading" class="btn-primary whitespace-nowrap" x-text="loading ? '⏳ Generating...' : '🚀 Generate Paper'"></button>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <button @click="topic='Analisis Sektor Perbankan Indonesia 2026'; generate()" class="px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-400 hover:bg-blue-900 hover:text-blue-300 transition-colors">Perbankan 2026</button>
+                    <button @click="topic='Prospek Sektor Teknologi Indonesia Pasca IPO'; generate()" class="px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-400 hover:bg-blue-900 hover:text-blue-300 transition-colors">Teknologi & IPO</button>
+                    <button @click="topic='Analisis Energi Terbarukan Indonesia: Peluang & Tantangan'; generate()" class="px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-400 hover:bg-blue-900 hover:text-blue-300 transition-colors">Energi Terbarukan</button>
+                    <button @click="topic='Perbandingan Valuasi BBCA vs BBRI vs BMRI 2026'; generate()" class="px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-400 hover:bg-blue-900 hover:text-blue-300 transition-colors">BBCA vs BBRI</button>
+                </div>
+            </div>
+
+            <div x-show="error" class="card p-4 border-red-500/30 bg-red-900/10">
+                <p class="text-red-400 text-sm" x-text="error"></p>
+            </div>
+
+            <template x-if="content">
+                <div class="space-y-4">
+                    <div class="card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-white">📄 Research Paper</h2>
+                            <div class="flex gap-2">
+                                <a :href="downloadUrl" class="px-4 py-2 text-sm font-medium rounded-lg bg-slate-800 text-white hover:bg-slate-700 transition-colors">⬇ Download HTML</a>
+                                <button onclick="window.print()" class="px-4 py-2 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">🖨 Print PDF</button>
+                            </div>
+                        </div>
+                        <div class="paper-content prose prose-invert max-w-none" x-html="content" style="white-space:pre-wrap"></div>
+                    </div>
+                </div>
+            </template>
+
+            <div x-show="!content && !loading" class="card p-12 text-center">
+                <p class="text-slate-500 text-lg">📝 Masukkan topik riset dan klik "Generate Paper" untuk membuat laporan analitis terstruktur</p>
+                <p class="text-slate-600 text-sm mt-1">Paper mencakup: Abstract, Introduction, Methodology, Findings, Conclusion, References</p>
+            </div>
+        </div>
+    </div>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Action Monitor · Investo</title>
+    <meta name="description" content="Monitor price action real-time: new highs/lows, gap up/down, volume spike, support/resistance breaks, RSI extremes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px;transition:all .2s}
+        .card:hover{border-color:#475569}
+        .sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;color:#94a3b8;font-size:14px;font-weight:500;transition:all .15s;text-decoration:none}
+        .sidebar-link:hover{background:#1e293b;color:#e2e8f0}
+        .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .sidebar-link .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .widget-title{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+        .text-success{color:#34d399}.text-danger{color:#f87171}
+        .badge{border-radius:6px;font-size:10px;font-weight:700;padding:3px 8px;letter-spacing:.03em;white-space:nowrap}
+        .badge-new-high{background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+        .badge-new-low{background:rgba(239,68,68,.18);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+        .badge-gap-up{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.25)}
+        .badge-gap-down{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.25)}
+        .badge-vol-spike{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.25)}
+        .badge-support-break{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.25)}
+        .badge-resistance-break{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.25)}
+        .badge-rsi-extreme{background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.25)}
+        .pa-card{position:relative;overflow:hidden;transition:all .25s cubic-bezier(.16,1,.3,1)}
+        .pa-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+        .pa-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+        .pa-card.alert-bull::before{background:linear-gradient(0deg,#10b981,#34d399)}
+        .pa-card.alert-bear::before{background:linear-gradient(0deg,#ef4444,#f87171)}
+        .pa-card.alert-neutral::before{background:linear-gradient(0deg,#3b82f6,#60a5fa)}
+        @keyframes fadeSlideUp{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+        .animate-fade-slide{animation:fadeSlideUp .4s ease-out forwards}
+        @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.5}}
+        .pulse-dot{width:6px;height:6px;border-radius:50%;animation:pulse-dot 2s infinite}
+        .pulse-dot.bull{background:#34d399}.pulse-dot.bear{background:#f87171}.pulse-dot.neutral{background:#60a5fa}
+        .refresh-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse-dot 1.5s infinite}
+        @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+        @media(max-width:640px){.pa-grid{grid-template-columns:1fr!important}}
+    </style>
+</head>
+<body class="h-full flex" x-data="priceAction()" x-init="init()">
+    <script>
+        function priceAction() {
+            return {
+                sidebarOpen: false, events: [], filtered: [], filter: 'ALL', loading: true, lastUpdate: '--:--:--',
+                init() { this.fetchData(); setInterval(() => this.fetchData(), 30000); },
+                async fetchData() {
+                    try {
+                        var res = await fetch('/api/market/price-action'); var data = await res.json();
+                        this.events = Array.isArray(data) ? data : []; this.applyFilter(); this.loading = false;
+                        this.lastUpdate = new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                    } catch(err) { this.loading = false; }
+                },
+                applyFilter() {
+                    if (this.filter === 'ALL') { this.filtered = this.events; return; }
+                    this.filtered = this.events.filter(function(e) { return e.event_type === this.filter; }.bind(this));
+                },
+                badgeClass(t) {
+                    var m = {
+                        'new_high':'badge-new-high','new_low':'badge-new-low','gap_up':'badge-gap-up',
+                        'gap_down':'badge-gap-down','volume_spike':'badge-vol-spike','support_break':'badge-support-break',
+                        'resistance_break':'badge-resistance-break','rsi_oversold':'badge-rsi-extreme','rsi_overbought':'badge-rsi-extreme'
+                    };
+                    return m[t] || 'badge-neutral';
+                },
+                cardAlert(t) {
+                    if (['new_high','gap_up','resistance_break'].indexOf(t) >= 0) return 'alert-bull';
+                    if (['new_low','gap_down','support_break'].indexOf(t) >= 0) return 'alert-bear';
+                    return 'alert-neutral';
+                },
+                labelText(t) {
+                    var m = {
+                        'new_high':'52W High','new_low':'52W Low','gap_up':'Gap Up','gap_down':'Gap Down',
+                        'volume_spike':'Volume Spike','support_break':'Support Break','resistance_break':'Resistance Break',
+                        'rsi_oversold':'RSI Oversold','rsi_overbought':'RSI Overbought'
+                    };
+                    return m[t] || t;
+                },
+                dotClass(t) {
+                    if (['new_high','gap_up','resistance_break'].indexOf(t) >= 0) return 'bull';
+                    if (['new_low','gap_down','support_break'].indexOf(t) >= 0) return 'bear';
+                    return 'neutral';
+                },
+                formatPrice(v) {
+                    if (!v && v !== 0) return 'N/A';
+                    var p = Number(v);
+                    if (p >= 1000) return 'Rp ' + p.toLocaleString('id-ID');
+                    return 'Rp ' + p;
+                },
+                formatTime(t) {
+                    if (!t) return '';
+                    var d = new Date(t);
+                    return d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' WIB';
+                },
+                eventCount(t) { return this.events.filter(function(e){return e.event_type===t}).length; },
+                get highCount() { return this.eventCount('new_high'); },
+                get lowCount() { return this.eventCount('new_low'); },
+                get gapUpCount() { return this.eventCount('gap_up'); },
+                get gapDownCount() { return this.eventCount('gap_down'); },
+                get volSpikeCount() { return this.eventCount('volume_spike'); },
+                get total() { return this.events.length; }
+            }
+        }
+    </script>
+
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+            <span class="font-bold text-lg text-white">Investo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
+            <a href="/market/live-signals" class="sidebar-link"><span class="icon">&#x26A1;</span> Live Signals</a>
+            <a href="/market/signal-generator" class="sidebar-link"><span class="icon">&#x1F9E0;</span> AI Signal Generator</a>
+            <a href="/market/trend-scanner" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Trend Scanner</a>
+            <a href="/market/price-action" class="sidebar-link active"><span class="icon">&#x1F4AC;</span> Price Action</a>
+            <a href="/market/pattern-scan" class="sidebar-link"><span class="icon">&#x1F50E;</span> Pattern Scan</a>
+            <a href="/market/recap" class="sidebar-link"><span class="icon">&#x1F4CB;</span> Market Recap</a>
+            <a href="/market/anomalies" class="sidebar-link"><span class="icon">&#x26A0;</span> Anomalies</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dividen" class="sidebar-link"><span class="icon">&#x1F4B5;</span> Dividen</a>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">&#x1F9EE;</span> Tools</a>
+            <div class="border-t border-slate-800 my-2"></div>
+            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <a href="/ideas" class="sidebar-link"><span class="icon">&#x1F4A1;</span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon">&#x1F3C6;</span> Leaderboard</a>
+            <a href="/blog" class="sidebar-link"><span class="icon">&#x1F4DD;</span> Blog</a>
+        </nav>
+        <div class="p-3 border-t border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon">&#x2699;</span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon">&#x1F6AA;</span> Keluar</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white">Price Action Monitor</h1>
+                    <p class="text-sm text-slate-400 mt-0.5">Monitor aktivitas harga real-time: new highs/lows, gap, volume spikes, breakouts. Auto-refresh setiap 30 detik.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-[#0b1120] border border-slate-700 rounded-lg text-xs font-mono text-slate-400">
+                        <span class="refresh-indicator"></span>
+                        <span x-text="'Live · '+lastUpdate"></span>
+                    </div>
+                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">Refresh</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <div class="card p-3 text-center cursor-pointer hover:border-green-500/30 transition-colors" @click="filter='new_high';applyFilter()" :class="filter==='new_high'?'border-green-500/50 bg-green-500/5':''">
+                    <div class="text-xl font-bold text-green-400" x-text="highCount">0</div>
+                    <div class="text-[11px] text-slate-500">52W Highs</div>
+                </div>
+                <div class="card p-3 text-center cursor-pointer hover:border-red-500/30 transition-colors" @click="filter='new_low';applyFilter()" :class="filter==='new_low'?'border-red-500/50 bg-red-500/5':''">
+                    <div class="text-xl font-bold text-red-400" x-text="lowCount">0</div>
+                    <div class="text-[11px] text-slate-500">52W Lows</div>
+                </div>
+                <div class="card p-3 text-center cursor-pointer hover:border-green-500/30 transition-colors" @click="filter='gap_up';applyFilter()" :class="filter==='gap_up'?'border-green-500/50 bg-green-500/5':''">
+                    <div class="text-xl font-bold text-emerald-400" x-text="gapUpCount">0</div>
+                    <div class="text-[11px] text-slate-500">Gap Ups</div>
+                </div>
+                <div class="card p-3 text-center cursor-pointer hover:border-red-500/30 transition-colors" @click="filter='gap_down';applyFilter()" :class="filter==='gap_down'?'border-red-500/50 bg-red-500/5':''">
+                    <div class="text-xl font-bold text-rose-400" x-text="gapDownCount">0</div>
+                    <div class="text-[11px] text-slate-500">Gap Downs</div>
+                </div>
+                <div class="card p-3 text-center cursor-pointer hover:border-blue-500/30 transition-colors" @click="filter='volume_spike';applyFilter()" :class="filter==='volume_spike'?'border-blue-500/50 bg-blue-500/5':''">
+                    <div class="text-xl font-bold text-blue-400" x-text="volSpikeCount">0</div>
+                    <div class="text-[11px] text-slate-500">Vol Spikes</div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <button @click="filter='ALL';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='ALL'?'bg-blue-600 text-white':'bg-slate-800 text-slate-400 border border-slate-700 hover:text-white'">All Events</button>
+                <button @click="filter='new_high';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='new_high'?'bg-green-600 text-white':'bg-slate-800 text-green-400 border border-slate-700'">52W High</button>
+                <button @click="filter='new_low';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='new_low'?'bg-red-600 text-white':'bg-slate-800 text-red-400 border border-slate-700'">52W Low</button>
+                <button @click="filter='gap_up';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='gap_up'?'bg-emerald-600 text-white':'bg-slate-800 text-emerald-400 border border-slate-700'">Gap Up</button>
+                <button @click="filter='gap_down';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='gap_down'?'bg-rose-600 text-white':'bg-slate-800 text-rose-400 border border-slate-700'">Gap Down</button>
+                <button @click="filter='volume_spike';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='volume_spike'?'bg-blue-600 text-white':'bg-slate-800 text-blue-400 border border-slate-700'">Vol Spike</button>
+                <button @click="filter='support_break';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='support_break'?'bg-amber-600 text-white':'bg-slate-800 text-amber-400 border border-slate-700'">S/R Break</button>
+                <button @click="filter='rsi_oversold';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='rsi_oversold'?'bg-purple-600 text-white':'bg-slate-800 text-purple-400 border border-slate-700'">RSI Extreme</button>
+            </div>
+
+            <template x-if="loading && events.length === 0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pa-grid">
+                <template x-for="i in 6" :key="i">
+                    <div class="card p-4" style="animation:shimmer 1.8s infinite">
+                        <div style="width:80px;height:14px;background:#1e293b;border-radius:4px;margin-bottom:8px;animation:shimmer 1.8s infinite"></div>
+                        <div style="width:120px;height:20px;background:#1e293b;border-radius:4px;margin-bottom:6px;animation:shimmer 1.8s infinite"></div>
+                        <div style="width:60%;height:14px;background:#1e293b;border-radius:4px;animation:shimmer 1.8s infinite"></div>
+                    </div>
+                </template>
+            </div>
+            </template>
+
+            <template x-if="!loading || events.length > 0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pa-grid">
+                <template x-for="(ev, idx) in filtered" :key="ev.stock_code + '_' + ev.event_type + '_' + idx">
+                <div class="card p-4 pa-card animate-fade-slide" :class="cardAlert(ev.event_type)" :style="'animation-delay:'+(idx*0.03)+'s'">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="pulse-dot" :class="dotClass(ev.event_type)"></span>
+                            <span class="badge" :class="badgeClass(ev.event_type)" x-text="labelText(ev.event_type)"></span>
+                        </div>
+                        <span class="text-[10px] text-slate-500 font-mono" x-text="formatTime(ev.created_at)"></span>
+                    </div>
+
+                    <div class="flex items-center gap-3 mb-3">
+                        <a :href="'/saham/'+ev.stock_code" class="font-mono font-bold text-white text-base hover:text-blue-400 transition-colors" x-text="ev.stock_code"></a>
+                        <span class="text-xs text-slate-500 truncate" x-text="ev.stock_name"></span>
+                    </div>
+
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="font-mono text-lg font-bold text-white" x-text="formatPrice(ev.price)"></div>
+                            <template x-if="ev.change_pct !== undefined && ev.change_pct !== null">
+                            <div class="text-xs font-mono mt-0.5" :class="ev.change_pct >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(ev.change_pct >= 0 ? '+' : '') + (ev.change_pct || 0).toFixed(2) + '%'"></div>
+                            </template>
+                        </div>
+                        <div class="text-xs text-slate-500" x-text="ev.detail || ''"></div>
+                    </div>
+
+                    <template x-if="ev.volume">
+                    <div class="mt-2 pt-2 border-t border-slate-700/50">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-500">Volume</span>
+                            <span class="font-mono text-slate-400" x-text="(ev.volume || 0).toLocaleString()"></span>
+                        </div>
+                    </div>
+                    </template>
+                </div>
+                </template>
+            </div>
+            </template>
+
+            <template x-if="!loading && filtered.length === 0">
+            <div class="text-center py-16">
+                <div class="text-5xl mb-4">&#x1F4AC;</div>
+                <p class="text-slate-400 text-lg font-medium">No price action events detected</p>
+                <p class="text-slate-500 text-sm mt-1">Tidak ada anomali harga signifikan saat ini</p>
+            </div>
+            </template>
+        </main>
+    </div>
+    <style>@keyframes shimmer{0%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}100%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}}</style>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+</html>

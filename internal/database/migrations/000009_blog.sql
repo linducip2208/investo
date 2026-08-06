@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS blog_categories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    slug VARCHAR(500) NOT NULL UNIQUE,
+    content LONGTEXT,
+    excerpt TEXT,
+    featured_image VARCHAR(500),
+    category_id BIGINT,
+    author_id BIGINT,
+    published_at TIMESTAMP NULL,
+    is_published BOOLEAN DEFAULT FALSE,
+    meta_title VARCHAR(500),
+    meta_description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES blog_categories(id) ON DELETE SET NULL,
+    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

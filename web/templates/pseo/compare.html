@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.A.Code]] vs [[.B.Code]] — Perbandingan Saham Lengkap | Investo</title>
+    <meta name="description" content="Perbandingan head-to-head saham [[.A.Code]] ([[.A.Name]]) vs [[.B.Code]] ([[.B.Name]]). Bandingkan PER, PBV, ROE, EPS, dividend yield, market cap, dan 15+ metrik lainnya.">
+    <meta property="og:title" content="[[.A.Code]] vs [[.B.Code]] — Perbandingan Saham | Investo">
+    <meta property="og:description" content="Bandingkan [[.A.Code]] vs [[.B.Code]]. Mana yang lebih bagus untuk value, growth, atau income? Analisa lengkap 15+ metrik.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="[[.CanonicalUrl]]">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "[[.A.Code]] vs [[.B.Code]] — Perbandingan Saham Lengkap",
+        "description": "Perbandingan head-to-head saham [[.A.Code]] vs [[.B.Code]]. Analisa fundamental, teknikal, dan rekomendasi.",
+        "mainEntity": {
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "Mana yang lebih bagus, [[.A.Code]] atau [[.B.Code]]?",
+                "acceptedAnswer": { "@type": "Answer", "text": "[[.VerdictSummary]]" }
+            }]
+        }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:16px}
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .winner-badge{position:relative}
+        .winner-badge::after{content:'🏆';position:absolute;top:-16px;right:-12px;font-size:20px}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+</head>
+<body>
+
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-2.5"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-xl text-white">Investo</span></a>
+            <div class="hidden lg:flex items-center gap-6 text-sm">
+                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/docs" class="text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
+                <a href="/blog" class="text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            </div>
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+    <section class="text-center mb-10 reveal">
+        <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4">[[.A.Name]] ([[.A.Code]]) vs [[.B.Name]] ([[.B.Code]])</h1>
+        <p class="text-slate-400 text-base">Perbandingan head-to-head — mana yang lebih cocok untuk portfolio kamu?</p>
+    </section>
+
+    <div class="grid sm:grid-cols-2 gap-6 mb-12 reveal">
+        <div class="card p-6 text-center [[if .A.IsBetter]]winner-badge[[end]]">
+            <a href="/saham/[[.A.Code]]" class="font-mono font-bold text-blue-400 text-lg hover:underline">[[.A.Code]]</a>
+            <div class="text-sm text-slate-500 mt-1">[[.A.Name]]</div>
+            <div class="text-3xl font-extrabold text-white font-mono mt-3">Rp [[.A.Price]]</div>
+            <div class="text-xs text-slate-500 mt-1">Sektor: [[.A.Sector]]</div>
+            <a href="/saham/[[.A.Code]]" class="inline-block mt-4 text-sm font-medium text-blue-400 hover:underline">Lihat detail &rarr;</a>
+        </div>
+        <div class="card p-6 text-center [[if .B.IsBetter]]winner-badge[[end]]">
+            <a href="/saham/[[.B.Code]]" class="font-mono font-bold text-blue-400 text-lg hover:underline">[[.B.Code]]</a>
+            <div class="text-sm text-slate-500 mt-1">[[.B.Name]]</div>
+            <div class="text-3xl font-extrabold text-white font-mono mt-3">Rp [[.B.Price]]</div>
+            <div class="text-xs text-slate-500 mt-1">Sektor: [[.B.Sector]]</div>
+            <a href="/saham/[[.B.Code]]" class="inline-block mt-4 text-sm font-medium text-blue-400 hover:underline">Lihat detail &rarr;</a>
+        </div>
+    </div>
+
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Tabel Perbandingan Lengkap</h2>
+        <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-slate-800">
+                            <th class="px-6 py-4 text-left font-semibold text-slate-400 uppercase text-xs tracking-wider">Metrik</th>
+                            <th class="px-6 py-4 text-center font-semibold text-slate-400 uppercase text-xs tracking-wider">[[.A.Code]]</th>
+                            <th class="px-6 py-4 text-center font-semibold text-slate-400 uppercase text-xs tracking-wider">[[.B.Code]]</th>
+                            <th class="px-6 py-4 text-center font-semibold text-slate-400 uppercase text-xs tracking-wider">Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        [[range .Metrics]]
+                        <tr class="hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-slate-300">[[.Name]]</td>
+                            <td class="px-6 py-4 text-center font-mono text-slate-200 [[if .AWinner]]font-bold bg-emerald-900/10 rounded[[end]]">[[.AValue]]</td>
+                            <td class="px-6 py-4 text-center font-mono text-slate-200 [[if .BWinner]]font-bold bg-emerald-900/10 rounded[[end]]">[[.BValue]]</td>
+                            <td class="px-6 py-4 text-center">
+                                [[if .AWinner]]<span class="text-xs font-bold text-emerald-400">[[$.A.Code]]</span>
+                                [[else if .BWinner]]<span class="text-xs font-bold text-emerald-400">[[$.B.Code]]</span>
+                                [[else]]<span class="text-xs text-slate-500">Seri</span>[[end]]
+                            </td>
+                        </tr>
+                        [[end]]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <h2 class="text-2xl font-bold text-white mb-6">Analisa Perbandingan</h2>
+        <div class="grid sm:grid-cols-3 gap-6">
+            <div class="card p-6"><h3 class="text-lg font-bold text-white mb-3">Untuk Value Investor</h3><p class="text-sm text-slate-400 leading-relaxed">[[.ValueAnalysis]]</p></div>
+            <div class="card p-6"><h3 class="text-lg font-bold text-white mb-3">Untuk Growth Investor</h3><p class="text-sm text-slate-400 leading-relaxed">[[.GrowthAnalysis]]</p></div>
+            <div class="card p-6"><h3 class="text-lg font-bold text-white mb-3">Untuk Income Investor</h3><p class="text-sm text-slate-400 leading-relaxed">[[.IncomeAnalysis]]</p></div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <div class="bg-gradient-to-br from-slate-800 to-blue-900/20 border border-slate-700/50 rounded-2xl p-8 lg:p-10">
+            <h2 class="text-2xl font-bold text-white mb-4">Kesimpulan</h2>
+            <div class="max-w-none text-slate-400 leading-relaxed"><p>[[.VerdictSummary]]</p></div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal" x-data="{ faqOpen: null }">
+        <h2 class="text-2xl font-bold text-white mb-6">Pertanyaan Umum</h2>
+        <div class="space-y-3">
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 1 ? null : 1)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Mana yang lebih bagus, [[.A.Code]] atau [[.B.Code]]?</span>
+                    <svg :class="{'rotate-180': faqOpen === 1}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 1" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>[[.VerdictSummary]]</p></div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 2 ? null : 2)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apakah [[.A.Code]] lebih murah dari [[.B.Code]]?</span>
+                    <svg :class="{'rotate-180': faqOpen === 2}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 2" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>[[.PriceComparisonAnswer]]</p></div>
+            </div>
+            <div class="card overflow-hidden">
+                <button @click="faqOpen = (faqOpen === 3 ? null : 3)" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-slate-200 hover:bg-slate-800/50 transition-colors">
+                    <span>Apakah saya harus memilih salah satu, atau bisa beli keduanya?</span>
+                    <svg :class="{'rotate-180': faqOpen === 3}" class="w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="faqOpen === 3" x-collapse class="px-5 pb-4 text-sm text-slate-400 leading-relaxed"><p>Diversifikasi adalah prinsip penting dalam investasi. Tergantung pada strategi dan profil risiko Anda, mungkin masuk akal untuk memiliki kedua saham ini dalam portfolio untuk mengurangi risiko spesifik perusahaan.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12 reveal">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
+            <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
+            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Bandungkan [[.A.Code]] vs [[.B.Code]] dan 15.000+ kombinasi saham lainnya dengan aplikasi saham whitelabel ready.</p>
+            <a href="/beli-aplikasi-saham" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+        </div>
+    </section>
+</div>
+
+<footer class="border-t border-slate-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-lg text-white">Investo</span></div>
+        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+});
+</script>
+</body>
+</html>
