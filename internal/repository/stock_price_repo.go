@@ -17,8 +17,15 @@ func (r *StockPriceRepository) BulkInsert(prices []model.StockPrice) error {
 		return nil
 	}
 
-	query := `INSERT IGNORE INTO stock_prices (stock_id, date, open, high, low, close, volume, adj_close)
-		VALUES (:stock_id, :date, :open, :high, :low, :close, :volume, :adj_close)`
+	query := `INSERT INTO stock_prices (stock_id, date, open, high, low, close, volume, adj_close)
+		VALUES (:stock_id, :date, :open, :high, :low, :close, :volume, :adj_close)
+		ON DUPLICATE KEY UPDATE
+			open = VALUES(open),
+			high = VALUES(high),
+			low = VALUES(low),
+			close = VALUES(close),
+			volume = VALUES(volume),
+			adj_close = VALUES(adj_close)`
 	_, err := r.DB.NamedExec(query, prices)
 	if err != nil {
 		return fmt.Errorf("StockPriceRepository.BulkInsert: %w", err)
@@ -203,4 +210,13 @@ func (r *StockPriceRepository) GetLatestDate() (time.Time, error) {
 		return time.Time{}, fmt.Errorf("StockPriceRepository.GetLatestDate: %w", err)
 	}
 	return latest, nil
+}
+
+func (r *StockPriceRepository) GetEarliestDate(stockID int64) (time.Time, error) {
+	var earliest time.Time
+	err := r.DB.Get(&earliest, `SELECT MIN(date) FROM stock_prices WHERE stock_id = ?`, stockID)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("StockPriceRepository.GetEarliestDate: %w", err)
+	}
+	return earliest, nil
 }

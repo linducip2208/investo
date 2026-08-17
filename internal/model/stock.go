@@ -34,6 +34,7 @@ type StockFundamental struct {
 	StockID          int64     `json:"stock_id" db:"stock_id"`
 	Period           string    `json:"period" db:"period"`
 	ReportType       string    `json:"report_type" db:"report_type"`
+	Source           string    `json:"source" db:"source"`
 	Revenue          float64   `json:"revenue" db:"revenue"`
 	NetIncome        float64   `json:"net_income" db:"net_income"`
 	EPS              float64   `json:"eps" db:"eps"`

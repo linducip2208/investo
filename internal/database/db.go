@@ -2,8 +2,7 @@ package database
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
+	"io/fs"
 	"sort"
 	"strings"
 
@@ -32,7 +31,7 @@ func Connect(cfg *config.Config) (*sqlx.DB, error) {
 	return db, nil
 }
 
-func RunMigrations(db *sqlx.DB, dir string) error {
+func RunMigrations(db *sqlx.DB) error {
 	if _, err := db.Exec(`CREATE TABLE IF NOT EXISTS migrations (
 		filename VARCHAR(255) PRIMARY KEY,
 		applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -40,7 +39,7 @@ func RunMigrations(db *sqlx.DB, dir string) error {
 		return fmt.Errorf("create migrations table: %w", err)
 	}
 
-	entries, err := os.ReadDir(dir)
+	entries, err := fs.ReadDir(migrationsFS, "migrations")
 	if err != nil {
 		return fmt.Errorf("read migrations dir: %w", err)
 	}
@@ -62,8 +61,7 @@ func RunMigrations(db *sqlx.DB, dir string) error {
 			continue
 		}
 
-		path := filepath.Join(dir, f)
-		data, err := os.ReadFile(path)
+		data, err := fs.ReadFile(migrationsFS, "migrations/"+f)
 		if err != nil {
 			return fmt.Errorf("read migration %s: %w", f, err)
 		}

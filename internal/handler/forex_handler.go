@@ -75,6 +75,7 @@ func (h *ForexHandler) List(w http.ResponseWriter, r *http.Request) {
 	groups := []map[string]string{
 		{"Slug": "major", "Name": "Major"},
 		{"Slug": "exotic", "Name": "Exotic"},
+		{"Slug": "crypto", "Name": "Crypto"},
 	}
 
 	user := middleware.GetUser(r)

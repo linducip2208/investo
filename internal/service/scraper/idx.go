@@ -635,6 +635,7 @@ func (s *IDXScraper) FetchFundamentals(stockCode string) (*model.StockFundamenta
 	return &model.StockFundamental{
 		Period:           "FY2025",
 		ReportType:       "annual",
+		Source:           "estimated",
 		Revenue:          estimatedRevenue,
 		NetIncome:        estimatedNetIncome,
 		EPS:              estimatedEPS,

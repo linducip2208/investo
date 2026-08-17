@@ -84,6 +84,8 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 func (h *AuthHandler) RegisterPage(w http.ResponseWriter, r *http.Request) {
 	data := map[string]interface{}{
 		"Title": "Daftar - Investo",
+		"Name":  "",
+		"Email": "",
 	}
 	h.Templates.ExecuteTemplate(w, "auth/register.html", data)
 }
@@ -101,7 +103,7 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	confirm := r.FormValue("confirm")
+	confirm := r.FormValue("password_confirm")
 
 	if name == "" || email == "" || password == "" {
 		data := map[string]interface{}{

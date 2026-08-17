@@ -21,7 +21,7 @@ func main() {
 	}
 	defer db.Close()
 
-	database.RunMigrations(db, "internal/database/migrations")
+	database.RunMigrations(db)
 
 	stockRepo := &repository.StockRepository{DB: db}
 	priceRepo := &repository.StockPriceRepository{DB: db}

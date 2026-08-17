@@ -146,6 +146,71 @@
                     </div>
                 </div>
 
+                <!-- Mandates (Fund-as-Entity) -->
+                <div class="card p-5" x-data x-init="loadMandates()">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="text-sm font-bold text-white">&#x1F3E6; Trading Mandates</div>
+                            <div class="text-xs text-slate-500">Simpan strategi fund (persona + risiko + ticker) & jalankan ulang</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <input type="text" x-model="newMandate.name" placeholder="Nama fund (cth: Value Fund)"
+                            class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-brand-500">
+                        <select x-model="newMandate.persona_style" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                            <option value="buffett">Persona: Buffett</option>
+                            <option value="soros">Persona: Soros</option>
+                            <option value="tudor_jones">Persona: Tudor Jones</option>
+                            <option value="cathie_wood">Persona: Cathie Wood</option>
+                        </select>
+                        <input type="text" x-model="newMandate.tickersText" placeholder="Ticker (koma): BBCA,BBRI,TLKM"
+                            class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white font-mono uppercase placeholder:text-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                        <div>
+                            <label class="text-xs text-slate-500 block mb-1">Ronde Debat</label>
+                            <select x-model.number="newMandate.debate_rounds" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                                <option :value="1">1</option><option :value="2">2</option><option :value="3">3</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 block mb-1">Profil Risiko</label>
+                            <select x-model="newMandate.risk_profile" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                                <option value="conservative">Konservatif</option>
+                                <option value="moderate">Moderat</option>
+                                <option value="aggressive">Agresif</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 block mb-1">Max Posisi (%)</label>
+                            <input type="number" x-model.number="newMandate.max_position" min="1" max="30"
+                                class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                        </div>
+                    </div>
+                    <button @click="saveMandate()" class="px-4 py-2 bg-gradient-to-r from-brand-600 to-brand-700 text-white rounded-lg text-sm font-semibold hover:from-brand-500 hover:to-brand-600 transition">
+                        + Simpan Mandate
+                    </button>
+
+                    <div x-show="mandates.length" class="mt-4 space-y-2">
+                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Mandate Tersimpan</div>
+                        <template x-for="m in mandates" :key="m.id">
+                            <div class="flex items-center justify-between bg-surface-light rounded-lg px-4 py-3 border border-surface-border">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-semibold text-white" x-text="m.name"></div>
+                                    <div class="text-xs text-slate-500">
+                                        <span x-text="m.persona_style + ' · ' + m.risk_profile + ' · ' + m.debate_rounds + ' ronde · ' + m.max_position + '% max'"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <button @click="runMandate(m.id)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600/20 text-brand-400 border border-brand-500/30 hover:bg-brand-600/30 transition">Jalankan</button>
+                                    <button @click="deleteMandate(m.id)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-danger/10 text-danger border border-danger/30 hover:bg-danger/20 transition">Hapus</button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
                 <!-- Stream Live Log -->
                 <div x-show="streamLive" class="card p-4 fade-in">
                     <div class="flex items-center justify-between mb-3">
@@ -560,6 +625,8 @@
                 marketRegime: null,
                 forecast: null,
                 eventSource: null,
+                mandates: [],
+                newMandate: { name: '', persona_style: 'buffett', debate_rounds: 1, risk_profile: 'moderate', max_position: 15, tickersText: '' },
 
                 get phaseOneReports() {
                     if (!this.result?.reports) return [];
@@ -846,6 +913,78 @@
 
                 printPage() {
                     window.print();
+                },
+
+                async loadMandates() {
+                    try {
+                        const resp = await fetch('/api/ai/mandates');
+                        const data = await resp.json();
+                        this.mandates = data.mandates || [];
+                    } catch (e) {
+                        console.error('Mandates error:', e);
+                    }
+                },
+
+                async saveMandate() {
+                    if (!this.newMandate.name) {
+                        this.error = 'Nama mandate wajib diisi';
+                        return;
+                    }
+                    const tickers = (this.newMandate.tickersText || '').split(',').map(t => t.trim().toUpperCase()).filter(Boolean);
+                    try {
+                        const resp = await fetch('/api/ai/mandates/save', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name: this.newMandate.name,
+                                persona_style: this.newMandate.persona_style,
+                                debate_rounds: this.newMandate.debate_rounds,
+                                risk_profile: this.newMandate.risk_profile,
+                                max_position: this.newMandate.max_position,
+                                tickers: tickers
+                            })
+                        });
+                        const data = await resp.json();
+                        if (data.success) {
+                            this.newMandate = { name: '', persona_style: 'buffett', debate_rounds: 1, risk_profile: 'moderate', max_position: 15, tickersText: '' };
+                            await this.loadMandates();
+                        } else {
+                            this.error = data.error || 'Gagal simpan';
+                        }
+                    } catch (e) {
+                        this.error = e.message;
+                    }
+                },
+
+                async runMandate(id) {
+                    try {
+                        const resp = await fetch('/api/ai/mandates/run', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: id })
+                        });
+                        const data = await resp.json();
+                        if (data.success && data.decisions?.length) {
+                            this.result = data.decisions[0];
+                            this.ticker = data.decisions[0].ticker || this.ticker;
+                            this.loadHistory();
+                        }
+                    } catch (e) {
+                        console.error('Run mandate error:', e);
+                    }
+                },
+
+                async deleteMandate(id) {
+                    try {
+                        await fetch('/api/ai/mandates/delete', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: id })
+                        });
+                        await this.loadMandates();
+                    } catch (e) {
+                        console.error('Delete mandate error:', e);
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"sort"
 
 	"investo/internal/model"
@@ -17,14 +18,18 @@ type ValuationService struct {
 }
 
 type ValuationResult struct {
-	DCFValue      float64 `json:"dcf_value"`
-	GrahamValue   float64 `json:"graham_value"`
-	LynchValue    float64 `json:"lynch_value"`
-	PBVValue      float64 `json:"pbv_value"`
-	AverageTarget float64 `json:"average_target"`
-	CurrentPrice  float64 `json:"current_price"`
-	UpsidePercent float64 `json:"upside_percent"`
-	Recommendation string `json:"recommendation"`
+	DCFValue        float64 `json:"dcf_value"`
+	DCFBear         float64 `json:"dcf_bear"`
+	DCFBull         float64 `json:"dcf_bull"`
+	DDMValue        float64 `json:"ddm_value"`
+	GrahamValue     float64 `json:"graham_value"`
+	LynchValue      float64 `json:"lynch_value"`
+	PBVValue        float64 `json:"pbv_value"`
+	MonteCarloValue float64 `json:"monte_carlo_value"`
+	AverageTarget   float64 `json:"average_target"`
+	CurrentPrice    float64 `json:"current_price"`
+	UpsidePercent   float64 `json:"upside_percent"`
+	Recommendation  string  `json:"recommendation"`
 }
 
 func (s *ValuationService) Calculate(stockID int64) (*ValuationResult, error) {
@@ -49,11 +54,15 @@ func (s *ValuationService) Calculate(stockID int64) (*ValuationResult, error) {
 	}
 
 	dcfValue := s.calcDCF(fund.NetIncome, stock.SharesOutstanding)
+	dcfBear := s.calcDCFWithParams(fund.NetIncome, stock.SharesOutstanding, 0.05, 0.13, 0.02)
+	dcfBull := s.calcDCFWithParams(fund.NetIncome, stock.SharesOutstanding, 0.18, 0.08, 0.04)
 	grahamValue := s.calcGraham(fund.EPS, fund.BVPS)
 	lynchValue := s.calcLynch(fund.EPS)
 	pbvValue := s.calcPBV(fund.BVPS, stock.SectorID)
+	ddmValue := s.calcDDM(fund.EPS, fund.DividendYield)
+	monteCarloValue := s.calcMonteCarloDCF(fund.NetIncome, stock.SharesOutstanding)
 
-	targets := []float64{dcfValue, grahamValue, lynchValue, pbvValue}
+	targets := []float64{dcfValue, ddmValue, grahamValue, lynchValue, pbvValue, monteCarloValue}
 	count := 0
 	sum := 0.0
 	for _, t := range targets {
@@ -76,18 +85,28 @@ func (s *ValuationService) Calculate(stockID int64) (*ValuationResult, error) {
 	recommendation := s.getRecommendation(upsidePercent)
 
 	return &ValuationResult{
-		DCFValue:       math.Round(dcfValue),
-		GrahamValue:    math.Round(grahamValue),
-		LynchValue:     math.Round(lynchValue),
-		PBVValue:       math.Round(pbvValue),
-		AverageTarget:  math.Round(averageTarget),
-		CurrentPrice:   currentPrice,
-		UpsidePercent:  math.Round(upsidePercent*10) / 10,
-		Recommendation: recommendation,
+		DCFValue:        math.Round(dcfValue),
+		DCFBear:         math.Round(dcfBear),
+		DCFBull:         math.Round(dcfBull),
+		DDMValue:        math.Round(ddmValue),
+		GrahamValue:     math.Round(grahamValue),
+		LynchValue:      math.Round(lynchValue),
+		PBVValue:        math.Round(pbvValue),
+		MonteCarloValue: math.Round(monteCarloValue),
+		AverageTarget:   math.Round(averageTarget),
+		CurrentPrice:    currentPrice,
+		UpsidePercent:   math.Round(upsidePercent*10) / 10,
+		Recommendation:  recommendation,
 	}, nil
 }
 
 func (s *ValuationService) calcDCF(netIncome float64, sharesOutstanding int64) float64 {
+	return s.calcDCFWithParams(netIncome, sharesOutstanding, 0.10, 0.10, 0.03)
+}
+
+// calcDCFWithParams computes a discounted-cash-flow fair value using explicit
+// growth / WACC / terminal-growth assumptions (deterministic, no LLM).
+func (s *ValuationService) calcDCFWithParams(netIncome float64, sharesOutstanding int64, growthRate, wacc, terminalGrowth float64) float64 {
 	if sharesOutstanding <= 0 {
 		return 0
 	}
@@ -96,10 +115,9 @@ func (s *ValuationService) calcDCF(netIncome float64, sharesOutstanding int64) f
 	if fcf <= 0 {
 		return 0
 	}
-
-	growthRate := 0.10
-	wacc := 0.10
-	terminalGrowth := 0.03
+	if wacc <= terminalGrowth {
+		wacc = terminalGrowth + 0.01
+	}
 
 	totalPV := 0.0
 	projectedFCF := fcf
@@ -113,9 +131,65 @@ func (s *ValuationService) calcDCF(netIncome float64, sharesOutstanding int64) f
 	pvTerminal := terminalValue / math.Pow(1+wacc, 5)
 
 	enterpriseValue := totalPV + pvTerminal
-	fairValuePerShare := enterpriseValue / float64(sharesOutstanding)
+	return enterpriseValue / float64(sharesOutstanding)
+}
 
-	return fairValuePerShare
+// calcDDM uses the Gordon Growth (Dividend Discount) Model:
+// fair value = next-year dividend / (required return - dividend growth).
+func (s *ValuationService) calcDDM(eps, dividendYield float64) float64 {
+	if eps <= 0 {
+		return 0
+	}
+
+	payoutRatio := 0.4
+	if dividendYield > 0 && dividendYield < 0.3 {
+		payoutRatio = dividendYield * 15 // rough inverse of typical PER to approximate payout
+		if payoutRatio > 0.8 {
+			payoutRatio = 0.8
+		}
+		if payoutRatio < 0.1 {
+			payoutRatio = 0.1
+		}
+	}
+
+	dividend := eps * payoutRatio
+	requiredReturn := 0.12
+	growth := 0.05
+	if requiredReturn <= growth {
+		requiredReturn = growth + 0.01
+	}
+
+	return dividend * (1 + growth) / (requiredReturn - growth)
+}
+
+// calcMonteCarloDCF runs N DCF simulations sampling growth/WACC/terminal-growth
+// from normal-ish ranges, returning the mean fair value (deterministic seed).
+func (s *ValuationService) calcMonteCarloDCF(netIncome float64, sharesOutstanding int64) float64 {
+	if sharesOutstanding <= 0 || netIncome <= 0 {
+		return 0
+	}
+
+	const simulations = 300
+	rng := rand.New(rand.NewSource(42))
+	total := 0.0
+	valid := 0
+
+	for i := 0; i < simulations; i++ {
+		growth := 0.06 + rng.Float64()*0.14       // 6% .. 20%
+		wacc := 0.08 + rng.Float64()*0.05         // 8% .. 13%
+		terminalGrowth := 0.02 + rng.Float64()*0.02 // 2% .. 4%
+
+		v := s.calcDCFWithParams(netIncome, sharesOutstanding, growth, wacc, terminalGrowth)
+		if v > 0 {
+			total += v
+			valid++
+		}
+	}
+
+	if valid == 0 {
+		return 0
+	}
+	return total / float64(valid)
 }
 
 func (s *ValuationService) calcGraham(eps, bvps float64) float64 {

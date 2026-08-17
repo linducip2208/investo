@@ -165,6 +165,7 @@ func (h *StockHandler) Detail(w http.ResponseWriter, r *http.Request) {
 	sector, _ := h.SectorRepo.FindByID(stock.SectorID)
 
 	type FundSummary struct {
+		Source                     string
 		MarketCapFormatted          string
 		PER                         float64
 		PBV                         float64
@@ -198,6 +199,7 @@ func (h *StockHandler) Detail(w http.ResponseWriter, r *http.Request) {
 			high52 = maxP
 		}
 		fundSummary = FundSummary{
+			Source:                     fundamental.Source,
 			MarketCapFormatted:         fmt.Sprintf("Rp %s", humanizeNum(int64(marketCap))),
 			PER:                        fundamental.PER,
 			PBV:                        fundamental.PBV,
@@ -216,6 +218,11 @@ func (h *StockHandler) Detail(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	historyDays := 0
+	if earliest, err := h.StockPriceRepo.GetEarliestDate(stock.ID); err == nil && !earliest.IsZero() {
+		historyDays = int(time.Since(earliest).Hours() / 24)
+	}
+
 	data := map[string]interface{}{
 		"Title":         stock.Code + " — " + stock.Name + " - Investo",
 		"Stock":         stock,
@@ -223,6 +230,7 @@ func (h *StockHandler) Detail(w http.ResponseWriter, r *http.Request) {
 		"Fundamentals":  fundSummary,
 		"News":          news,
 		"Sector":        sector,
+		"HistoryDays":   historyDays,
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	if err := h.Templates.ExecuteTemplate(w, "stocks/detail.html", data); err != nil {

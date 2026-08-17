@@ -55,6 +55,7 @@ type MultiAgentDecision struct {
 type MultiAgentService struct {
 	AI         *AIService
 	DecisionRepo *repository.AgentDecisionRepository
+	CheckpointRepo *repository.AgentRunCheckpointRepository
 	StockRepo    *repository.StockRepository
 	StockPriceRepo *repository.StockPriceRepository
 	StockFundamentalRepo *repository.StockFundamentalRepository
@@ -65,6 +66,7 @@ type MultiAgentService struct {
 func NewMultiAgentService(
 	ai *AIService,
 	decisionRepo *repository.AgentDecisionRepository,
+	checkpointRepo *repository.AgentRunCheckpointRepository,
 	stockRepo *repository.StockRepository,
 	stockPriceRepo *repository.StockPriceRepository,
 	stockFundamentalRepo *repository.StockFundamentalRepository,
@@ -74,6 +76,7 @@ func NewMultiAgentService(
 	return &MultiAgentService{
 		AI:                   ai,
 		DecisionRepo:         decisionRepo,
+		CheckpointRepo:       checkpointRepo,
 		StockRepo:            stockRepo,
 		StockPriceRepo:       stockPriceRepo,
 		StockFundamentalRepo: stockFundamentalRepo,
@@ -88,6 +91,8 @@ func (s *MultiAgentService) RunAnalysis(code string) (*MultiAgentDecision, error
 		return nil, fmt.Errorf("stock not found: %s", code)
 	}
 
+	today := time.Now()
+
 	pastReflections, _ := s.GetAgentMemory(code)
 
 	fundamentalData := s.fetchFundamentalData(stock.ID)
@@ -96,33 +101,75 @@ func (s *MultiAgentService) RunAnalysis(code string) (*MultiAgentDecision, error
 	newsData := s.fetchNewsData(stock.ID)
 	currentPrice := s.getCurrentPrice(stock.ID)
 
-	// Phase 1: Analyst Team (parallel)
-	fundamentalReport := s.runFundamentalAnalyst(stock.Code, stock.Name, fundamentalData, currentPrice)
-	technicalReport := s.runTechnicalAnalyst(stock.Code, stock.Name, technicalData, currentPrice)
-	sentimentReport := s.runSentimentAnalyst(stock.Code, stock.Name, sentimentData)
-	newsReport := s.runNewsAnalyst(stock.Code, stock.Name, newsData)
+	var analystReports []AgentReport
 
-	analystReports := []AgentReport{fundamentalReport, technicalReport, sentimentReport, newsReport}
+	// Phase 1: Analyst Team (checkpoint-resumable)
+	if cp := s.loadCheckpoint(code, today, "analysts"); cp != nil && len(cp) > 0 {
+		analystReports = cp
+	} else {
+		fundamentalReport := s.runFundamentalAnalyst(stock.Code, stock.Name, fundamentalData, currentPrice)
+		technicalReport := s.runTechnicalAnalyst(stock.Code, stock.Name, technicalData, currentPrice)
+		sentimentReport := s.runSentimentAnalyst(stock.Code, stock.Name, sentimentData)
+		newsReport := s.runNewsAnalyst(stock.Code, stock.Name, newsData)
 
-	// Phase 2: Research Debate
-	bullishReport := s.runBullishResearcher(stock.Code, stock.Name, analystReports, currentPrice)
-	bearishReport := s.runBearishResearcher(stock.Code, stock.Name, analystReports, bullishReport, currentPrice)
+		analystReports = []AgentReport{fundamentalReport, technicalReport, sentimentReport, newsReport}
+		s.saveCheckpoint(code, today, "analysts", analystReports, "")
+	}
 
-	debateLog := s.buildDebateLog(bullishReport, bearishReport)
+	var debateLog string
 
-	allReports := append(analystReports, bullishReport, bearishReport)
+	// Phase 2: Research Debate (multi-round, checkpoint-resumable)
+	if debateReports, storedLog := s.loadCheckpointFull(code, today, "debate"); debateReports != nil {
+		debateLog = storedLog
+		analystReports = append(analystReports, debateReports...)
+	} else {
+		bullishReport := s.runBullishResearcher(stock.Code, stock.Name, analystReports, currentPrice)
+		bearishReport := s.runBearishResearcher(stock.Code, stock.Name, analystReports, bullishReport, currentPrice)
+
+		debateRoundLogs := []string{s.buildDebateLog(bullishReport, bearishReport)}
+		for round := 2; round <= s.debateRounds(); round++ {
+			bullishReport = s.runBullishResearcherRebuttal(stock.Code, stock.Name, analystReports, bearishReport, currentPrice, round)
+			bearishReport = s.runBearishResearcherRebuttal(stock.Code, stock.Name, analystReports, bullishReport, currentPrice, round)
+			debateRoundLogs = append(debateRoundLogs, s.buildDebateLog(bullishReport, bearishReport))
+		}
+		debateLog = strings.Join(debateRoundLogs, "\n\n")
+
+		s.saveCheckpoint(code, today, "debate", []AgentReport{bullishReport, bearishReport}, debateLog)
+		analystReports = append(analystReports, bullishReport, bearishReport)
+	}
+
+	allReports := analystReports
 
 	// Phase 3: Trader Synthesis
-	traderReport := s.runTraderAgent(stock.Code, stock.Name, allReports, currentPrice)
-	allReports = append(allReports, traderReport)
+	if cp := s.loadCheckpoint(code, today, "trader"); cp != nil {
+		allReports = append(allReports, cp...)
+	} else {
+		traderReport := s.runTraderAgent(stock.Code, stock.Name, allReports, currentPrice)
+		s.saveCheckpoint(code, today, "trader", []AgentReport{traderReport}, "")
+		allReports = append(allReports, traderReport)
+	}
 
 	// Phase 4: Risk Management
-	riskReport := s.runRiskManager(stock.Code, stock.Name, allReports, currentPrice)
-	allReports = append(allReports, riskReport)
+	if cp := s.loadCheckpoint(code, today, "risk"); cp != nil {
+		allReports = append(allReports, cp...)
+	} else {
+		riskReport := s.runRiskManager(stock.Code, stock.Name, allReports, currentPrice)
+		s.saveCheckpoint(code, today, "risk", []AgentReport{riskReport}, "")
+		allReports = append(allReports, riskReport)
+	}
 
 	// Phase 5: Portfolio Manager
-	pmReport := s.runPortfolioManager(stock.Code, stock.Name, allReports, debateLog, pastReflections, currentPrice)
-	allReports = append(allReports, pmReport)
+	if cp := s.loadCheckpoint(code, today, "portfolio"); cp != nil {
+		allReports = append(allReports, cp...)
+	} else {
+		pmReport := s.runPortfolioManager(stock.Code, stock.Name, allReports, debateLog, pastReflections, currentPrice)
+		s.saveCheckpoint(code, today, "portfolio", []AgentReport{pmReport}, "")
+		allReports = append(allReports, pmReport)
+	}
+
+	traderReport := s.findReport(allReports, AgentTrader)
+	riskReport := s.findReport(allReports, AgentRisk)
+	pmReport := s.findReport(allReports, AgentPortfolio)
 
 	entryPrice, targetPrice, stopLoss, positionPct := s.parseTraderParams(traderReport, currentPrice)
 	riskScore := s.parseRiskScore(riskReport)
@@ -130,7 +177,7 @@ func (s *MultiAgentService) RunAnalysis(code string) (*MultiAgentDecision, error
 
 	decision := &MultiAgentDecision{
 		Ticker:          code,
-		Date:            time.Now().Format("2006-01-02"),
+		Date:            today.Format("2006-01-02"),
 		Reports:         allReports,
 		DebateLog:       debateLog,
 		FinalSignal:     finalSignal,
@@ -147,7 +194,49 @@ func (s *MultiAgentService) RunAnalysis(code string) (*MultiAgentDecision, error
 		return decision, fmt.Errorf("saved but failed to persist: %w", err)
 	}
 
+	// Successful run — clear checkpoints for this ticker/day.
+	if s.CheckpointRepo != nil {
+		_ = s.CheckpointRepo.Clear(code, today)
+	}
+
 	return decision, nil
+}
+
+func (s *MultiAgentService) loadCheckpoint(code string, runDate time.Time, phase string) []AgentReport {
+	reports, _ := s.loadCheckpointFull(code, runDate, phase)
+	return reports
+}
+
+func (s *MultiAgentService) loadCheckpointFull(code string, runDate time.Time, phase string) ([]AgentReport, string) {
+	if s.CheckpointRepo == nil {
+		return nil, ""
+	}
+	cp, err := s.CheckpointRepo.Find(code, runDate, phase)
+	if err != nil || cp == nil || cp.ReportsJSON == "" {
+		return nil, ""
+	}
+	var reports []AgentReport
+	if err := json.Unmarshal([]byte(cp.ReportsJSON), &reports); err != nil {
+		return nil, ""
+	}
+	return reports, cp.DebateLog
+}
+
+func (s *MultiAgentService) saveCheckpoint(code string, runDate time.Time, phase string, reports []AgentReport, debateLog string) {
+	if s.CheckpointRepo == nil {
+		return
+	}
+	reportsJSON, _ := json.Marshal(reports)
+	_ = s.CheckpointRepo.Save(code, runDate, phase, string(reportsJSON), debateLog)
+}
+
+func (s *MultiAgentService) findReport(reports []AgentReport, role AgentRole) AgentReport {
+	for i := len(reports) - 1; i >= 0; i-- {
+		if reports[i].Agent == role {
+			return reports[i]
+		}
+	}
+	return AgentReport{}
 }
 
 func (s *MultiAgentService) RunBatch(codes []string) ([]*MultiAgentDecision, error) {
@@ -418,6 +507,96 @@ Bangun kasus bearish terkuat dalam format JSON. COUNTER setiap argumen bullish.`
 	return report
 }
 
+// ── Phase 2b: Multi-round debate rebuttals ──
+
+func (s *MultiAgentService) runBullishResearcherRebuttal(code, name string, analystReports []AgentReport, bearishReport AgentReport, price float64, round int) AgentReport {
+	var reportsText string
+	for _, r := range analystReports {
+		reportsText += fmt.Sprintf("\n### %s (%s — Signal: %s)\n%s\n",
+			r.Role, r.Agent, r.Signal, r.Analysis)
+	}
+
+	systemPrompt := fmt.Sprintf(`Kamu adalah Bullish Researcher pada RONDE DEBAT #%d.
+
+Baca argumen Bearish Researcher terbaru dan COUNTER satu per satu dengan data dan logika. Perkuat bull case, akui risiko yang valid, tapi tunjukkan mengapa kasus bullish masih lebih kuat.
+
+TETAP OBJEKTIF.
+
+Output WAJIB dalam format JSON:
+{
+  "signal": "BUY/SELL/HOLD",
+  "confidence": 0-100,
+  "analysis": "rebuttal lengkap dalam markdown bahasa Indonesia",
+  "key_points": ["poin1", "poin2", ...],
+  "risk_flags": ["flag1", "flag2", ...]
+}`, round)
+
+	userPrompt := fmt.Sprintf(`COUNTER BEAR CASE untuk saham %s (%s) — harga saat ini: Rp %.2f
+
+LAPORAN ANALIS:
+%s
+
+LAPORAN BEARISH RESEARCHER (ronde sebelumnya):
+Signal: %s | Confidence: %.0f
+%s
+Key Points: %s
+Risk Flags: %s
+
+Bangun rebuttal bullish terkuat dalam format JSON. COUNTER setiap argumen bearish.`, code, name, price, reportsText,
+		bearishReport.Signal, bearishReport.Confidence, bearishReport.Analysis,
+		strings.Join(bearishReport.KeyPoints, ", "),
+		strings.Join(bearishReport.RiskFlags, ", "))
+
+	response := s.callAgent(systemPrompt, userPrompt)
+	report := s.parseAgentReport(AgentBullish, "Bullish Researcher", response)
+	report.Signal = "BUY"
+	return report
+}
+
+func (s *MultiAgentService) runBearishResearcherRebuttal(code, name string, analystReports []AgentReport, bullishReport AgentReport, price float64, round int) AgentReport {
+	var reportsText string
+	for _, r := range analystReports {
+		reportsText += fmt.Sprintf("\n### %s (%s — Signal: %s)\n%s\n",
+			r.Role, r.Agent, r.Signal, r.Analysis)
+	}
+
+	systemPrompt := fmt.Sprintf(`Kamu adalah Bearish Researcher pada RONDE DEBAT #%d.
+
+Baca argumen Bullish Researcher terbaru dan COUNTER satu per satu dengan data. Perkuat bear case, akui kekuatan bull yang valid, tapi tunjukkan risiko yang tidak bisa diabaikan.
+
+TETAP RASIONAL.
+
+Output WAJIB dalam format JSON:
+{
+  "signal": "BUY/SELL/HOLD",
+  "confidence": 0-100,
+  "analysis": "rebuttal lengkap dalam markdown bahasa Indonesia",
+  "key_points": ["poin1", "poin2", ...],
+  "risk_flags": ["flag1", "flag2", ...]
+}`, round)
+
+	userPrompt := fmt.Sprintf(`COUNTER BULL CASE untuk saham %s (%s) — harga saat ini: Rp %.2f
+
+LAPORAN ANALIS:
+%s
+
+LAPORAN BULLISH RESEARCHER (ronde sebelumnya):
+Signal: %s | Confidence: %.0f
+%s
+Key Points: %s
+Risk Flags: %s
+
+Bangun rebuttal bearish terkuat dalam format JSON. COUNTER setiap argumen bullish.`, code, name, price, reportsText,
+		bullishReport.Signal, bullishReport.Confidence, bullishReport.Analysis,
+		strings.Join(bullishReport.KeyPoints, ", "),
+		strings.Join(bullishReport.RiskFlags, ", "))
+
+	response := s.callAgent(systemPrompt, userPrompt)
+	report := s.parseAgentReport(AgentBearish, "Bearish Researcher", response)
+	report.Signal = "SELL"
+	return report
+}
+
 // ── Phase 3: Trader Synthesis ──
 
 func (s *MultiAgentService) runTraderAgent(code, name string, allReports []AgentReport, price float64) AgentReport {
@@ -600,11 +779,71 @@ func (s *MultiAgentService) callAgent(systemPrompt, userPrompt string) string {
 		return s.generateFallback(systemPrompt)
 	}
 
+	if s.isDeepAgent(systemPrompt) && (s.AI.DeepThinkModel != "" || s.AI.Model != "") {
+		if response, err := s.AI.DeepChat(systemPrompt, userPrompt); err == nil {
+			return response
+		}
+	} else if qm := s.AI.QuickModel(); qm != "" {
+		if response, err := s.AI.ChatWithModel(systemPrompt, userPrompt, qm); err == nil {
+			return response
+		}
+	}
+
 	response, err := s.AI.Chat(systemPrompt, userPrompt)
 	if err != nil {
 		return s.generateFallback(systemPrompt)
 	}
 	return response
+}
+
+// isDeepAgent identifies complex-reasoning agents that benefit from a stronger model.
+func (s *MultiAgentService) isDeepAgent(systemPrompt string) bool {
+	l := strings.ToLower(systemPrompt)
+	for _, kw := range []string{
+		"bullish researcher", "bearish researcher", "senior trader",
+		"risk manager", "portfolio manager",
+	} {
+		if strings.Contains(l, kw) {
+			return true
+		}
+	}
+	return false
+}
+
+// callAgentDeep routes complex-reasoning agents (researchers, trader, risk, PM)
+// through the deep-think model when configured.
+func (s *MultiAgentService) callAgentDeep(systemPrompt, userPrompt string) string {
+	if !s.AI.IsConfigured() {
+		return s.generateFallback(systemPrompt)
+	}
+
+	response, err := s.AI.DeepChat(systemPrompt, userPrompt)
+	if err != nil {
+		return s.generateFallback(systemPrompt)
+	}
+	return response
+}
+
+// debateRounds returns the configured number of bull/bear debate rounds (default 1, max 3).
+func (s *MultiAgentService) debateRounds() int {
+	rounds := 1
+	if s.AI.SettingRepo != nil {
+		if v, err := s.AI.SettingRepo.Get("ai_debate_rounds"); err == nil && v != "" {
+			if n := atoiSafe(v); n >= 1 {
+				rounds = n
+			}
+		}
+	}
+	if rounds > 3 {
+		rounds = 3
+	}
+	return rounds
+}
+
+func atoiSafe(s string) int {
+	var n int
+	fmt.Sscanf(strings.TrimSpace(s), "%d", &n)
+	return n
 }
 
 func (s *MultiAgentService) generateFallback(systemPrompt string) string {

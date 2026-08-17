@@ -25,6 +25,20 @@ func init() {
 	}
 }
 
+// cryptoTickers are base currencies fetched as `BTC-USD` on Yahoo rather than `BTCUSD=X`.
+var cryptoTickers = map[string]bool{
+	"BTC": true, "ETH": true, "BNB": true, "XRP": true, "SOL": true,
+	"ADA": true, "DOGE": true, "AVAX": true, "LTC": true, "DOT": true,
+	"MATIC": true, "LINK": true, "XLM": true, "USDT": true, "USDC": true,
+}
+
+func forexSymbol(base, quote string) string {
+	if cryptoTickers[base] {
+		return fmt.Sprintf("%s-%s", base, quote)
+	}
+	return fmt.Sprintf("%s%s=X", base, quote)
+}
+
 type YahooScraper struct {
 	mu         sync.Mutex
 	crumb      string
@@ -109,53 +123,42 @@ type yahooAdjClose struct {
 }
 
 func (s *YahooScraper) FetchHistorical(stockCode string, start, end time.Time) ([]model.StockPrice, error) {
-	crumb, err := s.getCrumb()
-	if err != nil {
-		log.Printf("[YahooScraper] WARNING: crumb unavailable, trying without: %v", err)
-	}
+	crumb, _ := s.getCrumb()
 
 	period1 := start.Unix()
 	period2 := end.Unix()
 
-	url := fmt.Sprintf(
-		"https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%d&period2=%d&interval=1d&events=history&crumb=%s",
+	query := fmt.Sprintf(
+		"/v8/finance/chart/%s?period1=%d&period2=%d&interval=1d&events=history&crumb=%s",
 		stockCode, period1, period2, crumb,
 	)
 
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("yahoo scraper: create request: %w", err)
-	}
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
-	req.Header.Set("Accept", "application/json")
-
 	client := s.getClient()
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("yahoo scraper: fetch %s: %w", stockCode, err)
-	}
-	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("yahoo scraper: read body: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("yahoo scraper: unexpected status %d for %s: %s", resp.StatusCode, stockCode, string(body))
-	}
-
+	// Data-provider failover: try multiple Yahoo Finance hosts in order.
 	var chartResp yahooChartResponse
-	if err := json.Unmarshal(body, &chartResp); err != nil {
-		return nil, fmt.Errorf("yahoo scraper: parse json: %w", err)
+	var lastErr error
+	fetched := false
+	for _, host := range []string{
+		"https://query1.finance.yahoo.com",
+		"https://query2.finance.yahoo.com",
+	} {
+		chartResp, lastErr = s.fetchChart(client, host+query)
+		if lastErr == nil {
+			fetched = true
+			break
+		}
 	}
-
-	if chartResp.Chart.Error != nil {
-		return nil, fmt.Errorf("yahoo scraper: chart error for %s: %v", stockCode, chartResp.Chart.Error)
-	}
-
-	if len(chartResp.Chart.Result) == 0 {
-		return nil, fmt.Errorf("yahoo scraper: no results for %s", stockCode)
+	if !fetched {
+		// Cross-vendor fallback: Financial Modeling Prep (if API key set).
+		fmp := NewFMPScraper()
+		if fmp.IsConfigured() {
+			if prices, err := fmp.FetchHistorical(stockCode, start, end); err == nil {
+				log.Printf("[Scraper] Yahoo failed for %s, used FMP fallback", stockCode)
+				return prices, nil
+			}
+		}
+		return nil, fmt.Errorf("yahoo scraper: fetch %s: %w", stockCode, lastErr)
 	}
 
 	result := chartResp.Chart.Result[0]
@@ -209,6 +212,21 @@ func (s *YahooScraper) FetchHistorical(stockCode string, start, end time.Time) (
 			continue
 		}
 
+		// Yahoo returns null close for the current in-progress day (and for stale
+		// windows); skip zero/placeholder rows so they never get persisted.
+		if close <= 0 && open <= 0 && high <= 0 && low <= 0 {
+			continue
+		}
+		if close <= 0 {
+			// Close not yet available — derive a temporary close from the last
+			// known traded price so the daily bar still has a value.
+			if open > 0 {
+				close = open
+			} else if low > 0 && high > 0 {
+				close = (high + low) / 2
+			}
+		}
+
 		prices = append(prices, model.StockPrice{
 			Date:     date,
 			Open:     open,
@@ -221,6 +239,47 @@ func (s *YahooScraper) FetchHistorical(stockCode string, start, end time.Time) (
 	}
 
 	return prices, nil
+}
+
+// fetchChart performs a single HTTP GET against a full chart URL and parses the
+// response into yahooChartResponse.
+func (s *YahooScraper) fetchChart(client *http.Client, url string) (yahooChartResponse, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: create request: %w", err)
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+	req.Header.Set("Accept", "application/json")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: fetch: %w", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: read body: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: unexpected status %d", resp.StatusCode)
+	}
+
+	var chartResp yahooChartResponse
+	if err := json.Unmarshal(body, &chartResp); err != nil {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: parse json: %w", err)
+	}
+
+	if chartResp.Chart.Error != nil {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: chart error: %v", chartResp.Chart.Error)
+	}
+
+	if len(chartResp.Chart.Result) == 0 {
+		return yahooChartResponse{}, fmt.Errorf("yahoo scraper: no results")
+	}
+
+	return chartResp, nil
 }
 
 func (s *YahooScraper) FetchLatestPrice(stockCode string) (float64, error) {
@@ -386,6 +445,7 @@ func (s *YahooScraper) FetchFundamentalsFromYahoo(code string) (*model.StockFund
 	return &model.StockFundamental{
 		Period:           "FY2025",
 		ReportType:       "annual",
+		Source:           "yahoo",
 		Revenue:          revenue,
 		NetIncome:        revenue * (npm / 100),
 		EPS:              eps,
@@ -404,7 +464,7 @@ func (s *YahooScraper) FetchFundamentalsFromYahoo(code string) (*model.StockFund
 }
 
 func (s *YahooScraper) FetchForexRate(base, quote string) (float64, float64, float64, float64, error) {
-	symbol := fmt.Sprintf("%s%s=X", base, quote)
+	symbol := forexSymbol(base, quote)
 
 	end := time.Now().In(jakartaLoc)
 	start := end.AddDate(0, 0, -7)

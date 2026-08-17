@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -32,6 +33,7 @@ import (
 	"investo/internal/service"
 	"investo/internal/service/pattern"
 	"investo/internal/service/scraper"
+	"investo/web"
 )
 
 func main() {
@@ -45,7 +47,7 @@ func main() {
 	}
 	defer db.Close()
 
-	if err := database.RunMigrations(db, "internal/database/migrations"); err != nil {
+	if err := database.RunMigrations(db); err != nil {
 		log.Printf("Warning: migration error: %v", err)
 	} else {
 		log.Println("Migrations completed")
@@ -86,6 +88,8 @@ func main() {
 	stockActionRepo := &repository.StockActionRepository{DB: db}
 	tradeJournalRepo := &repository.TradeJournalRepository{DB: db}
 	agentDecisionRepo := &repository.AgentDecisionRepository{DB: db}
+	agentRunCheckpointRepo := &repository.AgentRunCheckpointRepository{DB: db}
+	agentMandateRepo := &repository.AgentMandateRepository{DB: db}
 	paperTradingRepo := &repository.PaperTradingRepository{DB: db}
 
 	authService := &service.AuthService{UserRepo: userRepo}
@@ -180,7 +184,7 @@ func main() {
 		UserRepo:     userRepo,
 	}
 
-	tpl, err := parseTemplates("web/templates")
+	tpl, err := parseTemplates()
 	if err != nil {
 		log.Printf("Warning: template parsing failed: %v", err)
 		tpl = nil
@@ -663,6 +667,7 @@ func main() {
 	multiAgentSvc := service.NewMultiAgentService(
 		aiService,
 		agentDecisionRepo,
+		agentRunCheckpointRepo,
 		stockRepo,
 		stockPriceRepo,
 		stockFundamentalRepo,
@@ -797,6 +802,8 @@ func main() {
 		Templates:     tpl,
 		SettingRepo:   settingRepo,
 		AIUsageSvc:    aiUsageSvc,
+		SimExchange:   service.NewSimulatedExchangeService(paperTradingRepo, settingRepo),
+		MandateRepo:   agentMandateRepo,
 	}
 	aiHandler.SetStandupService(standupSvc)
 	aiHandler.SetTaxServiceVar(taxSvc)
@@ -1006,7 +1013,15 @@ func main() {
 	r.Get("/market/signal-generator", marketHandler.SignalGeneratorPage)
 	r.Get("/pricing", botHandler.PricingPage)
 	r.Get("/health", pageHandler.Health)
-	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "web/static/favicon.svg") })
+	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		data, err := fs.ReadFile(web.Static, "static/favicon.svg")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "image/svg+xml")
+		w.Write(data)
+	})
 	r.Get("/ws", func(w http.ResponseWriter, r *http.Request) { wsHub.HandleWS(w, r) })
 
 	r.Group(func(r chi.Router) {
@@ -1193,12 +1208,12 @@ func main() {
 	r.Route("/api", func(r chi.Router) {
 		r.Use(apiRateLimiter.Limit)
 
-		r.Get("/api/ai/generate-report/{portfolioID}", aiHandler.GenerateReportJSON)
-		r.Post("/api/ai/alert-message", aiHandler.AlertMessageJSON)
-		r.Post("/api/ai/social-post", aiHandler.SocialPostJSON)
-		r.Get("/api/ai/search", aiHandler.SemanticSearchJSON)
-		r.Get("/api/ai/impute/{code}", aiHandler.ImputeFundamentalsJSON)
-		r.Get("/api/ai/explain-anomaly/{code}", aiHandler.AnomalyExplanationJSON)
+		r.Get("/ai/generate-report/{portfolioID}", aiHandler.GenerateReportJSON)
+		r.Post("/ai/alert-message", aiHandler.AlertMessageJSON)
+		r.Post("/ai/social-post", aiHandler.SocialPostJSON)
+		r.Get("/ai/search", aiHandler.SemanticSearchJSON)
+		r.Get("/ai/impute/{code}", aiHandler.ImputeFundamentalsJSON)
+		r.Get("/ai/explain-anomaly/{code}", aiHandler.AnomalyExplanationJSON)
 
 		r.Get("/alert-templates", alertHandler.AlertTemplates)
 		r.Get("/predictions/leaderboard", engagementHandler.PredictionLeaderboardJSON)
@@ -1360,17 +1375,17 @@ func main() {
 		r.Get("/ai/agents/result/{code}", aiHandler.AgentAnalysisJSON)
 		r.Get("/ai/agents/history/{code}", aiHandler.AgentHistoryJSON)
 
-		r.Post("/api/ai/voice-parse", aiHandler.VoiceParseJSON)
-		r.Get("/api/ai/standup", aiHandler.StandupJSON)
-		r.Get("/api/ai/tax-optimizer/{portfolioID}", aiHandler.TaxOptimizerJSON)
-		r.Get("/api/ai/comic", aiHandler.ComicJSON)
-		r.Get("/api/ai/haiku/{portfolioID}", aiHandler.HaikuJSON)
-		r.Get("/api/ai/stock-story/{code}", aiHandler.StockStoryJSON)
-		r.Get("/api/ai/compliance/{portfolioID}", aiHandler.ComplianceJSON)
-		r.Get("/api/ai/client-report/{portfolioID}", aiHandler.ClientReportJSON)
-		r.Post("/api/ai/webhooks/config", aiHandler.WebhookConfigJSON)
-		r.Get("/api/ai/calendar-sync", aiHandler.CalendarSyncJSON)
-		r.Post("/api/ai/bot-format", aiHandler.BotFormatJSON)
+		r.Post("/ai/voice-parse", aiHandler.VoiceParseJSON)
+		r.Get("/ai/standup", aiHandler.StandupJSON)
+		r.Get("/ai/tax-optimizer/{portfolioID}", aiHandler.TaxOptimizerJSON)
+		r.Get("/ai/comic", aiHandler.ComicJSON)
+		r.Get("/ai/haiku/{portfolioID}", aiHandler.HaikuJSON)
+		r.Get("/ai/stock-story/{code}", aiHandler.StockStoryJSON)
+		r.Get("/ai/compliance/{portfolioID}", aiHandler.ComplianceJSON)
+		r.Get("/ai/client-report/{portfolioID}", aiHandler.ClientReportJSON)
+		r.Post("/ai/webhooks/config", aiHandler.WebhookConfigJSON)
+		r.Get("/ai/calendar-sync", aiHandler.CalendarSyncJSON)
+		r.Post("/ai/bot-format", aiHandler.BotFormatJSON)
 		r.Get("/ai/agents/stream/{code}", aiHandler.StreamAgentAnalysis)
 		r.Get("/ai/agents/consensus/{code}", aiHandler.AgentConsensusJSON)
 		r.Post("/ai/agents/analyze-persona", aiHandler.AgentAnalysisWithPersona)
@@ -1383,36 +1398,42 @@ func main() {
 		r.Get("/ai/black-swan", aiHandler.BlackSwanScanJSON)
 		r.Get("/ai/insider-interpret/{code}", aiHandler.InsiderInterpretJSON)
 
-		r.Post("/api/ai/signals/bei/{code}", aiHandler.GenerateBEISignal)
-		r.Post("/api/ai/signals/forex/{pair}", aiHandler.GenerateForexSignal)
-		r.Post("/api/ai/signals/distribute", aiHandler.DistributeSignal)
-		r.Post("/api/settings/data-sources", aiHandler.SaveDataSource)
-		r.Post("/api/settings/data-sources/test", aiHandler.TestDataSource)
-		r.Get("/api/ai/compliance-check/{marketType}", aiHandler.ComplianceCheckJSON)
-		r.Get("/api/mcp/validate/{code}", aiHandler.ValidateMCP)
+		r.Post("/ai/signals/bei/{code}", aiHandler.GenerateBEISignal)
+		r.Post("/ai/signals/forex/{pair}", aiHandler.GenerateForexSignal)
+		r.Post("/ai/signals/distribute", aiHandler.DistributeSignal)
+		r.Post("/settings/data-sources", aiHandler.SaveDataSource)
+		r.Post("/settings/data-sources/test", aiHandler.TestDataSource)
+		r.Get("/ai/compliance-check/{marketType}", aiHandler.ComplianceCheckJSON)
+		r.Get("/mcp/validate/{code}", aiHandler.ValidateMCP)
 
-		r.Get("/api/ai/usage", aiHandler.AIUsageJSON)
-		r.Get("/api/ai/health-check", aiHandler.AIHealthCheckJSON)
-		r.Post("/api/ai/budget", aiHandler.AIBudgetJSON)
-		r.Post("/api/ai/rate-response", aiHandler.AIRateResponseJSON)
-		r.Get("/api/ai/report", aiHandler.AIReportJSON)
-		r.Post("/api/ai/settings", aiHandler.SaveAISettingsEnhanced)
-		r.Post("/api/ai/test", aiHandler.TestAIProvider)
+		r.Get("/ai/usage", aiHandler.AIUsageJSON)
+		r.Get("/ai/health-check", aiHandler.AIHealthCheckJSON)
+		r.Post("/ai/budget", aiHandler.AIBudgetJSON)
+		r.Post("/ai/rate-response", aiHandler.AIRateResponseJSON)
+		r.Get("/ai/report", aiHandler.AIReportJSON)
+		r.Post("/ai/settings", aiHandler.SaveAISettingsEnhanced)
+		r.Post("/ai/test", aiHandler.TestAIProvider)
+		r.Get("/ai/providers", aiHandler.AIProvidersJSON)
+		r.Post("/ai/advanced", aiHandler.SaveAdvancedSettings)
+		r.Get("/ai/mandates", aiHandler.MandatesJSON)
+		r.Post("/ai/mandates/save", aiHandler.SaveMandate)
+		r.Post("/ai/mandates/delete", aiHandler.DeleteMandate)
+		r.Post("/ai/mandates/run", aiHandler.RunMandate)
 
-		r.Post("/api/payment/create", paymentHandler.CreateTransaction)
-		r.Post("/api/payment/callback", paymentHandler.Callback)
-		r.Get("/api/invoice/{txID}", paymentHandler.Invoice)
+		r.Post("/payment/create", paymentHandler.CreateTransaction)
+		r.Post("/payment/callback", paymentHandler.Callback)
+		r.Get("/invoice/{txID}", paymentHandler.Invoice)
 
-		r.Get("/api/subscription/status", paymentHandler.SubscriptionStatus)
-		r.Post("/api/subscription/upgrade", paymentHandler.UpgradeSubscription)
+		r.Get("/subscription/status", paymentHandler.SubscriptionStatus)
+		r.Post("/subscription/upgrade", paymentHandler.UpgradeSubscription)
 
-		r.Post("/api/trading/basket", tradingHandler.CreateBasket)
-		r.Post("/api/trading/basket/execute", tradingHandler.ExecuteBasket)
-		r.Get("/api/trading/basket/list", tradingHandler.ListBaskets)
-		r.Post("/api/trading/oco", tradingHandler.CreateOCO)
-		r.Get("/api/trading/oco/active", tradingHandler.ActiveOCO)
-		r.Get("/api/trading/oco/history", tradingHandler.OCOHistory)
-		r.Post("/api/kelly/calculate", tradingHandler.KellyCalculate)
+		r.Post("/trading/basket", tradingHandler.CreateBasket)
+		r.Post("/trading/basket/execute", tradingHandler.ExecuteBasket)
+		r.Get("/trading/basket/list", tradingHandler.ListBaskets)
+		r.Post("/trading/oco", tradingHandler.CreateOCO)
+		r.Get("/trading/oco/active", tradingHandler.ActiveOCO)
+		r.Get("/trading/oco/history", tradingHandler.OCOHistory)
+		r.Post("/kelly/calculate", tradingHandler.KellyCalculate)
 	})
 
 	r.Route("/api/v1", func(r chi.Router) {
@@ -1443,10 +1464,17 @@ func main() {
 	r.Get("/dashboard/portfolios/{id}/report", exportHandler.PortfolioReport)
 
 	r.Get("/api/docs", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/static/api/docs.html")
+		data, err := fs.ReadFile(web.Static, "static/api/docs.html")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Write(data)
 	})
 
-	fileServer := http.FileServer(http.Dir("web/static"))
+	staticFS, _ := fs.Sub(web.Static, "static")
+	fileServer := http.FileServer(http.FS(staticFS))
 	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
 	r.NotFound(pageHandler.NotFound)
@@ -1543,11 +1571,7 @@ func toFloat(v interface{}) float64 {
 	return 0
 }
 
-func parseTemplates(root string) (*template.Template, error) {
-	if _, err := os.Stat(root); os.IsNotExist(err) {
-		return nil, fmt.Errorf("template directory not found: %s", root)
-	}
-
+func parseTemplates() (*template.Template, error) {
 	funcMap := template.FuncMap{
 		"formatNumber": func(v interface{}) string {
 			switch val := v.(type) {
@@ -1624,22 +1648,19 @@ func parseTemplates(root string) (*template.Template, error) {
 			return string(b)
 		},
 		"toUpper": strings.ToUpper,
+		"currentYear": func() int { return time.Now().Year() },
 	}
 
 	tpl := template.New("").Delims("[[", "]]").Funcs(funcMap)
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := fs.WalkDir(web.Templates, "templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() || !strings.HasSuffix(info.Name(), ".html") {
+		if d.IsDir() || !strings.HasSuffix(d.Name(), ".html") {
 			return nil
 		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return fmt.Errorf("relative path for %s: %w", path, err)
-		}
-		name := filepath.ToSlash(rel)
-		data, err := os.ReadFile(path)
+		name := filepath.ToSlash(strings.TrimPrefix(path, "templates/"))
+		data, err := fs.ReadFile(web.Templates, path)
 		if err != nil {
 			return fmt.Errorf("read %s: %w", path, err)
 		}

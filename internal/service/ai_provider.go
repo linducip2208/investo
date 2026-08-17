@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -31,26 +32,35 @@ type aiCompletionResponse struct {
 }
 
 type AIService struct {
-	BaseURL     string
-	APIKey      string
-	Model       string
-	SettingRepo *repository.SettingRepository
-	client      *http.Client
+	BaseURL        string
+	APIKey         string
+	Model          string
+	DeepThinkModel string
+	QuickThinkModel string
+	Temperature    float64
+	SettingRepo    *repository.SettingRepository
+	client         *http.Client
 }
 
 func NewAIService() *AIService {
 	baseURL := getEnvAny("AI_BASE_URL", "AI_PROVIDER_URL", "")
 	apiKey := getEnvAny("AI_API_KEY", "OPENAI_API_KEY", "")
 	model := getEnvAny("AI_MODEL", "AI_MODEL_ID", "gpt-4o-mini")
+	deepModel := getEnvAny("AI_DEEP_MODEL", "AI_DEEP_THINK_MODEL", "")
+	quickModel := getEnvAny("AI_QUICK_MODEL", "AI_QUICK_THINK_MODEL", "")
+	temperature := getEnvFloat("AI_TEMPERATURE", 0.7)
 
 	if baseURL == "" {
 		baseURL = "https://api.openai.com/v1"
 	}
 
 	return &AIService{
-		BaseURL: strings.TrimRight(baseURL, "/"),
-		APIKey:  apiKey,
-		Model:   model,
+		BaseURL:        strings.TrimRight(baseURL, "/"),
+		APIKey:         apiKey,
+		Model:          model,
+		DeepThinkModel: deepModel,
+		QuickThinkModel: quickModel,
+		Temperature:    temperature,
 		client: &http.Client{
 			Timeout: 120 * time.Second,
 		},
@@ -451,14 +461,79 @@ func getEnvAny(keys ...string) string {
 	return ""
 }
 
+func getEnvFloat(key string, def float64) float64 {
+	if val := os.Getenv(key); val != "" {
+		if f, err := strconv.ParseFloat(val, 64); err == nil {
+			return f
+		}
+	}
+	return def
+}
+
 // ── BYOK Multi-Provider Support ──
 
 type AIProvider struct {
-	Name     string
-	BaseURL  string
-	APIKey   string
-	Model    string
-	IsActive bool
+	Name        string `json:"name"`
+	DisplayName string `json:"display_name"`
+	Icon        string `json:"icon"`
+	Placeholder string `json:"placeholder"`
+	Format      string `json:"format"`
+	BaseURL     string `json:"base_url"`
+	APIKey      string `json:"-"`
+	HasKey      bool   `json:"has_key"`
+	Model       string `json:"model"`
+	IsActive    bool   `json:"is_active"`
+}
+
+type providerFormat string
+
+const (
+	formatOpenAICompatible providerFormat = "openai_compatible"
+	formatAnthropic        providerFormat = "anthropic"
+	formatGemini           providerFormat = "gemini"
+)
+
+type providerDef struct {
+	Name         string
+	DisplayName  string
+	Icon         string
+	Placeholder  string
+	KeyPrefix    string
+	DefaultURL   string
+	DefaultModel string
+	Format       providerFormat
+}
+
+var providerRegistry = []providerDef{
+	{"deepseek", "DeepSeek", "🧠", "sk-...", "ai_provider_deepseek", "https://api.deepseek.com/v1", "deepseek-chat", formatOpenAICompatible},
+	{"openai", "OpenAI", "🤖", "sk-...", "ai_provider_openai", "https://api.openai.com/v1", "gpt-4o", formatOpenAICompatible},
+	{"claude", "Claude (Anthropic)", "🔮", "sk-ant-...", "ai_provider_claude", "https://api.anthropic.com/v1", "claude-3-5-sonnet-20241022", formatAnthropic},
+	{"ollama", "Ollama (Local)", "🦙", "No key needed", "ai_provider_ollama", "http://localhost:11434/v1", "llama3.2", formatOpenAICompatible},
+	{"gemini", "Google Gemini", "🌌", "AIza...", "ai_provider_gemini", "https://generativelanguage.googleapis.com/v1beta", "gemini-2.0-flash", formatGemini},
+	{"groq", "Groq", "⚡", "gsk_...", "ai_provider_groq", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile", formatOpenAICompatible},
+	{"qwen", "Qwen (Alibaba)", "🐲", "sk-...", "ai_provider_qwen", "https://dashscope-intl.aliyuncs.com/compatible-mode/v1", "qwen-plus", formatOpenAICompatible},
+	{"glm", "GLM (Zhipu)", "🇨🇳", "id-key", "ai_provider_glm", "https://open.bigmodel.cn/api/paas/v4", "glm-4-plus", formatOpenAICompatible},
+	{"minimax", "MiniMax", "🔆", "key", "ai_provider_minimax", "https://api.minimaxi.com/v1", "MiniMax-Text-01", formatOpenAICompatible},
+	{"openrouter", "OpenRouter", "🌐", "sk-or-...", "ai_provider_openrouter", "https://openrouter.ai/api/v1", "openai/gpt-4o", formatOpenAICompatible},
+	{"azure", "Azure OpenAI", "☁️", "api-key", "ai_provider_azure", "https://YOUR-RESOURCE.openai.azure.com/openai/deployments", "gpt-4o", formatOpenAICompatible},
+	{"openai_compatible", "Custom (OpenAI-compatible)", "🔌", "key (optional)", "ai_provider_openai_compatible", "http://localhost:8000/v1", "custom-model", formatOpenAICompatible},
+}
+
+func providerByName(name string) *providerDef {
+	for i := range providerRegistry {
+		if providerRegistry[i].Name == name {
+			return &providerRegistry[i]
+		}
+	}
+	return nil
+}
+
+func allProviderPrefixes() []string {
+	out := make([]string, 0, len(providerRegistry))
+	for _, p := range providerRegistry {
+		out = append(out, p.KeyPrefix)
+	}
+	return out
 }
 
 type AIChatRequest struct {
@@ -500,65 +575,223 @@ func (s *AIService) ChatWithFallback(systemPrompt, userPrompt, fallback string) 
 	return fallback
 }
 
-func (s *AIService) tryBYOKProviders(systemPrompt, userMessage string) (string, error) {
-	providers := []struct {
-		name         string
-		keyPrefix    string
-		defaultURL   string
-		defaultModel string
-	}{
-		{"deepseek", "ai_provider_deepseek", "https://api.deepseek.com/v1", "deepseek-chat"},
-		{"openai", "ai_provider_openai", "https://api.openai.com/v1", "gpt-4o"},
-		{"claude", "ai_provider_claude", "https://api.anthropic.com/v1", "claude-3-5-sonnet-20241022"},
-		{"ollama", "ai_provider_ollama", "http://localhost:11434/v1", "llama3.2"},
+// DeepChat uses the configured deep-thinking model (or default) for complex reasoning tasks.
+func (s *AIService) DeepChat(systemPrompt, userMessage string) (string, error) {
+	model := s.DeepThinkModel
+	if s.SettingRepo != nil {
+		if v, err := s.SettingRepo.Get("ai_deep_model"); err == nil && v != "" {
+			model = v
+		}
 	}
+	if model == "" {
+		model = s.Model
+	}
+	return s.chatWithModel(systemPrompt, userMessage, model)
+}
 
+// QuickModel returns the configured quick-thinking model (or empty).
+func (s *AIService) QuickModel() string {
+	if s.SettingRepo != nil {
+		if v, err := s.SettingRepo.Get("ai_quick_model"); err == nil && v != "" {
+			return v
+		}
+	}
+	return s.QuickThinkModel
+}
+
+// ChatWithModel calls the active provider with an explicit model override.
+func (s *AIService) ChatWithModel(systemPrompt, userMessage, model string) (string, error) {
+	return s.chatWithModel(systemPrompt, userMessage, model)
+}
+
+// effectiveTemperature returns the configured sampling temperature, preferring the
+// DB setting (ai_temperature) over the environment value.
+func (s *AIService) effectiveTemperature() float64 {
+	if s.SettingRepo != nil {
+		if v, err := s.SettingRepo.Get("ai_temperature"); err == nil && v != "" {
+			if f, err := strconv.ParseFloat(v, 64); err == nil {
+				return f
+			}
+		}
+	}
+	if s.Temperature != 0 {
+		return s.Temperature
+	}
+	return 0.7
+}
+
+// QuickChatModel uses the configured quick-thinking model (or default) for lightweight tasks.
+func (s *AIService) chatWithModel(systemPrompt, userMessage, model string) (string, error) {
+	if s.SettingRepo != nil {
+		result, err := s.tryBYOKProvidersWithModel(systemPrompt, userMessage, model)
+		if err == nil {
+			return result, nil
+		}
+	}
+	if s.IsConfigured() {
+		return s.chatWithConfiguredModel(systemPrompt, userMessage, model)
+	}
+	return "", fmt.Errorf("AI not configured")
+}
+
+func (s *AIService) chatWithConfiguredModel(systemPrompt, userMessage, model string) (string, error) {
+	client := &http.Client{Timeout: 120 * time.Second}
+	messages := []AIChatMessage{
+		{Role: "system", Content: systemPrompt},
+		{Role: "user", Content: userMessage},
+	}
+	reqBody := AIChatRequest{
+		Model:       model,
+		Messages:    messages,
+		Temperature: s.effectiveTemperature(),
+		MaxTokens:   2048,
+	}
+	bodyJSON, err := json.Marshal(reqBody)
+	if err != nil {
+		return "", fmt.Errorf("marshal request: %w", err)
+	}
+	endpoint := strings.TrimRight(s.BaseURL, "/") + "/chat/completions"
+	req, err := http.NewRequest("POST", endpoint, bytes.NewReader(bodyJSON))
+	if err != nil {
+		return "", fmt.Errorf("create request: %w", err)
+	}
+	req.Header.Set("Authorization", "Bearer "+s.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("api call failed: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("read response: %w", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("API error %d: %s", resp.StatusCode, string(body))
+	}
+	var result aiCompletionResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return "", fmt.Errorf("unmarshal response: %w", err)
+	}
+	if len(result.Choices) == 0 {
+		return "", fmt.Errorf("no response from AI")
+	}
+	return result.Choices[0].Message.Content, nil
+}
+
+// tryBYOKProvidersWithModel calls the active BYOK provider with an explicit model override.
+func (s *AIService) tryBYOKProvidersWithModel(systemPrompt, userMessage, model string) (string, error) {
 	activeFound := false
-	for _, p := range providers {
-		active, _ := s.SettingRepo.Get(p.keyPrefix + "_active")
+	for _, p := range providerRegistry {
+		active, _ := s.SettingRepo.Get(p.KeyPrefix + "_active")
 		if active != "1" {
 			continue
 		}
 		activeFound = true
-		apiKeyEnc, _ := s.SettingRepo.Get(p.keyPrefix + "_key")
-		model, _ := s.SettingRepo.Get(p.keyPrefix + "_model")
-		baseURL, _ := s.SettingRepo.Get(p.keyPrefix + "_base_url")
+		apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+		cfgModel, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+		baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
 
 		apiKey := s.decodeKey(apiKeyEnc)
 		if apiKey == "" {
 			continue
 		}
-		if model == "" {
-			model = p.defaultModel
+		if cfgModel == "" {
+			cfgModel = p.DefaultModel
 		}
 		if baseURL == "" {
-			baseURL = p.defaultURL
+			baseURL = p.DefaultURL
+		}
+		useModel := cfgModel
+		if model != "" {
+			useModel = model
 		}
 
-		result, err := s.callProvider(p.name, baseURL, apiKey, model, systemPrompt, userMessage)
+		result, err := s.callProvider(p.Name, baseURL, apiKey, useModel, systemPrompt, userMessage)
 		if err == nil {
 			return result, nil
 		}
 	}
 
 	if !activeFound {
-		for _, p := range providers {
-			apiKeyEnc, _ := s.SettingRepo.Get(p.keyPrefix + "_key")
-			model, _ := s.SettingRepo.Get(p.keyPrefix + "_model")
-			baseURL, _ := s.SettingRepo.Get(p.keyPrefix + "_base_url")
+		for _, p := range providerRegistry {
+			apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+			cfgModel, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+			baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
+
+			apiKey := s.decodeKey(apiKeyEnc)
+			if apiKey == "" {
+				continue
+			}
+			if cfgModel == "" {
+				cfgModel = p.DefaultModel
+			}
+			if baseURL == "" {
+				baseURL = p.DefaultURL
+			}
+			useModel := cfgModel
+			if model != "" {
+				useModel = model
+			}
+
+			result, err := s.callProvider(p.Name, baseURL, apiKey, useModel, systemPrompt, userMessage)
+			if err == nil {
+				return result, nil
+			}
+		}
+	}
+
+	return "", fmt.Errorf("no BYOK provider available or all failed")
+}
+
+func (s *AIService) tryBYOKProviders(systemPrompt, userMessage string) (string, error) {
+	activeFound := false
+	for _, p := range providerRegistry {
+		active, _ := s.SettingRepo.Get(p.KeyPrefix + "_active")
+		if active != "1" {
+			continue
+		}
+		activeFound = true
+		apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+		model, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+		baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
+
+		apiKey := s.decodeKey(apiKeyEnc)
+		if apiKey == "" {
+			continue
+		}
+		if model == "" {
+			model = p.DefaultModel
+		}
+		if baseURL == "" {
+			baseURL = p.DefaultURL
+		}
+
+		result, err := s.callProvider(p.Name, baseURL, apiKey, model, systemPrompt, userMessage)
+		if err == nil {
+			return result, nil
+		}
+	}
+
+	if !activeFound {
+		for _, p := range providerRegistry {
+			apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+			model, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+			baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
 
 			apiKey := s.decodeKey(apiKeyEnc)
 			if apiKey == "" {
 				continue
 			}
 			if model == "" {
-				model = p.defaultModel
+				model = p.DefaultModel
 			}
 			if baseURL == "" {
-				baseURL = p.defaultURL
+				baseURL = p.DefaultURL
 			}
 
-			result, err := s.callProvider(p.name, baseURL, apiKey, model, systemPrompt, userMessage)
+			result, err := s.callProvider(p.Name, baseURL, apiKey, model, systemPrompt, userMessage)
 			if err == nil {
 				return result, nil
 			}
@@ -569,12 +802,25 @@ func (s *AIService) tryBYOKProviders(systemPrompt, userMessage string) (string, 
 }
 
 func (s *AIService) callProvider(name, baseURL, apiKey, model, systemPrompt, userMessage string) (string, error) {
-	client := &http.Client{Timeout: 30 * time.Second}
+	client := &http.Client{Timeout: 60 * time.Second}
 
-	if name == "claude" {
-		return s.callClaude(client, baseURL, apiKey, model, systemPrompt, userMessage)
+	def := providerByName(name)
+	if def == nil {
+		// unknown provider name: default to OpenAI-compatible format
+		def = &providerDef{Format: formatOpenAICompatible}
 	}
 
+	switch def.Format {
+	case formatAnthropic:
+		return s.callClaude(client, baseURL, apiKey, model, systemPrompt, userMessage)
+	case formatGemini:
+		return s.callGemini(client, baseURL, apiKey, model, systemPrompt, userMessage)
+	default:
+		return s.callOpenAICompatible(client, baseURL, apiKey, model, systemPrompt, userMessage, s.effectiveTemperature())
+	}
+}
+
+func (s *AIService) callOpenAICompatible(client *http.Client, baseURL, apiKey, model, systemPrompt, userMessage string, temperature float64) (string, error) {
 	messages := []AIChatMessage{
 		{Role: "system", Content: systemPrompt},
 		{Role: "user", Content: userMessage},
@@ -583,7 +829,7 @@ func (s *AIService) callProvider(name, baseURL, apiKey, model, systemPrompt, use
 	reqBody := AIChatRequest{
 		Model:       model,
 		Messages:    messages,
-		Temperature: 0.7,
+		Temperature: temperature,
 		MaxTokens:   2048,
 	}
 
@@ -633,6 +879,84 @@ func (s *AIService) callProvider(name, baseURL, apiKey, model, systemPrompt, use
 	}
 
 	return result.Choices[0].Message.Content, nil
+}
+
+func (s *AIService) callGemini(client *http.Client, baseURL, apiKey, model, systemPrompt, userMessage string) (string, error) {
+	type geminiPart struct {
+		Text string `json:"text"`
+	}
+	type geminiContent struct {
+		Role  string       `json:"role"`
+		Parts []geminiPart `json:"parts"`
+	}
+	type geminiRequest struct {
+		Contents          []geminiContent `json:"contents"`
+		SystemInstruction *geminiContent  `json:"systemInstruction,omitempty"`
+	}
+
+	contents := []geminiContent{
+		{Role: "user", Parts: []geminiPart{{Text: userMessage}}},
+	}
+	reqBody := geminiRequest{Contents: contents}
+	if systemPrompt != "" {
+		reqBody.SystemInstruction = &geminiContent{Role: "system", Parts: []geminiPart{{Text: systemPrompt}}}
+	}
+
+	bodyJSON, err := json.Marshal(reqBody)
+	if err != nil {
+		return "", fmt.Errorf("marshal request: %w", err)
+	}
+
+	endpoint := strings.TrimRight(baseURL, "/") + "/models/" + model + ":generateContent"
+	req, err := http.NewRequest("POST", endpoint, bytes.NewReader(bodyJSON))
+	if err != nil {
+		return "", fmt.Errorf("create request: %w", err)
+	}
+
+	req.Header.Set("x-goog-api-key", apiKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("http request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("read response: %w", err)
+	}
+
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("Gemini API error (status %d): %s", resp.StatusCode, string(respBytes))
+	}
+
+	var result struct {
+		Candidates []struct {
+			Content struct {
+				Parts []struct {
+					Text string `json:"text"`
+				} `json:"parts"`
+			} `json:"content"`
+		} `json:"candidates"`
+	}
+
+	if err := json.Unmarshal(respBytes, &result); err != nil {
+		return "", fmt.Errorf("parse response: %w", err)
+	}
+
+	if len(result.Candidates) == 0 {
+		return "", fmt.Errorf("no candidates in response")
+	}
+
+	var content string
+	for _, p := range result.Candidates[0].Content.Parts {
+		content += p.Text
+	}
+	if content == "" {
+		return "", fmt.Errorf("no text content in Gemini response")
+	}
+	return content, nil
 }
 
 func (s *AIService) callClaude(client *http.Client, baseURL, apiKey, model, systemPrompt, userMessage string) (string, error) {
@@ -734,63 +1058,80 @@ func (s *AIService) GetMultiKey(provider string) []string {
 }
 
 func (s *AIService) LoadProviderConfigs() map[string]AIProvider {
-	providers := []struct {
-		name         string
-		keyPrefix    string
-		defaultURL   string
-		defaultModel string
-	}{
-		{"deepseek", "ai_provider_deepseek", "https://api.deepseek.com/v1", "deepseek-chat"},
-		{"openai", "ai_provider_openai", "https://api.openai.com/v1", "gpt-4o"},
-		{"claude", "ai_provider_claude", "https://api.anthropic.com/v1", "claude-3-5-sonnet-20241022"},
-		{"ollama", "ai_provider_ollama", "http://localhost:11434/v1", "llama3.2"},
-	}
-
 	configs := make(map[string]AIProvider)
-	for _, p := range providers {
-		apiKeyEnc, _ := s.SettingRepo.Get(p.keyPrefix + "_key")
-		model, _ := s.SettingRepo.Get(p.keyPrefix + "_model")
-		baseURL, _ := s.SettingRepo.Get(p.keyPrefix + "_base_url")
-		active, _ := s.SettingRepo.Get(p.keyPrefix + "_active")
+	for _, p := range providerRegistry {
+		apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+		model, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+		baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
+		active, _ := s.SettingRepo.Get(p.KeyPrefix + "_active")
 
 		if model == "" {
-			model = p.defaultModel
+			model = p.DefaultModel
 		}
 		if baseURL == "" {
-			baseURL = p.defaultURL
+			baseURL = p.DefaultURL
 		}
 
 		apiKey := s.decodeKey(apiKeyEnc)
 
-		configs[p.name] = AIProvider{
-			Name:     p.name,
-			BaseURL:  baseURL,
-			APIKey:   apiKey,
-			Model:    model,
-			IsActive: active == "1",
+		configs[p.Name] = AIProvider{
+			Name:        p.Name,
+			DisplayName: p.DisplayName,
+			Icon:        p.Icon,
+			Placeholder: p.Placeholder,
+			Format:      string(p.Format),
+			BaseURL:     baseURL,
+			APIKey:      apiKey,
+			Model:       model,
+			IsActive:    active == "1",
 		}
 	}
 
 	return configs
 }
 
+// ListProviders returns all registered providers as an ordered slice (with metadata).
+func (s *AIService) ListProviders() []AIProvider {
+	providers := make([]AIProvider, 0, len(providerRegistry))
+	for _, p := range providerRegistry {
+		apiKeyEnc, _ := s.SettingRepo.Get(p.KeyPrefix + "_key")
+		model, _ := s.SettingRepo.Get(p.KeyPrefix + "_model")
+		baseURL, _ := s.SettingRepo.Get(p.KeyPrefix + "_base_url")
+		active, _ := s.SettingRepo.Get(p.KeyPrefix + "_active")
+
+		if model == "" {
+			model = p.DefaultModel
+		}
+		if baseURL == "" {
+			baseURL = p.DefaultURL
+		}
+
+		providers = append(providers, AIProvider{
+			Name:        p.Name,
+			DisplayName: p.DisplayName,
+			Icon:        p.Icon,
+			Placeholder: p.Placeholder,
+			Format:      string(p.Format),
+			BaseURL:     baseURL,
+			HasKey:      s.decodeKey(apiKeyEnc) != "",
+			Model:       model,
+			IsActive:    active == "1",
+		})
+	}
+	return providers
+}
+
 func (s *AIService) SaveProviderConfig(providerName, apiKey, model, baseURL string, isActive bool) error {
-	var prefix string
-	switch providerName {
-	case "openai":
-		prefix = "ai_provider_openai"
-	case "deepseek":
-		prefix = "ai_provider_deepseek"
-	case "claude":
-		prefix = "ai_provider_claude"
-	case "ollama":
-		prefix = "ai_provider_ollama"
-	default:
+	def := providerByName(providerName)
+	if def == nil {
 		return fmt.Errorf("unknown provider: %s", providerName)
 	}
+	prefix := def.KeyPrefix
 
-	if err := s.SettingRepo.Set(prefix+"_key", s.encodeKey(apiKey)); err != nil {
-		return err
+	if apiKey != "" {
+		if err := s.SettingRepo.Set(prefix+"_key", s.encodeKey(apiKey)); err != nil {
+			return err
+		}
 	}
 	if err := s.SettingRepo.Set(prefix+"_model", model); err != nil {
 		return err
@@ -800,8 +1141,7 @@ func (s *AIService) SaveProviderConfig(providerName, apiKey, model, baseURL stri
 	}
 
 	if isActive {
-		allProviders := []string{"ai_provider_openai", "ai_provider_deepseek", "ai_provider_claude", "ai_provider_ollama"}
-		for _, otherPrefix := range allProviders {
+		for _, otherPrefix := range allProviderPrefixes() {
 			if otherPrefix == prefix {
 				s.SettingRepo.Set(otherPrefix+"_active", "1")
 			} else {

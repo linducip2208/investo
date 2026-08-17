@@ -58,13 +58,15 @@ func (s *ChartService) GetChartData(stockID int64, start, end time.Time) (ChartR
 		return ChartResponse{}, fmt.Errorf("ChartService.GetChartData: %w", err)
 	}
 
+	prices = filterValidPrices(prices)
+
 	if len(prices) == 0 {
 		latest, err := s.StockPriceRepo.FindLatest(stockID, 365)
 		if err != nil {
 			return ChartResponse{}, fmt.Errorf("ChartService.GetChartData fallback: %w", err)
 		}
 		ReversePrices(latest)
-		prices = latest
+		prices = filterValidPrices(latest)
 	}
 
 	return s.buildChartResponse(prices)
@@ -76,13 +78,15 @@ func (s *ChartService) GetStockChartData(stockID int64, start, end time.Time, in
 		return nil, fmt.Errorf("ChartService.GetStockChartData: %w", err)
 	}
 
+	prices = filterValidPrices(prices)
+
 	if len(prices) == 0 {
 		latest, err := s.StockPriceRepo.FindLatest(stockID, 365)
 		if err != nil {
 			return nil, fmt.Errorf("ChartService.GetStockChartData fallback: %w", err)
 		}
 		ReversePrices(latest)
-		prices = latest
+		prices = filterValidPrices(latest)
 	}
 
 	if len(prices) == 0 {
@@ -243,4 +247,21 @@ func ReversePrices(prices []model.StockPrice) {
 	for i, j := 0, len(prices)-1; i < j; i, j = i+1, j-1 {
 		prices[i], prices[j] = prices[j], prices[i]
 	}
+}
+
+// filterValidPrices removes zero/placeholder rows and future-dated rows so charts
+// and indicators are computed only on real, non-look-ahead data.
+func filterValidPrices(prices []model.StockPrice) []model.StockPrice {
+	now := time.Now()
+	out := make([]model.StockPrice, 0, len(prices))
+	for _, p := range prices {
+		if p.Close <= 0 {
+			continue
+		}
+		if p.Date.After(now) {
+			continue
+		}
+		out = append(out, p)
+	}
+	return out
 }

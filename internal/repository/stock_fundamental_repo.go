@@ -12,9 +12,9 @@ type StockFundamentalRepository struct {
 }
 
 func (r *StockFundamentalRepository) Create(f *model.StockFundamental) (int64, error) {
-	query := `INSERT INTO stock_fundamentals (stock_id, period, report_type, revenue, net_income, eps, bvps,
+	query := `INSERT INTO stock_fundamentals (stock_id, period, report_type, source, revenue, net_income, eps, bvps,
 		total_assets, total_liabilities, equity, roe, roa, per, pbv, der, net_profit_margin, dividend_yield)
-		VALUES (:stock_id, :period, :report_type, :revenue, :net_income, :eps, :bvps,
+		VALUES (:stock_id, :period, :report_type, :source, :revenue, :net_income, :eps, :bvps,
 		:total_assets, :total_liabilities, :equity, :roe, :roa, :per, :pbv, :der, :net_profit_margin, :dividend_yield)`
 	result, err := r.DB.NamedExec(query, f)
 	if err != nil {
@@ -28,11 +28,12 @@ func (r *StockFundamentalRepository) Create(f *model.StockFundamental) (int64, e
 }
 
 func (r *StockFundamentalRepository) Upsert(f *model.StockFundamental) error {
-	query := `INSERT INTO stock_fundamentals (stock_id, period, report_type, revenue, net_income, eps, bvps,
+	query := `INSERT INTO stock_fundamentals (stock_id, period, report_type, source, revenue, net_income, eps, bvps,
 		total_assets, total_liabilities, equity, roe, roa, per, pbv, der, net_profit_margin, dividend_yield)
-		VALUES (:stock_id, :period, :report_type, :revenue, :net_income, :eps, :bvps,
+		VALUES (:stock_id, :period, :report_type, :source, :revenue, :net_income, :eps, :bvps,
 		:total_assets, :total_liabilities, :equity, :roe, :roa, :per, :pbv, :der, :net_profit_margin, :dividend_yield)
 		ON DUPLICATE KEY UPDATE
+		source = VALUES(source),
 		revenue = VALUES(revenue), net_income = VALUES(net_income), eps = VALUES(eps), bvps = VALUES(bvps),
 		total_assets = VALUES(total_assets), total_liabilities = VALUES(total_liabilities), equity = VALUES(equity),
 		roe = VALUES(roe), roa = VALUES(roa), per = VALUES(per), pbv = VALUES(pbv), der = VALUES(der),

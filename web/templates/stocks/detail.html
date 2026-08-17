@@ -35,11 +35,22 @@
 <body class="h-full flex" x-data="stockDetail()" x-init="init()">
 
 <script>
+function defaultTimeframe(days) {
+    days = parseInt(days, 10);
+    if (!days || days <= 0) return 'MAX';
+    if (days <= 5) return '1D';
+    if (days <= 30) return '1M';
+    if (days <= 90) return '3M';
+    if (days <= 180) return '6M';
+    if (days <= 365) return '1Y';
+    if (days <= 1825) return '5Y';
+    return 'MAX';
+}
 function stockDetail() {
     return {
         sidebarOpen: false,
         activeTab: 'ringkasan',
-        timeframe: '6M',
+        timeframe: defaultTimeframe([[.HistoryDays]]),
         timeframes: [
             {l:'1D',v:'1D'},{l:'1M',v:'1M'},{l:'3M',v:'3M'},{l:'6M',v:'6M'},{l:'1Y',v:'1Y'},{l:'5Y',v:'5Y'},{l:'MAX',v:'MAX'}
         ],
@@ -123,7 +134,7 @@ function stockDetail() {
                     for (var i = 0; i < data.dates.length; i++) {
                         compareLine.push({time:data.dates[i],value:data.prices[i].close});
                     }
-                    this.compareSeries = this.chartInstance.addSeries(LightweightCharts.LineSeries, {
+                    this.compareSeries = this.chartInstance.addLineSeries({
                         color:'#f59e0b',lineWidth:2,priceLineVisible:false,lastValueVisible:true,
                     });
                     this.compareSeries.setData(compareLine);
@@ -184,7 +195,7 @@ function stockDetail() {
             var map = this.drawingSeriesMap;
 
             if (d.type==='horizontal_line' && range.from && range.to) {
-                var s = this.chartInstance.addSeries(LightweightCharts.LineSeries, {
+                var s = this.chartInstance.addLineSeries({
                     color:d.color||'#f59e0b',lineWidth:1.5,lineStyle:LightweightCharts.LineStyle.Dashed,
                     priceLineVisible:false,lastValueVisible:true,
                 });
@@ -194,7 +205,7 @@ function stockDetail() {
             }
 
             if (d.type==='trendline' && d.points && d.points.length>=2) {
-                var s = this.chartInstance.addSeries(LightweightCharts.LineSeries, {
+                var s = this.chartInstance.addLineSeries({
                     color:d.color||'#3b82f6',lineWidth:2,priceLineVisible:false,lastValueVisible:false,
                 });
                 s.setData(d.points.map(function(p){return {time:p.time,value:p.price}}));
@@ -213,7 +224,7 @@ function stockDetail() {
                 ];
                 if (!map[d.id]) map[d.id]=[];
                 lines.forEach(function(pts){
-                    var s = this.chartInstance.addSeries(LightweightCharts.LineSeries, {
+                    var s = this.chartInstance.addLineSeries({
                         color:bc,lineWidth:1,priceLineVisible:false,lastValueVisible:false,
                     });
                     s.setData(pts);
@@ -243,7 +254,7 @@ function stockDetail() {
             var range = this.getVisibleRange();
             if (!range.from||!range.to) return;
             this.alerts.forEach(function(a){
-                var s = this.chartInstance.addSeries(LightweightCharts.LineSeries, {
+                var s = this.chartInstance.addLineSeries({
                     color:a.condition==='gte'?'rgba(16,185,129,0.7)':'rgba(239,68,68,0.7)',
                     lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,
                     priceLineVisible:false,lastValueVisible:true,
@@ -312,30 +323,36 @@ function stockDetail() {
             this.chartLoading = true;
             this.chartError = false;
 
-            this.chartInstance = LightweightCharts.createChart(container, {
-                layout:{background:{color:'#1e293b'},textColor:'#94a3b8'},
-                grid:{vertLines:{color:'#334155'},horzLines:{color:'#334155'}},
-                crosshair:{mode:1},
-                rightPriceScale:{borderColor:'#475569'},
-                timeScale:{borderColor:'#475569',timeVisible:false},
-                width:container.clientWidth,
-                height:container.clientWidth<640?300:450,
-            });
+            try {
+                this.chartInstance = LightweightCharts.createChart(container, {
+                    layout:{background:{color:'#1e293b'},textColor:'#94a3b8'},
+                    grid:{vertLines:{color:'#334155'},horzLines:{color:'#334155'}},
+                    crosshair:{mode:1},
+                    rightPriceScale:{borderColor:'#475569'},
+                    timeScale:{borderColor:'#475569',timeVisible:false},
+                    width:container.clientWidth,
+                    height:container.clientWidth<640?300:450,
+                });
 
-            this.candleSeries = this.chartInstance.addSeries(LightweightCharts.CandlestickSeries, {
-                upColor:'#34d399',downColor:'#f87171',
-                borderUpColor:'#34d399',borderDownColor:'#f87171',
-                wickUpColor:'#34d399',wickDownColor:'#f87171',
-            });
+                this.candleSeries = this.chartInstance.addCandlestickSeries({
+                    upColor:'#34d399',downColor:'#f87171',
+                    borderUpColor:'#34d399',borderDownColor:'#f87171',
+                    wickUpColor:'#34d399',wickDownColor:'#f87171',
+                });
 
-            this.volumeSeries = this.chartInstance.addSeries(LightweightCharts.HistogramSeries, {
-                color:'#334155',priceFormat:{type:'volume'},priceScaleId:'volume',
-            });
-            this.chartInstance.priceScale('volume').applyOptions({
-                scaleMargins:{top:0.8,bottom:0},visible:false,
-            });
+                this.volumeSeries = this.chartInstance.addHistogramSeries({
+                    color:'#334155',priceFormat:{type:'volume'},priceScaleId:'volume',
+                });
+                this.chartInstance.priceScale('volume').applyOptions({
+                    scaleMargins:{top:0.8,bottom:0},visible:false,
+                });
 
-            this.chartInstance.subscribeClick(function(param){this.handleChartClick(param)}.bind(this));
+                this.chartInstance.subscribeClick(function(param){this.handleChartClick(param)}.bind(this));
+            } catch(e) {
+                this.chartError = true;
+                this.chartLoading = false;
+                return;
+            }
 
             var code = container.getAttribute('data-code');
             var days = this.getTimeframeDays(this.timeframe);
@@ -625,6 +642,12 @@ function stockDetail() {
 
             <!-- FUNDAMENTAL TAB -->
             <div x-show="activeTab==='fundamental'" class="p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Data Keuangan</span>
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full [[if eq .Fundamentals.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else]]bg-amber-900/40 text-amber-400[[end]]">
+                        [[if eq .Fundamentals.Source "yahoo"]]Data: Yahoo Finance[[else]]Data: Estimasi[[end]]
+                    </span>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>

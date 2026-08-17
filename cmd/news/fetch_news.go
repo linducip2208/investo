@@ -21,7 +21,7 @@ func main() {
 	}
 	defer db.Close()
 
-	database.RunMigrations(db, "internal/database/migrations")
+	database.RunMigrations(db)
 
 	newsScraper := &scraper.NewsScraper{}
 	newsRepo := &repository.NewsRepository{DB: db}

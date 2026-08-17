@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS custom_indices (
     user_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
     stocks_json LONGTEXT NOT NULL,
-    weights_json LONGTEXT NOT NULL DEFAULT '{}',
+    weights_json LONGTEXT NOT NULL,
     base_value DECIMAL(15,2) DEFAULT 100,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

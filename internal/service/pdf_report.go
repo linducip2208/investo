@@ -157,6 +157,18 @@ const stockReportHTML = `<!DOCTYPE html>
       <div class="value">Rp {{formatPrice .Valuation.DCFValue}}</div>
     </div>
     <div class="val-card">
+      <div class="label">DCF Range (Bear-Bull)</div>
+      <div class="value">Rp {{formatPrice .Valuation.DCFBear}} - {{formatPrice .Valuation.DCFBull}}</div>
+    </div>
+    <div class="val-card">
+      <div class="label">DDM Value</div>
+      <div class="value">Rp {{formatPrice .Valuation.DDMValue}}</div>
+    </div>
+    <div class="val-card">
+      <div class="label">Monte Carlo (Mean)</div>
+      <div class="value">Rp {{formatPrice .Valuation.MonteCarloValue}}</div>
+    </div>
+    <div class="val-card">
       <div class="label">Graham Value</div>
       <div class="value">Rp {{formatPrice .Valuation.GrahamValue}}</div>
     </div>

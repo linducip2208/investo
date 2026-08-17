@@ -40,6 +40,8 @@ type AIHandler struct {
 	MCPConnector      *service.MCPConnector
 	SettingRepo       *repository.SettingRepository
 	AIUsageSvc        *service.AIUsageService
+	SimExchange       *service.SimulatedExchangeService
+	MandateRepo       *repository.AgentMandateRepository
 }
 
 // ── AI Tools Pages ──
@@ -259,6 +261,188 @@ func (h *AIHandler) SaveAISettings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSONSimple(w, map[string]interface{}{"success": true, "message": "Pengaturan AI berhasil disimpan"})
+}
+
+func (h *AIHandler) AIProvidersJSON(w http.ResponseWriter, r *http.Request) {
+	providers := h.AIService.ListProviders()
+	advanced := map[string]string{}
+	if h.SettingRepo != nil {
+		for _, k := range []string{"temperature", "deep_model", "quick_model", "debate_rounds", "auto_execute"} {
+			if v, err := h.SettingRepo.Get("ai_" + k); err == nil {
+				advanced[k] = v
+			}
+		}
+	}
+	writeJSONSimple(w, map[string]interface{}{"providers": providers, "advanced": advanced})
+}
+
+func (h *AIHandler) SaveAdvancedSettings(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		Temperature  string `json:"temperature"`
+		DeepModel    string `json:"deep_model"`
+		QuickModel   string `json:"quick_model"`
+		DebateRounds string `json:"debate_rounds"`
+		AutoExecute  string `json:"auto_execute"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request body"})
+		return
+	}
+	if h.SettingRepo == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "settings repo not available"})
+		return
+	}
+
+	_ = h.SettingRepo.Set("ai_temperature", req.Temperature)
+	_ = h.SettingRepo.Set("ai_deep_model", req.DeepModel)
+	_ = h.SettingRepo.Set("ai_quick_model", req.QuickModel)
+	_ = h.SettingRepo.Set("ai_debate_rounds", req.DebateRounds)
+	_ = h.SettingRepo.Set("ai_auto_execute", req.AutoExecute)
+
+	writeJSONSimple(w, map[string]interface{}{"success": true, "message": "Pengaturan lanjutan AI berhasil disimpan"})
+}
+
+func (h *AIHandler) MandatesJSON(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	mandates, err := h.MandateRepo.FindByUserID(user.ID)
+	if err != nil {
+		mandates = []model.AgentMandate{}
+	}
+	writeJSONSimple(w, map[string]interface{}{"mandates": mandates})
+}
+
+func (h *AIHandler) SaveMandate(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		Name         string   `json:"name"`
+		PersonaStyle string   `json:"persona_style"`
+		DebateRounds int      `json:"debate_rounds"`
+		RiskProfile  string   `json:"risk_profile"`
+		MaxPosition  float64  `json:"max_position"`
+		Tickers      []string `json:"tickers"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request"})
+		return
+	}
+	if req.Name == "" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "name is required"})
+		return
+	}
+	if req.DebateRounds < 1 {
+		req.DebateRounds = 1
+	}
+	if req.DebateRounds > 3 {
+		req.DebateRounds = 3
+	}
+	if req.MaxPosition <= 0 {
+		req.MaxPosition = 15
+	}
+	if req.PersonaStyle == "" {
+		req.PersonaStyle = "balanced"
+	}
+	if req.RiskProfile == "" {
+		req.RiskProfile = "moderate"
+	}
+
+	tickersJSON, _ := json.Marshal(req.Tickers)
+	m := &model.AgentMandate{
+		UserID:       user.ID,
+		Name:         req.Name,
+		PersonaStyle: req.PersonaStyle,
+		DebateRounds: req.DebateRounds,
+		RiskProfile:  req.RiskProfile,
+		MaxPosition:  req.MaxPosition,
+		TickersJSON:  string(tickersJSON),
+	}
+	id, err := h.MandateRepo.Create(m)
+	if err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		return
+	}
+	writeJSONSimple(w, map[string]interface{}{"success": true, "id": id})
+}
+
+func (h *AIHandler) DeleteMandate(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	var req struct {
+		ID int64 `json:"id"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request"})
+		return
+	}
+	if err := h.MandateRepo.Delete(req.ID); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		return
+	}
+	writeJSONSimple(w, map[string]interface{}{"success": true})
+}
+
+func (h *AIHandler) RunMandate(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		ID int64 `json:"id"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request"})
+		return
+	}
+
+	mandate, err := h.MandateRepo.FindByID(req.ID)
+	if err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "mandate not found"})
+		return
+	}
+
+	var tickers []string
+	_ = json.Unmarshal([]byte(mandate.TickersJSON), &tickers)
+	if len(tickers) == 0 {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "mandate has no tickers"})
+		return
+	}
+
+	var decisions []*service.MultiAgentDecision
+	for _, code := range tickers {
+		code = strings.TrimSpace(strings.ToUpper(code))
+		if code == "" {
+			continue
+		}
+		d, err := h.MultiAgent.RunAnalysisWithPersona(code, mandate.PersonaStyle)
+		if err != nil {
+			continue
+		}
+		if h.SimExchange != nil {
+			_, _ = h.SimExchange.ExecuteDecision(d, user.ID)
+		}
+		decisions = append(decisions, d)
+	}
+
+	writeJSONSimple(w, map[string]interface{}{"success": true, "mandate": mandate.Name, "decisions": decisions})
 }
 
 func (h *AIHandler) TestAIProvider(w http.ResponseWriter, r *http.Request) {
@@ -756,6 +940,10 @@ func (h *AIHandler) RunAgentAnalysis(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
 		return
+	}
+
+	if h.SimExchange != nil {
+		_, _ = h.SimExchange.ExecuteDecision(decision, user.ID)
 	}
 
 	writeJSONSimple(w, map[string]interface{}{"success": true, "decision": decision})
