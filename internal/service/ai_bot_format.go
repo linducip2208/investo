@@ -21,6 +21,14 @@ type AIBotFormatService struct {
 	StockPriceRepo       *repository.StockPriceRepository
 	StockFundamentalRepo *repository.StockFundamentalRepository
 	PortfolioRepo        *repository.PortfolioRepository
+	AppURL               string
+}
+
+func (s *AIBotFormatService) baseURL() string {
+	if s.AppURL == "" {
+		return "https://investo.whitelabel.co.id"
+	}
+	return strings.TrimRight(s.AppURL, "/")
 }
 
 func (s *AIBotFormatService) FormatBotMessage(platform, command, code string) (*BotFormatResult, error) {
@@ -61,7 +69,7 @@ func (s *AIBotFormatService) formatAnalysis(code string, aiAvailable bool) strin
 		"> 🔍 Analisa teknikal: support/resistance, pola chart, indikator\n"+
 		"> 📈 Analisa fundamental: PER, PBV, ROE, dividend yield\n"+
 		"> 🤖 AI commentary: sinyal dan prediksi pergerakan\n\n"+
-		"Detail lengkap: http://localhost:8080/saham/%s", code, code)
+		"Detail lengkap: "+s.baseURL()+"/saham/%s", code, code)
 }
 
 func (s *AIBotFormatService) formatSignals(aiAvailable bool) string {
@@ -78,7 +86,7 @@ func (s *AIBotFormatService) formatPortfolioSummary(aiAvailable bool) string {
 		"> 📊 Return: +12.4% YTD\n" +
 		"> ⭐ Best: BBCA (+28%)\n" +
 		"> 📉 Worst: UNVR (-15%)\n\n" +
-		"Update real-time: http://localhost:8080/dashboard/portfolios"
+		"Update real-time: "+s.baseURL()+"/dashboard/portfolios"
 }
 
 func (s *AIBotFormatService) toSlackFormat(result *BotFormatResult) string {

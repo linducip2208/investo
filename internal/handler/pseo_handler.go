@@ -25,6 +25,13 @@ type PSEOHandler struct {
 	Templates    *template.Template
 }
 
+func (h *PSEOHandler) baseURL() string {
+	if h.PSEOService == nil || h.PSEOService.AppURL == "" {
+		return "https://investo.whitelabel.co.id"
+	}
+	return strings.TrimRight(h.PSEOService.AppURL, "/")
+}
+
 func (h *PSEOHandler) StockPage(w http.ResponseWriter, r *http.Request) {
 	code := chi.URLParam(r, "code")
 	stock, err := h.StockRepo.FindByCode(code)
@@ -348,7 +355,7 @@ func (h *PSEOHandler) GlossaryPage(w http.ResponseWriter, r *http.Request) {
 		"RelatedTerms":       related,
 		"UsageContext":       "menganalisis dan mengevaluasi saham di Bursa Efek Indonesia",
 		"MetaDescription":    fmt.Sprintf("Pengertian %s dalam investasi saham. Penjelasan lengkap, rumus, contoh penggunaan, dan tips untuk investor pemula Indonesia.", term.Term),
-		"CanonicalUrl":       fmt.Sprintf("https://investo.id/istilah/%s", slug),
+		"CanonicalUrl":       fmt.Sprintf("%s/istilah/%s", h.baseURL(), slug),
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	h.Templates.ExecuteTemplate(w, "pseo/glossary.html", data)
@@ -400,7 +407,7 @@ func (h *PSEOHandler) CityPage(w http.ResponseWriter, r *http.Request) {
 		"IsCommunity":       false,
 		"IsApp":             false,
 		"RecommendedStocks": recommended,
-		"CanonicalUrl":      fmt.Sprintf("https://investo.id/belajar-saham-%s", citySlug),
+		"CanonicalUrl":      fmt.Sprintf("%s/belajar-saham-%s", h.baseURL(), citySlug),
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	h.Templates.ExecuteTemplate(w, "pseo/city.html", data)
@@ -452,7 +459,7 @@ func (h *PSEOHandler) CityCommunityPage(w http.ResponseWriter, r *http.Request) 
 		"IsCommunity":       true,
 		"IsApp":             false,
 		"RecommendedStocks": recommended,
-		"CanonicalUrl":      fmt.Sprintf("https://investo.id/komunitas-saham-%s", citySlug),
+		"CanonicalUrl":      fmt.Sprintf("%s/komunitas-saham-%s", h.baseURL(), citySlug),
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	h.Templates.ExecuteTemplate(w, "pseo/city.html", data)
@@ -482,7 +489,7 @@ func (h *PSEOHandler) CityAppPage(w http.ResponseWriter, r *http.Request) {
 		"Province":        city.Province,
 		"IsCommunity":     false,
 		"IsApp":           true,
-		"CanonicalUrl":    fmt.Sprintf("https://investo.id/aplikasi-saham-%s", citySlug),
+		"CanonicalUrl":    fmt.Sprintf("%s/aplikasi-saham-%s", h.baseURL(), citySlug),
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	h.Templates.ExecuteTemplate(w, "pseo/city.html", data)
@@ -665,7 +672,7 @@ func (h *PSEOHandler) HowToPage(w http.ResponseWriter, r *http.Request) {
 		"Steps":           howTo.Steps,
 		"IsStockSpecific": howTo.IsStockSpecific,
 		"RelatedHowTo":    relatedHowTos,
-		"CanonicalUrl":    fmt.Sprintf("https://investo.id/cara/%s", slug),
+		"CanonicalUrl":    fmt.Sprintf("%s/cara/%s", h.baseURL(), slug),
 		"User":  safeUser(middleware.GetUser(r)),
 	}
 	h.Templates.ExecuteTemplate(w, "pseo/howto.html", data)

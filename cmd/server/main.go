@@ -199,7 +199,7 @@ func main() {
 		UserRepo:     userRepo,
 	}
 
-	tpl, err := parseTemplates()
+	tpl, err := parseTemplates(cfg.AppURL)
 	if err != nil {
 		log.Printf("Warning: template parsing failed: %v", err)
 		tpl = nil
@@ -803,6 +803,7 @@ func main() {
 		StockPriceRepo:       stockPriceRepo,
 		StockFundamentalRepo: stockFundamentalRepo,
 		PortfolioRepo:        portfolioRepo,
+		AppURL:               cfg.AppURL,
 	}
 
 	_ = voiceSvc
@@ -1607,7 +1608,7 @@ func toFloat(v interface{}) float64 {
 	return 0
 }
 
-func parseTemplates() (*template.Template, error) {
+func parseTemplates(appURL string) (*template.Template, error) {
 	funcMap := template.FuncMap{
 		"formatNumber": func(v interface{}) string {
 			switch val := v.(type) {
@@ -1685,6 +1686,7 @@ func parseTemplates() (*template.Template, error) {
 		},
 		"toUpper": strings.ToUpper,
 		"currentYear": func() int { return time.Now().Year() },
+		"appURL": func() string { return appURL },
 	}
 
 	tpl := template.New("").Delims("[[", "]]").Funcs(funcMap)
