@@ -1,0 +1,14 @@
+[Unit]
+Description=Investo — Stock & Forex Intelligence Platform
+After=network.target mysql.service redis.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/investo
+ExecStart=/opt/investo/investo-linux
+Restart=always
+RestartSec=3
+Environment=INVESTO_APP_ENV=production
+
+[Install]
+WantedBy=multi-user.target
