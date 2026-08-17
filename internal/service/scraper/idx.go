@@ -567,6 +567,14 @@ func (s *IDXScraper) FetchFundamentals(stockCode string) (*model.StockFundamenta
 		return fund, nil
 	}
 
+	// Fallback 2: Financial Modeling Prep (real ratios, if API key configured).
+	fmp := NewFMPScraper()
+	if fmp.IsConfigured() {
+		if fund, err := fmp.FetchFundamentalsFromFMP(code + ".JK"); err == nil && fund != nil {
+			return fund, nil
+		}
+	}
+
 	end := time.Now().In(jakartaLoc)
 	start := end.AddDate(-1, 0, 0)
 

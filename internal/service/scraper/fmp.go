@@ -132,3 +132,141 @@ func truncate(s string, n int) string {
 	}
 	return s[:n]
 }
+
+type fmpRatios struct {
+	Date                    string  `json:"date"`
+	NetProfitMargin         float64 `json:"netProfitMargin"`
+	ReturnOnAssets          float64 `json:"returnOnAssets"`
+	ReturnOnEquity          float64 `json:"returnOnEquity"`
+	DebtEquityRatio         float64 `json:"debtEquityRatio"`
+	PriceToBookRatio        float64 `json:"priceToBookRatio"`
+	PriceBookValueRatio     float64 `json:"priceBookValueRatio"`
+	PriceEarningsRatio      float64 `json:"priceEarningsRatio"`
+	DividendYield           float64 `json:"dividendYield"`
+	DividendYieldPercentage float64 `json:"dividendYieldPercentage"`
+	EPS                     float64 `json:"eps"`
+	BookValuePerShare       float64 `json:"bookValuePerShare"`
+}
+
+type fmpIncome struct {
+	Date      string  `json:"date"`
+	Revenue   float64 `json:"revenue"`
+	NetIncome float64 `json:"netIncome"`
+	EPS       float64 `json:"eps"`
+}
+
+// FetchFundamentalsFromFMP pulls real fundamental ratios + income statement from
+// Financial Modeling Prep, giving a deterministic alternative to Yahoo estimation.
+func (f *FMPScraper) FetchFundamentalsFromFMP(symbol string) (*model.StockFundamental, error) {
+	if !f.IsConfigured() {
+		return nil, fmt.Errorf("fmp scraper: not configured")
+	}
+	fmpSymbol := toFMPSymbol(symbol)
+
+	var ratios fmpRatios
+	var income fmpIncome
+
+	ratiosURL := fmt.Sprintf("https://financialmodelingprep.com/api/v3/ratios/%s?limit=1&apikey=%s", fmpSymbol, f.apiKey)
+	if err := f.getJSON(ratiosURL, &ratios); err != nil {
+		return nil, fmt.Errorf("fmp fundamental ratios: %w", err)
+	}
+
+	incomeURL := fmt.Sprintf("https://financialmodelingprep.com/api/v3/income-statement/%s?limit=1&apikey=%s", fmpSymbol, f.apiKey)
+	// Income statement is optional — derive from ratios if unavailable.
+	_ = f.getJSON(incomeURL, &income)
+
+	pbv := ratios.PriceToBookRatio
+	if pbv <= 0 {
+		pbv = ratios.PriceBookValueRatio
+	}
+
+	roe := ratios.ReturnOnEquity
+	roa := ratios.ReturnOnAssets
+	npm := ratios.NetProfitMargin
+	// FMP returns ROE/ROA/NPM as ratios (0.15 = 15%); convert to percent.
+	if roe > 0 && roe < 1 {
+		roe *= 100
+	}
+	if roa > 0 && roa < 1 {
+		roa *= 100
+	}
+	if npm > 0 && npm < 1 {
+		npm *= 100
+	}
+
+	divYield := ratios.DividendYieldPercentage
+	if divYield <= 0 {
+		divYield = ratios.DividendYield * 100
+	}
+
+	eps := ratios.EPS
+	if eps <= 0 {
+		eps = income.EPS
+	}
+	revenue := income.Revenue
+	netIncome := income.NetIncome
+	if netIncome <= 0 && eps > 0 && revenue > 0 {
+		netIncome = revenue * (npm / 100)
+	}
+
+	// Derive balance-sheet items from ratios (same approach as Yahoo path).
+	equity := 0.0
+	if roe > 0 && netIncome > 0 {
+		equity = netIncome / (roe / 100)
+	}
+	if equity <= 0 && ratios.BookValuePerShare > 0 && eps > 0 {
+		equity = ratios.BookValuePerShare * (netIncome / eps)
+	}
+	assets := equity * (1 + ratios.DebtEquityRatio)
+	liabilities := assets - equity
+
+	return &model.StockFundamental{
+		Period:           "FY",
+		ReportType:       "annual",
+		Source:           "fmp",
+		Revenue:          revenue,
+		NetIncome:        netIncome,
+		EPS:              eps,
+		BVPS:             ratios.BookValuePerShare,
+		TotalAssets:      assets,
+		TotalLiabilities: liabilities,
+		Equity:           equity,
+		ROE:              roe,
+		ROA:              roa,
+		PER:              ratios.PriceEarningsRatio,
+		PBV:              pbv,
+		DER:              ratios.DebtEquityRatio,
+		NetProfitMargin:  npm,
+		DividendYield:    divYield,
+	}, nil
+}
+
+func (f *FMPScraper) getJSON(url string, out interface{}) error {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := f.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("status %d", resp.StatusCode)
+	}
+
+	// FMP returns an array; decode into a slice then take first element.
+	var raw []json.RawMessage
+	if err := json.Unmarshal(body, &raw); err != nil {
+		return err
+	}
+	if len(raw) == 0 {
+		return fmt.Errorf("empty response")
+	}
+	return json.Unmarshal(raw[0], out)
+}

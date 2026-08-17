@@ -134,6 +134,16 @@ func main() {
 		StockRepo:      stockRepo,
 	}
 
+	alertChecker := &service.AlertChecker{
+		AlertRepo:         alertRepo,
+		StockPriceRepo:    stockPriceRepo,
+		StockRepo:         stockRepo,
+		WatchlistRepo:     watchlistRepo,
+		WatchlistItemRepo: watchlistItemRepo,
+		PatternService:    patternService,
+		AnomalyService:    anomalyService,
+	}
+
 	recapService := &service.RecapService{
 		StockRepo:        stockRepo,
 		StockPriceRepo:   stockPriceRepo,
@@ -1538,7 +1548,7 @@ func main() {
 	fmt.Printf("  ╚══════════════════════════════════════════════════════╝\n")
 	fmt.Println()
 
-	go startScheduler(db, stockPriceRepo, forexRepo, wsHub, indexNowSvc)
+	go startScheduler(db, stockPriceRepo, forexRepo, wsHub, indexNowSvc, alertChecker)
 
 	log.Printf("Starting HTTP server on %s", addr)
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -1774,7 +1784,7 @@ func autoSeed(db *sqlx.DB) {
 	log.Println("[AutoSeed] Complete")
 }
 
-func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub, indexNowSvc *seo.IndexNowService) {
+func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub, indexNowSvc *seo.IndexNowService, alertChecker *service.AlertChecker) {
 	jakarta, _ := time.LoadLocation("Asia/Jakarta")
 	if jakarta == nil {
 		jakarta = time.FixedZone("WIB", 7*3600)
@@ -1952,6 +1962,9 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 						}
 					}()
 					runFetch("5min-update")
+					if alertChecker != nil {
+						runAlertCheck(alertChecker)
+					}
 				}()
 			}
 		case <-newsTicker.C:
@@ -2016,6 +2029,30 @@ func runIndexNow(db *sqlx.DB, svc *seo.IndexNowService) {
 		return
 	}
 	log.Printf("[IndexNow] submitted %d URLs", submitted)
+}
+
+// runAlertCheck evaluates active price alerts and marks triggered ones.
+func runAlertCheck(checker *service.AlertChecker) {
+	hits, err := checker.CheckAlerts()
+	if err != nil {
+		log.Printf("[AlertChecker] check error: %v", err)
+		return
+	}
+	if len(hits) == 0 {
+		return
+	}
+
+	for _, h := range hits {
+		a := h.Alert
+		a.TriggerCount++
+		now := time.Now()
+		a.LastTriggeredAt = &now
+		if err := checker.AlertRepo.UpdateTrigger(&a); err != nil {
+			log.Printf("[AlertChecker] update trigger error: %v", err)
+			continue
+		}
+		log.Printf("[AlertChecker] ALERT triggered: %s %s @ %.2f (count=%d)", h.StockCode, a.Condition, h.CurrentPrice, a.TriggerCount)
+	}
 }
 
 func runBackup(db *sqlx.DB) {
