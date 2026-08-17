@@ -87,6 +87,13 @@
         <div class="flex items-center gap-3">
             <h1 class="text-2xl lg:text-3xl font-bold text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
             <span class="px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-lg text-xs font-semibold">[[.SectorName]]</span>
+            [[if .Fundamentals]]
+            [[range $i, $f := .Fundamentals]]
+            [[if eq $i 0]]
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold [[if eq $f.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else]]bg-amber-900/40 text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else]]Data: Estimasi[[end]]</span>
+            [[end]]
+            [[end]]
+            [[end]]
         </div>
         <p class="text-lg text-slate-400 -mt-3">[[.Stock.Name]]</p>
 
