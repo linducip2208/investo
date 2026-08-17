@@ -11,12 +11,26 @@ import (
 // SimulatedExchangeService auto-executes multi-agent decisions into a paper-trading
 // portfolio, mirroring TradingAgents' simulated-exchange execution loop.
 type SimulatedExchangeService struct {
-	PaperRepo   *repository.PaperTradingRepository
-	SettingRepo *repository.SettingRepository
+	PaperRepo    *repository.PaperTradingRepository
+	SettingRepo  *repository.SettingRepository
+	ApprovalRepo *repository.ApprovalRepository
 }
 
 func NewSimulatedExchangeService(paperRepo *repository.PaperTradingRepository, settingRepo *repository.SettingRepository) *SimulatedExchangeService {
 	return &SimulatedExchangeService{PaperRepo: paperRepo, SettingRepo: settingRepo}
+}
+
+// approvalThreshold returns the amount (IDR) above which a BUY requires approval.
+func (s *SimulatedExchangeService) approvalThreshold() float64 {
+	if s.SettingRepo != nil {
+		if v, err := s.SettingRepo.Get("approval_threshold"); err == nil && v != "" {
+			var t float64
+			if _, err := fmt.Sscanf(v, "%f", &t); err == nil && t > 0 {
+				return t
+			}
+		}
+	}
+	return 100_000_000
 }
 
 func (s *SimulatedExchangeService) IsEnabled() bool {
@@ -80,6 +94,21 @@ func (s *SimulatedExchangeService) executeBuy(portfolio *model.PaperPortfolio, d
 
 	allocated := portfolio.CashBalance * (d.PositionPct / 100.0)
 	if allocated <= 0 {
+		return nil, nil
+	}
+
+	// Approval workflow: large orders require manual approval.
+	if s.ApprovalRepo != nil && allocated > s.approvalThreshold() {
+		req := &model.ApprovalRequest{
+			UserID:      portfolio.UserID,
+			Type:        "paper_buy",
+			Amount:      allocated,
+			Description: fmt.Sprintf("Auto-BUY %s senilai Rp %.0f (entry Rp %.0f)", d.Ticker, allocated, price),
+			Status:      "pending",
+		}
+		if _, err := s.ApprovalRepo.Create(req); err != nil {
+			return nil, fmt.Errorf("SimulatedExchangeService: create approval: %w", err)
+		}
 		return nil, nil
 	}
 

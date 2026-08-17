@@ -42,6 +42,7 @@ type AIHandler struct {
 	AIUsageSvc        *service.AIUsageService
 	SimExchange       *service.SimulatedExchangeService
 	MandateRepo       *repository.AgentMandateRepository
+	ApprovalRepo      *repository.ApprovalRepository
 }
 
 // ── AI Tools Pages ──
@@ -443,6 +444,52 @@ func (h *AIHandler) RunMandate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSONSimple(w, map[string]interface{}{"success": true, "mandate": mandate.Name, "decisions": decisions})
+}
+
+func (h *AIHandler) ApprovalsJSON(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil || (user.Role != "admin" && user.Role != "manager") {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	reqs, err := h.ApprovalRepo.FindPending()
+	if err != nil {
+		reqs = []model.ApprovalRequest{}
+	}
+	writeJSONSimple(w, map[string]interface{}{"approvals": reqs})
+}
+
+func (h *AIHandler) ReviewApproval(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil || (user.Role != "admin" && user.Role != "manager") {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		ID     int64  `json:"id"`
+		Action string `json:"action"` // "approve" or "reject"
+		Reason string `json:"reason"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request"})
+		return
+	}
+
+	status := "approved"
+	if req.Action == "reject" {
+		status = "rejected"
+	} else if req.Action != "approve" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "action must be approve or reject"})
+		return
+	}
+
+	if err := h.ApprovalRepo.UpdateStatus(req.ID, status, user.ID, req.Reason); err != nil {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		return
+	}
+
+	writeJSONSimple(w, map[string]interface{}{"success": true, "status": status})
 }
 
 func (h *AIHandler) TestAIProvider(w http.ResponseWriter, r *http.Request) {

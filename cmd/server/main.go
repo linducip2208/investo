@@ -35,6 +35,7 @@ import (
 	"investo/internal/service"
 	"investo/internal/service/pattern"
 	"investo/internal/service/scraper"
+	"investo/internal/service/seo"
 	"investo/web"
 )
 
@@ -86,12 +87,14 @@ func main() {
 	blogRepo := &repository.BlogRepository{DB: db}
 	screenerRepo := &repository.ScreenerRepository{DB: db}
 	settingRepo := &repository.SettingRepository{DB: db}
+	indexNowSvc := seo.NewIndexNowService(settingRepo, cfg.AppURL)
 	communityRepo := &repository.CommunityRepository{DB: db}
 	stockActionRepo := &repository.StockActionRepository{DB: db}
 	tradeJournalRepo := &repository.TradeJournalRepository{DB: db}
 	agentDecisionRepo := &repository.AgentDecisionRepository{DB: db}
 	agentRunCheckpointRepo := &repository.AgentRunCheckpointRepository{DB: db}
 	agentMandateRepo := &repository.AgentMandateRepository{DB: db}
+	approvalRepo := &repository.ApprovalRepository{DB: db}
 	paperTradingRepo := &repository.PaperTradingRepository{DB: db}
 
 	authService := &service.AuthService{UserRepo: userRepo}
@@ -804,8 +807,9 @@ func main() {
 		Templates:     tpl,
 		SettingRepo:   settingRepo,
 		AIUsageSvc:    aiUsageSvc,
-		SimExchange:   service.NewSimulatedExchangeService(paperTradingRepo, settingRepo),
+		SimExchange:   newSimExchange(paperTradingRepo, settingRepo, approvalRepo),
 		MandateRepo:   agentMandateRepo,
+		ApprovalRepo:  approvalRepo,
 	}
 	aiHandler.SetStandupService(standupSvc)
 	aiHandler.SetTaxServiceVar(taxSvc)
@@ -1023,6 +1027,10 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "image/svg+xml")
 		w.Write(data)
+	})
+	r.Get("/indexnow-key.txt", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Write([]byte(indexNowSvc.Key()))
 	})
 	r.Get("/ws", func(w http.ResponseWriter, r *http.Request) { wsHub.HandleWS(w, r) })
 
@@ -1421,6 +1429,8 @@ func main() {
 		r.Post("/ai/mandates/save", aiHandler.SaveMandate)
 		r.Post("/ai/mandates/delete", aiHandler.DeleteMandate)
 		r.Post("/ai/mandates/run", aiHandler.RunMandate)
+		r.Get("/ai/approvals", aiHandler.ApprovalsJSON)
+		r.Post("/ai/approvals/review", aiHandler.ReviewApproval)
 
 		r.Post("/payment/create", paymentHandler.CreateTransaction)
 		r.Post("/payment/callback", paymentHandler.Callback)
@@ -1514,7 +1524,7 @@ func main() {
 	fmt.Printf("  ╚══════════════════════════════════════════════════════╝\n")
 	fmt.Println()
 
-	go startScheduler(db, stockPriceRepo, forexRepo, wsHub)
+	go startScheduler(db, stockPriceRepo, forexRepo, wsHub, indexNowSvc)
 
 	log.Printf("Starting HTTP server on %s", addr)
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -1750,7 +1760,7 @@ func autoSeed(db *sqlx.DB) {
 	log.Println("[AutoSeed] Complete")
 }
 
-func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub) {
+func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub, indexNowSvc *seo.IndexNowService) {
 	jakarta, _ := time.LoadLocation("Asia/Jakarta")
 	if jakarta == nil {
 		jakarta = time.FixedZone("WIB", 7*3600)
@@ -1912,6 +1922,9 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 	backupTicker := time.NewTicker(24 * time.Hour)
 	defer backupTicker.Stop()
 
+	indexNowTicker := time.NewTicker(24 * time.Hour)
+	defer indexNowTicker.Stop()
+
 	for {
 		select {
 		case <-priceTicker.C:
@@ -1945,8 +1958,50 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 				}()
 				runBackup(db)
 			}()
+		case <-indexNowTicker.C:
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						log.Printf("[Scheduler] PANIC in indexnow: %v", r)
+					}
+				}()
+				runIndexNow(db, indexNowSvc)
+			}()
 		}
 	}
+}
+
+// runIndexNow collects recent public URLs and submits them to IndexNow engines.
+func runIndexNow(db *sqlx.DB, svc *seo.IndexNowService) {
+	if svc == nil {
+		return
+	}
+
+	blogRepo := &repository.BlogRepository{DB: db}
+	stockRepo := &repository.StockRepository{DB: db}
+
+	var urls []string
+
+	posts, _, err := blogRepo.ListPublished(0, 100, 0)
+	if err == nil {
+		for _, p := range posts {
+			urls = append(urls, "/blog/"+p.Slug)
+		}
+	}
+
+	stocks, _, err := stockRepo.List(0, 200, "", 0)
+	if err == nil {
+		for _, s := range stocks {
+			urls = append(urls, "/saham/"+s.Code)
+		}
+	}
+
+	submitted, err := svc.Submit(urls)
+	if err != nil {
+		log.Printf("[IndexNow] submit error: %v", err)
+		return
+	}
+	log.Printf("[IndexNow] submitted %d URLs", submitted)
 }
 
 func runBackup(db *sqlx.DB) {
@@ -1993,6 +2048,12 @@ func runBackup(db *sqlx.DB) {
 	pruneOldBackups(backupDir, 14)
 
 	log.Printf("[Scheduler] Backup completed: %s", filename)
+}
+
+func newSimExchange(paperRepo *repository.PaperTradingRepository, settingRepo *repository.SettingRepository, approvalRepo *repository.ApprovalRepository) *service.SimulatedExchangeService {
+	s := service.NewSimulatedExchangeService(paperRepo, settingRepo)
+	s.ApprovalRepo = approvalRepo
+	return s
 }
 
 func pruneOldBackups(dir string, keep int) {
