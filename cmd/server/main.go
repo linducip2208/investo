@@ -514,6 +514,12 @@ func main() {
 
 	paymentSvc := service.NewPaymentService(paperTradingRepo, settingRepo, userRepo, stockRepo)
 
+	portalHandler := &handler.PortalHandler{
+		PaperSvc:   paperTradingSvc,
+		PaymentSvc: paymentSvc,
+		Templates:  tpl,
+	}
+
 	exportService := service.NewExportService()
 	pdfReportService := &service.PDFReportService{}
 	webhookService := service.NewWebhookService()
@@ -1145,6 +1151,10 @@ func main() {
 
 		r.Get("/achievements", engagementHandler.AchievementPage)
 		r.Get("/market/whatsapp-bot", engagementHandler.WhatsAppBotPage)
+
+		r.Get("/portal", portalHandler.Dashboard)
+		r.Get("/portal/portfolios", portalHandler.Portfolios)
+		r.Get("/portal/subscription", portalHandler.Subscription)
 
 		r.Get("/api/predictions", engagementHandler.PredictionsJSON)
 		r.Post("/api/predictions", engagementHandler.PredictionSubmit)
