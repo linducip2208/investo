@@ -644,8 +644,8 @@ function stockDetail() {
             <div x-show="activeTab==='fundamental'" class="p-6">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Data Keuangan</span>
-                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full [[if eq .Fundamentals.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else]]bg-amber-900/40 text-amber-400[[end]]">
-                        [[if eq .Fundamentals.Source "yahoo"]]Data: Yahoo Finance[[else]]Data: Estimasi[[end]]
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full [[if eq .Fundamentals.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else if eq .Fundamentals.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-amber-900/40 text-amber-400[[end]]">
+                        [[if eq .Fundamentals.Source "yahoo"]]Data: Yahoo Finance[[else if eq .Fundamentals.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]
                     </span>
                 </div>
                 <div class="overflow-x-auto">

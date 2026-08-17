@@ -90,7 +90,7 @@
             [[if .Fundamentals]]
             [[range $i, $f := .Fundamentals]]
             [[if eq $i 0]]
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold [[if eq $f.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else]]bg-amber-900/40 text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else]]Data: Estimasi[[end]]</span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold [[if eq $f.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else if eq $f.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-amber-900/40 text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else if eq $f.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]</span>
             [[end]]
             [[end]]
             [[end]]
