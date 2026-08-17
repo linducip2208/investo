@@ -91,6 +91,52 @@ func (h *PortfolioHandler) Create(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/dashboard/portfolios", http.StatusSeeOther)
 }
 
+// CreateJSON is the JSON API for creating a portfolio (used by frontend fetch).
+func (h *PortfolioHandler) CreateJSON(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		IsDefault   bool   `json:"is_default"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid request"})
+		return
+	}
+	if req.Name == "" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "name is required"})
+		return
+	}
+
+	p := &model.Portfolio{
+		UserID:      user.ID,
+		Name:        req.Name,
+		Description: req.Description,
+		IsDefault:   req.IsDefault,
+	}
+	id, err := h.PortfolioRepo.Create(p)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": "failed to create"})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "id": id})
+}
+
 func (h *PortfolioHandler) Detail(w http.ResponseWriter, r *http.Request) {
 	user := middleware.GetUser(r)
 	if user == nil {

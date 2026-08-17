@@ -2,10 +2,13 @@ package handler
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/go-chi/chi/v5"
 
 	"investo/internal/middleware"
 	"investo/internal/model"
@@ -243,4 +246,90 @@ func (h *WatchlistHandler) ImportCSV(w http.ResponseWriter, r *http.Request) {
 		"Message":    "Berhasil mengimpor " + strconv.Itoa(added) + " saham ke watchlist",
 	}
 	h.Templates.ExecuteTemplate(w, "watchlist/list.html", data)
+}
+
+// CreateJSON is the JSON API for creating a watchlist (used by frontend fetch).
+func (h *WatchlistHandler) CreateJSON(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
+		return
+	}
+
+	var req struct {
+		Name      string `json:"name"`
+		IsDefault bool   `json:"is_default"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid request"})
+		return
+	}
+	if req.Name == "" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "name is required"})
+		return
+	}
+
+	wl := &model.Watchlist{UserID: user.ID, Name: req.Name, IsDefault: req.IsDefault}
+	id, err := h.WatchlistRepo.Create(wl)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": "failed to create"})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "id": id})
+}
+
+// RemoveStockJSON is the JSON API for removing a stock (by code) from a watchlist.
+func (h *WatchlistHandler) RemoveStockJSON(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
+		return
+	}
+
+	watchlistID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid watchlist id"})
+		return
+	}
+	code := strings.ToUpper(strings.TrimSpace(chi.URLParam(r, "code")))
+
+	watchlist, err := h.WatchlistRepo.FindByID(watchlistID)
+	if err != nil || watchlist.UserID != user.ID {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(map[string]string{"error": "forbidden"})
+		return
+	}
+
+	stock, err := h.StockRepo.FindByCode(code)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "stock not found"})
+		return
+	}
+
+	if err := h.WatchlistItemRepo.Remove(watchlistID, stock.ID); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": "failed to remove"})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }

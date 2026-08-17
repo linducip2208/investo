@@ -1441,6 +1441,10 @@ func main() {
 		r.Post("/ai/mandates/run", aiHandler.RunMandate)
 		r.Get("/ai/approvals", aiHandler.ApprovalsJSON)
 		r.Post("/ai/approvals/review", aiHandler.ReviewApproval)
+		r.Post("/ai/risk-test", aiHandler.RiskTestJSON)
+		r.Post("/portfolios", portfolioHandler.CreateJSON)
+		r.Post("/watchlists", watchlistHandler.CreateJSON)
+		r.Delete("/watchlists/{id}/stocks/{code}", watchlistHandler.RemoveStockJSON)
 
 		r.Post("/payment/create", paymentHandler.CreateTransaction)
 		r.Post("/payment/callback", paymentHandler.Callback)
