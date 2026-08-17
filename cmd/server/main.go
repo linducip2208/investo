@@ -10,9 +10,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strings"
 	"sync"
 	"syscall"
@@ -1948,5 +1950,73 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 }
 
 func runBackup(db *sqlx.DB) {
-	log.Printf("[Scheduler] Daily backup placeholder — would run here")
+	cfg := config.Load()
+
+	backupDir := "data/backup"
+	if err := os.MkdirAll(backupDir, 0o755); err != nil {
+		log.Printf("[Scheduler] Backup: mkdir error: %v", err)
+		return
+	}
+
+	timestamp := time.Now().Format("20060102-150405")
+	filename := filepath.Join(backupDir, fmt.Sprintf("investo-%s.sql", timestamp))
+
+	args := []string{
+		"-h", cfg.DBHost,
+		"-P", cfg.DBPort,
+		"-u", cfg.DBUser,
+		"--single-transaction",
+		"--routines",
+		"--triggers",
+	}
+	if cfg.DBPass != "" {
+		args = append(args, "--password="+cfg.DBPass)
+	}
+	args = append(args, cfg.DBName)
+
+	cmd := exec.Command("mysqldump", args...)
+	outFile, err := os.Create(filename)
+	if err != nil {
+		log.Printf("[Scheduler] Backup: create file error: %v", err)
+		return
+	}
+	defer outFile.Close()
+
+	cmd.Stdout = outFile
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		log.Printf("[Scheduler] Backup: mysqldump error: %v", err)
+		return
+	}
+
+	pruneOldBackups(backupDir, 14)
+
+	log.Printf("[Scheduler] Backup completed: %s", filename)
+}
+
+func pruneOldBackups(dir string, keep int) {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return
+	}
+
+	var files []os.FileInfo
+	for _, e := range entries {
+		if e.IsDir() {
+			continue
+		}
+		info, err := e.Info()
+		if err == nil && strings.HasSuffix(info.Name(), ".sql") {
+			files = append(files, info)
+		}
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].ModTime().After(files[j].ModTime())
+	})
+
+	for i := keep; i < len(files); i++ {
+		_ = os.Remove(filepath.Join(dir, files[i].Name()))
+	}
 }

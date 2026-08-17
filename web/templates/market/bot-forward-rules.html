@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[.Title]]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
+        .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
+        .input-field{width:100%;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:10px;color:#e2e8f0;font-size:14px;outline:none}
+        .input-field:focus{border-color:#3b82f6}
+        .btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+    </style>
+</head>
+<body class="bg-[#0b1120] text-slate-200" x-data="forwardRules()">
+<div class="max-w-3xl mx-auto px-6 py-10">
+    <h1 class="text-2xl font-bold text-white mb-2">Auto-Forward Rules</h1>
+    <p class="text-sm text-slate-400 mb-6">Teruskan sinyal trading ke bot lain berdasarkan aturan tertentu.</p>
+
+    <div class="card p-6 space-y-5">
+        <div>
+            <label class="text-xs text-slate-400 block mb-1">Min Confidence (%)</label>
+            <input type="number" min="0" max="100" x-model.number="rules.confidence_min" class="input-field">
+        </div>
+        <div>
+            <label class="text-xs text-slate-400 block mb-1">Pattern Match (regex, opsional)</label>
+            <input type="text" x-model="rules.pattern_match" placeholder="cth: BBCA|BBRI" class="input-field">
+        </div>
+        <div>
+            <label class="text-xs text-slate-400 block mb-1">Signal Types</label>
+            <div class="flex gap-4">
+                <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" value="BUY" x-model="rules.signal_types" class="rounded"> BUY</label>
+                <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" value="SELL" x-model="rules.signal_types" class="rounded"> SELL</label>
+                <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" value="HOLD" x-model="rules.signal_types" class="rounded"> HOLD</label>
+            </div>
+        </div>
+        <div>
+            <label class="text-xs text-slate-400 block mb-1">Target Bot ID</label>
+            <input type="number" x-model.number="rules.target_bot_id" class="input-field">
+        </div>
+        <button @click="save()" class="btn btn-primary">Simpan Rules</button>
+    </div>
+
+    <div x-show="toast" x-text="toast" class="mt-4 text-sm" :class="ok ? 'text-emerald-400' : 'text-red-400'"></div>
+</div>
+
+<script>
+function forwardRules() {
+    return {
+        rules: { confidence_min: 70, pattern_match: '', signal_types: ['BUY','SELL'], target_bot_id: 0 },
+        toast: '', ok: true,
+
+        async init() {
+            try {
+                const r = await fetch('/api/bots/forward-rules');
+                const d = await r.json();
+                if (d && d.confidence_min !== undefined) this.rules = d;
+            } catch (e) {}
+        },
+
+        async save() {
+            try {
+                const r = await fetch('/api/bots/forward-rules', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(this.rules)
+                });
+                const d = await r.json();
+                this.ok = r.ok;
+                this.toast = this.ok ? 'Rules tersimpan ✓' : (d.error || 'Gagal menyimpan');
+            } catch (e) {
+                this.ok = false;
+                this.toast = e.message;
+            }
+        }
+    };
+}
+</script>
+</body>
+</html>
