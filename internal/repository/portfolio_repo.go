@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	"investo/internal/model"
 
@@ -150,6 +151,42 @@ func (r *PortfolioItemRepository) Delete(id int64) error {
 	_, err := r.DB.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("PortfolioItemRepository.Delete: %w", err)
+	}
+	return nil
+}
+
+// UpdateForPortfolio prevents an item ID from being moved out of, or updated
+// through, a portfolio the caller does not own. Immutable stock/type fields are
+// intentionally left untouched.
+func (r *PortfolioItemRepository) UpdateForPortfolio(item *model.PortfolioItem) error {
+	query := `UPDATE portfolio_items SET quantity = ?, avg_price = ?, notes = ? WHERE id = ? AND portfolio_id = ?`
+	result, err := r.DB.Exec(query, item.Quantity, item.AvgPrice, item.Notes, item.ID, item.PortfolioID)
+	if err != nil {
+		return fmt.Errorf("PortfolioItemRepository.UpdateForPortfolio: %w", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("PortfolioItemRepository.UpdateForPortfolio RowsAffected: %w", err)
+	}
+	if affected != 1 {
+		return sql.ErrNoRows
+	}
+	return nil
+}
+
+// DeleteForPortfolio binds the item ID to its parent portfolio in one atomic
+// statement, closing the cross-portfolio IDOR window.
+func (r *PortfolioItemRepository) DeleteForPortfolio(id, portfolioID int64) error {
+	result, err := r.DB.Exec(`DELETE FROM portfolio_items WHERE id = ? AND portfolio_id = ?`, id, portfolioID)
+	if err != nil {
+		return fmt.Errorf("PortfolioItemRepository.DeleteForPortfolio: %w", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("PortfolioItemRepository.DeleteForPortfolio RowsAffected: %w", err)
+	}
+	if affected != 1 {
+		return sql.ErrNoRows
 	}
 	return nil
 }

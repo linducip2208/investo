@@ -43,6 +43,9 @@ func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
 	cfg := config.Load()
+	if err := cfg.Validate(); err != nil {
+		log.Fatalf("Configuration error: %v", err)
+	}
 
 	db, err := connectDB(cfg)
 	if err != nil {
@@ -51,7 +54,7 @@ func main() {
 	defer db.Close()
 
 	if err := database.RunMigrations(db); err != nil {
-		log.Printf("Warning: migration error: %v", err)
+		log.Fatalf("Migration failed: %v", err)
 	} else {
 		log.Println("Migrations completed")
 	}
@@ -319,12 +322,12 @@ func main() {
 		Templates:            tpl,
 	}
 	portfolioAnalytics := &service.PortfolioAnalytics{
-		StockPriceRepo:        stockPriceRepo,
-		PortfolioItemRepo:     portfolioItemRepo,
-		PortfolioRepo:         portfolioRepo,
-		SectorRepo:            sectorRepo,
-		StockRepo:             stockRepo,
-		StockFundamentalRepo:  stockFundamentalRepo,
+		StockPriceRepo:       stockPriceRepo,
+		PortfolioItemRepo:    portfolioItemRepo,
+		PortfolioRepo:        portfolioRepo,
+		SectorRepo:           sectorRepo,
+		StockRepo:            stockRepo,
+		StockFundamentalRepo: stockFundamentalRepo,
 	}
 
 	riskAnalyzer := &service.RiskAnalyzer{
@@ -451,7 +454,7 @@ func main() {
 		SignalGenerator:      signalGenerator,
 		TrendScanner:         trendScanner,
 		EconCalendarService:  &service.EconomicCalendarService{},
-		Templates:             tpl,
+		Templates:            tpl,
 	}
 
 	strategyHandler := &handler.StrategyHandler{
@@ -554,19 +557,19 @@ func main() {
 	}
 
 	exportHandler := &handler.ExportHandler{
-		ExportService:      exportService,
-		PDFReportService:   pdfReportService,
-		PDFExportService:   pdfExportService,
-		WebhookService:     webhookService,
-		StockRepo:          stockRepo,
-		StockPriceRepo:     stockPriceRepo,
+		ExportService:        exportService,
+		PDFReportService:     pdfReportService,
+		PDFExportService:     pdfExportService,
+		WebhookService:       webhookService,
+		StockRepo:            stockRepo,
+		StockPriceRepo:       stockPriceRepo,
 		StockFundamentalRepo: stockFundamentalRepo,
-		SectorRepo:         sectorRepo,
-		PortfolioRepo:      portfolioRepo,
-		PortfolioItemRepo:  portfolioItemRepo,
-		PortfolioAnalytics: portfolioAnalytics,
-		ScreenerService:    screenerService,
-		ValuationService:   valuationService,
+		SectorRepo:           sectorRepo,
+		PortfolioRepo:        portfolioRepo,
+		PortfolioItemRepo:    portfolioItemRepo,
+		PortfolioAnalytics:   portfolioAnalytics,
+		ScreenerService:      screenerService,
+		ValuationService:     valuationService,
 	}
 
 	calculatorHandler := &handler.CalculatorHandler{Templates: tpl}
@@ -775,9 +778,9 @@ func main() {
 		StockRepo: stockRepo,
 	}
 	storySvc := &service.AIStoryService{
-		AI:              aiService,
-		StockRepo:       stockRepo,
-		StockPriceRepo:  stockPriceRepo,
+		AI:             aiService,
+		StockRepo:      stockRepo,
+		StockPriceRepo: stockPriceRepo,
 	}
 	complianceSvc := &service.AIComplianceService{
 		AI:                aiService,
@@ -903,6 +906,7 @@ func main() {
 	r.Use(mw.StackRecoverer)
 	r.Use(mw.Logger)
 	r.Use(mw.CORS)
+	r.Use(mw.CSRFOrigin)
 
 	r.Get("/", pageHandler.Home)
 	r.Get("/saham", stockHandler.List)
@@ -942,6 +946,7 @@ func main() {
 	r.Get("/reset-password", authHandler.ResetPasswordPage)
 	r.Post("/reset-password", authHandler.ResetPassword)
 	r.Get("/api/auth/google/callback", authHandler.GoogleOAuthCallback)
+	r.Get("/api/auth/google", authHandler.GoogleOAuthStart)
 
 	r.Get("/beli-aplikasi-saham", pseoHandler.SourceCodePage)
 	r.Get("/beli-aplikasi-forex", pseoHandler.SourceCodePage)
@@ -988,13 +993,13 @@ func main() {
 	r.Get("/market/industry-lifecycle", advancedHandler.IndustryLifecyclePage)
 	r.Get("/market/competitive", advancedHandler.CompetitivePage)
 	r.Get("/api/market/arbitrage", advancedHandler.ArbOpportunitiesJSON)
-		r.Get("/ai/compare", aiHandler.ComparePage)
-		r.Get("/ai/signal-center", aiHandler.SignalCenterPage)
-		r.Get("/ai/coach", aiHandler.CoachPage)
-		r.Get("/ai/risk-test", aiHandler.RiskTestPage)
-		r.Get("/ai/briefing", aiHandler.DailyBriefingPage)
-		r.Get("/ai/thesis", aiHandler.ThesisBuilderPage)
-		r.Get("/ai/agents", aiHandler.AgentAnalysisPage)
+	r.Get("/ai/compare", aiHandler.ComparePage)
+	r.Get("/ai/signal-center", aiHandler.SignalCenterPage)
+	r.Get("/ai/coach", aiHandler.CoachPage)
+	r.Get("/ai/risk-test", aiHandler.RiskTestPage)
+	r.Get("/ai/briefing", aiHandler.DailyBriefingPage)
+	r.Get("/ai/thesis", aiHandler.ThesisBuilderPage)
+	r.Get("/ai/agents", aiHandler.AgentAnalysisPage)
 	r.Get("/saham/{code}/liquidity", stockHandler.LiquidityPage)
 	r.Get("/saham/{code}/multi-tf", stockHandler.MultiTimeframePage)
 	r.Get("/saham/{code}/ml-predict", stockHandler.MLPredictPage)
@@ -1049,8 +1054,6 @@ func main() {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write([]byte(indexNowSvc.Key()))
 	})
-	r.Get("/ws", func(w http.ResponseWriter, r *http.Request) { wsHub.HandleWS(w, r) })
-
 	r.Group(func(r chi.Router) {
 		r.Use(authMiddleware.RequireGuest)
 
@@ -1064,6 +1067,7 @@ func main() {
 		r.Use(authMiddleware.RequireAuth)
 
 		r.Get("/dashboard", pageHandler.Dashboard)
+		r.Get("/ws", func(w http.ResponseWriter, r *http.Request) { wsHub.HandleWS(w, r) })
 		r.Post("/logout", authHandler.Logout)
 		r.Get("/profile", authHandler.ProfilePage)
 		r.Post("/profile", authHandler.ProfileUpdate)
@@ -1238,6 +1242,7 @@ func main() {
 
 	r.Route("/api", func(r chi.Router) {
 		r.Use(apiRateLimiter.Limit)
+		r.Use(authMiddleware.RequireAPIAccess)
 
 		r.Get("/ai/generate-report/{portfolioID}", aiHandler.GenerateReportJSON)
 		r.Post("/ai/alert-message", aiHandler.AlertMessageJSON)
@@ -1684,9 +1689,9 @@ func parseTemplates(appURL string) (*template.Template, error) {
 			b, _ := json.Marshal(v)
 			return string(b)
 		},
-		"toUpper": strings.ToUpper,
+		"toUpper":     strings.ToUpper,
 		"currentYear": func() int { return time.Now().Year() },
-		"appURL": func() string { return appURL },
+		"appURL":      func() string { return appURL },
 	}
 
 	tpl := template.New("").Delims("[[", "]]").Funcs(funcMap)

@@ -72,6 +72,13 @@ func (h *PaperTradingHandler) Trade(w http.ResponseWriter, r *http.Request) {
 		}
 		req.PortfolioID = p.ID
 	}
+	portfolio, err := h.Service.GetPortfolio(req.PortfolioID)
+	if err != nil || portfolio.UserID != user.ID {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "portfolio not found"})
+		return
+	}
 
 	if err := h.Service.ExecuteTrade(req.PortfolioID, req.StockCode, req.TradeType, req.Quantity); err != nil {
 		w.Header().Set("Content-Type", "application/json")
@@ -114,6 +121,13 @@ func (h *PaperTradingHandler) PortfolioJSON(w http.ResponseWriter, r *http.Reque
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"error": "invalid portfolio id"})
+		return
+	}
+	portfolio, err := h.Service.GetPortfolio(portfolioID)
+	if err != nil || portfolio.UserID != user.ID {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "portfolio not found"})
 		return
 	}
 

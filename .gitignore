@@ -9,6 +9,10 @@ npm-debug.log*
 data/backup/
 *.log
 
+# Local build caches / temp
+.tmp/
+build/
+
 # OS / editor
 .DS_Store
 Thumbs.db

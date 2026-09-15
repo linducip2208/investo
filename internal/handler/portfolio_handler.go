@@ -249,8 +249,8 @@ func (h *PortfolioHandler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.PortfolioItemRepo.Delete(itemID); err != nil {
-		http.Error(w, "Gagal menghapus item", http.StatusInternalServerError)
+	if err := h.PortfolioItemRepo.DeleteForPortfolio(itemID, portfolioID); err != nil {
+		http.Error(w, "Item tidak ditemukan", http.StatusNotFound)
 		return
 	}
 
@@ -289,8 +289,8 @@ func (h *PortfolioHandler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 		Notes:    notes,
 	}
 
-	if err := h.PortfolioItemRepo.Update(item); err != nil {
-		http.Error(w, "Gagal mengupdate item", http.StatusInternalServerError)
+	if err := h.PortfolioItemRepo.UpdateForPortfolio(item); err != nil {
+		http.Error(w, "Item tidak ditemukan", http.StatusNotFound)
 		return
 	}
 

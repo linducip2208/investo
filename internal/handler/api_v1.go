@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"crypto/subtle"
 	"encoding/json"
 	"math"
 	"net/http"
@@ -934,15 +935,18 @@ func (h *APIv1Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 func (h *APIv1Handler) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiKey := r.URL.Query().Get("api_key")
+		if r.URL.Query().Has("api_key") {
+			writeJSONError(w, http.StatusBadRequest, "api_key query parameter is not accepted")
+			return
+		}
+
+		apiKey := r.Header.Get("X-API-Key")
 		if apiKey != "" {
 			savedKey, err := h.SettingRepo.Get("api_key")
-			if err == nil && savedKey == apiKey {
-				next.ServeHTTP(w, r)
+			if err != nil || len(savedKey) != len(apiKey) || subtle.ConstantTimeCompare([]byte(savedKey), []byte(apiKey)) != 1 {
+				writeJSONError(w, http.StatusUnauthorized, "invalid api key")
 				return
 			}
-			writeJSONError(w, http.StatusUnauthorized, "invalid api_key")
-			return
 		}
 
 		next.ServeHTTP(w, r)

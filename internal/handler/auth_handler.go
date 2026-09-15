@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"crypto/rand"
+	"crypto/subtle"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -10,6 +13,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"investo/internal/middleware"
 	"investo/internal/repository"
@@ -68,11 +72,11 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, _ := h.SessionStore.Get(r, "investo-session")
-	session.Values["user_id"] = user.ID
-	returnTo, _ := session.Values["return_to"].(string)
-	delete(session.Values, "return_to")
-	session.Save(r, w)
+	returnTo, err := h.establishSession(w, r, user.ID)
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
 
 	if returnTo != "" && returnTo != "/login" && returnTo != "/register" {
 		http.Redirect(w, r, returnTo, http.StatusSeeOther)
@@ -133,9 +137,10 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, _ := h.SessionStore.Get(r, "investo-session")
-	session.Values["user_id"] = user.ID
-	session.Save(r, w)
+	if _, err := h.establishSession(w, r, user.ID); err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
 
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
@@ -329,6 +334,20 @@ func (h *AuthHandler) ResetPassword(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request) {
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_state", http.StatusSeeOther)
+		return
+	}
+	expectedState, _ := session.Values["oauth_google_state"].(string)
+	providedState := r.URL.Query().Get("state")
+	delete(session.Values, "oauth_google_state")
+	_ = session.Save(r, w)
+	if expectedState == "" || len(expectedState) != len(providedState) || subtle.ConstantTimeCompare([]byte(expectedState), []byte(providedState)) != 1 {
+		http.Redirect(w, r, "/login?error=google_state", http.StatusSeeOther)
+		return
+	}
+
 	code := r.URL.Query().Get("code")
 	if code == "" {
 		http.Redirect(w, r, "/login?error=google_auth_failed", http.StatusSeeOther)
@@ -352,7 +371,14 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 		"grant_type":    {"authorization_code"},
 	}
 
-	resp, err := http.PostForm(tokenURL, form)
+	client := &http.Client{Timeout: 10 * time.Second}
+	request, err := http.NewRequestWithContext(r.Context(), http.MethodPost, tokenURL, strings.NewReader(form.Encode()))
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := client.Do(request)
 	if err != nil {
 		log.Printf("[Google OAuth] token exchange error: %v", err)
 		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
@@ -364,8 +390,11 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 		AccessToken string `json:"access_token"`
 		Error       string `json:"error"`
 	}
-	body, _ := io.ReadAll(resp.Body)
-	json.Unmarshal(body, &tokenRes)
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil || resp.StatusCode < 200 || resp.StatusCode >= 300 || json.Unmarshal(body, &tokenRes) != nil {
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
 
 	if tokenRes.Error != "" {
 		log.Printf("[Google OAuth] token error: %s", tokenRes.Error)
@@ -373,9 +402,13 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	userReq, _ := http.NewRequest("GET", "https://www.googleapis.com/oauth2/v2/userinfo", nil)
+	userReq, err := http.NewRequestWithContext(r.Context(), http.MethodGet, "https://www.googleapis.com/oauth2/v2/userinfo", nil)
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
+		return
+	}
 	userReq.Header.Set("Authorization", "Bearer "+tokenRes.AccessToken)
-	userResp, err := http.DefaultClient.Do(userReq)
+	userResp, err := client.Do(userReq)
 	if err != nil {
 		log.Printf("[Google OAuth] userinfo error: %v", err)
 		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
@@ -388,8 +421,11 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 		Email string `json:"email"`
 		Name  string `json:"name"`
 	}
-	body, _ = io.ReadAll(userResp.Body)
-	json.Unmarshal(body, &googleUser)
+	body, err = io.ReadAll(io.LimitReader(userResp.Body, 1<<20))
+	if err != nil || userResp.StatusCode < 200 || userResp.StatusCode >= 300 || json.Unmarshal(body, &googleUser) != nil {
+		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
+		return
+	}
 
 	if googleUser.Email == "" {
 		http.Redirect(w, r, "/login?error=google_no_email", http.StatusSeeOther)
@@ -410,11 +446,81 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 		log.Printf("[Google OAuth] update google_id error: %v", err)
 	}
 
-	session, _ := h.SessionStore.Get(r, "investo-session")
-	session.Values["user_id"] = user.ID
-	session.Save(r, w)
+	if _, err := h.establishSession(w, r, user.ID); err != nil {
+		http.Redirect(w, r, "/login?error=session", http.StatusSeeOther)
+		return
+	}
 
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+// GoogleOAuthStart creates a one-time state value before leaving the site.
+func (h *AuthHandler) GoogleOAuthStart(w http.ResponseWriter, r *http.Request) {
+	clientID, _ := h.SettingRepo.Get("oauth_google_client_id")
+	if clientID == "" {
+		http.Redirect(w, r, "/login?error=google_not_configured", http.StatusSeeOther)
+		return
+	}
+	state, err := randomToken(32)
+	if err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	session.Values["oauth_google_state"] = state
+	if err := session.Save(r, w); err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	params := url.Values{
+		"client_id":     {clientID},
+		"redirect_uri":  {fmt.Sprintf("%s/api/auth/google/callback", h.getAppURL(r))},
+		"response_type": {"code"},
+		"scope":         {"openid email profile"},
+		"state":         {state},
+	}
+	http.Redirect(w, r, "https://accounts.google.com/o/oauth2/v2/auth?"+params.Encode(), http.StatusSeeOther)
+}
+
+func (h *AuthHandler) establishSession(w http.ResponseWriter, r *http.Request, userID int64) (string, error) {
+	previous, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		return "", err
+	}
+	returnTo, _ := previous.Values["return_to"].(string)
+	if !safeReturnTo(returnTo) {
+		returnTo = ""
+	}
+	nonce, err := randomToken(32)
+	if err != nil {
+		return "", err
+	}
+	// Replace all pre-auth values. Cookie-backed sessions have no server-side ID;
+	// a fresh nonce guarantees the authenticated cookie is newly encoded.
+	previous.Values = map[interface{}]interface{}{
+		"user_id":       userID,
+		"session_nonce": nonce,
+	}
+	if err := previous.Save(r, w); err != nil {
+		return "", err
+	}
+	return returnTo, nil
+}
+
+func randomToken(size int) (string, error) {
+	value := make([]byte, size)
+	if _, err := rand.Read(value); err != nil {
+		return "", err
+	}
+	return base64.RawURLEncoding.EncodeToString(value), nil
+}
+
+func safeReturnTo(value string) bool {
+	return strings.HasPrefix(value, "/") && !strings.HasPrefix(value, "//") && value != "/login" && value != "/register"
 }
 
 func (h *AuthHandler) Enable2FA(w http.ResponseWriter, r *http.Request) {

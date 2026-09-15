@@ -1,14 +1,29 @@
 [Unit]
 Description=Investo — Stock & Forex Intelligence Platform
-After=network.target mysql.service redis.service
+Wants=network-online.target
+After=network-online.target mysql.service redis.service
 
 [Service]
 Type=simple
+User=investo
+Group=investo
 WorkingDirectory=/opt/investo
+EnvironmentFile=/opt/investo/.env
 ExecStart=/opt/investo/investo-linux
-Restart=always
+Restart=on-failure
 RestartSec=3
-Environment=INVESTO_APP_ENV=production
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/investo/data
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+RestrictSUIDSGID=true
+LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target

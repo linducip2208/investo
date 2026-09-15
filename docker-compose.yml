@@ -1,30 +1,82 @@
-version: '3.8'
 services:
   app:
     build: .
+    init: true
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - "8000:8080"
+      - "${INVESTO_BIND_ADDRESS:-127.0.0.1}:${INVESTO_HOST_PORT:-8000}:8080"
     environment:
-      - INVESTO_PORT=8080
-      - INVESTO_DB_HOST=db
-      - INVESTO_DB_PORT=3306
-      - INVESTO_DB_USER=investo
-      - INVESTO_DB_PASS=investo123
-      - INVESTO_DB_NAME=investo
-      - INVESTO_SESSION_SECRET=change-me-docker
-      - INVESTO_APP_ENV=production
+      INVESTO_PORT: "8080"
+      INVESTO_DB_HOST: db
+      INVESTO_DB_PORT: "3306"
+      INVESTO_DB_USER: "${INVESTO_DB_USER:?Set INVESTO_DB_USER}"
+      INVESTO_DB_PASS: "${INVESTO_DB_PASS:?Set INVESTO_DB_PASS}"
+      INVESTO_DB_NAME: "${INVESTO_DB_NAME:-investo}"
+      INVESTO_REDIS_ADDR: redis:6379
+      INVESTO_APP_URL: "${INVESTO_APP_URL:?Set INVESTO_APP_URL to an HTTPS URL}"
+      INVESTO_APP_ENV: production
+      INVESTO_JWT_SECRET: "${INVESTO_JWT_SECRET:?Set a strong INVESTO_JWT_SECRET}"
+      INVESTO_SESSION_SECRET: "${INVESTO_SESSION_SECRET:?Set a strong INVESTO_SESSION_SECRET}"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backup_data:/app/data/backup
+    tmpfs:
+      - /tmp
+    networks:
+      - default
+      - backend
   db:
     image: mysql:8.4
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
-      - MYSQL_ROOT_PASSWORD=root123
-      - MYSQL_DATABASE=investo
-      - MYSQL_USER=investo
-      - MYSQL_PASSWORD=investo123
-    ports:
-      - "3307:3306"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${INVESTO_DB_NAME:-investo}"
+      MYSQL_USER: "${INVESTO_DB_USER:?Set INVESTO_DB_USER}"
+      MYSQL_PASSWORD: "${INVESTO_DB_PASS:?Set INVESTO_DB_PASS}"
+    expose:
+      - "3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - backend
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "6379"
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
 volumes:
   mysql_data:
+  redis_data:
+  backup_data:
+networks:
+  backend:
+    internal: true

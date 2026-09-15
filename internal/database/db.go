@@ -1,10 +1,12 @@
 package database
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"sort"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -32,7 +34,31 @@ func Connect(cfg *config.Config) (*sqlx.DB, error) {
 }
 
 func RunMigrations(db *sqlx.DB) error {
-	if _, err := db.Exec(`CREATE TABLE IF NOT EXISTS migrations (
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	// MySQL advisory locks are connection-scoped, so keep all migration work on
+	// one dedicated connection until RELEASE_LOCK runs.
+	conn, err := db.Connx(ctx)
+	if err != nil {
+		return fmt.Errorf("reserve migration connection: %w", err)
+	}
+	defer conn.Close()
+
+	var acquired int
+	if err := conn.GetContext(ctx, &acquired, "SELECT GET_LOCK(?, ?)", "investo_schema_migrations", 30); err != nil {
+		return fmt.Errorf("acquire migration lock: %w", err)
+	}
+	if acquired != 1 {
+		return fmt.Errorf("acquire migration lock: timed out")
+	}
+	defer func() {
+		releaseCtx, releaseCancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer releaseCancel()
+		_, _ = conn.ExecContext(releaseCtx, "SELECT RELEASE_LOCK(?)", "investo_schema_migrations")
+	}()
+
+	if _, err := conn.ExecContext(ctx, `CREATE TABLE IF NOT EXISTS migrations (
 		filename VARCHAR(255) PRIMARY KEY,
 		applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	)`); err != nil {
@@ -54,7 +80,7 @@ func RunMigrations(db *sqlx.DB) error {
 
 	for _, f := range files {
 		var applied bool
-		if err := db.Get(&applied, "SELECT COUNT(*) > 0 FROM migrations WHERE filename = ?", f); err != nil {
+		if err := conn.GetContext(ctx, &applied, "SELECT COUNT(*) > 0 FROM migrations WHERE filename = ?", f); err != nil {
 			return fmt.Errorf("check migration %s: %w", f, err)
 		}
 		if applied {
@@ -73,12 +99,12 @@ func RunMigrations(db *sqlx.DB) error {
 			if stmt == "" {
 				continue
 			}
-			if _, err := db.Exec(stmt); err != nil {
+			if _, err := conn.ExecContext(ctx, stmt); err != nil {
 				return fmt.Errorf("migration %s: %w", f, err)
 			}
 		}
 
-		if _, err := db.Exec("INSERT INTO migrations (filename) VALUES (?)", f); err != nil {
+		if _, err := conn.ExecContext(ctx, "INSERT INTO migrations (filename) VALUES (?)", f); err != nil {
 			return fmt.Errorf("record migration %s: %w", f, err)
 		}
 	}

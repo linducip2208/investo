@@ -30,6 +30,15 @@ func (r *PaperTradingRepository) FindPortfolioByID(id int64) (*model.PaperPortfo
 	return &p, nil
 }
 
+func (r *PaperTradingRepository) FindPortfolioByIDAndUserID(id, userID int64) (*model.PaperPortfolio, error) {
+	var p model.PaperPortfolio
+	query := `SELECT id, user_id, name, initial_balance, cash_balance, created_at FROM paper_portfolios WHERE id = ? AND user_id = ?`
+	if err := r.DB.Get(&p, query, id, userID); err != nil {
+		return nil, fmt.Errorf("FindPortfolioByIDAndUserID: %w", err)
+	}
+	return &p, nil
+}
+
 func (r *PaperTradingRepository) FindPortfoliosByUserID(userID int64) ([]model.PaperPortfolio, error) {
 	var portfolios []model.PaperPortfolio
 	query := `SELECT id, user_id, name, initial_balance, cash_balance, created_at FROM paper_portfolios WHERE user_id = ? ORDER BY created_at DESC`
