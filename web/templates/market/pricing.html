@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="pricing()">
+<body class="h-100 d-flex" x-data="pricing()">
     <script>
         function pricing() {
             return {
@@ -58,12 +58,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -88,8 +88,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -110,8 +110,8 @@
   <path d="M3 7l6 6l4 -4l8 8" />
   <path d="M21 10l0 7l-7 0" />
 </svg></span> Pattern Scan</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Otomasi</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Otomasi</p>
             <a href="/bots" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4" />
@@ -142,8 +142,8 @@
   <path d="M7 15l.01 0" />
   <path d="M11 15l2 0" />
 </svg></span> Paket</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -171,8 +171,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -194,14 +194,14 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
   <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
 </svg></span> Pengaturan</a>
             <form method="POST" action="/logout" style="margin:0">
-                <button type="submit" class="sidebar-link text-danger w-full text-left"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <button type="submit" class="sidebar-link text-danger w-100 text-start"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
   <path d="M9 12h12l-3 -3" />
@@ -211,178 +211,178 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             [[if .User]]
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
             [[end]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-8 overflow-y-auto">
-            <div class="text-center max-w-2xl mx-auto mb-4">
-                <h1 class="text-2xl lg:text-3xl font-bold text-white mb-2">Pilih Paket Investo</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Mulai gratis, upgrade seiring kebutuhan analisa Anda bertumbuh.</p>
+        <main class="flex-fill p-2 p-lg-4 vstack gap-5 overflow-y-auto">
+            <div class="text-center max-w-2xl mx-auto mb-2">
+                <h1 class="fs-1 fs-1 fw-bold text-white mb-2">Pilih Paket Investo</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm">Mulai gratis, upgrade seiring kebutuhan analisa Anda bertumbuh.</p>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="row row-cols-lg-3 gap-6 max-w-5xl mx-auto">
                 <!-- Free -->
                 <div class="pricing-card" :class="{'current':currentPlan==='free'}" :style="currentPlan==='free'?'border-color:#10b981':''">
-                    <div class="text-center mb-6">
-                        <h3 class="text-lg font-bold text-white mb-1">Free</h3>
-                        <div class="text-3xl font-extrabold text-white mb-1">Rp 0</div>
-                        <p class="text-xs text-slate-500">Selamanya gratis</p>
+                    <div class="text-center mb-2">
+                        <h3 class="fs-3 fw-bold text-white mb-1">Free</h3>
+                        <div class="fs-1 fw-bolder text-white mb-1">Rp 0</div>
+                        <p class="fs-xs text-muted">Selamanya gratis</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <ul class="vstack gap-2 mb-2 fs-sm">
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Basic chart (candlestick, line)
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             5 price alerts
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             1 portfolio
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             1 watchlist
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Delayed data (15 menit)
                         </li>
-                        <li class="flex items-start gap-2 text-slate-500">
-                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            <span class="text-slate-500">AI signals</span>
+                        <li class="d-flex align-items-start gap-2 text-muted">
+                            <svg class="w-4 h-4 text-muted flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-muted">AI signals</span>
                         </li>
-                        <li class="flex items-start gap-2 text-slate-500">
-                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            <span class="text-slate-500">Backtesting</span>
+                        <li class="d-flex align-items-start gap-2 text-muted">
+                            <svg class="w-4 h-4 text-muted flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-muted">Backtesting</span>
                         </li>
-                        <li class="flex items-start gap-2 text-slate-500">
-                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            <span class="text-slate-500">All indicators</span>
+                        <li class="d-flex align-items-start gap-2 text-muted">
+                            <svg class="w-4 h-4 text-muted flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-muted">All indicators</span>
                         </li>
-                        <li class="flex items-start gap-2 text-slate-500">
-                            <svg class="w-4 h-4 text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            <span class="text-slate-500">Telegram alerts</span>
+                        <li class="d-flex align-items-start gap-2 text-muted">
+                            <svg class="w-4 h-4 text-muted flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-muted">Telegram alerts</span>
                         </li>
                     </ul>
-                    <button class="btn-pricing w-full" :class="currentPlan==='free'?'btn-current':'btn-outline'" @click="subscribe('free')">
+                    <button class="btn-pricing w-100" :class="currentPlan==='free'?'btn-current':'btn-outline'" @click="subscribe('free')">
                         <span x-text="currentPlan==='free'?'Paket Saat Ini':'Downgrade ke Free'"></span>
                     </button>
                 </div>
 
                 <!-- Pro -->
                 <div class="pricing-card featured" :class="{'current':currentPlan==='pro'}">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">POPULER</div>
-                    <div class="text-center mb-6">
-                        <h3 class="text-lg font-bold text-white mb-1">Pro</h3>
-                        <div class="text-3xl font-extrabold text-white mb-1">Rp 99K</div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">per bulan</p>
+                    <div class="position-absolute -top-3 left-1/2  -translate-x-1/2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-xs fw-bold px-2 py-1 rounded-pill">POPULER</div>
+                    <div class="text-center mb-2">
+                        <h3 class="fs-3 fw-bold text-white mb-1">Pro</h3>
+                        <div class="fs-1 fw-bolder text-white mb-1">Rp 99K</div>
+                        <p class="fs-xs text-muted dark:text-slate-400">per bulan</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <ul class="vstack gap-2 mb-2 fs-sm">
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <strong class="text-white">Semua fitur Free</strong>
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Unlimited portfolios
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Unlimited alerts & watchlists
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             AI trading signals
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Backtesting engine
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Advanced stock screener
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             REST API access
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Telegram alerts + bot forwarder
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             All technical indicators
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Real-time data (delay &lt; 1m)
                         </li>
                     </ul>
-                    <button class="btn-pricing w-full" :class="currentPlan==='pro'?'btn-current':'btn-primary'" @click="subscribe('pro')">
+                    <button class="btn-pricing w-100" :class="currentPlan==='pro'?'btn-current':'btn-primary'" @click="subscribe('pro')">
                         <span x-text="currentPlan==='pro'?'Paket Saat Ini':'Upgrade ke Pro'"></span>
                     </button>
                 </div>
 
                 <!-- Whitelabel -->
                 <div class="pricing-card" :class="{'current':currentPlan==='whitelabel'}">
-                    <div class="text-center mb-6">
-                        <h3 class="text-lg font-bold text-white mb-1">Whitelabel</h3>
-                        <div class="text-3xl font-extrabold text-white mb-1">Custom</div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Harga satu kali</p>
+                    <div class="text-center mb-2">
+                        <h3 class="fs-3 fw-bold text-white mb-1">Whitelabel</h3>
+                        <div class="fs-1 fw-bolder text-white mb-1">Custom</div>
+                        <p class="fs-xs text-muted dark:text-slate-400">Harga satu kali</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <ul class="vstack gap-2 mb-2 fs-sm">
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <strong class="text-white">Semua fitur Pro</strong>
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Full source code
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             White label branding
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Custom domain
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Priority support
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Dedicated API key
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Self-hosted deployment
                         </li>
-                        <li class="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                            <svg class="w-4 h-4 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <li class="d-flex align-items-start gap-2 text-body dark:text-body">
+                            <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Unlimited users
                         </li>
                     </ul>
-                    <a href="/beli-aplikasi-saham" class="btn-pricing w-full" :class="currentPlan==='whitelabel'?'btn-current':'btn-primary'" @click.prevent="currentPlan!=='whitelabel'&&subscribe('whitelabel')">
+                    <a href="/beli-aplikasi-saham" class="btn-pricing w-100" :class="currentPlan==='whitelabel'?'btn-current':'btn-primary'" @click.prevent="currentPlan!=='whitelabel'&&subscribe('whitelabel')">
                         <span x-text="currentPlan==='whitelabel'?'Paket Saat Ini':'Hubungi Kami'"></span>
                     </a>
                 </div>
@@ -390,110 +390,110 @@
 
             <div class="card max-w-5xl mx-auto overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200 dark:border-slate-700">
-                                <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800">Fitur</th>
-                                <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 text-center">Free</th>
-                                <th class="px-6 py-4 font-semibold text-blue-300 bg-blue-900/20 text-center">Pro</th>
-                                <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 text-center">Whitelabel</th>
+                            <tr class="border-bottom border dark:border">
+                                <th class="px-2 py-2 fw-semibold text-body dark:text-body bg-white dark:bg-white">Fitur</th>
+                                <th class="px-2 py-2 fw-semibold text-body dark:text-body bg-white dark:bg-white text-center">Free</th>
+                                <th class="px-2 py-2 fw-semibold text-primary bg-primary bg-opacity-25 text-center">Pro</th>
+                                <th class="px-2 py-2 fw-semibold text-body dark:text-body bg-white dark:bg-white text-center">Whitelabel</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                        <tbody class="divide-y border dark:divide-slate-700">
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Chart interaktif</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Basic</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Full</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Full</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Chart interaktif</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Basic</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">Full</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Full</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Indikator teknikal</td>
-                                <td class="px-6 py-3 text-center text-slate-500 text-xs">5</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">20+</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">20+</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Indikator teknikal</td>
+                                <td class="px-2 py-2 text-center text-muted fs-xs">5</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">20+</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">20+</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Price alerts</td>
-                                <td class="px-6 py-3 text-center text-slate-700 dark:text-slate-300">5</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Price alerts</td>
+                                <td class="px-2 py-2 text-center text-body dark:text-body">5</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">Unlimited</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Unlimited</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Portfolio</td>
-                                <td class="px-6 py-3 text-center text-slate-700 dark:text-slate-300">1</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Portfolio</td>
+                                <td class="px-2 py-2 text-center text-body dark:text-body">1</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">Unlimited</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Unlimited</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Watchlist</td>
-                                <td class="px-6 py-3 text-center text-slate-700 dark:text-slate-300">1</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Unlimited</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Unlimited</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Watchlist</td>
+                                <td class="px-2 py-2 text-center text-body dark:text-body">1</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">Unlimited</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Unlimited</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">AI signals</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">AI signals</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center bg-primary bg-opacity-10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Backtesting</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">Backtesting</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center bg-primary bg-opacity-10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Screener</td>
-                                <td class="px-6 py-3 text-center text-xs text-slate-500">Basic</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">Advanced</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">Advanced</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Screener</td>
+                                <td class="px-2 py-2 text-center fs-xs text-muted">Basic</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">Advanced</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">Advanced</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">REST API</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">REST API</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center bg-primary bg-opacity-10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Telegram alerts</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center bg-blue-900/10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">Telegram alerts</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center bg-primary bg-opacity-10"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Data real-time</td>
-                                <td class="px-6 py-3 text-center text-xs text-slate-500">Delay 15m</td>
-                                <td class="px-6 py-3 text-center text-success text-xs bg-blue-900/10">&lt; 1m delay</td>
-                                <td class="px-6 py-3 text-center text-success text-xs">&lt; 1m delay</td>
+                                <td class="px-2 py-2 text-body dark:text-body">Data real-time</td>
+                                <td class="px-2 py-2 text-center fs-xs text-muted">Delay 15m</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs bg-primary bg-opacity-10">&lt; 1m delay</td>
+                                <td class="px-2 py-2 text-center text-success fs-xs">&lt; 1m delay</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Source code</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">Source code</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">White label</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">White label</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">Self-hosted</td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
-                                <td class="px-6 py-3 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
+                                <td class="px-2 py-2 text-body dark:text-body">Self-hosted</td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-muted mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+                                <td class="px-2 py-2 text-center"><svg class="w-4 h-4 text-success mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="text-center pb-8">
-                <p class="text-sm text-slate-500">Butuh paket khusus untuk tim atau perusahaan? <a href="/kontak" class="text-blue-400 hover:underline">Hubungi kami</a>.</p>
+            <div class="text-center pb-2">
+                <p class="fs-sm text-muted">Butuh paket khusus untuk tim atau perusahaan? <a href="/kontak" class="text-primary ">Hubungi kami</a>.</p>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

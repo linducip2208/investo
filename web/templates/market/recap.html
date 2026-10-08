@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,14 +45,14 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false }">
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false }">
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -64,7 +64,7 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 17l6 -6l4 4l8 -8" />
   <path d="M14 7l7 0l0 7" />
-</svg></span> Saham IDX <span class="ml-auto text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">[[.TotalStocks]]</span></a>
+</svg></span> Saham IDX <span class="ms-auto fs-6 bg-body dark:bg-secondary-lt px-1 py-0 rounded text-body dark:text-body">[[.TotalStocks]]</span></a>
             <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -98,19 +98,19 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
   <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
   <path d="M12 12l0 .01" />
   <path d="M3 13a20 20 0 0 0 18 0" />
-</svg></span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+</svg></span> Portofolio <span class="ms-auto fs-6 bg-primary bg-opacity-50 px-1 py-0 rounded text-primary">[[.PortfolioCount]]</span></a>
             <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
-</svg></span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+</svg></span> Watchlist <span class="ms-auto fs-6 bg-warning bg-opacity-50 px-1 py-0 rounded text-warning">[[.WatchlistCount]]</span></a>
             <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
@@ -127,8 +127,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -150,7 +150,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -166,58 +166,58 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white">Rekap Pasar Harian</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Ringkasan pergerakan pasar saham Indonesia hari ini.</p>
+                <h1 class="fs-2 fs-1 fw-bold text-white">Rekap Pasar Harian</h1>
+                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Ringkasan pergerakan pasar saham Indonesia hari ini.</p>
             </div>
 
             <!-- IHSG SUMMARY CARD -->
-            <div class="card p-6 lg:p-8">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div class="card p-2 p-lg-5">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4 mb-2">
                     <div>
-                        <div class="flex items-center gap-3 mb-1">
-                            <span class="text-sm text-slate-500 dark:text-slate-400 font-mono">[[.Recap.Date]]</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold text-white [[if eq .Recap.MarketSentiment "bullish"]]sentiment-bullish[[else if eq .Recap.MarketSentiment "bearish"]]sentiment-bearish[[else]]sentiment-mixed[[end]]">
+                        <div class="d-flex align-items-center gap-3 mb-1">
+                            <span class="fs-sm text-muted dark:text-slate-400 font-monospace">[[.Recap.Date]]</span>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-bold text-white [[if eq .Recap.MarketSentiment "bullish"]]sentiment-bullish[[else if eq .Recap.MarketSentiment "bearish"]]sentiment-bearish[[else]]sentiment-mixed[[end]]">
                                 [[if eq .Recap.MarketSentiment "bullish"]]BULLISH[[else if eq .Recap.MarketSentiment "bearish"]]BEARISH[[else]]MIXED[[end]]
                             </span>
                         </div>
-                        <h2 class="text-xl lg:text-2xl font-bold text-white">Ringkasan IHSG</h2>
+                        <h2 class="fs-2 fs-1 fw-bold text-white">Ringkasan IHSG</h2>
                     </div>
-                    <div class="flex gap-4 text-sm">
-                        [[if .Recap.BreadthAdvance]]<span class="text-success font-semibold">A: [[.Recap.BreadthAdvance]]</span>[[end]]
-                        [[if .Recap.BreadthDecline]]<span class="text-danger font-semibold">D: [[.Recap.BreadthDecline]]</span>[[end]]
-                        [[if .Recap.BreadthUnchanged]]<span class="text-slate-500 dark:text-slate-400 font-semibold">U: [[.Recap.BreadthUnchanged]]</span>[[end]]
+                    <div class="d-flex gap-4 fs-sm">
+                        [[if .Recap.BreadthAdvance]]<span class="text-success fw-semibold">A: [[.Recap.BreadthAdvance]]</span>[[end]]
+                        [[if .Recap.BreadthDecline]]<span class="text-danger fw-semibold">D: [[.Recap.BreadthDecline]]</span>[[end]]
+                        [[if .Recap.BreadthUnchanged]]<span class="text-muted dark:text-slate-400 fw-semibold">U: [[.Recap.BreadthUnchanged]]</span>[[end]]
                     </div>
                 </div>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">[[.Recap.IHSGSummary]]</p>
+                <p class="text-body dark:text-body lh-lg">[[.Recap.IHSGSummary]]</p>
             </div>
 
             <!-- HIGHLIGHTS -->
             [[if .Recap.Highlights]]
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-4">
                 [[range .Recap.Highlights]]
-                <div class="highlight-card card p-5 card-hover">
-                    <div class="flex items-start gap-3">
-                        <span class="text-xl shrink-0">&#x1F4A1;</span>
-                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">[[.]]</p>
+                <div class="highlight-card card p-2 card-hover">
+                    <div class="d-flex align-items-start gap-3">
+                        <span class="fs-2 flex-shrink-0">&#x1F4A1;</span>
+                        <p class="fs-sm text-body dark:text-body lh-lg">[[.]]</p>
                     </div>
                 </div>
                 [[end]]
@@ -225,18 +225,18 @@
             [[end]]
 
             <!-- GAINERS + LOSERS -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="row row-cols-1 row-cols-lg-2 gap-4">
                 [[if .Recap.TopGainers]]
                 <div class="card overflow-hidden">
-                    <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 bg-emerald-900/10">
-                        <h3 class="font-semibold text-success flex items-center gap-2">&#x1F53A; Top Gainers</h3>
+                    <div class="px-2 py-2 border-bottom border dark:border bg-success bg-opacity-10">
+                        <h3 class="fw-semibold text-success d-flex align-items-center gap-2">&#x1F53A; Top Gainers</h3>
                     </div>
-                    <div class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                    <div class="divide-y border dark:divide-slate-700/50">
                         [[range $i, $g := .Recap.TopGainers]]
-                        <div class="flex items-center justify-between px-5 py-3">
-                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">[[.]]</span>
+                        <div class="d-flex align-items-center justify-content-between px-2 py-2">
+                            <span class="fs-sm fw-medium text-body dark:text-body">[[.]]</span>
                             [[if index $.Recap.TopGainersPct $i]]
-                            <span class="text-sm font-mono font-bold text-success">+[[printf "%.2f" (index $.Recap.TopGainersPct $i)]]%</span>
+                            <span class="fs-sm font-monospace fw-bold text-success">+[[printf "%.2f" (index $.Recap.TopGainersPct $i)]]%</span>
                             [[end]]
                         </div>
                         [[end]]
@@ -246,15 +246,15 @@
 
                 [[if .Recap.TopLosers]]
                 <div class="card overflow-hidden">
-                    <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 bg-red-900/10">
-                        <h3 class="font-semibold text-danger flex items-center gap-2">&#x1F53B; Top Losers</h3>
+                    <div class="px-2 py-2 border-bottom border dark:border bg-danger bg-opacity-10">
+                        <h3 class="fw-semibold text-danger d-flex align-items-center gap-2">&#x1F53B; Top Losers</h3>
                     </div>
-                    <div class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                    <div class="divide-y border dark:divide-slate-700/50">
                         [[range $i, $l := .Recap.TopLosers]]
-                        <div class="flex items-center justify-between px-5 py-3">
-                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">[[.]]</span>
+                        <div class="d-flex align-items-center justify-content-between px-2 py-2">
+                            <span class="fs-sm fw-medium text-body dark:text-body">[[.]]</span>
                             [[if index $.Recap.TopLosersPct $i]]
-                            <span class="text-sm font-mono font-bold text-danger">[[printf "%.2f" (index $.Recap.TopLosersPct $i)]]%</span>
+                            <span class="fs-sm font-monospace fw-bold text-danger">[[printf "%.2f" (index $.Recap.TopLosersPct $i)]]%</span>
                             [[end]]
                         </div>
                         [[end]]
@@ -266,15 +266,15 @@
             <!-- MOST ACTIVE -->
             [[if .Recap.MostActive]]
             <div class="card overflow-hidden">
-                <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
-                    <h3 class="font-semibold text-white flex items-center gap-2">&#x1F4CA; Paling Aktif</h3>
+                <div class="px-2 py-2 border-bottom border dark:border">
+                    <h3 class="fw-semibold text-white d-flex align-items-center gap-2">&#x1F4CA; Paling Aktif</h3>
                 </div>
-                <div class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                <div class="divide-y border dark:divide-slate-700/50">
                     [[range $i, $a := .Recap.MostActive]]
-                    <div class="flex items-center justify-between px-5 py-3">
-                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">[[.]]</span>
+                    <div class="d-flex align-items-center justify-content-between px-2 py-2">
+                        <span class="fs-sm fw-medium text-body dark:text-body">[[.]]</span>
                         [[if index $.Recap.MostActiveVol $i]]
-                        <span class="text-xs text-slate-500 font-mono">[[formatVolume (index $.Recap.MostActiveVol $i)]]</span>
+                        <span class="fs-xs text-muted font-monospace">[[formatVolume (index $.Recap.MostActiveVol $i)]]</span>
                         [[end]]
                     </div>
                     [[end]]
@@ -284,22 +284,22 @@
 
             <!-- SECTOR PERFORMANCE -->
             [[if .Recap.SectorSummary]]
-            <div class="card p-6">
-                <h3 class="font-semibold text-white mb-5 flex items-center gap-2">&#x1F3ED; Performa Sektor</h3>
-                <div class="space-y-3">
+            <div class="card p-2">
+                <h3 class="fw-semibold text-white mb-2 d-flex align-items-center gap-2">&#x1F3ED; Performa Sektor</h3>
+                <div class="vstack gap-2">
                     [[range $i, $name := .Recap.SectorNames]]
-                    <div class="flex items-center gap-4">
-                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300 w-36 shrink-0 truncate">[[$name]]</span>
-                        <div class="flex-1 bg-slate-100 dark:bg-slate-700 rounded-full h-7 overflow-hidden">
+                    <div class="d-flex align-items-center gap-4">
+                        <span class="fs-sm fw-medium text-body dark:text-body w-36 flex-shrink-0 text-truncate">[[$name]]</span>
+                        <div class="flex-fill bg-body dark:bg-secondary-lt rounded-pill h-7 overflow-hidden">
                             [[$change := (index $.Recap.SectorChanges $i)]]
                             [[if ge $change 0.0]]
-                            <div class="sector-bar h-full flex items-center justify-end px-3 bar-positive" style="width:[[printf "%.0f" (add (mul $change 4) 5)]]%">
-                                <span class="text-xs font-mono font-bold text-white drop-shadow">+[[printf "%.1f" $change]]%</span>
+                            <div class="sector-bar h-100 d-flex align-items-center justify-content-end px-2 bar-positive" style="width:[[printf "%.0f" (add (mul $change 4) 5)]]%">
+                                <span class="fs-xs font-monospace fw-bold text-white drop-shadow">+[[printf "%.1f" $change]]%</span>
                             </div>
                             [[else]]
                             [[$negChange := (sub 0 $change)]]
-                            <div class="sector-bar h-full flex items-center justify-end px-3 bar-negative" style="width:[[printf "%.0f" (add (mul $negChange 4) 5)]]%">
-                                <span class="text-xs font-mono font-bold text-white drop-shadow">-[[printf "%.1f" $negChange]]%</span>
+                            <div class="sector-bar h-100 d-flex align-items-center justify-content-end px-2 bar-negative" style="width:[[printf "%.0f" (add (mul $negChange 4) 5)]]%">
+                                <span class="fs-xs font-monospace fw-bold text-white drop-shadow">-[[printf "%.1f" $negChange]]%</span>
                             </div>
                             [[end]]
                         </div>
@@ -310,24 +310,24 @@
             [[end]]
 
             <!-- FOREX + BREADTH -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div class="card p-6">
-                    <h3 class="font-semibold text-white mb-3 flex items-center gap-2">&#x1F4B1; Forex</h3>
-                    <p class="text-slate-700 dark:text-slate-300 text-sm">[[.Recap.ForexSummary]]</p>
-                    <a href="/forex" class="inline-flex items-center gap-1 mt-3 text-sm text-blue-400 hover:underline font-medium">
+            <div class="row row-cols-1 row-cols-lg-2 gap-4">
+                <div class="card p-2">
+                    <h3 class="fw-semibold text-white mb-2 d-flex align-items-center gap-2">&#x1F4B1; Forex</h3>
+                    <p class="text-body dark:text-body fs-sm">[[.Recap.ForexSummary]]</p>
+                    <a href="/forex" class="d-inline-flex align-items-center gap-1 mt-2 fs-sm text-primary  fw-medium">
                         Lihat Forex Terminal
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 </div>
 
-                <div class="card p-6">
-                    <h3 class="font-semibold text-white mb-3 flex items-center gap-2">&#x1F4C8; Market Breadth</h3>
-                    <p class="text-slate-700 dark:text-slate-300 text-sm mb-4">[[.Recap.MarketBreadthSummary]]</p>
-                    <div class="flex items-center gap-4 text-xs font-mono">
+                <div class="card p-2">
+                    <h3 class="fw-semibold text-white mb-2 d-flex align-items-center gap-2">&#x1F4C8; Market Breadth</h3>
+                    <p class="text-body dark:text-body fs-sm mb-2">[[.Recap.MarketBreadthSummary]]</p>
+                    <div class="d-flex align-items-center gap-4 fs-xs font-monospace">
                         <span class="text-success">Adv [[printf "%.1f" .Recap.BreadthAdvancePct]]%</span>
-                        <div class="flex-1 h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden flex">
-                            <div class="breath-seg bg-emerald-500" style="width:[[printf "%.1f" .Recap.BreadthAdvancePct]]%"></div>
-                            <div class="breath-seg bg-red-500" style="width:[[printf "%.1f" .Recap.BreadthDeclinePct]]%"></div>
+                        <div class="flex-fill h-3 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden d-flex">
+                            <div class="breath-seg bg-success" style="width:[[printf "%.1f" .Recap.BreadthAdvancePct]]%"></div>
+                            <div class="breath-seg bg-danger" style="width:[[printf "%.1f" .Recap.BreadthDeclinePct]]%"></div>
                         </div>
                         <span class="text-danger">Dec [[printf "%.1f" .Recap.BreadthDeclinePct]]%</span>
                     </div>
@@ -336,12 +336,12 @@
 
             <!-- ANOMALIES -->
             [[if .Recap.Anomalies]]
-            <div class="card p-6 border-amber-800 bg-amber-900/10">
-                <h3 class="font-semibold text-amber-400 mb-3 flex items-center gap-2">&#x26A0; Anomali Terdeteksi</h3>
-                <ul class="space-y-2">
+            <div class="card p-2 border-warning bg-warning bg-opacity-10">
+                <h3 class="fw-semibold text-warning mb-2 d-flex align-items-center gap-2">&#x26A0; Anomali Terdeteksi</h3>
+                <ul class="vstack gap-2">
                     [[range .Recap.Anomalies]]
-                    <li class="text-sm text-amber-300 flex items-start gap-2">
-                        <span class="shrink-0 mt-0.5">&bull;</span>
+                    <li class="fs-sm text-warning d-flex align-items-start gap-2">
+                        <span class="flex-shrink-0 mt-0">&bull;</span>
                         <span>[[.]]</span>
                     </li>
                     [[end]]
@@ -350,13 +350,13 @@
             [[end]]
 
             <div class="text-center pt-2">
-                <a href="/market/anomalies" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-md">
+                <a href="/market/anomalies" class="d-inline-flex align-items-center gap-2 px-2 py-2 bg-primary  text-white fw-semibold rounded-3  shadow">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                     Deteksi Anomali
                 </a>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

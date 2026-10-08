@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false, popup: null,
+<body class="h-100" x-data="{ sidebarOpen: false, popup: null,
     matrix: null, assets: null,
     async init() {
         try {
@@ -50,21 +50,21 @@
     renderHeatmap() {
         const container = document.getElementById('heatmap-container');
         if (!container || !this.matrix || !this.assets) return;
-        let html = '<table class="w-full text-sm border-collapse"><thead><tr><th class="p-3 text-xs text-slate-500"></th>';
-        this.assets.forEach(a => { html += '<th class="p-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400">'+a+'</th>'; });
+        let html = '<table class="table table-vcenter table-hover w-100 fs-sm border-collapse"><thead><tr><th class="p-2 fs-xs text-muted"></th>';
+        this.assets.forEach(a => { html += '<th class="p-2 text-center fs-xs fw-semibold text-muted dark:text-slate-400">'+a+'</th>'; });
         html += '</tr></thead><tbody>';
         this.matrix.forEach(row => {
-            html += '<tr class="border-b border-slate-200 dark:border-slate-800">';
-            html += '<td class="p-3 font-semibold text-white text-sm">'+row.asset+'</td>';
+            html += '<tr class="border-bottom border dark:border-slate-800">';
+            html += '<td class="p-2 fw-semibold text-white fs-sm">'+row.asset+'</td>';
             this.assets.forEach(a => {
                 const v = row[a];
-                if (v === 1.0) { html += '<td class="p-3 text-center font-mono font-bold text-slate-500 dark:text-slate-400">1.00</td>'; }
+                if (v === 1.0) { html += '<td class="p-2 text-center font-monospace fw-bold text-muted dark:text-slate-400">1.00</td>'; }
                 else {
                     const r = Math.round(Math.abs(v) * 255);
                     const isPos = v >= 0;
                     const bg = isPos ? `rgba(52,211,153,${Math.abs(v).toFixed(2)})` : `rgba(248,113,113,${Math.abs(v).toFixed(2)})`;
                     const cl = isPos ? 'text-green-200' : 'text-red-200';
-                    html += '<td class="p-3 text-center font-mono font-semibold cursor-pointer hover:ring-1 hover:ring-white/20" style="background:'+bg+';color:white" onclick="document.querySelector('+"'"+'[x-data]'+"'"+').__x.$data.showPopup('+JSON.stringify(row.asset)+','+JSON.stringify(a)+','+v+')">'+(v>=0?'+':'')+v.toFixed(2)+'</td>';
+                    html += '<td class="p-2 text-center font-monospace fw-semibold cursor-pointer  " style="background:'+bg+';color:white" onclick="document.querySelector('+"'"+'[x-data]'+"'"+').__x.$data.showPopup('+JSON.stringify(row.asset)+','+JSON.stringify(a)+','+v+')">'+(v>=0?'+':'')+v.toFixed(2)+'</td>';
                 }
             });
             html += '</tr>';
@@ -77,29 +77,29 @@
     }
 }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Cross-Asset Correlation</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Cross-Asset Correlation</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Alt Data</div>
             <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
             <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
@@ -107,49 +107,49 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">🔗 Cross-Asset Correlation Matrix</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Korelasi antar aset: IHSG, Minyak, Emas, USD/IDR, SBN 10Y, Bitcoin</p>
+                <h1 class="fs-1 fw-bold text-white">🔗 Cross-Asset Correlation Matrix</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Korelasi antar aset: IHSG, Minyak, Emas, USD/IDR, SBN 10Y, Bitcoin</p>
             </div>
 
-            <div class="card p-6">
-                <div class="flex items-center gap-4 mb-4 text-xs">
-                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#34d399"></div><span class="text-slate-500 dark:text-slate-400">Positive</span></div>
-                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#f87171"></div><span class="text-slate-500 dark:text-slate-400">Negative</span></div>
-                    <div class="flex items-center gap-1"><div class="w-4 h-4 rounded" style="background:#64748b"></div><span class="text-slate-500 dark:text-slate-400">Neutral / Identity</span></div>
-                    <span class="text-slate-600 ml-auto">Click any cell for scatter plot detail</span>
+            <div class="card p-2">
+                <div class="d-flex align-items-center gap-4 mb-2 fs-xs">
+                    <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#34d399"></div><span class="text-muted dark:text-slate-400">Positive</span></div>
+                    <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#f87171"></div><span class="text-muted dark:text-slate-400">Negative</span></div>
+                    <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#64748b"></div><span class="text-muted dark:text-slate-400">Neutral / Identity</span></div>
+                    <span class="text-muted ms-auto">Click any cell for scatter plot detail</span>
                 </div>
                 <div id="heatmap-container" class="overflow-x-auto"></div>
             </div>
 
             <template x-if="popup">
-                <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" @click="popup=null">
-                    <div class="card p-6 max-w-md w-full" @click.stop>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-white">Scatter Plot Detail</h3>
-                            <button @click="popup=null" class="text-slate-500 dark:text-slate-400 hover:text-white text-xl">&times;</button>
+                <div class="position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-3 d-flex align-items-center justify-content-center p-2" @click="popup=null">
+                    <div class="card p-2 max-w-md w-100" @click.stop>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h3 class="fs-3 fw-bold text-white">Scatter Plot Detail</h3>
+                            <button @click="popup=null" class="text-muted dark:text-slate-400  fs-2">&times;</button>
                         </div>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400">Pair</span>
-                                <span class="font-mono font-bold text-white" x-text="popup.a + ' vs ' + popup.b"></span>
+                        <div class="vstack gap-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted dark:text-slate-400">Pair</span>
+                                <span class="font-monospace fw-bold text-white" x-text="popup.a + ' vs ' + popup.b"></span>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400">Correlation</span>
-                                <span class="font-mono font-bold text-2xl" :class="popup.value >= 0 ? 'text-success' : 'text-danger'" x-text="(popup.value>=0?'+':'')+popup.value.toFixed(2)"></span>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted dark:text-slate-400">Correlation</span>
+                                <span class="font-monospace fw-bold fs-1" :class="popup.value >= 0 ? 'text-success' : 'text-danger'" x-text="(popup.value>=0?'+':'')+popup.value.toFixed(2)"></span>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400">Strength</span>
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="{'bg-success-dark text-success': Math.abs(popup.value) >= 0.5, 'bg-yellow-900 text-warning': Math.abs(popup.value) >= 0.3 && Math.abs(popup.value) < 0.5, 'bg-slate-700 text-slate-300': Math.abs(popup.value) < 0.3}"
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted dark:text-slate-400">Strength</span>
+                                <span class="px-2 py-1 rounded-pill fs-xs fw-semibold" :class="{'bg-success text-success': Math.abs(popup.value) >= 0.5, 'bg-warning-lt text-warning': Math.abs(popup.value) >= 0.3 && Math.abs(popup.value) < 0.5, 'bg-secondary-lt text-body': Math.abs(popup.value) < 0.3}"
                                     x-text="Math.abs(popup.value) >= 0.7 ? 'Strong' : Math.abs(popup.value) >= 0.5 ? 'Moderate' : Math.abs(popup.value) >= 0.3 ? 'Weak' : 'Very Weak'"></span>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400">Direction</span>
-                                <span class="text-sm font-semibold" :class="popup.value >= 0 ? 'text-success' : 'text-danger'"
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted dark:text-slate-400">Direction</span>
+                                <span class="fs-sm fw-semibold" :class="popup.value >= 0 ? 'text-success' : 'text-danger'"
                                     x-text="popup.value >= 0 ? 'Positive (both move same direction)' : 'Negative (inverse relationship)'"></span>
                             </div>
                         </div>
@@ -157,11 +157,11 @@
                 </div>
             </template>
 
-            <div class="card p-6" x-show="!matrix">
-                <p class="text-slate-500 text-center">Loading correlation matrix...</p>
+            <div class="card p-2" x-show="!matrix">
+                <p class="text-muted text-center">Loading correlation matrix...</p>
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

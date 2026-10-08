@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,15 +34,15 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false }">
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false }">
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200/50 dark:border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border/50 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border/50">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -82,8 +82,8 @@
   <path d="M9 16l.01 0" />
   <path d="M13 16l2 0" />
 </svg></span> Market Recap</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Detail</p>
+        <div class="border-top border dark:border/50 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Stock Detail</p>
         <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -127,7 +127,7 @@
   <path d="M3 11c0 .888 .772 1.45 2 2" />
 </svg></span> Valuasi</a>
     </nav>
-    <div class="p-3 border-t border-slate-200/50 dark:border-slate-700/50">
+    <div class="p-2 border-top border dark:border/50">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -143,135 +143,135 @@
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+            <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="/saham/[[.Stock.Code]]" class="hover:text-blue-400 transition-colors">[[.Stock.Code]]</a>
+            <a href="/saham/[[.Stock.Code]]" class=" ">[[.Stock.Code]]</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-white font-medium">Fundamental</span>
+            <span class="text-white fw-medium">Fundamental</span>
         </div>
-        <div class="flex-1 max-w-md hidden sm:block mx-4">
-            <input type="text" placeholder="Cari saham..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <div class="flex-fill max-w-md d-none d-sm-block mx-2">
+            <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
     <!-- CONTENT -->
-    <main class="flex-1 px-4 lg:px-8 py-6 overflow-y-auto space-y-6">
+    <main class="flex-fill px-2 px-lg-5 py-2 overflow-y-auto vstack gap-4">
 
         <!-- PAGE HEADER -->
-        <div class="flex items-center gap-3">
-            <h1 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
-            <span class="px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-lg text-xs font-semibold">[[.SectorName]]</span>
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="fs-1 fs-1 fw-bold text-body dark:text-[#f8fafc] font-monospace">[[.Stock.Code]]</h1>
+            <span class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-semibold">[[.SectorName]]</span>
             [[if .Fundamentals]]
             [[range $i, $f := .Fundamentals]]
             [[if eq $i 0]]
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold [[if eq $f.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else if eq $f.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-amber-900/40 text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else if eq $f.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]</span>
+            <span class="px-2 py-1 rounded-2 fs-xs fw-semibold [[if eq $f.Source "yahoo"]]bg-success-lt text-emerald-400[[else if eq $f.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-warning-lt text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else if eq $f.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]</span>
             [[end]]
             [[end]]
             [[end]]
         </div>
-        <p class="text-lg text-slate-500 dark:text-slate-400 -mt-3">[[.Stock.Name]]</p>
+        <p class="fs-3 text-muted dark:text-slate-400 mt-n2">[[.Stock.Name]]</p>
 
         <!-- RINGKASAN KEUANGAN -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Ringkasan Keuangan</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">Pendapatan</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.RevenueFormatted]]</span></div>
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">Laba Bersih</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.NetIncomeFormatted]]</span></div>
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">EPS</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.EPSFormatted]]</span></div>
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">BVPS</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.BVPSFormatted]]</span></div>
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">Total Aset</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.TotalAssetsFormatted]]</span></div>
-                <div class="card p-5"><span class="text-xs text-slate-500 dark:text-slate-400">Ekuitas</span><span class="block mt-1.5 font-mono text-base font-bold text-slate-900 dark:text-[#f8fafc]">[[.FinancialSummary.EquityFormatted]]</span></div>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Ringkasan Keuangan</h2>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 gap-4">
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Pendapatan</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.RevenueFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Laba Bersih</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.NetIncomeFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">EPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EPSFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">BVPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.BVPSFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Aset</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.TotalAssetsFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Ekuitas</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EquityFormatted]]</span></div>
             </div>
         </div>
 
         <!-- RASIO KEUANGAN -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Rasio Keuangan</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">ROE</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold [[if ge .Ratios.ROE 15.0]]text-success[[else if ge .Ratios.ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.ROE]]%</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Return on Equity</span>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Rasio Keuangan</h2>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 gap-4">
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">ROE</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.ROE 15.0]]text-success[[else if ge .Ratios.ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.ROE]]%</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Return on Equity</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">ROA</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold [[if ge .Ratios.ROA 5.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.ROA]]%</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Return on Assets</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">ROA</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.ROA 5.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.ROA]]%</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Return on Assets</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">PER</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">[[.Ratios.PER]]x</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Price to Earnings</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">PER</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.PER]]x</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Price to Earnings</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">PBV</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">[[.Ratios.PBV]]x</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Price to Book</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">PBV</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.PBV]]x</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Price to Book</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">DER</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold [[if le .Ratios.DER 1.0]]text-success[[else if le .Ratios.DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.DER]]x</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Debt to Equity</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">DER</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if le .Ratios.DER 1.0]]text-success[[else if le .Ratios.DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.DER]]x</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Debt to Equity</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">NPM</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold [[if ge .Ratios.NPM 10.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.NPM]]%</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Net Profit Margin</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">NPM</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.NPM 10.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.NPM]]%</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Net Profit Margin</span>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs text-slate-500 dark:text-slate-400">Dividend Yield</span>
-                    <span class="block mt-1.5 font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">[[.Ratios.DividendYield]]%</span>
-                    <span class="text-[10px] text-slate-600 mt-1 block">Dividend to Price</span>
+                <div class="card p-2">
+                    <span class="fs-xs text-muted dark:text-slate-400">Dividend Yield</span>
+                    <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.DividendYield]]%</span>
+                    <span class="fs-6 text-muted mt-1 d-block">Dividend to Price</span>
                 </div>
             </div>
         </div>
 
         <!-- DATA HISTORIS PER PERIODE -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Data Historis Per Periode</h2>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Data Historis Per Periode</h2>
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-left px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Periode</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Pendapatan</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Laba Bersih</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">EPS</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">BVPS</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">ROE</th>
-                                <th class="text-right px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hide-mobile">DER</th>
+                            <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Periode</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Pendapatan</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Laba Bersih</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">EPS</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">BVPS</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">ROE</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-mobile">DER</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             [[range .Periods]]
-                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
-                                <td class="px-5 py-3.5 font-medium text-slate-900 dark:text-[#f8fafc]">[[.PeriodLabel]]</td>
-                                <td class="px-5 py-3.5 text-right font-mono text-slate-700 dark:text-slate-300">[[.RevenueFormatted]]</td>
-                                <td class="px-5 py-3.5 text-right font-mono [[if ge .NetIncome 0]]text-success[[else]]text-danger[[end]] font-medium">[[.NetIncomeFormatted]]</td>
-                                <td class="px-5 py-3.5 text-right font-mono text-slate-700 dark:text-slate-300">[[.EPSFormatted]]</td>
-                                <td class="px-5 py-3.5 text-right font-mono text-slate-700 dark:text-slate-300">[[.BVPSFormatted]]</td>
-                                <td class="px-5 py-3.5 text-right font-mono font-medium [[if ge .ROE 15.0]]text-success[[else]]text-warning[[end]]">[[.ROE]]%</td>
-                                <td class="px-5 py-3.5 text-right font-mono text-slate-700 dark:text-slate-300 hide-mobile">[[.DER]]x</td>
+                            <tr class=" dark:hover:bg-secondary-lt/30 ">
+                                <td class="px-2 py-2 fw-medium text-body dark:text-[#f8fafc]">[[.PeriodLabel]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.RevenueFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace [[if ge .NetIncome 0]]text-success[[else]]text-danger[[end]] fw-medium">[[.NetIncomeFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.EPSFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.BVPSFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace fw-medium [[if ge .ROE 15.0]]text-success[[else]]text-warning[[end]]">[[.ROE]]%</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body hide-mobile">[[.DER]]x</td>
                             </tr>
                             [[end]]
                             [[if not .Periods]]
-                            <tr><td colspan="7" class="px-6 py-16 text-center text-slate-500">Belum ada data periode tersedia</td></tr>
+                            <tr><td colspan="7" class="px-2 py-2 text-center text-muted">Belum ada data periode tersedia</td></tr>
                             [[end]]
                         </tbody>
                     </table>
@@ -286,6 +286,6 @@
     @media(max-width:640px){.hide-mobile{display:none}}
 </style>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

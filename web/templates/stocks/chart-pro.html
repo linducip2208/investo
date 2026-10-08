@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="chartPro()" x-init="init()">
+<body class="h-100 d-flex" x-data="chartPro()" x-init="init()">
 
 <script>
 function chartPro() {
@@ -336,12 +336,12 @@ function addSRLines(srLevels) {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200/50 dark:border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border/50 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border/50">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -381,8 +381,8 @@ function addSRLines(srLevels) {
   <path d="M9 16l.01 0" />
   <path d="M13 16l2 0" />
 </svg></span> Market Recap</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Detail</p>
+        <div class="border-top border dark:border/50 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Stock Detail</p>
         <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -426,7 +426,7 @@ function addSRLines(srLevels) {
   <path d="M3 11c0 .888 .772 1.45 2 2" />
 </svg></span> Valuasi</a>
     </nav>
-    <div class="p-3 border-t border-slate-200/50 dark:border-slate-700/50">
+    <div class="p-2 border-top border dark:border/50">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -442,88 +442,88 @@ function addSRLines(srLevels) {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
-    <header class="sticky top-0 z-40 h-12 bg-[#f4f6fb]/95 dark:bg-[#0b1120]/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-3 lg:px-6 gap-3">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-1.5 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-xs">
-            <span class="font-bold text-slate-900 dark:text-[#f8fafc] font-mono">[[.Stock.Code]]</span>
-            <span class="text-slate-500">[[.Stock.Name]]</span>
+    <header class="position-sticky top-0 z-2 h-12 bg-body bg-opacity-100 dark:bg-[#0b1120]/95  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-4 gap-3">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-1 text-muted dark:text-slate-400 "><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-xs">
+            <span class="fw-bold text-body dark:text-[#f8fafc] font-monospace">[[.Stock.Code]]</span>
+            <span class="text-muted">[[.Stock.Name]]</span>
         </div>
-        <div class="flex items-center gap-1.5 ml-auto">
-            <div class="flex items-center bg-white dark:bg-slate-800 rounded-lg p-0.5">
+        <div class="d-flex align-items-center gap-1 ms-auto">
+            <div class="d-flex align-items-center bg-white dark:bg-white rounded-2 p-0">
                 <template x-for="tf in timeframes" :key="tf.v">
-                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'bg-blue-600 text-white':'text-slate-400 hover:text-slate-200'" class="px-2 py-1 text-[11px] font-medium rounded-md transition-colors" x-text="tf.l"></button>
+                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'bg-blue-600 text-white':'text-slate-400 " class="px-2 py-1 fs-6 fw-medium rounded-2 " x-text="tf.l"></button>
                 </template>
             </div>
-            <button @click="loadAllPro()" class="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-400 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors" title="Refresh">
+            <button @click="loadAllPro()" class="p-1 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white " title="Refresh">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
         </div>
     </header>
 
     <!-- CONTENT: CHART PRO LAYOUT -->
-    <div class="flex flex-col lg:flex-row flex-1 overflow-hidden">
+    <div class="d-flex flex-column flex-lg-row flex-fill overflow-hidden">
         <!-- SIDE PANEL -->
-        <aside class="w-full lg:w-64 shrink-0 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 overflow-y-auto max-md:hidden">
-            <div class="p-3">
-                <div class="flex rounded-lg bg-white dark:bg-slate-800 p-0.5 mb-3">
-                    <button @click="sidebarTab='patterns'" :class="sidebarTab==='patterns'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Pola</button>
-                    <button @click="sidebarTab='indicators'" :class="sidebarTab==='indicators'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Indikator</button>
-                    <button @click="sidebarTab='fibonacci'" :class="sidebarTab==='fibonacci'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">Fibonacci</button>
-                    <button @click="sidebarTab='sr'" :class="sidebarTab==='sr'?'bg-slate-700 shadow-sm text-white':'text-slate-400'" class="flex-1 px-2 py-1 text-[11px] font-medium rounded-md transition-colors">S/R</button>
+        <aside class="w-100 w-64 flex-shrink-0 bg-body dark:bg-[#0b1120] border-end border dark:border/50 overflow-y-auto d-none d-md-block">
+            <div class="p-2">
+                <div class="d-flex rounded-2 bg-white dark:bg-white p-0 mb-2">
+                    <button @click="sidebarTab='patterns'" :class="sidebarTab==='patterns'?'bg-secondary-lt shadow-sm text-white':'text-slate-400'" class="flex-fill px-2 py-1 fs-6 fw-medium rounded-2 ">Pola</button>
+                    <button @click="sidebarTab='indicators'" :class="sidebarTab==='indicators'?'bg-secondary-lt shadow-sm text-white':'text-slate-400'" class="flex-fill px-2 py-1 fs-6 fw-medium rounded-2 ">Indikator</button>
+                    <button @click="sidebarTab='fibonacci'" :class="sidebarTab==='fibonacci'?'bg-secondary-lt shadow-sm text-white':'text-slate-400'" class="flex-fill px-2 py-1 fs-6 fw-medium rounded-2 ">Fibonacci</button>
+                    <button @click="sidebarTab='sr'" :class="sidebarTab==='sr'?'bg-secondary-lt shadow-sm text-white':'text-slate-400'" class="flex-fill px-2 py-1 fs-6 fw-medium rounded-2 ">S/R</button>
                 </div>
 
-                <div x-show="sidebarTab==='patterns'" class="space-y-1.5">
-                    <template x-if="patterns.length===0"><p class="text-[11px] text-slate-500">Tidak ada pola terdeteksi</p></template>
+                <div x-show="sidebarTab==='patterns'" class="vstack gap-1">
+                    <template x-if="patterns.length===0"><p class="fs-6 text-muted">Tidak ada pola terdeteksi</p></template>
                     <template x-for="p in patterns" :key="p.name+p.index">
-                        <div class="p-2 rounded-lg border" :class="p.type==='bullish'?'bg-emerald-900/20 border-emerald-800':'p.type==='bearish'?'bg-red-900/20 border-red-800':'bg-slate-700/30 border-slate-700'">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-semibold" :class="p.type==='bullish'?'text-emerald-300':'p.type==='bearish'?'text-red-300':'text-slate-300'" x-text="p.name"></span>
-                                <span class="flex">
+                        <div class="p-2 rounded-2 border" :class="p.type==='bullish'?'bg-success-lt/20 border-emerald-800':'p.type==='bearish'?'bg-danger-lt/20 border-red-800':'bg-secondary-lt/30 border'">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fs-6 fw-semibold" :class="p.type==='bullish'?'text-success':'p.type==='bearish'?'text-danger':'text-body'" x-text="p.name"></span>
+                                <span class="d-flex">
                                     <template x-for="s in Array.from({length:5},(_,i)=>i)"><span class="text-[9px]" :class="s<p.reliability?'star-gold':'text-slate-600'">★</span></template>
                                 </span>
                             </div>
-                            <p class="text-[10px] leading-relaxed text-slate-500 dark:text-slate-400 mt-1" x-text="p.description"></p>
+                            <p class="fs-6 lh-lg text-muted dark:text-slate-400 mt-1" x-text="p.description"></p>
                         </div>
                     </template>
                 </div>
 
-                <div x-show="sidebarTab==='indicators'" class="space-y-2">
-                    <p class="text-[11px] text-slate-500 mb-2">Toggle indicator overlay</p>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">SMA (20, 50, 200)</span><input type="checkbox" x-model="indicatorToggles.sma" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">EMA (12, 26)</span><input type="checkbox" x-model="indicatorToggles.ema" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">RSI (14)</span><input type="checkbox" x-model="indicatorToggles.rsi" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">MACD</span><input type="checkbox" x-model="indicatorToggles.macd" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">Bollinger Bands</span><input type="checkbox" x-model="indicatorToggles.bb" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">Stochastic</span><input type="checkbox" x-model="indicatorToggles.stoch" @change="renderIndicators()" class="rounded text-blue-600"></label>
-                    <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-100/30 dark:hover:bg-slate-700/30 cursor-pointer"><span class="text-xs text-slate-700 dark:text-slate-300">ATR (14)</span><input type="checkbox" x-model="indicatorToggles.atr" @change="renderIndicators()" class="rounded text-blue-600"></label>
+                <div x-show="sidebarTab==='indicators'" class="vstack gap-2">
+                    <p class="fs-6 text-muted mb-2">Toggle indicator overlay</p>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">SMA (20, 50, 200)</span><input type="checkbox" x-model="indicatorToggles.sma" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">EMA (12, 26)</span><input type="checkbox" x-model="indicatorToggles.ema" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">RSI (14)</span><input type="checkbox" x-model="indicatorToggles.rsi" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">MACD</span><input type="checkbox" x-model="indicatorToggles.macd" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">Bollinger Bands</span><input type="checkbox" x-model="indicatorToggles.bb" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">Stochastic</span><input type="checkbox" x-model="indicatorToggles.stoch" @change="renderIndicators()" class="rounded text-primary"></label>
+                    <label class="d-flex align-items-center justify-content-between py-1 px-2 rounded-2  dark:hover:bg-secondary-lt/30 cursor-pointer"><span class="fs-xs text-body dark:text-body">ATR (14)</span><input type="checkbox" x-model="indicatorToggles.atr" @change="renderIndicators()" class="rounded text-primary"></label>
                 </div>
 
-                <div x-show="sidebarTab==='fibonacci'" class="space-y-2">
-                    <p class="text-[11px] text-slate-500">Auto Fibonacci Retracement</p>
+                <div x-show="sidebarTab==='fibonacci'" class="vstack gap-2">
+                    <p class="fs-6 text-muted">Auto Fibonacci Retracement</p>
                     <template x-if="fibLevels.length>0">
-                        <div class="space-y-1">
+                        <div class="vstack gap-1">
                             <template x-for="l in fibLevels" :key="l.level">
-                                <div class="flex items-center justify-between text-xs py-1 px-2 rounded-md" :class="l.ratio<=0.236?'bg-emerald-900/20':l.ratio<=0.5?'bg-blue-900/20':l.ratio<=0.786?'bg-amber-900/20':'bg-red-900/20'">
-                                    <span class="font-mono font-semibold" x-text="l.level"></span>
-                                    <span class="font-mono text-slate-500 dark:text-slate-400" x-text="l.price.toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0})"></span>
+                                <div class="d-flex align-items-center justify-content-between fs-xs py-1 px-2 rounded-2" :class="l.ratio<=0.236?'bg-success-lt/20':l.ratio<=0.5?'bg-info-lt/20':l.ratio<=0.786?'bg-warning-lt/20':'bg-danger-lt/20'">
+                                    <span class="font-monospace fw-semibold" x-text="l.level"></span>
+                                    <span class="font-monospace text-muted dark:text-slate-400" x-text="l.price.toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0})"></span>
                                 </div>
                             </template>
                         </div>
                     </template>
                 </div>
 
-                <div x-show="sidebarTab==='sr'" class="space-y-2">
-                    <p class="text-[11px] text-slate-500">Support & Resistance</p>
+                <div x-show="sidebarTab==='sr'" class="vstack gap-2">
+                    <p class="fs-6 text-muted">Support & Resistance</p>
                     <template x-if="srLevels?.resistances?.length">
                         <div>
-                            <div class="text-[10px] font-semibold text-red-400 mb-1">Resistance</div>
-                            <div class="space-y-1">
+                            <div class="fs-6 fw-semibold text-danger mb-1">Resistance</div>
+                            <div class="vstack gap-1">
                                 <template x-for="l in srLevels.resistances.slice(0,6)" :key="l.price">
-                                    <div class="flex items-center justify-between text-[11px] py-1 px-2 rounded bg-red-900/20">
-                                        <span class="font-mono font-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
-                                        <span class="text-slate-500 dark:text-slate-400">T:<span x-text="l.touches"></span></span>
+                                    <div class="d-flex align-items-center justify-content-between fs-6 py-1 px-2 rounded bg-danger bg-opacity-25">
+                                        <span class="font-monospace fw-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
+                                        <span class="text-muted dark:text-slate-400">T:<span x-text="l.touches"></span></span>
                                     </div>
                                 </template>
                             </div>
@@ -531,12 +531,12 @@ function addSRLines(srLevels) {
                     </template>
                     <template x-if="srLevels?.supports?.length">
                         <div>
-                            <div class="text-[10px] font-semibold text-emerald-400 mb-1">Support</div>
-                            <div class="space-y-1">
+                            <div class="fs-6 fw-semibold text-success mb-1">Support</div>
+                            <div class="vstack gap-1">
                                 <template x-for="l in srLevels.supports.slice(0,6)" :key="l.price">
-                                    <div class="flex items-center justify-between text-[11px] py-1 px-2 rounded bg-emerald-900/20">
-                                        <span class="font-mono font-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
-                                        <span class="text-slate-500 dark:text-slate-400">T:<span x-text="l.touches"></span></span>
+                                    <div class="d-flex align-items-center justify-content-between fs-6 py-1 px-2 rounded bg-success bg-opacity-25">
+                                        <span class="font-monospace fw-semibold" x-text="l.price.toLocaleString('id-ID')"></span>
+                                        <span class="text-muted dark:text-slate-400">T:<span x-text="l.touches"></span></span>
                                     </div>
                                 </template>
                             </div>
@@ -547,50 +547,50 @@ function addSRLines(srLevels) {
         </aside>
 
         <!-- CHART AREA -->
-        <main class="flex-1 flex flex-col min-w-0">
-            <div class="flex items-center gap-1 px-3 py-1.5 border-b border-slate-200/50 dark:border-slate-700/50 bg-[#f4f6fb] dark:bg-[#0b1120] overflow-x-auto">
-                <span class="text-[10px] text-slate-500 mr-1 shrink-0">Tools:</span>
-                <button @click="activeTool=activeTool==='trendline'?null:'trendline'" :class="activeTool==='trendline'?'tool-btn active':'tool-btn text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
-                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20L20 4"/></svg>Trendline
+        <main class="flex-fill d-flex flex-column min-w-0">
+            <div class="d-flex align-items-center gap-1 px-2 py-1 border-bottom border dark:border/50 bg-body dark:bg-[#0b1120] overflow-x-auto">
+                <span class="fs-6 text-muted me-1 flex-shrink-0">Tools:</span>
+                <button @click="activeTool=activeTool==='trendline'?null:'trendline'" :class="activeTool==='trendline'?'tool-btn active':'tool-btn text-muted dark:text-slate-400 bg-white dark:bg-white border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-white">
+                    <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20L20 4"/></svg>Trendline
                 </button>
-                <button @click="activeTool=activeTool==='hline'?null:'hline'" :class="activeTool==='hline'?'tool-btn active':'tool-btn text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
-                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/></svg>H-Line
+                <button @click="activeTool=activeTool==='hline'?null:'hline'" :class="activeTool==='hline'?'tool-btn active':'tool-btn text-muted dark:text-slate-400 bg-white dark:bg-white border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-white">
+                    <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/></svg>H-Line
                 </button>
-                <button @click="activeTool=activeTool==='rect'?null:'rect'" :class="activeTool==='rect'?'tool-btn active':'tool-btn text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
-                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4h8a2 2 0 012 2v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Rect
+                <button @click="activeTool=activeTool==='rect'?null:'rect'" :class="activeTool==='rect'?'tool-btn active':'tool-btn text-muted dark:text-slate-400 bg-white dark:bg-white border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-white">
+                    <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4h8a2 2 0 012 2v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Rect
                 </button>
-                <button @click="activeTool=activeTool==='text'?null:'text'" :class="activeTool==='text'?'tool-btn active':'tool-btn text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-slate-800">
-                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>Text
+                <button @click="activeTool=activeTool==='text'?null:'text'" :class="activeTool==='text'?'tool-btn active':'tool-btn text-muted dark:text-slate-400 bg-white dark:bg-white border-slate-600'" style="px-2.5 py-1 text-[11px] font-medium border rounded-lg bg-white">
+                    <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>Text
                 </button>
-                <div class="w-px h-4 bg-slate-600 shrink-0"></div>
-                <span class="text-[10px] text-slate-500 shrink-0">Type:</span>
+                <div class="w-px h-4 bg-body flex-shrink-0"></div>
+                <span class="fs-6 text-muted flex-shrink-0">Type:</span>
                 <button @click="chartType='candlestick'" :class="chartType==='candlestick'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Candle</button>
                 <button @click="chartType='line'" :class="chartType==='line'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Line</button>
                 <button @click="chartType='area'" :class="chartType==='area'?'bg-slate-600 text-white':'text-slate-400'" style="px-2 py-1 text-[11px] font-medium rounded-lg">Area</button>
-                <div class="w-px h-4 bg-slate-600 shrink-0"></div>
-                <input type="text" placeholder="Compare stock..." x-model="compareSearch" @input="searchCompare()" class="text-[11px] px-2 py-1 rounded-lg border border-slate-600 bg-white dark:bg-slate-800 text-white w-28 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <div class="w-px h-4 bg-body flex-shrink-0"></div>
+                <input type="text" placeholder="Compare stock..." x-model="compareSearch" @input="searchCompare()" class="fs-6 px-2 py-1 rounded-2 border border bg-white dark:bg-white text-white w-28   ">
             </div>
 
-            <div class="relative flex-1">
-                <div id="pro-chart" class="w-full h-full" style="min-height:400px"></div>
-                <div x-show="loading" class="absolute inset-0 flex items-center justify-center bg-[#f4f6fb]/60 dark:bg-[#0b1120]/60 z-10">
-                    <div class="flex flex-col items-center gap-2">
-                        <svg class="animate-spin w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                        <span class="text-sm text-slate-500 dark:text-slate-400">Memuat data...</span>
+            <div class="position-relative flex-fill">
+                <div id="pro-chart" class="w-100 h-100" style="min-height:400px"></div>
+                <div x-show="loading" class="position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center bg-body bg-opacity-50 dark:bg-[#0b1120]/60 z-1">
+                    <div class="d-flex flex-column align-items-center gap-2">
+                        <svg class=" w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                        <span class="fs-sm text-muted dark:text-slate-400">Memuat data...</span>
                     </div>
                 </div>
             </div>
 
-            <div class="border-t border-slate-200/50 dark:border-slate-700/50 bg-[#f4f6fb] dark:bg-[#0b1120] px-3 py-2">
-                <div class="flex items-center gap-2 text-[11px]">
-                    <span class="text-slate-500 dark:text-slate-400 font-medium shrink-0">Multi-TF:</span>
-                    <template x-if="tfScans.length===0"><span class="text-slate-500">Scanning...</span></template>
+            <div class="border-top border dark:border/50 bg-body dark:bg-[#0b1120] px-2 py-2">
+                <div class="d-flex align-items-center gap-2 fs-6">
+                    <span class="text-muted dark:text-slate-400 fw-medium flex-shrink-0">Multi-TF:</span>
+                    <template x-if="tfScans.length===0"><span class="text-muted">Scanning...</span></template>
                     <template x-for="tf in tfScans" :key="tf.timeframe">
-                        <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
-                            <span class="font-semibold text-slate-700 dark:text-slate-300" x-text="tf.timeframe"></span>
-                            <span class="text-slate-500" x-text="tf.patterns?.length+' pola'"></span>
+                        <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-2 border border dark:border/50">
+                            <span class="fw-semibold text-body dark:text-body" x-text="tf.timeframe"></span>
+                            <span class="text-muted" x-text="tf.patterns?.length+' pola'"></span>
                             <template x-for="p in tf.patterns.slice(0,2)" :key="p.name">
-                                <span :class="p.type==='bullish'?'text-emerald-400':'p.type==='bearish'?'text-red-400':'text-slate-400'" class="text-[10px]" x-text="p.name"></span>
+                                <span :class="p.type==='bullish'?'text-emerald-400':'p.type==='bearish'?'text-red-400':'text-slate-400'" class="fs-6" x-text="p.name"></span>
                             </template>
                         </div>
                     </template>
@@ -600,6 +600,6 @@ function addSRLines(srLevels) {
     </div>
 </div>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

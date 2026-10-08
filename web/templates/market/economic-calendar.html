@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +39,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="econCalendar()" x-init="init()">
+<body class="h-100 d-flex" x-data="econCalendar()" x-init="init()">
 
 <script>
 function econCalendar() {
@@ -78,12 +78,12 @@ function econCalendar() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -137,8 +137,8 @@ function econCalendar() {
   <path d="M9 16l.01 0" />
   <path d="M13 16l2 0" />
 </svg></span> Market Recap</a>
-        <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+        <div class="border-top border dark:border-slate-800 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
         <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -156,7 +156,7 @@ function econCalendar() {
   <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
 </svg></span> Alert</a>
     </nav>
-    <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+    <div class="p-2 border-top border dark:border-slate-800">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -172,121 +172,121 @@ function econCalendar() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex-1 max-w-md hidden sm:block">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-fill max-w-md d-none d-sm-block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white">Economic Calendar</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Jadwal rilis data ekonomi global. BI Rate, FOMC, GDP, CPI, NFP, dan lainnya.</p>
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">📅 <span class="font-semibold">Jadwal tentatif</span> — tanggal perkiraan pola rilis rutin, dapat berubah. Bukan pengumuman resmi.</p>
+                <h1 class="fs-2 fs-1 fw-bold text-white">Economic Calendar</h1>
+                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Jadwal rilis data ekonomi global. BI Rate, FOMC, GDP, CPI, NFP, dan lainnya.</p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">📅 <span class="fw-semibold">Jadwal tentatif</span> — tanggal perkiraan pola rilis rutin, dapat berubah. Bukan pengumuman resmi.</p>
                 </div>
             </div>
         </div>
 
         <!-- FILTERS -->
-        <div class="card p-4 flex flex-wrap items-center gap-3">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mr-2">Filter:</span>
-            <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-500 mr-1">Importance:</span>
-                <button @click="setFilter('importance','high')" :class="filterImportance==='high'?'filter-btn active bg-red-900/40 text-red-300 border border-red-700/50':'filter-btn text-slate-500 dark:text-slate-400 border border-slate-700'" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors">
-                    <span class="dot-high inline-block mr-1.5"></span>High
+        <div class="card p-2 d-flex flex-wrap align-items-center gap-3">
+            <span class="fs-xs fw-semibold text-muted text-uppercase  me-2">Filter:</span>
+            <div class="d-flex align-items-center gap-1">
+                <span class="fs-6 text-muted me-1">Importance:</span>
+                <button @click="setFilter('importance','high')" :class="filterImportance==='high'?'filter-btn active bg-danger bg-opacity-50 text-danger border border-danger/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                    <span class="dot-high d-inline-block me-1"></span>High
                 </button>
-                <button @click="setFilter('importance','medium')" :class="filterImportance==='medium'?'filter-btn active bg-amber-900/40 text-amber-300 border border-amber-700/50':'filter-btn text-slate-500 dark:text-slate-400 border border-slate-700'" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors">
-                    <span class="dot-medium inline-block mr-1.5"></span>Medium
+                <button @click="setFilter('importance','medium')" :class="filterImportance==='medium'?'filter-btn active bg-warning bg-opacity-50 text-warning border border-amber-700/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                    <span class="dot-medium d-inline-block me-1"></span>Medium
                 </button>
-                <button @click="setFilter('importance','low')" :class="filterImportance==='low'?'filter-btn active bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-600':'filter-btn text-slate-500 dark:text-slate-400 border border-slate-700'" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors">
-                    <span class="dot-low inline-block mr-1.5"></span>Low
+                <button @click="setFilter('importance','low')" :class="filterImportance==='low'?'filter-btn active bg-body dark:bg-secondary-lt text-body dark:text-body border border-slate-600':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                    <span class="dot-low d-inline-block me-1"></span>Low
                 </button>
             </div>
-            <div class="w-px h-5 bg-slate-100 dark:bg-slate-700 hidden sm:block"></div>
-            <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-500 mr-1">Currency:</span>
+            <div class="w-px h-5 bg-body dark:bg-secondary-lt d-none d-sm-block"></div>
+            <div class="d-flex align-items-center gap-1">
+                <span class="fs-6 text-muted me-1">Currency:</span>
                 <template x-for="c in currencies" :key="c">
-                    <button @click="setFilter('currency',c)" :class="filterCurrency===c?'filter-btn active bg-blue-900/40 text-blue-300 border border-blue-700/50':'filter-btn text-slate-500 dark:text-slate-400 border border-slate-700'" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors" x-text="c"></button>
+                    <button @click="setFilter('currency',c)" :class="filterCurrency===c?'filter-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium " x-text="c"></button>
                 </template>
             </div>
-            <div class="flex-1"></div>
-            <button @click="clearFilters()" class="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 underline">Clear all</button>
+            <div class="flex-fill"></div>
+            <button @click="clearFilters()" class="fs-xs text-muted  dark:hover:text-body text-decoration-underline">Clear all</button>
         </div>
 
         <!-- LEGEND -->
-        <div class="flex items-center gap-4 text-xs text-slate-500">
-            <span><span class="dot-high inline-block mr-1"></span> High Impact</span>
-            <span><span class="dot-medium inline-block mr-1"></span> Medium Impact</span>
-            <span><span class="dot-low inline-block mr-1"></span> Low Impact</span>
+        <div class="d-flex align-items-center gap-4 fs-xs text-muted">
+            <span><span class="dot-high d-inline-block me-1"></span> High Impact</span>
+            <span><span class="dot-medium d-inline-block me-1"></span> Medium Impact</span>
+            <span><span class="dot-low d-inline-block me-1"></span> Low Impact</span>
         </div>
 
         <!-- EVENTS TABLE -->
         <div class="card overflow-hidden">
             <template x-if="loading">
-                <div class="p-8 space-y-4">
-                    <template x-for="i in 5" :key="i"><div class="h-12 bg-slate-100/30 dark:bg-slate-700/30 rounded-lg animate-pulse"></div></template>
+                <div class="p-2 vstack gap-3">
+                    <template x-for="i in 5" :key="i"><div class="h-12 bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-2 "></div></template>
                 </div>
             </template>
 
             <template x-if="!loading && filteredEvents.length===0">
-                <div class="py-16 text-center">
-                    <svg class="mx-auto h-12 w-12 text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <p class="text-slate-500 font-medium">No events found</p>
-                    <p class="text-xs text-slate-600 mt-1">Try adjusting your filters</p>
+                <div class="py-2 text-center">
+                    <svg class="mx-auto h-12 w-12 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <p class="text-muted fw-medium">No events found</p>
+                    <p class="fs-xs text-muted mt-1">Try adjusting your filters</p>
                 </div>
             </template>
 
             <template x-if="!loading && filteredEvents.length > 0">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 text-left">
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Date</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Time</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Currency</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Event</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider w-16">Imp.</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-right">Previous</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-right">Forecast</th>
-                                <th class="py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-right">Actual</th>
+                            <tr class="border-bottom border dark:border/50 text-start">
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Date</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Time</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Currency</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Event</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  w-16">Imp.</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Previous</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Forecast</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Actual</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             <template x-for="(event, idx) in filteredEvents" :key="idx">
-                                <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors" :class="{'bg-blue-900/10': event.date === new Date().toISOString().split('T')[0]}">
-                                    <td class="py-3 px-4 font-mono text-xs" x-text="formatDate(event.date)"></td>
-                                    <td class="py-3 px-4 font-mono text-xs text-slate-500 dark:text-slate-400" x-text="event.time"></td>
-                                    <td class="py-3 px-4">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300" x-text="event.currency"></span>
+                                <tr class=" dark:hover:bg-secondary-lt/20 " :class="{'bg-info-lt/10': event.date === new Date().toISOString().split('T')[0]}">
+                                    <td class="py-2 px-2 font-monospace fs-xs" x-text="formatDate(event.date)"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-muted dark:text-slate-400" x-text="event.time"></td>
+                                    <td class="py-2 px-2">
+                                        <span class="d-inline-flex align-items-center px-2 py-0 rounded fs-xs fw-semibold bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body" x-text="event.currency"></span>
                                     </td>
-                                    <td class="py-3 px-4 text-[13px]">
-                                        <p class="text-slate-800 dark:text-slate-200" x-text="event.event"></p>
-                                        <span x-show="event.schedule==='tentative'" class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-500/30">tentatif — dapat berubah</span>
+                                    <td class="py-2 px-2 fs-sm">
+                                        <p class="text-body dark:text-slate-200" x-text="event.event"></p>
+                                        <span x-show="event.schedule==='tentative'" class="d-inline-block mt-1 px-2 py-0 rounded fs-6 fw-semibold bg-warning bg-opacity-50 text-warning border border-warning">tentatif — dapat berubah</span>
                                     </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span x-show="event.importance==='high'" class="dot-high inline-block"></span>
-                                        <span x-show="event.importance==='medium'" class="dot-medium inline-block"></span>
-                                        <span x-show="event.importance==='low'" class="dot-low inline-block"></span>
+                                    <td class="py-2 px-2 text-center">
+                                        <span x-show="event.importance==='high'" class="dot-high d-inline-block"></span>
+                                        <span x-show="event.importance==='medium'" class="dot-medium d-inline-block"></span>
+                                        <span x-show="event.importance==='low'" class="dot-low d-inline-block"></span>
                                     </td>
-                                    <td class="py-3 px-4 font-mono text-xs text-right text-slate-500 dark:text-slate-400" x-text="event.previous"></td>
-                                    <td class="py-3 px-4 font-mono text-xs text-right text-slate-700 dark:text-slate-300" x-text="event.forecast"></td>
-                                    <td class="py-3 px-4 font-mono text-xs text-right">
-                                        <span x-show="event.actual" x-text="event.actual" class="font-semibold"></span>
-                                        <span x-show="!event.actual" class="text-slate-600">--</span>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end text-muted dark:text-slate-400" x-text="event.previous"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end text-body dark:text-body" x-text="event.forecast"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end">
+                                        <span x-show="event.actual" x-text="event.actual" class="fw-semibold"></span>
+                                        <span x-show="!event.actual" class="text-muted">--</span>
                                     </td>
                                 </tr>
                             </template>
@@ -296,7 +296,7 @@ function econCalendar() {
             </template>
         </div>
 
-        <div class="text-center text-xs text-slate-600">
+        <div class="text-center fs-xs text-muted">
             <template x-if="!loading">
                 <span x-text="filteredEvents.length+' event(s) shown'"></span>
             </template>
@@ -304,6 +304,6 @@ function econCalendar() {
     </main>
 </div>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

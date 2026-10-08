@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,7 +48,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="botCenter()" x-init="init()">
+<body class="h-100 d-flex" x-data="botCenter()" x-init="init()">
     <script>
         function botCenter() {
             return {
@@ -165,12 +165,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -195,8 +195,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -223,8 +223,8 @@
   <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
   <path d="M12 16h.01" />
 </svg></span> Anomalies</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Otomasi</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Otomasi</p>
             <a href="/bots" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4" />
@@ -255,8 +255,8 @@
   <path d="M7 15l.01 0" />
   <path d="M11 15l2 0" />
 </svg></span> Paket</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -284,8 +284,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -307,14 +307,14 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
   <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
 </svg></span> Pengaturan</a>
             <form method="POST" action="/logout" style="margin:0">
-                <button type="submit" class="sidebar-link text-danger w-full text-left"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <button type="submit" class="sidebar-link text-danger w-100 text-start"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
   <path d="M9 12h12l-3 -3" />
@@ -324,29 +324,29 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
+            <div class="d-flex align-items-center gap-2 ms-auto">
                 [[if .User]]
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
                 [[end]]
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-6 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-4 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Bot Center</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Sambungkan bot Telegram, webhooks, dan email untuk forward sinyal otomatis.</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Bot Center</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Sambungkan bot Telegram, webhooks, dan email untuk forward sinyal otomatis.</p>
                 </div>
                 <button @click="openAddModal()" class="btn-primary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -355,58 +355,58 @@
             </div>
 
             <template x-if="showTestResult">
-                <div class="card p-4 bg-emerald-900/20 border-emerald-700/50">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-emerald-300 text-sm" x-text="testMessage"></span>
+                <div class="card p-2 bg-success bg-opacity-25 border-success">
+                    <div class="d-flex align-items-center gap-2">
+                        <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span class="text-success fs-sm" x-text="testMessage"></span>
                     </div>
                 </div>
             </template>
 
             <template x-if="rulesSaved">
-                <div class="card p-4 bg-emerald-900/20 border-emerald-700/50">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-emerald-300 text-sm">Forward rules berhasil disimpan.</span>
+                <div class="card p-2 bg-success bg-opacity-25 border-success">
+                    <div class="d-flex align-items-center gap-2">
+                        <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span class="text-success fs-sm">Forward rules berhasil disimpan.</span>
                     </div>
                 </div>
             </template>
 
             <section>
-                <h2 class="text-lg font-bold text-white mb-4">Connected Bots</h2>
+                <h2 class="fs-3 fw-bold text-white mb-2">Connected Bots</h2>
                 <template x-if="loading">
-                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="row row-cols-sm-2 row-cols-lg-3 gap-4">
                         <template x-for="i in 3" :key="i">
-                            <div class="card p-5"><div class="h-24 bg-slate-100/30 dark:bg-slate-700/30 rounded-lg animate-pulse"></div></div>
+                            <div class="card p-2"><div class="h-24 bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-2 "></div></div>
                         </template>
                     </div>
                 </template>
                 <template x-if="!loading && bots.length === 0">
-                    <div class="card p-10 text-center">
-                        <div class="text-4xl mb-3">&#x1F916;</div>
-                        <h3 class="text-lg font-semibold text-white mb-1">Belum ada bot</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Tambahkan bot Telegram, webhook, atau email untuk memulai auto-forward sinyal.</p>
+                    <div class="card p-2 text-center">
+                        <div class="display-6 mb-2">&#x1F916;</div>
+                        <h3 class="fs-3 fw-semibold text-white mb-1">Belum ada bot</h3>
+                        <p class="fs-sm text-muted dark:text-slate-400 mb-2">Tambahkan bot Telegram, webhook, atau email untuk memulai auto-forward sinyal.</p>
                         <button @click="openAddModal()" class="btn-primary">Tambah Bot Pertama</button>
                     </div>
                 </template>
                 <template x-if="!loading && bots.length > 0">
-                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="row row-cols-sm-2 row-cols-lg-3 gap-4">
                         <template x-for="bot in bots" :key="bot.id">
-                            <div class="card p-5 flex flex-col gap-4">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" :style="{background:typeColor(bot.type)+'20', color:typeColor(bot.type)}" x-text="typeIcon(bot.type)"></div>
+                            <div class="card p-2 d-flex flex-column gap-4">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-3" :style="{background:typeColor(bot.type)+'20', color:typeColor(bot.type)}" x-text="typeIcon(bot.type)"></div>
                                         <div>
-                                            <h3 class="font-semibold text-white text-sm" x-text="bot.name"></h3>
-                                            <span class="text-xs text-slate-500" x-text="typeLabel(bot.type)"></span>
+                                            <h3 class="fw-semibold text-white fs-sm" x-text="bot.name"></h3>
+                                            <span class="fs-xs text-muted" x-text="typeLabel(bot.type)"></span>
                                         </div>
                                     </div>
                                     <div class="toggle-switch" :class="{on:bot.active}" @click="toggleBot(bot)"></div>
                                 </div>
-                                <div class="flex gap-2 mt-auto">
-                                    <button @click="testBot(bot)" class="flex-1 btn-secondary text-xs py-2">Test</button>
-                                    <button @click="openEditModal(bot)" class="flex-1 btn-secondary text-xs py-2">Edit</button>
-                                    <button @click="deleteBot(bot)" class="btn-danger text-xs py-2 px-3">Hapus</button>
+                                <div class="d-flex gap-2 mt-auto">
+                                    <button @click="testBot(bot)" class="flex-fill btn-secondary fs-xs py-2">Test</button>
+                                    <button @click="openEditModal(bot)" class="flex-fill btn-secondary fs-xs py-2">Edit</button>
+                                    <button @click="deleteBot(bot)" class="btn-danger fs-xs py-2 px-2">Hapus</button>
                                 </div>
                             </div>
                         </template>
@@ -415,34 +415,34 @@
             </section>
 
             <section>
-                <h2 class="text-lg font-bold text-white mb-4">Auto-Forward Rules</h2>
-                <div class="card p-6 space-y-5">
+                <h2 class="fs-3 fw-bold text-white mb-2">Auto-Forward Rules</h2>
+                <div class="card p-2 vstack gap-3">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Forward sinyal dengan confidence di atas</label>
-                        <div class="flex items-center gap-3">
-                            <input type="range" class="flex-1 accent-blue-500" min="50" max="100" step="5" x-model.number="rules.confidence_min">
-                            <span class="font-mono text-sm text-blue-400 font-bold w-12 text-right" x-text="rules.confidence_min+'%'"></span>
+                        <label class="d-block fs-sm fw-medium text-body dark:text-body mb-2">Forward sinyal dengan confidence di atas</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <input type="range" class="flex-fill " min="50" max="100" step="5" x-model.number="rules.confidence_min">
+                            <span class="font-monospace fs-sm text-primary fw-bold w-12 text-end" x-text="rules.confidence_min+'%'"></span>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Kode saham mengandung pola (regex, opsional)</label>
-                        <input type="text" class="input-field font-mono text-sm" placeholder="Contoh: BBRI|TLKM|ASII" x-model="rules.pattern_match">
+                        <label class="d-block fs-sm fw-medium text-body dark:text-body mb-2">Kode saham mengandung pola (regex, opsional)</label>
+                        <input type="text" class="input-field font-monospace fs-sm" placeholder="Contoh: BBRI|TLKM|ASII" x-model="rules.pattern_match">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tipe sinyal yang diforward</label>
-                        <div class="flex gap-3">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" value="BUY" x-model="rules.signal_types" class="w-4 h-4 accent-blue-500 rounded">
-                                <span class="text-sm text-slate-700 dark:text-slate-300">BUY</span>
+                        <label class="d-block fs-sm fw-medium text-body dark:text-body mb-2">Tipe sinyal yang diforward</label>
+                        <div class="d-flex gap-3">
+                            <label class="d-flex align-items-center gap-2 cursor-pointer">
+                                <input type="checkbox" value="BUY" x-model="rules.signal_types" class="w-4 h-4  rounded">
+                                <span class="fs-sm text-body dark:text-body">BUY</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" value="SELL" x-model="rules.signal_types" class="w-4 h-4 accent-blue-500 rounded">
-                                <span class="text-sm text-slate-700 dark:text-slate-300">SELL</span>
+                            <label class="d-flex align-items-center gap-2 cursor-pointer">
+                                <input type="checkbox" value="SELL" x-model="rules.signal_types" class="w-4 h-4  rounded">
+                                <span class="fs-sm text-body dark:text-body">SELL</span>
                             </label>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Forward ke bot</label>
+                        <label class="d-block fs-sm fw-medium text-body dark:text-body mb-2">Forward ke bot</label>
                         <select class="select-field" x-model.number="rules.target_bot_id">
                             <option value="0">— Pilih bot —</option>
                             <template x-for="bot in bots" :key="bot.id">
@@ -460,17 +460,17 @@
 
     <template x-if="showAddModal">
         <div class="modal-overlay" @click.self="showAddModal=false">
-            <div class="modal-box space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-white" x-text="editMode?'Edit Bot':'Tambah Bot'"></h3>
-                    <button @click="showAddModal=false" class="text-slate-500 dark:text-slate-400 hover:text-white text-xl">&times;</button>
+            <div class="modal-box vstack gap-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h3 class="fs-3 fw-bold text-white" x-text="editMode?'Edit Bot':'Tambah Bot'"></h3>
+                    <button @click="showAddModal=false" class="text-muted dark:text-slate-400  fs-2">&times;</button>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Bot</label>
+                    <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Nama Bot</label>
                     <input type="text" class="input-field" placeholder="Contoh: Grup Telegram Trading" x-model="form.name">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tipe</label>
+                    <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Tipe</label>
                     <select class="select-field" x-model="form.type">
                         <option value="telegram">Telegram</option>
                         <option value="webhook">Webhook</option>
@@ -478,56 +478,56 @@
                     </select>
                 </div>
                 <template x-if="form.type === 'telegram'">
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Bot Token</label>
-                            <input type="text" class="input-field font-mono text-sm" placeholder="123456:ABC-DEF..." x-model="form.bot_token">
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Bot Token</label>
+                            <input type="text" class="input-field font-monospace fs-sm" placeholder="123456:ABC-DEF..." x-model="form.bot_token">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Chat ID</label>
-                            <input type="text" class="input-field font-mono text-sm" placeholder="-1001234567890" x-model="form.chat_id">
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Chat ID</label>
+                            <input type="text" class="input-field font-monospace fs-sm" placeholder="-1001234567890" x-model="form.chat_id">
                         </div>
                     </div>
                 </template>
                 <template x-if="form.type === 'webhook'">
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Webhook URL</label>
-                            <input type="url" class="input-field font-mono text-sm" placeholder="https://your-server.com/webhook" x-model="form.url">
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Webhook URL</label>
+                            <input type="url" class="input-field font-monospace fs-sm" placeholder="https://your-server.com/webhook" x-model="form.url">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Secret (opsional)</label>
-                            <input type="text" class="input-field font-mono text-sm" placeholder="webhook-secret-key" x-model="form.secret">
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Secret (opsional)</label>
+                            <input type="text" class="input-field font-monospace fs-sm" placeholder="webhook-secret-key" x-model="form.secret">
                         </div>
                     </div>
                 </template>
                 <template x-if="form.type === 'email'">
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">SMTP Host</label>
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">SMTP Host</label>
                             <input type="text" class="input-field" placeholder="smtp.gmail.com" x-model="form.smtp_host">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">SMTP Port</label>
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">SMTP Port</label>
                             <input type="text" class="input-field" placeholder="587" x-model="form.smtp_port">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Username</label>
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Username</label>
                             <input type="text" class="input-field" placeholder="your@email.com" x-model="form.smtp_user">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Password</label>
+                            <label class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Password</label>
                             <input type="password" class="input-field" placeholder="••••••••" x-model="form.smtp_pass">
                         </div>
                     </div>
                 </template>
-                <div class="flex gap-2 pt-2">
-                    <button @click="saveBot()" class="btn-primary flex-1 justify-center" x-text="editMode?'Simpan':'Tambah'"></button>
-                    <button @click="showAddModal=false" class="btn-secondary flex-1 justify-center">Batal</button>
+                <div class="d-flex gap-2 pt-2">
+                    <button @click="saveBot()" class="btn-primary flex-fill justify-content-center" x-text="editMode?'Simpan':'Tambah'"></button>
+                    <button @click="showAddModal=false" class="btn-secondary flex-fill justify-content-center">Batal</button>
                 </div>
             </div>
         </div>
     </template>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

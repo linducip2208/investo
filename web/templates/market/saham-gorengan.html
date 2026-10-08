@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,27 +40,27 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg">
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3">
                 <span>💹</span><span class="font-display">Investo</span>
             </a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Saham Gorengan</span>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Saham Gorengan</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
             <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
@@ -71,7 +71,7 @@
             <a href="/market/ipo" class="sidebar-link"><span>🚀</span>IPO Watch</a>
             <a href="/market/rebalance" class="sidebar-link"><span>⚖️</span>Rebalance</a>
             <a href="/market/insider" class="sidebar-link"><span>👤</span>Insider</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tools</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Tools</div>
             <a href="/screener" class="sidebar-link"><span>🔍</span>Screener</a>
             <a href="/berita" class="sidebar-link"><span>📰</span>Berita</a>
             <a href="/market/trend-scanner" class="sidebar-link"><span>📈</span>Trend Scanner</a>
@@ -81,54 +81,54 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">⚠️ Saham Gorengan</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Deteksi saham dengan risiko tinggi berdasarkan pola perdagangan</p>
+                <h1 class="fs-1 fw-bold text-white">⚠️ Saham Gorengan</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Deteksi saham dengan risiko tinggi berdasarkan pola perdagangan</p>
             </div>
 
             <div class="warning-banner">
-                <div class="flex items-start gap-3">
-                    <span class="text-2xl">⚠️</span>
+                <div class="d-flex align-items-start gap-3">
+                    <span class="fs-1">⚠️</span>
                     <div>
-                        <h3 class="text-red-400 font-bold text-lg">PERHATIAN: Saham dengan Risiko Tinggi</h3>
-                        <p class="text-red-200/80 text-sm mt-1 max-w-3xl">Saham-saham di bawah ini menunjukkan karakteristik "saham gorengan" — volatilitas ekstrem, volume rendah, market cap kecil, dan rentan manipulasi. <strong>Investasi dengan sangat hati-hati.</strong></p>
+                        <h3 class="text-danger fw-bold fs-3">PERHATIAN: Saham dengan Risiko Tinggi</h3>
+                        <p class="text-danger fs-sm mt-1 max-w-3xl">Saham-saham di bawah ini menunjukkan karakteristik "saham gorengan" — volatilitas ekstrem, volume rendah, market cap kecil, dan rentan manipulasi. <strong>Investasi dengan sangat hati-hati.</strong></p>
                     </div>
                 </div>
             </div>
 
             <div class="card overflow-hidden">
-                <table class="w-full text-sm">
+                <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-700">
-                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Saham</th>
-                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Risk Level</th>
-                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alasan</th>
-                            <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Detail</th>
+                        <tr class="border-bottom border dark:border">
+                            <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Saham</th>
+                            <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Risk Level</th>
+                            <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Alasan</th>
+                            <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Detail</th>
                         </tr>
                     </thead>
                     <tbody>
                         [[range .Signals]]
-                        <tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                            <td class="p-4">
-                                <a href="/saham/[[.StockCode]]" class="text-white font-semibold hover:text-blue-400">[[.StockCode]]</a>
-                                <p class="text-slate-500 text-xs">[[.StockName]]</p>
+                        <tr class="border-bottom border dark:border-slate-800  dark:hover:bg-white/50 ">
+                            <td class="p-2">
+                                <a href="/saham/[[.StockCode]]" class="text-white fw-semibold ">[[.StockCode]]</a>
+                                <p class="text-muted fs-xs">[[.StockName]]</p>
                             </td>
-                            <td class="p-4">
+                            <td class="p-2">
                                 <span class="badge badge-[[.RiskLevel]]">[[.RiskLevel]]</span>
                             </td>
-                            <td class="p-4">
-                                <div class="flex flex-wrap gap-1">
+                            <td class="p-2">
+                                <div class="d-flex flex-wrap gap-1">
                                     [[range .Reasons]]
                                     <span class="reason-tag">[[.]]</span>
                                     [[end]]
                                 </div>
                             </td>
-                            <td class="p-4 text-right">
-                                <a href="/saham/[[.StockCode]]" class="text-blue-400 hover:text-blue-300 text-sm">Analisa →</a>
+                            <td class="p-2 text-end">
+                                <a href="/saham/[[.StockCode]]" class="text-primary  fs-sm">Analisa →</a>
                             </td>
                         </tr>
                         [[end]]
@@ -137,18 +137,18 @@
             </div>
 
             [[if not .Signals]]
-            <div class="card p-12 text-center">
-                <p class="text-slate-500 text-lg">Tidak ada saham gorengan terdeteksi</p>
-                <p class="text-slate-600 text-sm mt-1">Pasar dalam kondisi normal</p>
+            <div class="card p-2 text-center">
+                <p class="text-muted fs-3">Tidak ada saham gorengan terdeteksi</p>
+                <p class="text-muted fs-sm mt-1">Pasar dalam kondisi normal</p>
             </div>
             [[end]]
 
-            <div class="card p-6 text-sm text-slate-500 leading-relaxed">
-                <p class="font-semibold text-slate-500 dark:text-slate-400 mb-2">📋 Disclaimer</p>
+            <div class="card p-2 fs-sm text-muted lh-lg">
+                <p class="fw-semibold text-muted dark:text-slate-400 mb-2">📋 Disclaimer</p>
                 <p>Data di atas dihasilkan oleh algoritma otomatis berdasarkan kriteria teknikal dan fundamental. Label "saham gorengan" bukan merupakan rekomendasi jual atau beli. Selalu lakukan riset mandiri sebelum berinvestasi. Investasi mengandung risiko, termasuk kemungkinan kehilangan seluruh modal.</p>
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="waranPage()" x-init="init()">
+<body class="h-100 d-flex" x-data="waranPage()" x-init="init()">
     <script>
     function waranPage() {
         return {
@@ -46,19 +46,19 @@
             async fetch() { this.loading=true; try{var r=await fetch('/api/market/waran');var d=await r.json();this.warans=d.warans||[]}catch(e){} this.loading=false; },
             tickCountdowns() { this.warans = this.warans.map(function(w){ w._days = Math.max(0, Math.floor((new Date(w.expiry_date).getTime() - Date.now()) / 86400000)); return w; }); },
             statusClass(s) { return s === 'In the Money' ? 'text-success' : 'text-danger'; },
-            getBadge(s) { return s === 'In the Money' ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'; },
+            getBadge(s) { return s === 'In the Money' ? 'bg-success-lt text-green-400' : 'bg-danger-lt text-red-400'; },
             fmtPrice(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; }
         }
     }
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
             <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
             <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
@@ -69,7 +69,7 @@
             <a href="/market/waran" class="sidebar-link active"><span>🎫</span> Waran Tracker</a>
             <a href="/market/economic-calendar" class="sidebar-link"><span>📅</span> Economic Calendar</a>
             <a href="/calculators" class="sidebar-link"><span>🧮</span> Kalkulator</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/ideas" class="sidebar-link"><span>💡</span> Ideas</a>
             <a href="/leaderboard" class="sidebar-link"><span>🏆</span> Leaderboard</a>
             <a href="/blog" class="sidebar-link"><span>📝</span> Blog</a>
@@ -77,21 +77,21 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1">
-                <h1 class="text-lg font-bold text-white">Waran Tracker</h1>
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill">
+                <h1 class="fs-3 fw-bold text-white">Waran Tracker</h1>
             </div>
             [[template "components/market-clock.html" .]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
-            <div class="card p-4 mb-4 border-amber-500/30 bg-amber-900/10">
-                <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. Verifikasi harga & tanggal exercise ke keterbukaan informasi BEI/IDX.</p>
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
+            <div class="card p-2 mb-2 border-warning bg-warning bg-opacity-10">
+                <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. Verifikasi harga & tanggal exercise ke keterbukaan informasi BEI/IDX.</p>
             </div>
-            <div class="card p-5 overflow-hidden">
+            <div class="card p-2 overflow-hidden">
                 <div class="table-wrap" style="overflow-x:auto">
                     <table>
                         <thead>
@@ -112,34 +112,34 @@
                             <template x-for="w in warans" :key="w.waran_code">
                                 <tr>
                                     <td>
-                                        <span class="font-semibold text-white font-mono" x-text="w.waran_code"></span>
+                                        <span class="fw-semibold text-white font-monospace" x-text="w.waran_code"></span>
                                     </td>
                                     <td>
-                                        <a :href="'/saham/'+w.stock_code" class="text-blue-400 hover:underline font-mono" x-text="w.stock_code"></a>
+                                        <a :href="'/saham/'+w.stock_code" class="text-primary  font-monospace" x-text="w.stock_code"></a>
                                     </td>
-                                    <td class="font-mono text-slate-700 dark:text-slate-300" x-text="'Rp '+Math.round(w.exercise_price).toLocaleString('id-ID')"></td>
-                                    <td class="font-mono text-white" x-text="'Rp '+Math.round(w.current_stock_price).toLocaleString('id-ID')"></td>
-                                    <td class="font-mono text-white" x-text="'Rp '+Math.round(w.waran_price).toLocaleString('id-ID')"></td>
-                                    <td class="text-slate-500 dark:text-slate-400 text-xs">
+                                    <td class="font-monospace text-body dark:text-body" x-text="'Rp '+Math.round(w.exercise_price).toLocaleString('id-ID')"></td>
+                                    <td class="font-monospace text-white" x-text="'Rp '+Math.round(w.current_stock_price).toLocaleString('id-ID')"></td>
+                                    <td class="font-monospace text-white" x-text="'Rp '+Math.round(w.waran_price).toLocaleString('id-ID')"></td>
+                                    <td class="text-muted dark:text-slate-400 fs-xs">
                                         <div x-text="w.expiry_date"></div>
-                                        <div class="text-[10px]" :class="w._days <= 30 ? 'text-danger' : 'text-slate-500'" x-text="(w._days || 0) + ' hari lagi'" x-show="w._days >= 0"></div>
-                                        <div class="text-[10px] text-danger" x-show="w._days <= 0">Expired</div>
+                                        <div class="fs-6" :class="w._days <= 30 ? 'text-danger' : 'text-slate-500'" x-text="(w._days || 0) + ' hari lagi'" x-show="w._days >= 0"></div>
+                                        <div class="fs-6 text-danger" x-show="w._days <= 0">Expired</div>
                                     </td>
-                                    <td class="font-mono text-sm" :class="w.premium > 0 ? 'text-danger' : 'text-success'" x-text="(w.premium > 0 ? '+' : '') + w.premium.toFixed(1) + '%'"></td>
-                                    <td class="font-mono text-sm text-slate-700 dark:text-slate-300" x-text="w.gearing.toFixed(1) + 'x'"></td>
-                                    <td class="font-mono text-sm text-slate-700 dark:text-slate-300" x-text="'Rp '+Math.round(w.break_even).toLocaleString('id-ID')"></td>
+                                    <td class="font-monospace fs-sm" :class="w.premium > 0 ? 'text-danger' : 'text-success'" x-text="(w.premium > 0 ? '+' : '') + w.premium.toFixed(1) + '%'"></td>
+                                    <td class="font-monospace fs-sm text-body dark:text-body" x-text="w.gearing.toFixed(1) + 'x'"></td>
+                                    <td class="font-monospace fs-sm text-body dark:text-body" x-text="'Rp '+Math.round(w.break_even).toLocaleString('id-ID')"></td>
                                     <td>
-                                        <span class="badge px-2 py-0.5 rounded text-[10px] font-semibold" :class="w.status==='In the Money'?'bg-green-900/30 text-green-400':'bg-red-900/30 text-red-400'" x-text="w.status"></span>
+                                        <span class="badge px-2 py-0 rounded fs-6 fw-semibold" :class="w.status==='In the Money'?'bg-success-lt text-green-400':'bg-danger-lt text-red-400'" x-text="w.status"></span>
                                     </td>
                                 </tr>
                             </template>
                         </tbody>
                     </table>
                 </div>
-                <div x-show="!loading && warans.length === 0" class="text-center py-12 text-slate-500">Belum ada data waran</div>
+                <div x-show="!loading && warans.length === 0" class="text-center py-2 text-muted">Belum ada data waran</div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

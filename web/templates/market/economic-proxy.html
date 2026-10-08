@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,33 +36,33 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Economic Proxy</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Economic Proxy</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Alt Data</div>
             <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
             <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
             <a href="/market/economic-proxy" class="sidebar-link active"><span>🏭</span>Economic Proxy</a>
             <a href="/market/job-postings" class="sidebar-link"><span>💼</span>Job Postings</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
@@ -70,54 +70,54 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">🏭 Satellite & Economic Proxy</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Indikator alternatif untuk memproyeksikan aktivitas ekonomi sebelum data resmi GDP rilis</p>
+                <h1 class="fs-1 fw-bold text-white">🏭 Satellite & Economic Proxy</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Indikator alternatif untuk memproyeksikan aktivitas ekonomi sebelum data resmi GDP rilis</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 gap-4">
                 [[range .Proxies]]
-                <div class="card p-5 hover:border-blue-500/30 transition-colors">
-                    <div class="flex items-start justify-between mb-3">
-                        <span class="px-2 py-1 rounded text-xs font-semibold bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">[[.Category]]</span>
-                        <span class="text-lg [[if eq .Trend "up"]]text-success[[else if eq .Trend "down"]]text-danger[[else]]text-warning[[end]]">
+                <div class="card p-2  ">
+                    <div class="d-flex align-items-start justify-content-between mb-2">
+                        <span class="px-2 py-1 rounded fs-xs fw-semibold bg-white dark:bg-white text-muted dark:text-slate-400">[[.Category]]</span>
+                        <span class="fs-3 [[if eq .Trend "up"]]text-success[[else if eq .Trend "down"]]text-danger[[else]]text-warning[[end]]">
                             [[if eq .Trend "up"]]&#9650;[[else if eq .Trend "down"]]&#9660;[[else]]&#9644;[[end]]
                         </span>
                     </div>
-                    <h3 class="text-sm font-semibold text-white mb-2 line-clamp-2">[[.Name]]</h3>
-                    <p class="text-3xl font-mono font-bold [[if eq .Trend "up"]]text-success[[else if eq .Trend "down"]]text-danger[[else]]text-warning[[end]]">[[.CurrentValue]]</p>
-                    <div class="mt-3 space-y-2">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-500">YoY Change</span>
-                            <span class="font-mono font-semibold [[if ge .TrendValue 0]]text-success[[else]]text-danger[[end]]">[[if ge .TrendValue 0]]+[[end]][[printf "%.1f" .TrendValue]]%</span>
+                    <h3 class="fs-sm fw-semibold text-white mb-2 line-clamp-2">[[.Name]]</h3>
+                    <p class="fs-1 font-monospace fw-bold [[if eq .Trend "up"]]text-success[[else if eq .Trend "down"]]text-danger[[else]]text-warning[[end]]">[[.CurrentValue]]</p>
+                    <div class="mt-2 vstack gap-2">
+                        <div class="d-flex align-items-center justify-content-between fs-xs">
+                            <span class="text-muted">YoY Change</span>
+                            <span class="font-monospace fw-semibold [[if ge .TrendValue 0]]text-success[[else]]text-danger[[end]]">[[if ge .TrendValue 0]]+[[end]][[printf "%.1f" .TrendValue]]%</span>
                         </div>
                         <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="text-slate-500">GDP Correlation</span>
-                                <span class="font-mono font-semibold [[if ge .GDPCorrelation 0.8]]text-success[[else if ge .GDPCorrelation 0.5]]text-warning[[else]]text-danger[[end]]">[[printf "%.2f" .GDPCorrelation]]</span>
+                            <div class="d-flex align-items-center justify-content-between fs-xs mb-1">
+                                <span class="text-muted">GDP Correlation</span>
+                                <span class="font-monospace fw-semibold [[if ge .GDPCorrelation 0.8]]text-success[[else if ge .GDPCorrelation 0.5]]text-warning[[else]]text-danger[[end]]">[[printf "%.2f" .GDPCorrelation]]</span>
                             </div>
                             <div class="corr-bar" style="height:6px;background:#334155;border-radius:3px;overflow:hidden">
                                 <div class="corr-fill" style="height:100%;border-radius:3px;background:[[if ge .GDPCorrelation 0.8]]#34d399[[else if ge .GDPCorrelation 0.5]]#fbbf24[[else]]#f87171[[end]];width:[[printf "%.0f" (mul .GDPCorrelation 100)]]%"></div>
                             </div>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">[[.Description]]</p>
-                    <p class="text-xs text-slate-600 mt-2">Last: [[.LastUpdated]]</p>
+                    <p class="fs-xs text-muted mt-2 lh-lg">[[.Description]]</p>
+                    <p class="fs-xs text-muted mt-2">Last: [[.LastUpdated]]</p>
                 </div>
                 [[end]]
             </div>
 
             [[if not .Proxies]]
-            <div class="card p-12 text-center">
-                <p class="text-slate-500 text-lg">Data proxy indicators belum tersedia</p>
+            <div class="card p-2 text-center">
+                <p class="text-muted fs-3">Data proxy indicators belum tersedia</p>
             </div>
             [[end]]
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

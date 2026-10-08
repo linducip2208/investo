@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="achievementsApp()" x-init="init()">
+<body class="h-100 d-flex" x-data="achievementsApp()" x-init="init()">
     <script>
         function achievementsApp() {
             return {
@@ -85,12 +85,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -136,8 +136,8 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Engagement</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Engagement</p>
             <a href="/market/prediction" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -161,8 +161,8 @@
   <path d="M10 8v.01" />
   <path d="M14 8v.01" />
 </svg></span> WhatsApp Bot</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -179,8 +179,8 @@
   <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
   <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
 </svg></span> Alert</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -202,7 +202,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -217,91 +217,91 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
+            <div class="d-flex align-items-center gap-2 ms-auto">
                 [[if .User]]
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
                 [[else]]
-                <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+                <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
                 [[end]]
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">🏅 Achievements</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Kumpulkan semua badge dan jadilah Investo Master!</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">🏅 Achievements</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Kumpulkan semua badge dan jadilah Investo Master!</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="bg-white dark:bg-slate-800 rounded-xl px-4 py-2 text-center">
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block">Ter-unlock</span>
-                        <span class="font-mono text-xl font-bold text-amber-400" x-text="unlockedCount+'/'+totalCount"></span>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white dark:bg-white rounded-3 px-2 py-2 text-center">
+                        <span class="fs-xs text-muted dark:text-slate-400 d-block">Ter-unlock</span>
+                        <span class="font-monospace fs-2 fw-bold text-warning" x-text="unlockedCount+'/'+totalCount"></span>
                     </div>
-                    <div class="bg-white dark:bg-slate-800 rounded-xl px-4 py-2 text-center">
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block">Progress</span>
-                        <span class="font-mono text-xl font-bold text-success" x-text="totalCount>0?Math.round(unlockedCount/totalCount*100)+'%':'0%'"></span>
+                    <div class="bg-white dark:bg-white rounded-3 px-2 py-2 text-center">
+                        <span class="fs-xs text-muted dark:text-slate-400 d-block">Progress</span>
+                        <span class="font-monospace fs-2 fw-bold text-success" x-text="totalCount>0?Math.round(unlockedCount/totalCount*100)+'%':'0%'"></span>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 flex-wrap">
-                <button @click="activeCategory='all'" :class="activeCategory==='all'?'bg-blue-900/40 text-blue-300 border-blue-700/50':'text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-800'" class="px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors">Semua</button>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <button @click="activeCategory='all'" :class="activeCategory==='all'?'bg-info-lt/40 text-primary border-blue-700/50':'text-slate-400 border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Semua</button>
                 <template x-for="cat in categories" :key="cat.name">
-                    <button @click="activeCategory=cat.name" :class="activeCategory===cat.name?'bg-blue-900/40 text-blue-300 border-blue-700/50':'text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-800'" class="px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors">
+                    <button @click="activeCategory=cat.name" :class="activeCategory===cat.name?'bg-info-lt/40 text-primary border-blue-700/50':'text-slate-400 border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">
                         <span x-text="cat.name"></span>
-                        <span class="text-xs ml-1 opacity-60" x-text="cat.unlocked+'/'+cat.count"></span>
+                        <span class="fs-xs ms-1 opacity-60" x-text="cat.unlocked+'/'+cat.count"></span>
                     </button>
                 </template>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-4">
                 <template x-for="a in filteredAchievements()" :key="a.key">
-                    <div class="card p-5 ach-card" :class="a.unlocked?'unlocked':'locked'">
-                        <div class="flex items-start gap-3">
-                            <span class="text-3xl shrink-0" x-text="a.icon"></span>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-sm truncate" :class="a.unlocked?'text-white':'text-slate-400'" x-text="a.name"></h3>
-                                <p class="text-xs mt-0.5" :class="a.unlocked?'text-blue-200':'text-slate-500'" x-text="a.description"></p>
+                    <div class="card p-2 ach-card" :class="a.unlocked?'unlocked':'locked'">
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="fs-1 flex-shrink-0" x-text="a.icon"></span>
+                            <div class="flex-fill min-w-0">
+                                <h3 class="fw-semibold fs-sm text-truncate" :class="a.unlocked?'text-white':'text-slate-400'" x-text="a.name"></h3>
+                                <p class="fs-xs mt-0" :class="a.unlocked?'text-blue-200':'text-slate-500'" x-text="a.description"></p>
                             </div>
-                            <span x-show="a.unlocked" class="text-xl shrink-0">✅</span>
-                            <span x-show="!a.unlocked" class="text-xl shrink-0">🔒</span>
+                            <span x-show="a.unlocked" class="fs-2 flex-shrink-0">✅</span>
+                            <span x-show="!a.unlocked" class="fs-2 flex-shrink-0">🔒</span>
                         </div>
 
-                        <div x-show="!a.unlocked && a.target > 0" class="mt-3">
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="text-slate-500">Progress</span>
-                                <span class="font-mono text-slate-500 dark:text-slate-400" x-text="a.progress+'/'+a.target"></span>
+                        <div x-show="!a.unlocked && a.target > 0" class="mt-2">
+                            <div class="d-flex align-items-center justify-content-between fs-xs mb-1">
+                                <span class="text-muted">Progress</span>
+                                <span class="font-monospace text-muted dark:text-slate-400" x-text="a.progress+'/'+a.target"></span>
                             </div>
-                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500" :style="{width:progressPercent(a)+'%'}"></div>
+                            <div class="w-100 h-2 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                <div class="h-100 bg-gradient bg-gradient-from-blue bg-gradient-to-purple rounded-pill  " :style="{width:progressPercent(a)+'%'}"></div>
                             </div>
                         </div>
 
-                        <div x-show="a.unlocked && a.unlocked_at" class="mt-3 text-xs text-amber-400 font-mono">
+                        <div x-show="a.unlocked && a.unlocked_at" class="mt-2 fs-xs text-warning font-monospace">
                             Unlocked: <span x-text="formatDate(a.unlocked_at)"></span>
                         </div>
 
-                        <div x-show="a.unlocked" class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-md">
+                        <div x-show="a.unlocked" class="mt-2 d-inline-flex align-items-center gap-1 px-2 py-0 bg-warning bg-opacity-25 text-warning fs-xs fw-semibold rounded-2">
                             ✓ Diperoleh
                         </div>
                     </div>
                 </template>
             </div>
 
-            <div x-show="filteredAchievements().length===0" class="py-16 text-center text-slate-500">
+            <div x-show="filteredAchievements().length===0" class="py-2 text-center text-muted">
                 Tidak ada achievement di kategori ini.
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

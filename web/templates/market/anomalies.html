@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,14 +42,14 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false }">
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false }">
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -61,7 +61,7 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 17l6 -6l4 4l8 -8" />
   <path d="M14 7l7 0l0 7" />
-</svg></span> Saham IDX <span class="ml-auto text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">[[.TotalStocks]]</span></a>
+</svg></span> Saham IDX <span class="ms-auto fs-6 bg-body dark:bg-slate-700 px-1 py-0 rounded text-body dark:text-slate-300">[[.TotalStocks]]</span></a>
             <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -95,19 +95,19 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
   <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
   <path d="M12 12l0 .01" />
   <path d="M3 13a20 20 0 0 0 18 0" />
-</svg></span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+</svg></span> Portofolio <span class="ms-auto fs-6 bg-primary bg-opacity-50 px-1 py-0 rounded text-primary">[[.PortfolioCount]]</span></a>
             <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
-</svg></span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+</svg></span> Watchlist <span class="ms-auto fs-6 bg-warning bg-opacity-50 px-1 py-0 rounded text-warning">[[.WatchlistCount]]</span></a>
             <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
@@ -124,8 +124,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -147,7 +147,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -163,41 +163,41 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white">Deteksi Anomali</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Pendeteksian otomatis anomali pergerakan harga, volume, dan gap pada seluruh saham.</p>
+                <h1 class="fs-2 fs-1 fw-bold text-white">Deteksi Anomali</h1>
+                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Pendeteksian otomatis anomali pergerakan harga, volume, dan gap pada seluruh saham.</p>
             </div>
 
             <!-- FILTER PILLS -->
-            <div class="flex flex-wrap gap-2">
-                <a href="/market/anomalies" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium transition-colors [[if not .SelType]]filter-active text-white[[else]]bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-600 hover:bg-slate-600[[end]]">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="/market/anomalies" class="filter-btn px-2 py-2 rounded-3 fs-sm fw-medium  [[if not .SelType]]filter-active text-white[[else]]bg-slate-700 text-body dark:text-slate-300 border border hover:bg-slate-600[[end]]">
                     Semua
                 </a>
-                <a href="/market/anomalies?type=price" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium transition-colors [[if eq .SelType "price"]]filter-active text-white[[else]]bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600[[end]]">
+                <a href="/market/anomalies?type=price" class="filter-btn px-2 py-2 rounded-3 fs-sm fw-medium  [[if eq .SelType "price"]]filter-active text-white[[else]]bg-slate-700 text-body border border hover:bg-slate-600[[end]]">
                     Harga
                 </a>
-                <a href="/market/anomalies?type=volume" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium transition-colors [[if eq .SelType "volume"]]filter-active text-white[[else]]bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600[[end]]">
+                <a href="/market/anomalies?type=volume" class="filter-btn px-2 py-2 rounded-3 fs-sm fw-medium  [[if eq .SelType "volume"]]filter-active text-white[[else]]bg-slate-700 text-body border border hover:bg-slate-600[[end]]">
                     Volume
                 </a>
-                <a href="/market/anomalies?type=gap" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium transition-colors [[if eq .SelType "gap"]]filter-active text-white[[else]]bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600[[end]]">
+                <a href="/market/anomalies?type=gap" class="filter-btn px-2 py-2 rounded-3 fs-sm fw-medium  [[if eq .SelType "gap"]]filter-active text-white[[else]]bg-slate-700 text-body border border hover:bg-slate-600[[end]]">
                     Gap
                 </a>
             </div>
@@ -205,54 +205,54 @@
             [[if .Anomalies]]
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="w-100 fs-sm">
                         <thead>
-                            <tr class="bg-white/30 dark:bg-slate-800/30 border-b border-slate-200 dark:border-slate-700">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Saham</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Tipe</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Severity</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Deskripsi</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Nilai</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Threshold</th>
+                            <tr class="bg-white bg-opacity-25 dark:bg-slate-800/30 border-bottom border dark:border-slate-700">
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Saham</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Tipe</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Severity</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Deskripsi</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Nilai</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Threshold</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                        <tbody class="divide-y border dark:divide-slate-700/50">
                             [[range .Anomalies]]
-                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors cursor-pointer" onclick="window.location.href='/saham/[[.StockCode]]'">
-                                <td class="px-5 py-3.5">
-                                    <a href="/saham/[[.StockCode]]" class="text-sm font-bold text-white hover:text-blue-400 transition-colors">[[.StockCode]]</a>
+                            <tr class=" dark:hover:bg-slate-700/30  cursor-pointer" onclick="window.location.href='/saham/[[.StockCode]]'">
+                                <td class="px-2 py-2">
+                                    <a href="/saham/[[.StockCode]]" class="fs-sm fw-bold text-white  ">[[.StockCode]]</a>
                                     [[if .StockName]]
-                                    <span class="block text-xs text-slate-500 truncate max-w-[140px]">[[.StockName]]</span>
+                                    <span class="d-block fs-xs text-muted text-truncate max-w-140">[[.StockName]]</span>
                                     [[end]]
                                 </td>
-                                <td class="px-5 py-3.5">
-                                    <span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-semibold [[if eq .Type "Harga"]]badge-price[[else if eq .Type "Volume"]]badge-volume[[else]]badge-gap[[end]]">
+                                <td class="px-2 py-2">
+                                    <span class="d-inline-flex px-2 py-1 rounded-pill fs-6 fw-semibold [[if eq .Type "Harga"]]bg-info-lt[[else if eq .Type "Volume"]]bg-primary-lt[[else]]bg-warning-lt[[end]]">
                                         [[.Type]]
                                     </span>
                                 </td>
-                                <td class="px-5 py-3.5">
+                                <td class="px-2 py-2">
                                     [[if eq .Severity "high"]]
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-red-900/30 text-red-400 rounded-full text-[11px] font-bold">
-                                        <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span> HIGH
+                                    <span class="d-inline-flex align-items-center gap-1 px-2 py-1 bg-danger bg-opacity-25 text-danger rounded-pill fs-6 fw-bold">
+                                        <span class="w-1.5 h-1.5 bg-danger rounded-pill "></span> HIGH
                                     </span>
                                     [[else if eq .Severity "medium"]]
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-900/30 text-amber-400 rounded-full text-[11px] font-bold">
-                                        <span class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span> MEDIUM
+                                    <span class="d-inline-flex align-items-center gap-1 px-2 py-1 bg-warning bg-opacity-25 text-warning rounded-pill fs-6 fw-bold">
+                                        <span class="w-1.5 h-1.5 bg-warning rounded-pill"></span> MEDIUM
                                     </span>
                                     [[else]]
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-900/30 text-blue-400 rounded-full text-[11px] font-bold">
-                                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> LOW
+                                    <span class="d-inline-flex align-items-center gap-1 px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-pill fs-6 fw-bold">
+                                        <span class="w-1.5 h-1.5 bg-primary rounded-pill"></span> LOW
                                     </span>
                                     [[end]]
                                 </td>
-                                <td class="px-5 py-3.5 max-w-xs">
-                                    <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">[[.Description]]</p>
+                                <td class="px-2 py-2 max-w-xs">
+                                    <p class="fs-sm text-body dark:text-slate-300 lh-lg">[[.Description]]</p>
                                 </td>
-                                <td class="px-5 py-3.5 text-right">
-                                    <span class="font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">[[printf "%.2f" .Value]]</span>
+                                <td class="px-2 py-2 text-end">
+                                    <span class="font-monospace fs-sm fw-semibold text-body dark:text-slate-200">[[printf "%.2f" .Value]]</span>
                                 </td>
-                                <td class="px-5 py-3.5 text-right">
-                                    <span class="font-mono text-xs text-slate-500">[[printf "%.2f" .Threshold]]</span>
+                                <td class="px-2 py-2 text-end">
+                                    <span class="font-monospace fs-xs text-muted">[[printf "%.2f" .Threshold]]</span>
                                 </td>
                             </tr>
                             [[end]]
@@ -261,41 +261,41 @@
                 </div>
             </div>
             [[else]]
-            <div class="card p-16 text-center">
-                <div class="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="card p-2 text-center">
+                <div class="w-16 h-16 bg-success bg-opacity-25 rounded-pill d-flex align-items-center justify-content-center mx-auto mb-2">
+                    <svg class="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3 class="text-lg font-semibold text-white mb-2">Tidak Ada Anomali Terdeteksi</h3>
-                <p class="text-slate-500 dark:text-slate-400">Pasar dalam kondisi normal. Tidak ada anomali harga, volume, atau gap yang signifikan.</p>
+                <h3 class="fs-3 fw-semibold text-white mb-2">Tidak Ada Anomali Terdeteksi</h3>
+                <p class="text-muted dark:text-slate-400">Pasar dalam kondisi normal. Tidak ada anomali harga, volume, atau gap yang signifikan.</p>
             </div>
             [[end]]
 
             <!-- INFO CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="card p-5 card-hover">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 bg-violet-900/30 rounded-xl flex items-center justify-center text-lg">&#x1F4C8;</div>
-                        <h3 class="font-semibold text-white text-sm">Anomali Harga</h3>
+            <div class="row row-cols-1 row-cols-md-3 gap-4">
+                <div class="card p-2 card-hover">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-primary bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center fs-3">&#x1F4C8;</div>
+                        <h3 class="fw-semibold text-white fs-sm">Anomali Harga</h3>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Mendeteksi perubahan harga &gt;3 standar deviasi dari rata-rata 20-hari menggunakan metode Z-score.</p>
+                    <p class="fs-xs text-muted dark:text-slate-400 lh-lg">Mendeteksi perubahan harga &gt;3 standar deviasi dari rata-rata 20-hari menggunakan metode Z-score.</p>
                 </div>
-                <div class="card p-5 card-hover">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 bg-pink-900/30 rounded-xl flex items-center justify-center text-lg">&#x1F4CA;</div>
-                        <h3 class="font-semibold text-white text-sm">Anomali Volume</h3>
+                <div class="card p-2 card-hover">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-primary bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center fs-3">&#x1F4CA;</div>
+                        <h3 class="fw-semibold text-white fs-sm">Anomali Volume</h3>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Mendeteksi lonjakan volume &gt;3x rata-rata 20-hari yang mengindikasikan akumulasi atau distribusi besar.</p>
+                    <p class="fs-xs text-muted dark:text-slate-400 lh-lg">Mendeteksi lonjakan volume &gt;3x rata-rata 20-hari yang mengindikasikan akumulasi atau distribusi besar.</p>
                 </div>
-                <div class="card p-5 card-hover">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 bg-orange-900/30 rounded-xl flex items-center justify-center text-lg">&#x2197;</div>
-                        <h3 class="font-semibold text-white text-sm">Deteksi Gap</h3>
+                <div class="card p-2 card-hover">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-warning bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center fs-3">&#x2197;</div>
+                        <h3 class="fw-semibold text-white fs-sm">Deteksi Gap</h3>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Mendeteksi gap up/down &gt;5% antara close kemarin dan open hari ini yang menandakan perubahan sentimen drastis.</p>
+                    <p class="fs-xs text-muted dark:text-slate-400 lh-lg">Mendeteksi gap up/down &gt;5% antara close kemarin dan open hari ini yang menandakan perubahan sentimen drastis.</p>
                 </div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

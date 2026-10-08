@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="liquidityApp()" x-init="init()">
+<body class="h-100 d-flex" x-data="liquidityApp()" x-init="init()">
 
 <script>
 function liquidityApp() {
@@ -66,12 +66,12 @@ function liquidityApp() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -116,8 +116,8 @@ function liquidityApp() {
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Correlation</a>
-        <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Analisis [[.Stock.Code]]</p>
+        <div class="border-top border dark:border-slate-800 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Analisis [[.Stock.Code]]</p>
         <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
@@ -138,7 +138,7 @@ function liquidityApp() {
   <path d="M13 16l2 0" />
 </svg></span> Data Fundamental</a>
     </nav>
-    <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+    <div class="p-2 border-top border dark:border-slate-800">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -154,91 +154,91 @@ function liquidityApp() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+            <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a :href="'/saham/'+stockCode" class="hover:text-blue-400 transition-colors" x-text="stockCode"></a>
+            <a :href="'/saham/'+stockCode" class=" " x-text="stockCode"></a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-white font-medium">Liquidity Zones</span>
+            <span class="text-white fw-medium">Liquidity Zones</span>
         </div>
-        <div class="flex-1"></div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="flex-fill"></div>
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white" x-text="'Liquidity Zones &mdash; '+stockCode"></h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5" x-text="stockName+' &mdash; Volume Profile dan Liquidity Zones. Support (hijau) di bawah harga, Resistance (merah) di atas.'"></p>
+                <h1 class="fs-2 fs-1 fw-bold text-white" x-text="'Liquidity Zones &mdash; '+stockCode"></h1>
+                <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="stockName+' &mdash; Volume Profile dan Liquidity Zones. Support (hijau) di bawah harga, Resistance (merah) di atas.'"></p>
             </div>
-            <a :href="'/saham/'+stockCode" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-xl transition-colors">&larr; Kembali ke [[.Stock.Code]]</a>
+            <a :href="'/saham/'+stockCode" class="px-2 py-2 bg-body dark:bg-secondary-lt  text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">&larr; Kembali ke [[.Stock.Code]]</a>
         </div>
 
         <!-- SUMMARY CARDS -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="card p-5 flex flex-col justify-between">
-                <span class="text-xs text-slate-500 uppercase tracking-wider">Total Zones</span>
-                <span class="text-2xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1" x-text="zones.length"></span>
-                <span class="text-[10px] text-slate-600 mt-1">Zones >2x avg volume</span>
+        <div class="row row-cols-2 row-cols-lg-4 gap-4">
+            <div class="card p-2 d-flex flex-column justify-content-between">
+                <span class="fs-xs text-muted text-uppercase ">Total Zones</span>
+                <span class="fs-1 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1" x-text="zones.length"></span>
+                <span class="fs-6 text-muted mt-1">Zones >2x avg volume</span>
             </div>
-            <div class="card p-5 flex flex-col justify-between">
-                <span class="text-xs text-slate-500 uppercase tracking-wider">Support Zones</span>
-                <span class="text-2xl font-bold font-mono text-success mt-1" x-text="zones.filter(function(z){return z.type==='support'}).length"></span>
-                <span class="text-[10px] text-slate-600 mt-1">Below current price</span>
+            <div class="card p-2 d-flex flex-column justify-content-between">
+                <span class="fs-xs text-muted text-uppercase ">Support Zones</span>
+                <span class="fs-1 fw-bold font-monospace text-success mt-1" x-text="zones.filter(function(z){return z.type==='support'}).length"></span>
+                <span class="fs-6 text-muted mt-1">Below current price</span>
             </div>
-            <div class="card p-5 flex flex-col justify-between">
-                <span class="text-xs text-slate-500 uppercase tracking-wider">Resistance Zones</span>
-                <span class="text-2xl font-bold font-mono text-danger mt-1" x-text="zones.filter(function(z){return z.type==='resistance'}).length"></span>
-                <span class="text-[10px] text-slate-600 mt-1">Above current price</span>
+            <div class="card p-2 d-flex flex-column justify-content-between">
+                <span class="fs-xs text-muted text-uppercase ">Resistance Zones</span>
+                <span class="fs-1 fw-bold font-monospace text-danger mt-1" x-text="zones.filter(function(z){return z.type==='resistance'}).length"></span>
+                <span class="fs-6 text-muted mt-1">Above current price</span>
             </div>
-            <div class="card p-5 flex flex-col justify-between">
-                <span class="text-xs text-slate-500 uppercase tracking-wider">Strongest Zone</span>
-                <span class="text-2xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1" x-text="zones.length>0?formatVol(zones[0].volume):'--'"></span>
-                <span class="text-[10px] text-slate-600 mt-1">Highest volume node</span>
+            <div class="card p-2 d-flex flex-column justify-content-between">
+                <span class="fs-xs text-muted text-uppercase ">Strongest Zone</span>
+                <span class="fs-1 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1" x-text="zones.length>0?formatVol(zones[0].volume):'--'"></span>
+                <span class="fs-6 text-muted mt-1">Highest volume node</span>
             </div>
         </div>
 
         <!-- VOLUME PROFILE CHART -->
-        <div class="card p-6">
-            <h3 class="text-sm font-semibold text-white mb-4">Volume Profile &amp; Liquidity Zones</h3>
+        <div class="card p-2">
+            <h3 class="fs-sm fw-semibold text-white mb-2">Volume Profile &amp; Liquidity Zones</h3>
             <template x-if="loading">
-                <div class="space-y-3">
-                    <template x-for="i in 6" :key="i"><div class="h-8 bg-slate-100/30 dark:bg-slate-700/30 rounded animate-pulse"></div></template>
+                <div class="vstack gap-2">
+                    <template x-for="i in 6" :key="i"><div class="h-8 bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded "></div></template>
                 </div>
             </template>
             <template x-if="!loading && zones.length===0">
-                <div class="py-12 text-center">
-                    <svg class="mx-auto h-10 w-10 text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    <p class="text-slate-500 font-medium">No liquidity zones detected</p>
-                    <p class="text-xs text-slate-600 mt-1">Need more volume data to identify zones</p>
+                <div class="py-2 text-center">
+                    <svg class="mx-auto h-10 w-10 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <p class="text-muted fw-medium">No liquidity zones detected</p>
+                    <p class="fs-xs text-muted mt-1">Need more volume data to identify zones</p>
                 </div>
             </template>
             <template x-if="!loading && zones.length>0">
-                <div class="space-y-2">
+                <div class="vstack gap-2">
                     <template x-for="(z, idx) in zones" :key="idx">
-                        <div class="flex items-center gap-3 group">
-                            <span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 w-10 text-right" x-text="'Rp '+z.price.toLocaleString()"></span>
-                            <div class="flex-1 h-8 bg-white dark:bg-slate-800 rounded-r-lg relative overflow-hidden group-hover:bg-slate-700 transition-colors">
-                                <div class="zone-bar absolute inset-y-0 left-0 rounded-lg flex items-center px-3" :style="{width:barWidth(z.volume)+'%',backgroundColor:getBarColor(z),border:'1px solid '+getBorderColor(z)}">
-                                    <span class="text-xs font-mono font-semibold text-white drop-shadow" x-text="formatVol(z.volume)"></span>
+                        <div class="d-flex align-items-center gap-3 group">
+                            <span class="fs-6 font-monospace text-muted dark:text-slate-400 w-10 text-end" x-text="'Rp '+z.price.toLocaleString()"></span>
+                            <div class="flex-fill h-8 bg-white dark:bg-white rounded-r-lg position-relative overflow-hidden  ">
+                                <div class="zone-bar position-absolute top-0 bottom-0 start-0 rounded-2 d-flex align-items-center px-2" :style="{width:barWidth(z.volume)+'%',backgroundColor:getBarColor(z),border:'1px solid '+getBorderColor(z)}">
+                                    <span class="fs-xs font-monospace fw-semibold text-white drop-shadow" x-text="formatVol(z.volume)"></span>
                                 </div>
                             </div>
-                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded" :class="z.type==='support'?'bg-emerald-900/40 text-emerald-300':'bg-red-900/40 text-red-300'" x-text="z.type==='support'?'S':'R'"></span>
-                            <div class="flex items-center gap-1" :title="getStrengthLabel(z.strength)">
-                                <span class="w-2 h-2 rounded-full" :style="{backgroundColor:getStrengthColor(z.strength)}"></span>
-                                <span class="text-[10px] font-mono text-slate-500" x-text="z.strength.toFixed(1)"></span>
+                            <span class="fs-6 fw-semibold px-2 py-0 rounded" :class="z.type==='support'?'bg-success-lt text-success':'bg-danger-lt/40 text-danger'" x-text="z.type==='support'?'S':'R'"></span>
+                            <div class="d-flex align-items-center gap-1" :title="getStrengthLabel(z.strength)">
+                                <span class="w-2 h-2 rounded-pill" :style="{backgroundColor:getStrengthColor(z.strength)}"></span>
+                                <span class="fs-6 font-monospace text-muted" x-text="z.strength.toFixed(1)"></span>
                             </div>
                         </div>
                     </template>
@@ -247,50 +247,50 @@ function liquidityApp() {
         </div>
 
         <!-- LEGEND -->
-        <div class="card p-4">
-            <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Legend</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div class="flex items-center gap-2">
+        <div class="card p-2">
+            <h4 class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Legend</h4>
+            <div class="row row-cols-1 row-cols-sm-3 gap-4 fs-xs">
+                <div class="d-flex align-items-center gap-2">
                     <div class="w-8 h-4 rounded" style="background:rgba(16,185,129,0.7);border:1px solid #10b981"></div>
-                    <div><span class="text-slate-700 dark:text-slate-300 font-medium">Support Zone</span><br><span class="text-slate-500">Price level below current price with high volume</span></div>
+                    <div><span class="text-body dark:text-body fw-medium">Support Zone</span><br><span class="text-muted">Price level below current price with high volume</span></div>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="d-flex align-items-center gap-2">
                     <div class="w-8 h-4 rounded" style="background:rgba(248,113,113,0.7);border:1px solid #ef4444"></div>
-                    <div><span class="text-slate-700 dark:text-slate-300 font-medium">Resistance Zone</span><br><span class="text-slate-500">Price level above current price with high volume</span></div>
+                    <div><span class="text-body dark:text-body fw-medium">Resistance Zone</span><br><span class="text-muted">Price level above current price with high volume</span></div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <div><span class="text-slate-700 dark:text-slate-300 font-medium">Strength</span><br><span class="text-slate-500">Higher = more volume concentration relative to other zones</span></div>
+                <div class="d-flex align-items-center gap-2">
+                    <div><span class="text-body dark:text-body fw-medium">Strength</span><br><span class="text-muted">Higher = more volume concentration relative to other zones</span></div>
                 </div>
             </div>
         </div>
 
         <!-- TOP 5 ZONES TABLE -->
         <div class="card overflow-hidden">
-            <div class="p-4 border-b border-slate-200/50 dark:border-slate-700/50">
-                <h3 class="text-sm font-semibold text-white">Top 5 Liquidity Zones</h3>
+            <div class="p-2 border-bottom border dark:border/50">
+                <h3 class="fs-sm fw-semibold text-white">Top 5 Liquidity Zones</h3>
             </div>
             <template x-if="!loading && zones.length>0">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50">
-                                <th class="text-left py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">#</th>
-                                <th class="text-left py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Price Level</th>
-                                <th class="text-left py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Type</th>
-                                <th class="text-right py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Volume</th>
-                                <th class="text-right py-3 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Strength</th>
+                            <tr class="border-bottom border dark:border/50">
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">#</th>
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Price Level</th>
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Type</th>
+                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Volume</th>
+                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Strength</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             <template x-for="(z, idx) in zones.slice(0,5)" :key="idx">
-                                <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                    <td class="py-3 px-4 text-xs text-slate-500" x-text="idx+1"></td>
-                                    <td class="py-3 px-4 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]" x-text="'Rp '+z.price.toLocaleString()"></td>
-                                    <td class="py-3 px-4">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold" :class="z.type==='support'?'bg-emerald-900/30 text-emerald-300':'bg-red-900/30 text-red-300'" x-text="z.type.toUpperCase()"></span>
+                                <tr class=" dark:hover:bg-secondary-lt/20 ">
+                                    <td class="py-2 px-2 fs-xs text-muted" x-text="idx+1"></td>
+                                    <td class="py-2 px-2 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]" x-text="'Rp '+z.price.toLocaleString()"></td>
+                                    <td class="py-2 px-2">
+                                        <span class="d-inline-flex align-items-center px-2 py-0 rounded fs-xs fw-semibold" :class="z.type==='support'?'bg-success-lt/30 text-success':'bg-danger-lt text-danger'" x-text="z.type.toUpperCase()"></span>
                                     </td>
-                                    <td class="py-3 px-4 font-mono text-xs text-right text-slate-700 dark:text-slate-300" x-text="formatVol(z.volume)"></td>
-                                    <td class="py-3 px-4 font-mono text-xs text-right">
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end text-body dark:text-body" x-text="formatVol(z.volume)"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end">
                                         <span :class="z.strength>=5?'text-success':z.strength>=3?'text-warning':'text-slate-400'" x-text="z.strength.toFixed(1)"></span>
                                     </td>
                                 </tr>
@@ -300,12 +300,12 @@ function liquidityApp() {
                 </div>
             </template>
             <template x-if="!loading && zones.length===0">
-                <div class="p-8 text-center text-slate-500 text-sm">No zones to display</div>
+                <div class="p-2 text-center text-muted fs-sm">No zones to display</div>
             </template>
         </div>
     </main>
 </div>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

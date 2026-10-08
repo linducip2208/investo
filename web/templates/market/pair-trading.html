@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="pairTrading()" x-init="fetch()">
+<body class="h-100 d-flex" x-data="pairTrading()" x-init="fetch()">
     <script>
         function pairTrading() {
             return {
@@ -62,8 +62,8 @@
                     }
                 },
                 signalBadge(signal) {
-                    if (signal.startsWith('SHORT')) return 'bg-red-500/20 text-red-400 border border-red-500/30';
-                    if (signal.startsWith('LONG')) return 'bg-green-500/20 text-green-400 border border-green-500/30';
+                    if (signal.startsWith('SHORT')) return 'bg-red-lt text-red-400 border border-red-500/30';
+                    if (signal.startsWith('LONG')) return 'bg-green-lt text-green-400 border border-green-500/30';
                     return 'bg-slate-500/20 text-slate-400 border border-slate-500/30';
                 },
                 zColor(z) {
@@ -74,22 +74,22 @@
                     return 'text-slate-400';
                 },
                 corColor(c) {
-                    if (c > 0.95) return 'bg-green-500';
-                    if (c > 0.9) return 'bg-lime-500';
-                    if (c > 0.85) return 'bg-yellow-500';
-                    return 'bg-blue-500';
+                    if (c > 0.95) return 'bg-green';
+                    if (c > 0.9) return 'bg-lime';
+                    if (c > 0.85) return 'bg-yellow';
+                    return 'bg-blue';
                 }
             }
         }
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -114,8 +114,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Analytics</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -159,7 +159,7 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6" />
 </svg></span> Anomalies</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -182,7 +182,7 @@
   <path d="M16 4l0 2" />
 </svg></span> Custom Index</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -192,131 +192,131 @@
     </aside>
 
     <!-- TOPBAR -->
-    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-40 flex items-center justify-between px-6">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors">
+    <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="text-sm text-slate-500 dark:text-slate-400"><span class="text-slate-600">Market /</span> Pair Trading Finder</div>
-        <div class="flex items-center gap-3">
-            <button @click="fetch()" class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-white transition-colors" title="Refresh">
+        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Market /</span> Pair Trading Finder</div>
+        <div class="d-flex align-items-center gap-3">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
-            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-white transition-colors">
-                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body  ">
+                <span class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+    <main class="flex-fill ms-0 ml-60 mt-2 p-2">
         <template x-if="!loaded">
-            <div class="card p-8 flex flex-col items-center justify-center space-y-4">
-                <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-slate-500 dark:text-slate-400">Finding correlated pairs...</p>
+            <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
+                <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
+                <p class="text-muted dark:text-slate-400">Finding correlated pairs...</p>
             </div>
         </template>
 
         <template x-if="loaded">
-            <div class="space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="vstack gap-4">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
-                        <h1 class="text-2xl font-bold text-white">Pair Trading Finder</h1>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Statistical arbitrage pairs with high correlation</p>
+                        <h1 class="fs-1 fw-bold text-white">Pair Trading Finder</h1>
+                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Statistical arbitrage pairs with high correlation</p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">Filter:</span>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fs-xs text-muted dark:text-slate-400">Filter:</span>
                         <select x-model="selectedSector" @change="filter()"
-                                class="bg-white dark:bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none">
+                                class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             <template x-for="s in sectors" :key="s">
                                 <option :value="s" x-text="s"></option>
                             </template>
                         </select>
-                        <span class="text-xs text-slate-500 font-mono" x-text="filteredPairs.length + ' pairs'"></span>
+                        <span class="fs-xs text-muted font-monospace" x-text="filteredPairs.length + ' pairs'"></span>
                     </div>
                 </div>
 
                 <!-- Pairs Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4">
                     <template x-for="pair in filteredPairs" :key="pair.stock_a + '-' + pair.stock_b">
-                        <div class="card p-5 hover:border-slate-500 transition-all">
+                        <div class="card p-2  ">
                             <!-- Pair Header -->
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-mono font-bold text-white text-sm" x-text="pair.stock_a"></span>
-                                    <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                                    <span class="font-mono font-bold text-white text-sm" x-text="pair.stock_b"></span>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="font-monospace fw-bold text-white fs-sm" x-text="pair.stock_a"></span>
+                                    <svg class="w-4 h-4 text-muted flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                                    <span class="font-monospace fw-bold text-white fs-sm" x-text="pair.stock_b"></span>
                                 </div>
-                                <span class="px-2 py-1 rounded-full text-[10px] font-semibold" :class="signalBadge(pair.signal)" x-text="pair.signal === 'NEUTRAL' ? 'NEUTRAL' : pair.signal.substring(0, 25) + '...'"></span>
+                                <span class="px-2 py-1 rounded-pill fs-6 fw-semibold" :class="signalBadge(pair.signal)" x-text="pair.signal === 'NEUTRAL' ? 'NEUTRAL' : pair.signal.substring(0, 25) + '...'"></span>
                             </div>
 
                             <!-- Details -->
-                            <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="row row-cols-2 gap-3 fs-sm">
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Correlation</div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-mono font-semibold" :class="corColor(pair.correlation).replace('bg-','text-')" x-text="pair.correlation"></span>
-                                        <div class="flex-1 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                            <div class="h-full rounded-full" :class="corColor(pair.correlation)" :style="{ width: (pair.correlation * 100) + '%' }"></div>
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Correlation</div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="font-monospace fw-semibold" :class="corColor(pair.correlation).replace('bg-','text-')" x-text="pair.correlation"></span>
+                                        <div class="flex-fill h-1.5 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                            <div class="h-100 rounded-pill" :class="corColor(pair.correlation)" :style="{ width: (pair.correlation * 100) + '%' }"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Z-Score</div>
-                                    <span class="font-mono font-semibold" :class="zColor(pair.z_score)" x-text="pair.z_score"></span>
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Z-Score</div>
+                                    <span class="font-monospace fw-semibold" :class="zColor(pair.z_score)" x-text="pair.z_score"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Spread Mean</div>
-                                    <span class="font-mono text-slate-700 dark:text-slate-300" x-text="pair.spread_mean"></span>
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Spread Mean</div>
+                                    <span class="font-monospace text-body dark:text-body" x-text="pair.spread_mean"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Spread Std</div>
-                                    <span class="font-mono text-slate-700 dark:text-slate-300" x-text="pair.spread_std"></span>
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Spread Std</div>
+                                    <span class="font-monospace text-body dark:text-body" x-text="pair.spread_std"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Current Spread</div>
-                                    <span class="font-mono font-semibold"
-                                          :class="Math.abs(pair.z_score) > 2 ? 'text-warning' : 'text-slate-300'"
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Current Spread</div>
+                                    <span class="font-monospace fw-semibold"
+                                          :class="Math.abs(pair.z_score) > 2 ? 'text-warning' : 'text-body'"
                                           x-text="pair.current_spread"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Half-Life</div>
-                                    <span class="font-mono text-slate-700 dark:text-slate-300" x-text="pair.half_life + 'd'"></span>
+                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Half-Life</div>
+                                    <span class="font-monospace text-body dark:text-body" x-text="pair.half_life + 'd'"></span>
                                 </div>
                             </div>
 
                             <!-- Sector Tag -->
-                            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700">
-                                <span class="inline-block px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-[11px] text-slate-500 dark:text-slate-400 font-medium" x-text="pair.sector_name"></span>
-                                <span class="ml-2 text-xs text-slate-500" x-text="pair.stock_a_name + ' / ' + pair.stock_b_name"></span>
+                            <div class="mt-2 pt-2 border-top border dark:border">
+                                <span class="d-inline-block px-2 py-1 rounded-2 bg-white dark:bg-white fs-6 text-muted dark:text-slate-400 fw-medium" x-text="pair.sector_name"></span>
+                                <span class="ms-2 fs-xs text-muted" x-text="pair.stock_a_name + ' / ' + pair.stock_b_name"></span>
                             </div>
                         </div>
                     </template>
                 </div>
 
                 <template x-if="filteredPairs.length === 0">
-                    <div class="card p-12 text-center">
-                        <div class="text-slate-500 text-lg mb-2">No pairs found</div>
-                        <p class="text-slate-600 text-sm">No correlated pairs (r >= 0.8) found in the selected sector. Try All sectors.</p>
+                    <div class="card p-2 text-center">
+                        <div class="text-muted fs-3 mb-2">No pairs found</div>
+                        <p class="text-muted fs-sm">No correlated pairs (r >= 0.8) found in the selected sector. Try All sectors.</p>
                     </div>
                 </template>
 
                 <!-- Info Card -->
-                <div class="card p-6">
-                    <h2 class="text-lg font-bold text-white mb-3">How Pair Trading Works</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                        <div class="space-y-2">
-                            <div class="font-semibold text-blue-400">1. Find Correlation</div>
-                            <p class="text-slate-500 dark:text-slate-400">Identify two stocks in the same sector with correlation &gt; 0.8 over 6 months.</p>
+                <div class="card p-2">
+                    <h2 class="fs-3 fw-bold text-white mb-2">How Pair Trading Works</h2>
+                    <div class="row row-cols-1 row-cols-md-3 gap-6 fs-sm">
+                        <div class="vstack gap-2">
+                            <div class="fw-semibold text-primary">1. Find Correlation</div>
+                            <p class="text-muted dark:text-slate-400">Identify two stocks in the same sector with correlation &gt; 0.8 over 6 months.</p>
                         </div>
-                        <div class="space-y-2">
-                            <div class="font-semibold text-blue-400">2. Calculate Spread</div>
-                            <p class="text-slate-500 dark:text-slate-400">Compute log spread between the pair. When z-score &gt; 2, the pair is out of equilibrium.</p>
+                        <div class="vstack gap-2">
+                            <div class="fw-semibold text-primary">2. Calculate Spread</div>
+                            <p class="text-muted dark:text-slate-400">Compute log spread between the pair. When z-score &gt; 2, the pair is out of equilibrium.</p>
                         </div>
-                        <div class="space-y-2">
-                            <div class="font-semibold text-blue-400">3. Execute Trade</div>
-                            <p class="text-slate-500 dark:text-slate-400">LONG the underperformer, SHORT the overperformer. Exit when spread reverts to mean.</p>
+                        <div class="vstack gap-2">
+                            <div class="fw-semibold text-primary">3. Execute Trade</div>
+                            <p class="text-muted dark:text-slate-400">LONG the underperformer, SHORT the overperformer. Exit when spread reverts to mean.</p>
                         </div>
                     </div>
                 </div>
@@ -324,7 +324,7 @@
         </template>
     </main>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 "></div>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -308,6 +308,8 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .h-5 { height: 1.25rem; }
 .w-4 { width: 1rem; }
 .h-4 { height: 1rem; }
+.w-2.5 { width: 0.625rem; }
+.h-2.5 { height: 0.625rem; }
 .w-24 { width: 6rem; }
 
 /* max-width / max-height companions (documented layout constants) */
@@ -329,6 +331,10 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .max-h-85 { max-height: 85vh; }
 .max-h-90 { max-height: 90vh; }
 .max-h-60 { max-height: 15rem; }
+.max-h-400 { max-height: 400px; }
+.h-300 { height: 300px; }
+.h-400 { height: 400px; }
+.top-24 { top: 6rem; }
 .min-w-0 { min-width: 0; }
 .resize-none { resize: none; }
 

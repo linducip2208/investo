@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +36,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="moatAnalysis()" x-init="init()">
+<body class="h-100 d-flex" x-data="moatAnalysis()" x-init="init()">
 
 <script>
 function moatAnalysis() {
@@ -100,12 +100,12 @@ function moatAnalysis() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
         <a href="/saham" class="sidebar-link"><span>&#x1F4C8;</span> Saham IDX</a>
         <a href="/saham/[[.Code]]" class="sidebar-link"><span>&#x1F50D;</span> Detail [[.Code]]</a>
@@ -116,65 +116,65 @@ function moatAnalysis() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex-1 max-w-md hidden sm:block">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-fill max-w-md d-none d-sm-block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+    <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
-            <h1 class="text-xl lg:text-2xl font-bold text-white">Moat Analysis: <span x-text="code"></span></h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Economic moat assessment across 5 dimensions. How strong is the competitive advantage?</p>
+            <h1 class="fs-2 fs-1 fw-bold text-white">Moat Analysis: <span x-text="code"></span></h1>
+            <p class="fs-sm text-muted dark:text-slate-400 mt-0">Economic moat assessment across 5 dimensions. How strong is the competitive advantage?</p>
             <template x-if="result && result.is_illustrative">
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. <span class="text-slate-500 dark:text-slate-400" x-text="'Sumber: ' + (result.source || '-') + (result.as_of ? ' · per ' + result.as_of : '')"></span></p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. <span class="text-muted dark:text-slate-400" x-text="'Sumber: ' + (result.source || '-') + (result.as_of ? ' · per ' + result.as_of : '')"></span></p>
                 </div>
             </template>
-            <p class="text-xs text-slate-500 mt-2" x-show="result && !result.is_illustrative && result.source" x-text="'Sumber: ' + result.source + (result.as_of ? ' · per ' + result.as_of : '')"></p>
+            <p class="fs-xs text-muted mt-2" x-show="result && !result.is_illustrative && result.source" x-text="'Sumber: ' + result.source + (result.as_of ? ' · per ' + result.as_of : '')"></p>
         </div>
 
         <template x-if="loading">
-            <div class="space-y-4">
-                <div class="card p-6 animate-pulse"><div class="h-64 bg-slate-100/30 dark:bg-slate-700/30 rounded-lg"></div></div>
+            <div class="vstack gap-3">
+                <div class="card p-2 "><div class="h-64 bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-2"></div></div>
             </div>
         </template>
 
         <template x-if="!loading && result">
-            <div class="space-y-4">
-                <div class="card p-6 text-center" :class="moatClass(result.moat_width)">
-                    <h3 class="text-sm text-slate-500 dark:text-slate-400 mb-1">Moat Width</h3>
-                    <p class="text-3xl font-extrabold text-white" x-text="result.moat_width"></p>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1"><span class="font-mono text-white" x-text="result.total_stars.toFixed(1)"></span> / 25 stars</p>
+            <div class="vstack gap-3">
+                <div class="card p-2 text-center" :class="moatClass(result.moat_width)">
+                    <h3 class="fs-sm text-muted dark:text-slate-400 mb-1">Moat Width</h3>
+                    <p class="fs-1 fw-bolder text-white" x-text="result.moat_width"></p>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-1"><span class="font-monospace text-white" x-text="result.total_stars.toFixed(1)"></span> / 25 stars</p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-                    <div class="lg:col-span-2">
-                        <div class="card p-5">
-                            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Moat Radar</h3>
+                <div class="row row-cols-1 row-cols-lg-5 gap-4">
+                    <div class="col-lg-5">
+                        <div class="card p-2">
+                            <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Moat Radar</h3>
                             <div style="height:350px"><canvas id="moatRadar"></canvas></div>
                         </div>
                     </div>
-                    <div class="lg:col-span-3">
-                        <div class="card p-5 space-y-3">
-                            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Dimension Breakdown</h3>
+                    <div class="col-lg-7">
+                        <div class="card p-2 vstack gap-2">
+                            <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Dimension Breakdown</h3>
                             <template x-for="dim in result.dimensions" :key="dim.name">
-                                <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200" x-text="dim.name"></span>
-                                        <span class="font-mono text-sm" :class="{'text-amber-400': dim.stars >= 4, 'text-slate-400': dim.stars < 4}">
+                                <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <span class="fs-sm fw-semibold text-body dark:text-slate-200" x-text="dim.name"></span>
+                                        <span class="font-monospace fs-sm" :class="{'text-amber-400': dim.stars >= 4, 'text-slate-400': dim.stars < 4}">
                                             <span x-show="dim.stars >= 1">&#x2605;</span>
                                             <span x-show="dim.stars >= 2">&#x2605;</span>
                                             <span x-show="dim.stars >= 3">&#x2605;</span>
@@ -185,24 +185,24 @@ function moatAnalysis() {
                                             <span x-show="dim.stars >= 2 && dim.stars < 3">&#x2606;&#x2606;&#x2606;</span>
                                             <span x-show="dim.stars >= 3 && dim.stars < 4">&#x2606;&#x2606;</span>
                                             <span x-show="dim.stars >= 4 && dim.stars < 5">&#x2606;</span>
-                                            <span class="ml-1 text-xs" x-text="dim.stars + '/5'"></span>
+                                            <span class="ms-1 fs-xs" x-text="dim.stars + '/5'"></span>
                                         </span>
                                     </div>
-                                    <p class="text-xs text-slate-500 leading-relaxed" x-text="dim.description"></p>
+                                    <p class="fs-xs text-muted lh-lg" x-text="dim.description"></p>
                                 </div>
                             </template>
                         </div>
                     </div>
                 </div>
 
-                <div class="card p-6">
-                    <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Moat Narrative</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed" x-text="result.narrative"></p>
+                <div class="card p-2">
+                    <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Moat Narrative</h3>
+                    <p class="fs-sm text-muted dark:text-slate-400 lh-lg" x-text="result.narrative"></p>
                 </div>
             </div>
         </template>
     </main>
 </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

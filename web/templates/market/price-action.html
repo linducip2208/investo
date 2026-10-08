@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="priceAction()" x-init="init()">
+<body class="h-100 d-flex" x-data="priceAction()" x-init="init()">
     <script>
         function priceAction() {
             return {
@@ -75,11 +75,11 @@
                 },
                 badgeClass(t) {
                     var m = {
-                        'new_high':'badge-new-high','new_low':'badge-new-low','gap_up':'badge-gap-up',
-                        'gap_down':'badge-gap-down','volume_spike':'badge-vol-spike','support_break':'badge-support-break',
-                        'resistance_break':'badge-resistance-break','rsi_oversold':'badge-rsi-extreme','rsi_overbought':'badge-rsi-extreme'
+                        'new_high':'bg-success-lt','new_low':'bg-danger-lt','gap_up':'bg-success-lt',
+                        'gap_down':'bg-danger-lt','volume_spike':'bg-info-lt','support_break':'bg-warning-lt',
+                        'resistance_break':'bg-info-lt','rsi_oversold':'bg-primary-lt','rsi_overbought':'bg-primary-lt'
                     };
-                    return m[t] || 'badge-neutral';
+                    return m[t] || 'bg-secondary-lt';
                 },
                 cardAlert(t) {
                     if (['new_high','gap_up','resistance_break'].indexOf(t) >= 0) return 'alert-bull';
@@ -121,12 +121,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -151,8 +151,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Tools</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -201,14 +201,14 @@
   <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
   <path d="M12 16h.01" />
 </svg></span> Anomalies</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dividen" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3" />
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -236,8 +236,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -259,7 +259,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -274,74 +274,74 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Price Action Monitor</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Monitor aktivitas harga real-time: new highs/lows, gap, volume spikes, breakouts. Auto-refresh setiap 30 detik.</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Price Action Monitor</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Monitor aktivitas harga real-time: new highs/lows, gap, volume spikes, breakouts. Auto-refresh setiap 30 detik.</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2 px-3 py-1.5 bg-[#f4f6fb] dark:bg-[#0b1120] border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-500 dark:text-slate-400">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-slate-400">
                         <span class="refresh-indicator"></span>
                         <span x-text="'Live · '+lastUpdate"></span>
                     </div>
-                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">Refresh</button>
+                    <button @click="fetchData()" class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">Refresh</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                <div class="card p-3 text-center cursor-pointer hover:border-green-500/30 transition-colors" @click="filter='new_high';applyFilter()" :class="filter==='new_high'?'border-green-500/50 bg-green-500/5':''">
-                    <div class="text-xl font-bold text-green-400" x-text="highCount">0</div>
-                    <div class="text-[11px] text-slate-500">52W Highs</div>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 gap-3">
+                <div class="card p-2 text-center cursor-pointer  " @click="filter='new_high';applyFilter()" :class="filter==='new_high'?'border-green-500/50 bg-green/5':''">
+                    <div class="fs-2 fw-bold text-success" x-text="highCount">0</div>
+                    <div class="fs-6 text-muted">52W Highs</div>
                 </div>
-                <div class="card p-3 text-center cursor-pointer hover:border-red-500/30 transition-colors" @click="filter='new_low';applyFilter()" :class="filter==='new_low'?'border-red-500/50 bg-red-500/5':''">
-                    <div class="text-xl font-bold text-red-400" x-text="lowCount">0</div>
-                    <div class="text-[11px] text-slate-500">52W Lows</div>
+                <div class="card p-2 text-center cursor-pointer  " @click="filter='new_low';applyFilter()" :class="filter==='new_low'?'border-red-500/50 bg-red/5':''">
+                    <div class="fs-2 fw-bold text-danger" x-text="lowCount">0</div>
+                    <div class="fs-6 text-muted">52W Lows</div>
                 </div>
-                <div class="card p-3 text-center cursor-pointer hover:border-green-500/30 transition-colors" @click="filter='gap_up';applyFilter()" :class="filter==='gap_up'?'border-green-500/50 bg-green-500/5':''">
-                    <div class="text-xl font-bold text-emerald-400" x-text="gapUpCount">0</div>
-                    <div class="text-[11px] text-slate-500">Gap Ups</div>
+                <div class="card p-2 text-center cursor-pointer  " @click="filter='gap_up';applyFilter()" :class="filter==='gap_up'?'border-green-500/50 bg-green/5':''">
+                    <div class="fs-2 fw-bold text-success" x-text="gapUpCount">0</div>
+                    <div class="fs-6 text-muted">Gap Ups</div>
                 </div>
-                <div class="card p-3 text-center cursor-pointer hover:border-red-500/30 transition-colors" @click="filter='gap_down';applyFilter()" :class="filter==='gap_down'?'border-red-500/50 bg-red-500/5':''">
-                    <div class="text-xl font-bold text-rose-400" x-text="gapDownCount">0</div>
-                    <div class="text-[11px] text-slate-500">Gap Downs</div>
+                <div class="card p-2 text-center cursor-pointer  " @click="filter='gap_down';applyFilter()" :class="filter==='gap_down'?'border-red-500/50 bg-red/5':''">
+                    <div class="fs-2 fw-bold text-rose-400" x-text="gapDownCount">0</div>
+                    <div class="fs-6 text-muted">Gap Downs</div>
                 </div>
-                <div class="card p-3 text-center cursor-pointer hover:border-blue-500/30 transition-colors" @click="filter='volume_spike';applyFilter()" :class="filter==='volume_spike'?'border-blue-500/50 bg-blue-500/5':''">
-                    <div class="text-xl font-bold text-blue-400" x-text="volSpikeCount">0</div>
-                    <div class="text-[11px] text-slate-500">Vol Spikes</div>
+                <div class="card p-2 text-center cursor-pointer  " @click="filter='volume_spike';applyFilter()" :class="filter==='volume_spike'?'border-info/50 bg-blue/5':''">
+                    <div class="fs-2 fw-bold text-primary" x-text="volSpikeCount">0</div>
+                    <div class="fs-6 text-muted">Vol Spikes</div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-                <button @click="filter='ALL';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='ALL'?'bg-blue-600 text-white':'bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:text-white'">All Events</button>
-                <button @click="filter='new_high';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='new_high'?'bg-green-600 text-white':'bg-slate-800 text-green-400 border border-slate-700'">52W High</button>
-                <button @click="filter='new_low';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='new_low'?'bg-red-600 text-white':'bg-slate-800 text-red-400 border border-slate-700'">52W Low</button>
-                <button @click="filter='gap_up';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='gap_up'?'bg-emerald-600 text-white':'bg-slate-800 text-emerald-400 border border-slate-700'">Gap Up</button>
-                <button @click="filter='gap_down';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='gap_down'?'bg-rose-600 text-white':'bg-slate-800 text-rose-400 border border-slate-700'">Gap Down</button>
-                <button @click="filter='volume_spike';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='volume_spike'?'bg-blue-600 text-white':'bg-slate-800 text-blue-400 border border-slate-700'">Vol Spike</button>
-                <button @click="filter='support_break';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='support_break'?'bg-amber-600 text-white':'bg-slate-800 text-amber-400 border border-slate-700'">S/R Break</button>
-                <button @click="filter='rsi_oversold';applyFilter()" class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors" :class="filter==='rsi_oversold'?'bg-purple-600 text-white':'bg-slate-800 text-purple-400 border border-slate-700'">RSI Extreme</button>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'bg-white text-muted dark:text-slate-400 border border dark:border ">All Events</button>
+                <button @click="filter='new_high';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='new_high'?'bg-green-600 text-white':'bg-white text-success border border'">52W High</button>
+                <button @click="filter='new_low';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='new_low'?'bg-red-600 text-white':'bg-white text-danger border border'">52W Low</button>
+                <button @click="filter='gap_up';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='gap_up'?'bg-emerald-600 text-white':'bg-white text-success border border'">Gap Up</button>
+                <button @click="filter='gap_down';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='gap_down'?'bg-rose-600 text-white':'bg-white text-rose-400 border border'">Gap Down</button>
+                <button @click="filter='volume_spike';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='volume_spike'?'bg-blue-600 text-white':'bg-white text-primary border border'">Vol Spike</button>
+                <button @click="filter='support_break';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='support_break'?'bg-amber-600 text-white':'bg-white text-warning border border'">S/R Break</button>
+                <button @click="filter='rsi_oversold';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='rsi_oversold'?'bg-purple-600 text-white':'bg-white text-primary border border'">RSI Extreme</button>
             </div>
 
             <template x-if="loading && events.length === 0">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pa-grid">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-4 pa-grid">
                 <template x-for="i in 6" :key="i">
-                    <div class="card p-4" style="animation:shimmer 1.8s infinite">
+                    <div class="card p-2" style="animation:shimmer 1.8s infinite">
                         <div style="width:80px;height:14px;background:#1e293b;border-radius:4px;margin-bottom:8px;animation:shimmer 1.8s infinite"></div>
                         <div style="width:120px;height:20px;background:#1e293b;border-radius:4px;margin-bottom:6px;animation:shimmer 1.8s infinite"></div>
                         <div style="width:60%;height:14px;background:#1e293b;border-radius:4px;animation:shimmer 1.8s infinite"></div>
@@ -351,37 +351,37 @@
             </template>
 
             <template x-if="!loading || events.length > 0">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pa-grid">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-4 pa-grid">
                 <template x-for="(ev, idx) in filtered" :key="ev.stock_code + '_' + ev.event_type + '_' + idx">
-                <div class="card p-4 pa-card animate-fade-slide" :class="cardAlert(ev.event_type)" :style="'animation-delay:'+(idx*0.03)+'s'">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
+                <div class="card p-2 pa-card animate-fade-slide" :class="cardAlert(ev.event_type)" :style="'animation-delay:'+(idx*0.03)+'s'">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
                             <span class="pulse-dot" :class="dotClass(ev.event_type)"></span>
                             <span class="badge" :class="badgeClass(ev.event_type)" x-text="labelText(ev.event_type)"></span>
                         </div>
-                        <span class="text-[10px] text-slate-500 font-mono" x-text="formatTime(ev.created_at)"></span>
+                        <span class="fs-6 text-muted font-monospace" x-text="formatTime(ev.created_at)"></span>
                     </div>
 
-                    <div class="flex items-center gap-3 mb-3">
-                        <a :href="'/saham/'+ev.stock_code" class="font-mono font-bold text-white text-base hover:text-blue-400 transition-colors" x-text="ev.stock_code"></a>
-                        <span class="text-xs text-slate-500 truncate" x-text="ev.stock_name"></span>
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <a :href="'/saham/'+ev.stock_code" class="font-monospace fw-bold text-white fs-base  " x-text="ev.stock_code"></a>
+                        <span class="fs-xs text-muted text-truncate" x-text="ev.stock_name"></span>
                     </div>
 
-                    <div class="flex items-end justify-between">
+                    <div class="d-flex align-items-end justify-content-between">
                         <div>
-                            <div class="font-mono text-lg font-bold text-white" x-text="formatPrice(ev.price)"></div>
+                            <div class="font-monospace fs-3 fw-bold text-white" x-text="formatPrice(ev.price)"></div>
                             <template x-if="ev.change_pct !== undefined && ev.change_pct !== null">
-                            <div class="text-xs font-mono mt-0.5" :class="ev.change_pct >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(ev.change_pct >= 0 ? '+' : '') + (ev.change_pct || 0).toFixed(2) + '%'"></div>
+                            <div class="fs-xs font-monospace mt-0" :class="ev.change_pct >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(ev.change_pct >= 0 ? '+' : '') + (ev.change_pct || 0).toFixed(2) + '%'"></div>
                             </template>
                         </div>
-                        <div class="text-xs text-slate-500" x-text="ev.detail || ''"></div>
+                        <div class="fs-xs text-muted" x-text="ev.detail || ''"></div>
                     </div>
 
                     <template x-if="ev.volume">
-                    <div class="mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-500">Volume</span>
-                            <span class="font-mono text-slate-500 dark:text-slate-400" x-text="(ev.volume || 0).toLocaleString()"></span>
+                    <div class="mt-2 pt-2 border-top border dark:border/50">
+                        <div class="d-flex align-items-center justify-content-between fs-xs">
+                            <span class="text-muted">Volume</span>
+                            <span class="font-monospace text-muted dark:text-slate-400" x-text="(ev.volume || 0).toLocaleString()"></span>
                         </div>
                     </div>
                     </template>
@@ -391,15 +391,15 @@
             </template>
 
             <template x-if="!loading && filtered.length === 0">
-            <div class="text-center py-16">
-                <div class="text-5xl mb-4">&#x1F4AC;</div>
-                <p class="text-slate-500 dark:text-slate-400 text-lg font-medium">No price action events detected</p>
-                <p class="text-slate-500 text-sm mt-1">Tidak ada anomali harga signifikan saat ini</p>
+            <div class="text-center py-2">
+                <div class="display-5 mb-2">&#x1F4AC;</div>
+                <p class="text-muted dark:text-slate-400 fs-3 fw-medium">No price action events detected</p>
+                <p class="text-muted fs-sm mt-1">Tidak ada anomali harga signifikan saat ini</p>
             </div>
             </template>
         </main>
     </div>
     <style>@keyframes shimmer{0%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}100%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}}</style>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

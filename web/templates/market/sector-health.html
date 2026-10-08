@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="sectorHealth()" x-init="init()">
+<body class="h-100 d-flex" x-data="sectorHealth()" x-init="init()">
     <script>
     function sectorHealth() {
         return {
@@ -48,12 +48,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
             <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
             <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
@@ -64,7 +64,7 @@
             <a href="/market/waran" class="sidebar-link"><span>🎫</span> Waran Tracker</a>
             <a href="/market/economic-calendar" class="sidebar-link"><span>📅</span> Economic Calendar</a>
             <a href="/calculators" class="sidebar-link"><span>🧮</span> Kalkulator</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/ideas" class="sidebar-link"><span>💡</span> Ideas</a>
             <a href="/leaderboard" class="sidebar-link"><span>🏆</span> Leaderboard</a>
             <a href="/blog" class="sidebar-link"><span>📝</span> Blog</a>
@@ -72,66 +72,66 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1">
-                <h1 class="text-lg font-bold text-white">Sector Health Index</h1>
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill">
+                <h1 class="fs-3 fw-bold text-white">Sector Health Index</h1>
             </div>
             [[template "components/market-clock.html" .]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
-            <div x-show="loading" class="text-center py-12 text-slate-500">Memuat data sektor...</div>
-            <div x-show="!loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
+            <div x-show="loading" class="text-center py-2 text-muted">Memuat data sektor...</div>
+            <div x-show="!loading" class="row row-cols-1 row-cols-md-2 gap-4">
                 <template x-for="(sec, idx) in sectors" :key="idx">
-                    <div class="card p-5">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="card p-2">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
                             <div>
-                                <a :href="'/best-saham-' + sec.sector_slug" class="text-base font-bold text-white hover:text-blue-400 transition-colors" x-text="sec.sector_name"></a>
-                                <div class="text-xs text-slate-500 mt-0.5" x-text="sec.stock_count + ' saham'"></div>
+                                <a :href="'/best-saham-' + sec.sector_slug" class="fs-base fw-bold text-white  " x-text="sec.sector_name"></a>
+                                <div class="fs-xs text-muted mt-0" x-text="sec.stock_count + ' saham'"></div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-3xl font-bold font-mono" :style="'color:'+gaugeColor(sec.health_score)" x-text="sec.health_score"></div>
-                                <div class="text-[10px] uppercase font-semibold" :class="{'text-success': sec.health_score>=70, 'text-warning': sec.health_score>=40 && sec.health_score<70, 'text-danger': sec.health_score<40}">/100</div>
-                            </div>
-                        </div>
-                        <div class="w-full bg-slate-100/50 dark:bg-slate-700/50 rounded-full h-2.5 mb-4">
-                            <div class="h-2.5 rounded-full transition-all duration-700" :style="'width:'+sec.health_score+'%;background:'+gaugeColor(sec.health_score)"></div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-3 text-center">
-                            <div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">PER Avg</div>
-                                <div class="text-sm font-mono text-white" x-text="sec.per_avg + 'x'"></div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">PBV Avg</div>
-                                <div class="text-sm font-mono text-white" x-text="sec.pbv_avg + 'x'"></div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">ROE Avg</div>
-                                <div class="text-sm font-mono text-white" x-text="sec.roe_avg + '%'"></div>
+                            <div class="text-end">
+                                <div class="fs-1 fw-bold font-monospace" :style="'color:'+gaugeColor(sec.health_score)" x-text="sec.health_score"></div>
+                                <div class="fs-6 text-uppercase fw-semibold" :class="{'text-success': sec.health_score>=70, 'text-warning': sec.health_score>=40 && sec.health_score<70, 'text-danger': sec.health_score<40}">/100</div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-200/50 dark:border-slate-700/50 text-center">
+                        <div class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt rounded-pill h-2.5 mb-2">
+                            <div class="h-2.5 rounded-pill  " :style="'width:'+sec.health_score+'%;background:'+gaugeColor(sec.health_score)"></div>
+                        </div>
+                        <div class="row row-cols-3 gap-3 text-center">
                             <div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-0.5">Momentum</div>
-                                <div class="text-xs font-mono" :class="sec.momentum_score>=50?'text-success':'text-warning'" x-text="sec.momentum_score"></div>
+                                <div class="fs-6 text-muted text-uppercase  mb-1">PER Avg</div>
+                                <div class="fs-sm font-monospace text-white" x-text="sec.per_avg + 'x'"></div>
                             </div>
                             <div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-0.5">Foreign Flow</div>
-                                <div class="text-xs font-mono" :class="sec.foreign_flow_score>=50?'text-success':'text-warning'" x-text="sec.foreign_flow_score"></div>
+                                <div class="fs-6 text-muted text-uppercase  mb-1">PBV Avg</div>
+                                <div class="fs-sm font-monospace text-white" x-text="sec.pbv_avg + 'x'"></div>
+                            </div>
+                            <div>
+                                <div class="fs-6 text-muted text-uppercase  mb-1">ROE Avg</div>
+                                <div class="fs-sm font-monospace text-white" x-text="sec.roe_avg + '%'"></div>
+                            </div>
+                        </div>
+                        <div class="row row-cols-2 gap-2 mt-2 pt-2 border-top border dark:border/50 text-center">
+                            <div>
+                                <div class="fs-6 text-muted text-uppercase  mb-0">Momentum</div>
+                                <div class="fs-xs font-monospace" :class="sec.momentum_score>=50?'text-success':'text-warning'" x-text="sec.momentum_score"></div>
+                            </div>
+                            <div>
+                                <div class="fs-6 text-muted text-uppercase  mb-0">Foreign Flow</div>
+                                <div class="fs-xs font-monospace" :class="sec.foreign_flow_score>=50?'text-success':'text-warning'" x-text="sec.foreign_flow_score"></div>
                             </div>
                         </div>
                     </div>
                 </template>
             </div>
-            <div x-show="!loading && sectors.length === 0" class="text-center py-12 text-slate-500">
-                <p class="text-lg">Belum ada data sektor</p>
+            <div x-show="!loading && sectors.length === 0" class="text-center py-2 text-muted">
+                <p class="fs-3">Belum ada data sektor</p>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

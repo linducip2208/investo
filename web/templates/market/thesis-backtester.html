@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
         .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
         .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
         .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
-        .bg-success-dark{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
+        .bg-success{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
         input,select{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 12px;color:#e2e8f0;font-size:13px;width:100%}
         input:focus,select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
         .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
@@ -42,7 +42,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false, loading: false, result: null, error: null,
+<body class="h-100" x-data="{ sidebarOpen: false, loading: false, result: null, error: null,
     startDate: '2024-08-01', endDate: '2026-08-01',
     async runBacktest() {
         this.loading = true; this.error = null; this.result = null;
@@ -81,31 +81,31 @@
     }
 }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Thesis Backtester</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Thesis Backtester</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Alt Data</div>
             <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
             <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
             <a href="/market/economic-proxy" class="sidebar-link"><span>🏭</span>Economic Proxy</a>
             <a href="/market/job-postings" class="sidebar-link"><span>💼</span>Job Postings</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link active"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
@@ -113,97 +113,97 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">🧪 Thesis Backtester</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Backtest strategi investasi berdasarkan kriteria screening historis</p>
+                <h1 class="fs-1 fw-bold text-white">🧪 Thesis Backtester</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Backtest strategi investasi berdasarkan kriteria screening historis</p>
             </div>
 
-            <div class="card p-6">
-                <h2 class="text-lg font-bold text-white mb-4">⚙️ Backtest Parameters</h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="card p-2">
+                <h2 class="fs-3 fw-bold text-white mb-2">⚙️ Backtest Parameters</h2>
+                <div class="row row-cols-1 row-cols-md-4 gap-4">
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Start Date</label>
+                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Start Date</label>
                         <input type="date" x-model="startDate">
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">End Date</label>
+                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">End Date</label>
                         <input type="date" x-model="endDate">
                     </div>
-                    <div class="flex items-end">
+                    <div class="d-flex align-items-end">
                         <button @click="runBacktest()" :disabled="loading"
-                            class="btn-primary w-full flex items-center justify-center gap-2"
+                            class="btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
                             x-text="loading ? '⏳ Running...' : '🚀 Run Backtest'"></button>
                     </div>
                 </div>
-                <p class="text-xs text-slate-600 mt-3">Backtest akan menjalankan screening criteria pada start date dan menghitung return equally-weighted portfolio vs IHSG.</p>
+                <p class="fs-xs text-muted mt-2">Backtest akan menjalankan screening criteria pada start date dan menghitung return equally-weighted portfolio vs IHSG.</p>
             </div>
 
-            <div x-show="error" class="card p-4 border-red-500/30 bg-red-900/10">
-                <p class="text-red-400 text-sm" x-text="error"></p>
+            <div x-show="error" class="card p-2 border-danger bg-danger bg-opacity-10">
+                <p class="text-danger fs-sm" x-text="error"></p>
             </div>
 
             <template x-if="result">
-                <div class="space-y-6">
+                <div class="vstack gap-4">
                     <template x-if="result.is_illustrative">
-                        <div class="card p-4 border-amber-500/30 bg-amber-900/10">
-                            <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif / estimasi</span> — contoh, bukan hasil backtest real-time. <span class="text-slate-500 dark:text-slate-400" x-text="result.source || ''"></span></p>
+                        <div class="card p-2 border-warning bg-warning bg-opacity-10">
+                            <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif / estimasi</span> — contoh, bukan hasil backtest real-time. <span class="text-muted dark:text-slate-400" x-text="result.source || ''"></span></p>
                         </div>
                     </template>
-                    <p class="text-xs text-slate-500" x-show="result.period" x-text="'Periode: ' + result.period + (result.data_points ? ' · ' + result.data_points + ' observasi bulanan' : '') + (result.source && !result.is_illustrative ? ' · Sumber: ' + result.source : '')"></p>
-                    <p class="text-xs text-slate-500" x-show="result.benchmark_note" x-text="result.benchmark_note"></p>
-                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Strategy Return</p>
-                            <p class="text-xl font-mono font-bold mt-1" :class="result.strategy_return >= 0 ? 'text-success' : 'text-danger'" x-text="result.strategy_return + '%'"></p>
+                    <p class="fs-xs text-muted" x-show="result.period" x-text="'Periode: ' + result.period + (result.data_points ? ' · ' + result.data_points + ' observasi bulanan' : '') + (result.source && !result.is_illustrative ? ' · Sumber: ' + result.source : '')"></p>
+                    <p class="fs-xs text-muted" x-show="result.benchmark_note" x-text="result.benchmark_note"></p>
+                    <div class="row row-cols-2 row-cols-md-6 gap-4">
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Strategy Return</p>
+                            <p class="fs-2 font-monospace fw-bold mt-1" :class="result.strategy_return >= 0 ? 'text-success' : 'text-danger'" x-text="result.strategy_return + '%'"></p>
                         </div>
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Benchmark Return</p>
-                            <p class="text-xl font-mono font-bold mt-1" :class="result.benchmark_return >= 0 ? 'text-success' : 'text-danger'" x-text="result.benchmark_return + '%'"></p>
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Benchmark Return</p>
+                            <p class="fs-2 font-monospace fw-bold mt-1" :class="result.benchmark_return >= 0 ? 'text-success' : 'text-danger'" x-text="result.benchmark_return + '%'"></p>
                         </div>
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Alpha</p>
-                            <p class="text-xl font-mono font-bold mt-1" :class="result.alpha >= 0 ? 'text-success' : 'text-danger'" x-text="result.alpha + '%'"></p>
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Alpha</p>
+                            <p class="fs-2 font-monospace fw-bold mt-1" :class="result.alpha >= 0 ? 'text-success' : 'text-danger'" x-text="result.alpha + '%'"></p>
                         </div>
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Sharpe Ratio</p>
-                            <p class="text-xl font-mono font-bold mt-1" :class="result.sharpe >= 1 ? 'text-success' : result.sharpe >= 0.5 ? 'text-warning' : 'text-danger'" x-text="result.sharpe"></p>
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Sharpe Ratio</p>
+                            <p class="fs-2 font-monospace fw-bold mt-1" :class="result.sharpe >= 1 ? 'text-success' : result.sharpe >= 0.5 ? 'text-warning' : 'text-danger'" x-text="result.sharpe"></p>
                         </div>
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Max Drawdown</p>
-                            <p class="text-xl font-mono font-bold text-danger mt-1" x-text="result.max_drawdown + '%'"></p>
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Max Drawdown</p>
+                            <p class="fs-2 font-monospace fw-bold text-danger mt-1" x-text="result.max_drawdown + '%'"></p>
                         </div>
-                        <div class="card p-4 text-center">
-                            <p class="text-slate-500 text-xs">Win Rate</p>
-                            <p class="text-xl font-mono font-bold mt-1" :class="result.win_rate >= 60 ? 'text-success' : 'text-warning'" x-text="result.win_rate + '%'"></p>
+                        <div class="card p-2 text-center">
+                            <p class="text-muted fs-xs">Win Rate</p>
+                            <p class="fs-2 font-monospace fw-bold mt-1" :class="result.win_rate >= 60 ? 'text-success' : 'text-warning'" x-text="result.win_rate + '%'"></p>
                         </div>
                     </div>
 
-                    <div class="card p-6">
-                        <h3 class="text-sm font-semibold text-white mb-4">📈 Performance Comparison (Monthly Returns)</h3>
+                    <div class="card p-2">
+                        <h3 class="fs-sm fw-semibold text-white mb-2">📈 Performance Comparison (Monthly Returns)</h3>
                         <canvas id="perfChart" height="300"></canvas>
                     </div>
 
-                    <div class="card p-6">
-                        <h3 class="text-sm font-semibold text-white mb-4">📋 Holdings ([[len .Holdings]] stocks)</h3>
-                        <div class="flex flex-wrap gap-2">
+                    <div class="card p-2">
+                        <h3 class="fs-sm fw-semibold text-white mb-2">📋 Holdings ([[len .Holdings]] stocks)</h3>
+                        <div class="d-flex flex-wrap gap-2">
                             <template x-for="h in result.holdings" :key="h">
-                                <a :href="'/saham/' + h" class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 text-white font-mono text-sm hover:bg-blue-900 transition-colors" x-text="h"></a>
+                                <a :href="'/saham/' + h" class="px-2 py-2 rounded-2 bg-white dark:bg-white text-white font-monospace fs-sm  " x-text="h"></a>
                             </template>
                         </div>
                     </div>
                 </div>
             </template>
 
-            <div x-show="!result && !loading" class="card p-12 text-center">
-                <p class="text-slate-500 text-lg">🎯 Atur parameter dan klik "Run Backtest" untuk memulai</p>
-                <p class="text-slate-600 text-sm mt-1">Backtest menggunakan data historis untuk memvalidasi thesis investasi Anda</p>
+            <div x-show="!result && !loading" class="card p-2 text-center">
+                <p class="text-muted fs-3">🎯 Atur parameter dan klik "Run Backtest" untuk memulai</p>
+                <p class="text-muted fs-sm mt-1">Backtest menggunakan data historis untuk memvalidasi thesis investasi Anda</p>
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

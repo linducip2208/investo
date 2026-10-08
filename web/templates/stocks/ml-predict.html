@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="mlPredict()">
+<body class="h-100 d-flex" x-data="mlPredict()">
     <script>
         function mlPredict() {
             return {
@@ -227,7 +227,7 @@
                 formatPct(v) { if(v===null||v===undefined) return '-'; return v.toFixed(2)+'%'; },
                 trendIcon(t) { if(t==='up') return '&#x1F4C8;'; if(t==='down') return '&#x1F4C9;'; return '&#x27F7;'; },
                 trendLabel(t) { if(t==='up') return 'UPTREND'; if(t==='down') return 'DOWNTREND'; return 'SIDEWAYS'; },
-                trendClass(t) { if(t==='up') return 'badge-up'; if(t==='down') return 'badge-down'; return 'badge-sideways'; },
+                trendClass(t) { if(t==='up') return 'bg-success-lt'; if(t==='down') return 'bg-danger-lt'; return 'badge-sideways'; },
                 confidenceColor(v) {
                     if (v >= 70) return '#34d399';
                     if (v >= 40) return '#fbbf24';
@@ -239,12 +239,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" id="sidebar">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" id="sidebar">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -269,8 +269,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock [[.StockCode]]</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Stock [[.StockCode]]</p>
             <a :href="'/saham/'+stockCode" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -299,7 +299,7 @@
   <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
   <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
 </svg></span> ML Predict</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -329,7 +329,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -344,48 +344,48 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex items-center gap-3">
-                <a :href="'/saham/'+stockCode" class="font-mono font-bold text-lg text-blue-400 hover:text-blue-300" x-text="stockCode"></a>
-                <span class="text-sm text-slate-500 dark:text-slate-400">&#x2022;</span>
-                <span class="text-sm text-slate-500 dark:text-slate-400">ML Price Prediction</span>
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="d-flex align-items-center gap-3">
+                <a :href="'/saham/'+stockCode" class="font-monospace fw-bold fs-3 text-primary " x-text="stockCode"></a>
+                <span class="fs-sm text-muted dark:text-slate-400">&#x2022;</span>
+                <span class="fs-sm text-muted dark:text-slate-400">ML Price Prediction</span>
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex items-center gap-3">
-                <div class="flex-1 max-w-xs">
-                    <input type="text" x-model="stockCode" placeholder="Stock code (e.g. BBCA)" @keydown.enter="predict()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm font-mono text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all uppercase">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex align-items-center gap-3">
+                <div class="flex-fill max-w-xs">
+                    <input type="text" x-model="stockCode" placeholder="Stock code (e.g. BBCA)" @keydown.enter="predict()" class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm font-monospace text-white       text-uppercase">
                 </div>
-                <select x-model.number="days" @change="predict()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                <select x-model.number="days" @change="predict()" class="bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white  ">
                     <option value="3">3 days</option>
                     <option value="5">5 days</option>
                     <option value="7" selected>7 days</option>
                     <option value="14">14 days</option>
                     <option value="30">30 days</option>
                 </select>
-                <button @click="predict()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl text-sm font-semibold hover:from-blue-700 hover:to-blue-900 shadow-lg shadow-blue-600/20 transition-all">
+                <button @click="predict()" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white rounded-3 fs-sm fw-semibold   shadow-lg  ">
                     &#x1F9E0; Predict
                 </button>
             </div>
 
             <template x-if="error">
-            <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-sm text-red-400" x-text="error"></div>
+            <div class="bg-danger bg-opacity-10 border border-danger rounded-3 p-2 fs-sm text-danger" x-text="error"></div>
             </template>
 
             <template x-if="loading">
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="vstack gap-3">
+                <div class="row row-cols-2 row-cols-lg-4 gap-3">
                     <template x-for="i in 4" :key="i">
-                        <div class="card p-6 animate-shimmer" style="height:90px"></div>
+                        <div class="card p-2 animate-shimmer" style="height:90px"></div>
                     </template>
                 </div>
                 <div class="card animate-shimmer" style="height:400px"></div>
@@ -394,32 +394,32 @@
 
             <template x-if="!loading && prediction">
             <div>
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+                <div class="row row-cols-2 row-cols-lg-4 gap-3 mb-2">
                     <div class="prediction-card text-center">
-                        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Predicted Price</div>
-                        <div class="text-3xl font-bold text-white font-mono" x-text="formatPrice(prediction.predicted_price)"></div>
-                        <div class="text-xs text-slate-500 mt-1" x-text="'in '+days+' days'"></div>
+                        <div class="fs-xs text-muted text-uppercase  mb-1">Predicted Price</div>
+                        <div class="fs-1 fw-bold text-white font-monospace" x-text="formatPrice(prediction.predicted_price)"></div>
+                        <div class="fs-xs text-muted mt-1" x-text="'in '+days+' days'"></div>
                     </div>
                     <div class="prediction-card text-center">
-                        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Confidence</div>
-                        <div class="flex justify-center">
+                        <div class="fs-xs text-muted text-uppercase  mb-1">Confidence</div>
+                        <div class="d-flex justify-content-center">
                             <div class="confidence-circle" :style="'border:4px solid '+confidenceColor(prediction.confidence)+';color:'+confidenceColor(prediction.confidence)">
                                 <span x-text="prediction.confidence+'%'"></span>
                             </div>
                         </div>
                     </div>
                     <div class="prediction-card text-center">
-                        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Price Range</div>
-                        <div class="text-sm text-white font-mono">
-                            <span class="text-green-400" x-text="formatPrice(prediction.lower_bound)"></span>
-                            <span class="text-slate-500 mx-1">-</span>
-                            <span class="text-red-400" x-text="formatPrice(prediction.upper_bound)"></span>
+                        <div class="fs-xs text-muted text-uppercase  mb-1">Price Range</div>
+                        <div class="fs-sm text-white font-monospace">
+                            <span class="text-success" x-text="formatPrice(prediction.lower_bound)"></span>
+                            <span class="text-muted mx-1">-</span>
+                            <span class="text-danger" x-text="formatPrice(prediction.upper_bound)"></span>
                         </div>
                     </div>
                     <div class="prediction-card text-center">
-                        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Trend</div>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="badge-trend" :class="trendClass(prediction.trend)">
+                        <div class="fs-xs text-muted text-uppercase  mb-1">Trend</div>
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <span class="bg-info-lt" :class="trendClass(prediction.trend)">
                                 <span x-html="trendIcon(prediction.trend)"></span>
                                 <span x-text="trendLabel(prediction.trend)"></span>
                             </span>
@@ -427,62 +427,62 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-                    <div class="card p-4 text-center">
-                        <div class="text-sm font-mono text-blue-400 font-bold" x-text="'R2 = '+prediction.r_squared.toFixed(4)"></div>
-                        <div class="text-xs text-slate-500 mt-0.5">R-squared</div>
+                <div class="row row-cols-2 row-cols-md-4 gap-3 mb-2">
+                    <div class="card p-2 text-center">
+                        <div class="fs-sm font-monospace text-primary fw-bold" x-text="'R2 = '+prediction.r_squared.toFixed(4)"></div>
+                        <div class="fs-xs text-muted mt-0">R-squared</div>
                     </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-sm font-mono font-bold" :class="prediction.slope >= 0 ? 'text-green-400' : 'text-red-400'" x-text="prediction.slope.toFixed(4)"></div>
-                        <div class="text-xs text-slate-500 mt-0.5">Slope</div>
+                    <div class="card p-2 text-center">
+                        <div class="fs-sm font-monospace fw-bold" :class="prediction.slope >= 0 ? 'text-green-400' : 'text-red-400'" x-text="prediction.slope.toFixed(4)"></div>
+                        <div class="fs-xs text-muted mt-0">Slope</div>
                     </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-sm font-mono text-green-400 font-bold" x-text="formatPrice(prediction.support)"></div>
-                        <div class="text-xs text-slate-500 mt-0.5">Support</div>
+                    <div class="card p-2 text-center">
+                        <div class="fs-sm font-monospace text-success fw-bold" x-text="formatPrice(prediction.support)"></div>
+                        <div class="fs-xs text-muted mt-0">Support</div>
                     </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-sm font-mono text-red-400 font-bold" x-text="formatPrice(prediction.resistance)"></div>
-                        <div class="text-xs text-slate-500 mt-0.5">Resistance</div>
+                    <div class="card p-2 text-center">
+                        <div class="fs-sm font-monospace text-danger fw-bold" x-text="formatPrice(prediction.resistance)"></div>
+                        <div class="fs-xs text-muted mt-0">Resistance</div>
                     </div>
                 </div>
 
-                <div class="card p-4 mb-5">
+                <div class="card p-2 mb-2">
                     <h3 class="widget-title">&#x1F4C8; Regression Chart</h3>
                     <div id="regression-chart" style="width:100%;height:400px;border-radius:8px"></div>
-                    <div class="flex flex-wrap items-center gap-4 mt-3 text-xs text-slate-500">
-                        <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-blue-400 inline-block"></span> Regression Line</span>
-                        <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-blue-400/30 inline-block" style="border-top:1px dashed"></span> Confidence Band</span>
-                        <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-green-400/50 inline-block" style="border-top:1px dashed"></span> Support</span>
-                        <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-red-400/50 inline-block" style="border-top:1px dashed"></span> Resistance</span>
+                    <div class="d-flex flex-wrap align-items-center gap-4 mt-2 fs-xs text-muted">
+                        <span class="d-flex align-items-center gap-1"><span class="w-3 h-0.5 bg-primary d-inline-block"></span> Regression Line</span>
+                        <span class="d-flex align-items-center gap-1"><span class="w-3 h-0.5 bg-primary bg-opacity-25 d-inline-block" style="border-top:1px dashed"></span> Confidence Band</span>
+                        <span class="d-flex align-items-center gap-1"><span class="w-3 h-0.5 bg-success bg-opacity-50 d-inline-block" style="border-top:1px dashed"></span> Support</span>
+                        <span class="d-flex align-items-center gap-1"><span class="w-3 h-0.5 bg-danger bg-opacity-50 d-inline-block" style="border-top:1px dashed"></span> Resistance</span>
                     </div>
                 </div>
 
                 <div class="card overflow-hidden">
-                    <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+                    <div class="px-2 py-2 border-bottom border dark:border">
                         <h3 class="widget-title mb-0">&#x1F4C5; <span x-text="days+'-Day Forecast'"></span></h3>
                     </div>
                     <div class="table-responsive">
-                        <table class="w-full">
+                        <table class="table table-vcenter table-hover w-100">
                             <thead>
-                                <tr class="border-b border-slate-200 dark:border-slate-700">
-                                    <th class="table-header text-left px-4 py-3">Date</th>
-                                    <th class="table-header text-right px-4 py-3">Predicted Low</th>
-                                    <th class="table-header text-right px-4 py-3">Predicted Mid</th>
-                                    <th class="table-header text-right px-4 py-3">Predicted High</th>
-                                    <th class="table-header text-center px-4 py-3">Range</th>
+                                <tr class="border-bottom border dark:border">
+                                    <th class="table-header text-start px-2 py-2">Date</th>
+                                    <th class="table-header text-end px-2 py-2">Predicted Low</th>
+                                    <th class="table-header text-end px-2 py-2">Predicted Mid</th>
+                                    <th class="table-header text-end px-2 py-2">Predicted High</th>
+                                    <th class="table-header text-center px-2 py-2">Range</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <template x-for="f in prediction.forecast" :key="f.date">
-                                <tr class="table-row border-b border-slate-200/50 dark:border-slate-800/50 animate-fade-slide">
-                                    <td class="px-4 py-3 font-mono text-sm text-slate-700 dark:text-slate-300" x-text="f.date"></td>
-                                    <td class="px-4 py-3 text-right font-mono text-sm text-green-400" x-text="formatPrice(f.low)"></td>
-                                    <td class="px-4 py-3 text-right font-mono text-sm text-white font-bold" x-text="formatPrice(f.mid)"></td>
-                                    <td class="px-4 py-3 text-right font-mono text-sm text-red-400" x-text="formatPrice(f.high)"></td>
-                                    <td class="px-4 py-3 text-center">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <span class="text-[10px] text-slate-500">IDR</span>
-                                            <span class="font-mono text-xs text-slate-700 dark:text-slate-300" x-text="formatPrice(f.high - f.low)"></span>
+                                <tr class="table-row border-bottom border dark:border-slate-800/50 animate-fade-slide">
+                                    <td class="px-2 py-2 font-monospace fs-sm text-body dark:text-body" x-text="f.date"></td>
+                                    <td class="px-2 py-2 text-end font-monospace fs-sm text-success" x-text="formatPrice(f.low)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace fs-sm text-white fw-bold" x-text="formatPrice(f.mid)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace fs-sm text-danger" x-text="formatPrice(f.high)"></td>
+                                    <td class="px-2 py-2 text-center">
+                                        <div class="d-flex align-items-center justify-content-center gap-1">
+                                            <span class="fs-6 text-muted">IDR</span>
+                                            <span class="font-monospace fs-xs text-body dark:text-body" x-text="formatPrice(f.high - f.low)"></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -492,26 +492,26 @@
                     </div>
                 </div>
 
-                <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-sm text-amber-400 flex items-start gap-3">
-                    <span class="text-lg shrink-0">&#x26A0;</span>
+                <div class="bg-warning bg-opacity-10 border border-warning rounded-3 p-2 fs-sm text-warning d-flex align-items-start gap-3">
+                    <span class="fs-3 flex-shrink-0">&#x26A0;</span>
                     <div>
-                        <span class="font-semibold">Disclaimer:</span> Prediksi berbasis regresi linear sederhana, bukan jaminan. Data historis tidak menjamin performa masa depan. Gunakan sebagai referensi tambahan, bukan dasar keputusan investasi tunggal.
+                        <span class="fw-semibold">Disclaimer:</span> Prediksi berbasis regresi linear sederhana, bukan jaminan. Data historis tidak menjamin performa masa depan. Gunakan sebagai referensi tambahan, bukan dasar keputusan investasi tunggal.
                     </div>
                 </div>
             </div>
             </template>
 
             <template x-if="!loading && !prediction && !error">
-            <div class="card text-center py-16">
-                <div class="text-6xl mb-4">&#x1F9E0;</div>
-                <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Masukkan kode saham dan klik Predict</p>
-                <p class="text-slate-500 text-sm mt-1">Model regresi linear akan menganalisa 90 hari data historis untuk memproyeksikan harga.</p>
+            <div class="card text-center py-2">
+                <div class="display-4 mb-2">&#x1F9E0;</div>
+                <p class="text-muted dark:text-slate-400 fw-medium fs-3">Masukkan kode saham dan klik Predict</p>
+                <p class="text-muted fs-sm mt-1">Model regresi linear akan menganalisa 90 hari data historis untuk memproyeksikan harga.</p>
             </div>
             </template>
         </main>
     </div>
     <style>@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}.animate-shimmer{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}</style>
-    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
     <script src="/static/js/app.js" defer></script>
 </body>
 </html>

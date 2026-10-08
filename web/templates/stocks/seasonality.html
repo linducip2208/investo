@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,113 +36,113 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <a href="/saham" class="text-slate-500 dark:text-slate-400 hover:text-white">Saham</a>
-            <span class="text-slate-500 mx-2">/</span>
-            <a href="/saham/[[.Code]]" class="text-slate-500 dark:text-slate-400 hover:text-white">[[.Code]]</a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Seasonality</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <a href="/saham" class="text-muted dark:text-slate-400 ">Saham</a>
+            <span class="text-muted mx-2">/</span>
+            <a href="/saham/[[.Code]]" class="text-muted dark:text-slate-400 ">[[.Code]]</a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Seasonality</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Saham</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Saham</div>
             <a href="/saham/[[.Code]]" class="sidebar-link"><span>📊</span>Overview</a>
             <a href="/saham/[[.Code]]/fundamental" class="sidebar-link"><span>📋</span>Fundamental</a>
             <a href="/saham/[[.Code]]/teknikal" class="sidebar-link"><span>📈</span>Teknikal</a>
             <a href="/saham/[[.Code]]/seasonality" class="sidebar-link active"><span>📅</span>Seasonality</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">📅 Seasonality Analysis &mdash; [[.Code]]</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Analisis pola musiman return bulanan berdasarkan [[.Result.YearsAnalyzed]] tahun data historis</p>
+                <h1 class="fs-1 fw-bold text-white">📅 Seasonality Analysis &mdash; [[.Code]]</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Analisis pola musiman return bulanan berdasarkan [[.Result.YearsAnalyzed]] tahun data historis</p>
                 [[if .Result.IsIllustrative]]
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. [[if .Result.Source]]<span class="text-slate-500 dark:text-slate-400">Sumber: [[.Result.Source]] · per [[.Result.AsOf]]</span>[[end]]</p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. [[if .Result.Source]]<span class="text-muted dark:text-slate-400">Sumber: [[.Result.Source]] · per [[.Result.AsOf]]</span>[[end]]</p>
                 </div>
                 [[else]]
-                [[if .Result.Source]]<p class="text-xs text-slate-500 mt-2">Sumber: [[.Result.Source]] · per [[.Result.AsOf]] · [[.Result.DataPoints]] observasi bulanan</p>[[end]]
+                [[if .Result.Source]]<p class="fs-xs text-muted mt-2">Sumber: [[.Result.Source]] · per [[.Result.AsOf]] · [[.Result.DataPoints]] observasi bulanan</p>[[end]]
                 [[end]]
             </div>
 
-            <div class="card p-6 bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-blue-500/20">
+            <div class="card p-2 bg-gradient bg-gradient-from-blue bg-opacity-25 bg-gradient-to-purple bg-opacity-25 border-primary">
                 <div class="text-center">
-                    <p class="text-slate-500 dark:text-slate-400 text-sm">📌 Bulan ini secara historis (<span class="font-semibold text-white">[[.Result.CurrentMonth]]</span>)</p>
-                    <p class="text-3xl font-mono font-bold mt-2 [[if ge .Result.CurrentMonthAvg 0]]text-success[[else]]text-danger[[end]]">
+                    <p class="text-muted dark:text-slate-400 fs-sm">📌 Bulan ini secara historis (<span class="fw-semibold text-white">[[.Result.CurrentMonth]]</span>)</p>
+                    <p class="fs-1 font-monospace fw-bold mt-2 [[if ge .Result.CurrentMonthAvg 0]]text-success[[else]]text-danger[[end]]">
                         [[if ge .Result.CurrentMonthAvg 0]]+[[end]][[printf "%.2f" .Result.CurrentMonthAvg]]%
                     </p>
-                    <p class="text-slate-500 text-sm mt-1">rata-rata return</p>
+                    <p class="text-muted fs-sm mt-1">rata-rata return</p>
                 </div>
             </div>
 
-            <div class="card p-6">
-                <h2 class="text-lg font-bold text-white mb-4">📊 Monthly Returns Heatmap (3x4 Grid)</h2>
-                <div class="grid grid-cols-4 gap-3">
+            <div class="card p-2">
+                <h2 class="fs-3 fw-bold text-white mb-2">📊 Monthly Returns Heatmap (3x4 Grid)</h2>
+                <div class="row row-cols-4 gap-3">
                     [[range .Months]]
                     [[$ret := index $.Result.MonthlyReturns .]]
                     [[$win := index $.Result.MonthlyWinRate .]]
-                    <div class="rounded-xl p-4 text-center transition-all hover:scale-105 [[if ge $ret 0]]bg-green-900/30 border border-green-500/30[[else]]bg-red-900/30 border border-red-500/30[[end]] [[if eq . "Jan"]]ring-2 ring-blue-500[[end]]">
-                        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase">[[.]]</p>
-                        <p class="text-xl font-mono font-bold mt-1 [[if ge $ret 0]]text-success[[else]]text-danger[[end]]">
+                    <div class="rounded-3 p-2 text-center   [[if ge $ret 0]]bg-success-lt border border-green-500/30[[else]]bg-danger-lt border border-red-500/30[[end]] [[if eq . "Jan"]]ring-2 ring-blue-500[[end]]">
+                        <p class="fs-xs text-muted dark:text-slate-400 fw-semibold text-uppercase">[[.]]</p>
+                        <p class="fs-2 font-monospace fw-bold mt-1 [[if ge $ret 0]]text-success[[else]]text-danger[[end]]">
                             [[if ge $ret 0]]+[[end]][[printf "%.1f" $ret]]%
                         </p>
-                        <p class="text-xs [[if ge $ret 0]]text-green-400[[else]]text-red-400[[end]] mt-1">
+                        <p class="fs-xs [[if ge $ret 0]]text-green-400[[else]]text-red-400[[end]] mt-1">
                             Win: [[printf "%.0f" $win]]%
                         </p>
                         [[if eq . "Jan"]]
-                        <p class="text-[10px] text-blue-400 mt-1">&#9650; CURRENT</p>
+                        <p class="fs-6 text-primary mt-1">&#9650; CURRENT</p>
                         [[end]]
                     </div>
                     [[end]]
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="card p-5 text-center">
-                    <p class="text-slate-500 text-xs">🏆 Best Month</p>
-                    <p class="text-2xl font-bold text-success mt-1">[[.Result.BestMonth]]</p>
+            <div class="row row-cols-1 row-cols-md-2 gap-4">
+                <div class="card p-2 text-center">
+                    <p class="text-muted fs-xs">🏆 Best Month</p>
+                    <p class="fs-1 fw-bold text-success mt-1">[[.Result.BestMonth]]</p>
                     [[$bm := index .Result.MonthlyReturns (printf "%.3s" .Result.BestMonth)]]
-                    [[if gt $bm 0]]<p class="text-success text-sm">+[[printf "%.1f" $bm]]% avg return</p>[[end]]
+                    [[if gt $bm 0]]<p class="text-success fs-sm">+[[printf "%.1f" $bm]]% avg return</p>[[end]]
                 </div>
-                <div class="card p-5 text-center">
-                    <p class="text-slate-500 text-xs">📉 Worst Month</p>
-                    <p class="text-2xl font-bold text-danger mt-1">[[.Result.WorstMonth]]</p>
+                <div class="card p-2 text-center">
+                    <p class="text-muted fs-xs">📉 Worst Month</p>
+                    <p class="fs-1 fw-bold text-danger mt-1">[[.Result.WorstMonth]]</p>
                     [[$wm := index .Result.MonthlyReturns (printf "%.3s" .Result.WorstMonth)]]
-                    [[if lt $wm 0]]<p class="text-danger text-sm">[[printf "%.1f" $wm]]% avg return</p>[[end]]
+                    [[if lt $wm 0]]<p class="text-danger fs-sm">[[printf "%.1f" $wm]]% avg return</p>[[end]]
                 </div>
             </div>
 
-            <div class="card p-6">
-                <h3 class="text-sm font-semibold text-white mb-4">📊 Win Rate by Month</h3>
-                <div class="space-y-3">
+            <div class="card p-2">
+                <h3 class="fs-sm fw-semibold text-white mb-2">📊 Win Rate by Month</h3>
+                <div class="vstack gap-2">
                     [[range .Months]]
                     [[$winRate := index $.Result.MonthlyWinRate .]]
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 text-xs text-slate-500 dark:text-slate-400 font-mono">[[.]]</span>
-                        <div class="flex-1 bg-white dark:bg-slate-800 rounded-full h-6 overflow-hidden">
-                            <div class="h-full rounded-full flex items-center justify-end px-2 transition-all"
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="w-10 fs-xs text-muted dark:text-slate-400 font-monospace">[[.]]</span>
+                        <div class="flex-fill bg-white dark:bg-white rounded-pill h-6 overflow-hidden">
+                            <div class="h-100 rounded-pill d-flex align-items-center justify-content-end px-2 "
                                 style="width:[[$winRate]]%;background:[[if ge $winRate 60]]#10b981[[else if ge $winRate 40]]#fbbf24[[else]]#ef4444[[end]]">
-                                <span class="text-xs font-bold text-white">[[printf "%.0f" $winRate]]%</span>
+                                <span class="fs-xs fw-bold text-white">[[printf "%.0f" $winRate]]%</span>
                             </div>
                         </div>
                     </div>
@@ -151,6 +151,6 @@
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

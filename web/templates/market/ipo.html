@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,27 +38,27 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg">
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3">
                 <span>💹</span><span class="font-display">Investo</span>
             </a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">IPO Watch</span>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">IPO Watch</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
             <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
@@ -69,102 +69,102 @@
             <a href="/market/ipo" class="sidebar-link active"><span>🚀</span>IPO Watch</a>
             <a href="/market/rebalance" class="sidebar-link"><span>⚖️</span>Rebalance</a>
             <a href="/market/insider" class="sidebar-link"><span>👤</span>Insider</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tools</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Tools</div>
             <a href="/screener" class="sidebar-link"><span>🔍</span>Screener</a>
             <a href="/berita" class="sidebar-link"><span>📰</span>Berita</a>
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-8">
+        <div class="max-w-7xl mx-auto vstack gap-5">
             <div>
-                <h1 class="text-2xl font-bold text-white">🚀 IPO Watch</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Pantau IPO mendatang dan performa IPO terbaru di Bursa Efek Indonesia</p>
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. Verifikasi jadwal resmi di keterbukaan informasi BEI/IDX.</p>
+                <h1 class="fs-1 fw-bold text-white">🚀 IPO Watch</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Pantau IPO mendatang dan performa IPO terbaru di Bursa Efek Indonesia</p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. Verifikasi jadwal resmi di keterbukaan informasi BEI/IDX.</p>
                 </div>
             </div>
 
             <div>
-                <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2"><span class="w-1 h-5 bg-blue-500 rounded-full"></span>IPO Mendatang</h2>
-                <div class="grid gap-4 md:grid-cols-2">
+                <h2 class="fs-3 fw-semibold text-white mb-2 d-flex align-items-center gap-2"><span class="w-1 h-5 bg-primary rounded-pill"></span>IPO Mendatang</h2>
+                <div class="row gap-4 row-cols-md-2">
                     [[range .Upcoming]]
                     <div class="ipo-card">
-                        <div class="flex items-start justify-between mb-3">
+                        <div class="d-flex align-items-start justify-content-between mb-2">
                             <div>
-                                <span class="font-mono text-lg font-bold text-white">[[.StockCode]]</span>
-                                <p class="text-slate-700 dark:text-slate-300 text-sm mt-1">[[.Name]]</p>
+                                <span class="font-monospace fs-3 fw-bold text-white">[[.StockCode]]</span>
+                                <p class="text-body dark:text-body fs-sm mt-1">[[.Name]]</p>
                             </div>
-                            <span class="px-3 py-1 rounded-lg text-xs font-semibold bg-blue-900/50 text-blue-400 border border-blue-800">[[.Sector]]</span>
+                            <span class="px-2 py-1 rounded-2 fs-xs fw-semibold bg-primary bg-opacity-50 text-primary border border-primary">[[.Sector]]</span>
                         </div>
-                        [[if .IsIllustrative]]<p class="text-[10px] text-amber-300 mt-1">⚠️ Data ilustratif[[if .Note]] — [[.Note]][[end]]</p>[[end]]
-                        <div class="grid grid-cols-2 gap-3 text-sm">
+                        [[if .IsIllustrative]]<p class="fs-6 text-warning mt-1">⚠️ Data ilustratif[[if .Note]] — [[.Note]][[end]]</p>[[end]]
+                        <div class="row row-cols-2 gap-3 fs-sm">
                             <div>
-                                <span class="text-slate-500 text-xs">Harga Penawaran</span>
-                                <p class="font-mono font-semibold text-white">Rp [[formatNumber .OfferPrice]]</p>
+                                <span class="text-muted fs-xs">Harga Penawaran</span>
+                                <p class="font-monospace fw-semibold text-white">Rp [[formatNumber .OfferPrice]]</p>
                             </div>
                             <div>
-                                <span class="text-slate-500 text-xs">Jumlah Saham</span>
-                                <p class="font-mono font-semibold text-white">[[formatVolume .OfferShares]] lot</p>
+                                <span class="text-muted fs-xs">Jumlah Saham</span>
+                                <p class="font-monospace fw-semibold text-white">[[formatVolume .OfferShares]] lot</p>
                             </div>
                             <div>
-                                <span class="text-slate-500 text-xs">Book Building</span>
-                                <p class="font-mono text-xs text-slate-500 dark:text-slate-400">[[.BookBuildingStart]] - [[.BookBuildingEnd]]</p>
+                                <span class="text-muted fs-xs">Book Building</span>
+                                <p class="font-monospace fs-xs text-muted dark:text-slate-400">[[.BookBuildingStart]] - [[.BookBuildingEnd]]</p>
                             </div>
                             <div>
-                                <span class="text-slate-500 text-xs">Target Listing</span>
-                                <p class="font-mono text-xs text-slate-500 dark:text-slate-400">[[.ListingDate]]</p>
+                                <span class="text-muted fs-xs">Target Listing</span>
+                                <p class="font-monospace fs-xs text-muted dark:text-slate-400">[[.ListingDate]]</p>
                             </div>
                         </div>
                     </div>
                     [[end]]
                 </div>
                 [[if not .Upcoming]]
-                <div class="card p-8 text-center"><p class="text-slate-500">Belum ada IPO mendatang yang terdaftar</p></div>
+                <div class="card p-2 text-center"><p class="text-muted">Belum ada IPO mendatang yang terdaftar</p></div>
                 [[end]]
             </div>
 
             <div>
-                <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2"><span class="w-1 h-5 bg-green-500 rounded-full"></span>IPO Terbaru</h2>
+                <h2 class="fs-3 fw-semibold text-white mb-2 d-flex align-items-center gap-2"><span class="w-1 h-5 bg-success rounded-pill"></span>IPO Terbaru</h2>
                 <div class="card overflow-hidden">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200 dark:border-slate-700">
-                                <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Saham</th>
-                                <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Sektor</th>
-                                <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Harga IPO</th>
-                                <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Hari 1 Close</th>
-                                <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Return</th>
-                                <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Listing Date</th>
+                            <tr class="border-bottom border dark:border">
+                                <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Saham</th>
+                                <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Sektor</th>
+                                <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Harga IPO</th>
+                                <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Hari 1 Close</th>
+                                <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Return</th>
+                                <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Listing Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             [[range .Recent]]
-                            <tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4">
-                                    <span class="text-white font-semibold">[[.StockCode]]</span>
-                                    <p class="text-slate-500 text-xs">[[.Name]]</p>
+                            <tr class="border-bottom border dark:border-slate-800  dark:hover:bg-white/50 ">
+                                <td class="p-2">
+                                    <span class="text-white fw-semibold">[[.StockCode]]</span>
+                                    <p class="text-muted fs-xs">[[.Name]]</p>
                                 </td>
-                                <td class="p-4 text-slate-500 dark:text-slate-400">[[.Sector]]</td>
-                                <td class="p-4 text-right font-mono text-slate-700 dark:text-slate-300">Rp [[formatNumber .OfferPrice]]</td>
-                                <td class="p-4 text-right font-mono text-slate-700 dark:text-slate-300">Rp [[formatNumber .FirstDayClose]]</td>
-                                <td class="p-4 text-right font-mono font-semibold [[if ge .ReturnPercent 0]]return-positive[[else]]return-negative[[end]]">
+                                <td class="p-2 text-muted dark:text-slate-400">[[.Sector]]</td>
+                                <td class="p-2 text-end font-monospace text-body dark:text-body">Rp [[formatNumber .OfferPrice]]</td>
+                                <td class="p-2 text-end font-monospace text-body dark:text-body">Rp [[formatNumber .FirstDayClose]]</td>
+                                <td class="p-2 text-end font-monospace fw-semibold [[if ge .ReturnPercent 0]]return-positive[[else]]return-negative[[end]]">
                                     [[if ge .ReturnPercent 0]]+[[end]][[printf "%.2f" .ReturnPercent]]%
                                 </td>
-                                <td class="p-4 text-right text-slate-500 dark:text-slate-400 text-xs">[[.ListingDate]]</td>
+                                <td class="p-2 text-end text-muted dark:text-slate-400 fs-xs">[[.ListingDate]]</td>
                             </tr>
                             [[end]]
                         </tbody>
                     </table>
                 </div>
                 [[if not .Recent]]
-                <div class="card p-8 text-center"><p class="text-slate-500">Belum ada data IPO terbaru</p></div>
+                <div class="card p-2 text-center"><p class="text-muted">Belum ada data IPO terbaru</p></div>
                 [[end]]
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

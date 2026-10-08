@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,7 @@
         .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
         .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
         .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
-        .bg-success-dark{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
+        .bg-success{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
         @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
         @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
     </style>
@@ -37,34 +37,34 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false, selectedCode: '[[.QueryCode]]' }">
+<body class="h-100" x-data="{ sidebarOpen: false, selectedCode: '[[.QueryCode]]' }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Social Buzz</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Social Buzz</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
             <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Alt Data</div>
             <a href="/market/google-trends" class="sidebar-link"><span>📈</span>Google Trends</a>
             <a href="/market/social-buzz" class="sidebar-link active"><span>💬</span>Social Buzz</a>
             <a href="/market/economic-proxy" class="sidebar-link"><span>🏭</span>Economic Proxy</a>
             <a href="/market/job-postings" class="sidebar-link"><span>💼</span>Job Postings</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
@@ -72,35 +72,35 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">💬 Social Media Buzz Tracker</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Monitor mentions dan sentimen saham di social media real-time</p>
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data social listening real-time.</p>
+                <h1 class="fs-1 fw-bold text-white">💬 Social Media Buzz Tracker</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Monitor mentions dan sentimen saham di social media real-time</p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data social listening real-time.</p>
                 </div>
             </div>
 
             [[if .Unusual]]
-            <div class="card p-6 border-red-500/30 bg-red-900/10">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="text-xl">⚠️</span>
-                    <h2 class="text-lg font-bold text-red-400">Unusual Activity Alerts</h2>
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-900 text-red-400">[[len .Unusual]] alerts</span>
+            <div class="card p-2 border-danger bg-danger bg-opacity-10">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="fs-2">⚠️</span>
+                    <h2 class="fs-3 fw-bold text-danger">Unusual Activity Alerts</h2>
+                    <span class="px-2 py-1 rounded-pill fs-xs fw-semibold bg-danger text-danger">[[len .Unusual]] alerts</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-4">
                     [[range .Unusual]]
-                    <div class="bg-red-900/20 border border-red-500/20 rounded-xl p-4">
-                        <a href="?code=[[.StockCode]]" class="text-white font-bold text-lg hover:text-red-400">[[.StockCode]]</a>
-                        <p class="text-slate-500 dark:text-slate-400 text-xs">[[.StockName]]</p>
-                        <div class="mt-3 flex items-center gap-3">
-                            <span class="text-sm text-red-400 font-mono font-bold">[[formatNumber .Mentions]] mentions</span>
-                            <span class="px-2 py-0.5 rounded text-xs font-semibold bg-red-900/50 text-red-400">+[[.Change24h]]% 24h</span>
+                    <div class="bg-danger bg-opacity-25 border border-danger rounded-3 p-2">
+                        <a href="?code=[[.StockCode]]" class="text-white fw-bold fs-3 ">[[.StockCode]]</a>
+                        <p class="text-muted dark:text-slate-400 fs-xs">[[.StockName]]</p>
+                        <div class="mt-2 d-flex align-items-center gap-3">
+                            <span class="fs-sm text-danger font-monospace fw-bold">[[formatNumber .Mentions]] mentions</span>
+                            <span class="px-2 py-0 rounded fs-xs fw-semibold bg-danger bg-opacity-50 text-danger">+[[.Change24h]]% 24h</span>
                         </div>
-                        <p class="text-xs text-slate-500 mt-1">Sources: [[range .TopSources]][[.]] [[end]]</p>
+                        <p class="fs-xs text-muted mt-1">Sources: [[range .TopSources]][[.]] [[end]]</p>
                     </div>
                     [[end]]
                 </div>
@@ -108,37 +108,37 @@
             [[end]]
 
             <div class="card overflow-hidden">
-                <table class="w-full text-sm">
+                <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-700">
-                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Saham</th>
-                            <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Mentions</th>
-                            <th class="text-right p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">24h Change</th>
-                            <th class="text-center p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Sentiment</th>
-                            <th class="text-left p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Sources</th>
+                        <tr class="border-bottom border dark:border">
+                            <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Saham</th>
+                            <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">Mentions</th>
+                            <th class="text-end p-2 fs-xs fw-semibold text-muted text-uppercase ">24h Change</th>
+                            <th class="text-center p-2 fs-xs fw-semibold text-muted text-uppercase ">Sentiment</th>
+                            <th class="text-start p-2 fs-xs fw-semibold text-muted text-uppercase ">Sources</th>
                         </tr>
                     </thead>
                     <tbody>
                         [[range .Trending]]
-                        <tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer" onclick="window.location='?code=[[.StockCode]]'">
-                            <td class="p-4">
-                                <div class="flex items-center gap-2">
-                                    [[if .Unusual]]<span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>[[end]]
-                                    <a href="?code=[[.StockCode]]" class="text-white font-semibold hover:text-blue-400">[[.StockCode]]</a>
+                        <tr class="border-bottom border dark:border-slate-800  dark:hover:bg-white/50  cursor-pointer" onclick="window.location='?code=[[.StockCode]]'">
+                            <td class="p-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    [[if .Unusual]]<span class="w-2 h-2 bg-danger rounded-pill "></span>[[end]]
+                                    <a href="?code=[[.StockCode]]" class="text-white fw-semibold ">[[.StockCode]]</a>
                                 </div>
-                                <p class="text-slate-500 text-xs mt-0.5">[[.StockName]]</p>
+                                <p class="text-muted fs-xs mt-0">[[.StockName]]</p>
                             </td>
-                            <td class="p-4 text-right font-mono font-semibold text-white">[[formatNumber .Mentions]]</td>
-                            <td class="p-4 text-right font-mono [[if ge .Change24h 0]]text-success[[else]]text-danger[[end]]">[[if ge .Change24h 0]]+[[end]][[.Change24h]]%</td>
-                            <td class="p-4 text-center">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold [[if eq .Sentiment "positive"]]bg-success-dark text-success[[else if eq .Sentiment "negative"]]bg-danger-dark text-danger[[else]]bg-slate-700 text-slate-300[[end]]">
+                            <td class="p-2 text-end font-monospace fw-semibold text-white">[[formatNumber .Mentions]]</td>
+                            <td class="p-2 text-end font-monospace [[if ge .Change24h 0]]text-success[[else]]text-danger[[end]]">[[if ge .Change24h 0]]+[[end]][[.Change24h]]%</td>
+                            <td class="p-2 text-center">
+                                <span class="px-2 py-1 rounded-pill fs-xs fw-semibold [[if eq .Sentiment "positive"]]bg-success text-success[[else if eq .Sentiment "negative"]]bg-danger-dark text-danger[[else]]bg-secondary-lt text-body[[end]]">
                                     [[.Sentiment]]
                                 </span>
                             </td>
-                            <td class="p-4">
-                                <div class="flex flex-wrap gap-1">
+                            <td class="p-2">
+                                <div class="d-flex flex-wrap gap-1">
                                     [[range .TopSources]]
-                                    <span class="px-2 py-0.5 rounded text-xs bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">[[.]]</span>
+                                    <span class="px-2 py-0 rounded fs-xs bg-white dark:bg-white text-muted dark:text-slate-400">[[.]]</span>
                                     [[end]]
                                 </div>
                             </td>
@@ -149,40 +149,40 @@
             </div>
 
             [[if .Selected]]
-            <div class="card p-6" id="stock-detail">
-                <h2 class="text-lg font-bold text-white mb-4">📊 [[.Selected.StockCode]] Buzz Detail</h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
-                        <p class="text-slate-500 text-xs">Total Mentions</p>
-                        <p class="text-2xl font-mono font-bold text-white mt-1">[[formatNumber .Selected.Mentions]]</p>
+            <div class="card p-2" id="stock-detail">
+                <h2 class="fs-3 fw-bold text-white mb-2">📊 [[.Selected.StockCode]] Buzz Detail</h2>
+                <div class="row row-cols-1 row-cols-md-4 gap-4">
+                    <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 text-center">
+                        <p class="text-muted fs-xs">Total Mentions</p>
+                        <p class="fs-1 font-monospace fw-bold text-white mt-1">[[formatNumber .Selected.Mentions]]</p>
                     </div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
-                        <p class="text-slate-500 text-xs">24h Change</p>
-                        <p class="text-2xl font-mono font-bold [[if ge .Selected.Change24h 0]]text-success[[else]]text-danger[[end]] mt-1">[[if ge .Selected.Change24h 0]]+[[end]][[.Selected.Change24h]]%</p>
+                    <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 text-center">
+                        <p class="text-muted fs-xs">24h Change</p>
+                        <p class="fs-1 font-monospace fw-bold [[if ge .Selected.Change24h 0]]text-success[[else]]text-danger[[end]] mt-1">[[if ge .Selected.Change24h 0]]+[[end]][[.Selected.Change24h]]%</p>
                     </div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
-                        <p class="text-slate-500 text-xs">Sentiment</p>
-                        <p class="text-2xl font-bold [[if eq .Selected.Sentiment "positive"]]text-success[[else if eq .Selected.Sentiment "negative"]]text-danger[[else]]text-warning[[end]] mt-1 capitalize">[[.Selected.Sentiment]]</p>
+                    <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 text-center">
+                        <p class="text-muted fs-xs">Sentiment</p>
+                        <p class="fs-1 fw-bold [[if eq .Selected.Sentiment "positive"]]text-success[[else if eq .Selected.Sentiment "negative"]]text-danger[[else]]text-warning[[end]] mt-1 text-capitalize">[[.Selected.Sentiment]]</p>
                     </div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
-                        <p class="text-slate-500 text-xs">Unusual Activity</p>
-                        <p class="text-2xl font-bold [[if .Selected.Unusual]]text-danger[[else]]text-slate-400[[end]] mt-1">[[if .Selected.Unusual]]YES[[else]]No[[end]]</p>
+                    <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 text-center">
+                        <p class="text-muted fs-xs">Unusual Activity</p>
+                        <p class="fs-1 fw-bold [[if .Selected.Unusual]]text-danger[[else]]text-slate-400[[end]] mt-1">[[if .Selected.Unusual]]YES[[else]]No[[end]]</p>
                     </div>
                 </div>
-                <div class="mt-4 text-sm text-slate-500 dark:text-slate-400">
-                    <p class="font-semibold text-slate-700 dark:text-slate-300">Top Sources:</p>
-                    <div class="flex gap-2 mt-1">[[range .Selected.TopSources]]<span class="px-3 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs">[[.]]</span>[[end]]</div>
+                <div class="mt-2 fs-sm text-muted dark:text-slate-400">
+                    <p class="fw-semibold text-body dark:text-body">Top Sources:</p>
+                    <div class="d-flex gap-2 mt-1">[[range .Selected.TopSources]]<span class="px-2 py-1 rounded-2 bg-white dark:bg-white text-body dark:text-body fs-xs">[[.]]</span>[[end]]</div>
                 </div>
             </div>
             [[end]]
 
             [[if not .Trending]]
-            <div class="card p-12 text-center">
-                <p class="text-slate-500 text-lg">Data social buzz belum tersedia</p>
+            <div class="card p-2 text-center">
+                <p class="text-muted fs-3">Data social buzz belum tersedia</p>
             </div>
             [[end]]
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

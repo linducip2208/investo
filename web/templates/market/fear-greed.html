@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="fearGreed()" x-init="fetch()">
+<body class="h-100 d-flex" x-data="fearGreed()" x-init="fetch()">
     <script>
         function fearGreed() {
             return {
@@ -87,11 +87,11 @@
                     return '#16a34a';
                 },
                 barColor(score) {
-                    if (score <= 25) return 'bg-red-500';
-                    if (score <= 45) return 'bg-orange-500';
-                    if (score <= 55) return 'bg-yellow-500';
-                    if (score <= 75) return 'bg-lime-500';
-                    return 'bg-green-500';
+                    if (score <= 25) return 'bg-red';
+                    if (score <= 45) return 'bg-orange';
+                    if (score <= 55) return 'bg-yellow';
+                    if (score <= 75) return 'bg-lime';
+                    return 'bg-green';
                 },
                 barHeight(score) { return Math.max(4, score * 0.8) + 'px'; }
             }
@@ -99,12 +99,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -129,8 +129,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Analytics</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -174,8 +174,8 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6" />
 </svg></span> Anomalies</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -198,7 +198,7 @@
   <path d="M16 4l0 2" />
 </svg></span> Custom Index</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -208,63 +208,63 @@
     </aside>
 
     <!-- TOPBAR -->
-    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-40 flex items-center justify-between px-6">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors">
+    <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="text-sm text-slate-500 dark:text-slate-400">
-            <span class="text-slate-600">Market /</span> Fear &amp; Greed Index
+        <div class="fs-sm text-muted dark:text-slate-400">
+            <span class="text-muted">Market /</span> Fear &amp; Greed Index
         </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs text-slate-500 font-mono" x-text="'Auto-refresh: 5m'"></span>
-            <button @click="fetch()" class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-white transition-colors" title="Refresh">
+        <div class="d-flex align-items-center gap-3">
+            <span class="fs-xs text-muted font-monospace" x-text="'Auto-refresh: 5m'"></span>
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
-            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-white transition-colors">
-                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body  ">
+                <span class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+    <main class="flex-fill ms-0 ml-60 mt-2 p-2">
         <template x-if="!loaded">
-            <div class="grid gap-6">
-                <div class="card p-8 flex flex-col items-center justify-center space-y-4">
-                    <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p class="text-slate-500 dark:text-slate-400">Loading market sentiment data...</p>
+            <div class="row gap-6">
+                <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
+                    <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
+                    <p class="text-muted dark:text-slate-400">Loading market sentiment data...</p>
                 </div>
             </div>
         </template>
 
         <template x-if="loaded">
-            <div class="space-y-6">
+            <div class="vstack gap-4">
                 <!-- Page Header -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
-                        <h1 class="text-2xl font-bold text-white">Fear &amp; Greed Index</h1>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Indonesia Market Sentiment Indicator</p>
+                        <h1 class="fs-1 fw-bold text-white">Fear &amp; Greed Index</h1>
+                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Indonesia Market Sentiment Indicator</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="px-3 py-1.5 rounded-full text-xs font-semibold font-mono"
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="px-2 py-1 rounded-pill fs-xs fw-semibold font-monospace"
                               :class="{
-                                'bg-red-500/20 text-red-400': label === 'Extreme Fear',
-                                'bg-orange-500/20 text-orange-400': label === 'Fear',
-                                'bg-yellow-500/20 text-yellow-400': label === 'Neutral',
-                                'bg-lime-500/20 text-lime-400': label === 'Greed',
-                                'bg-green-500/20 text-green-400': label === 'Extreme Greed'
+                                'bg-red-lt text-red-400': label === 'Extreme Fear',
+                                'bg-orange-lt text-orange-400': label === 'Fear',
+                                'bg-yellow-lt text-yellow-400': label === 'Neutral',
+                                'bg-lime-lt text-lime-400': label === 'Greed',
+                                'bg-green-lt text-green-400': label === 'Extreme Greed'
                               }" x-text="label"></span>
                     </div>
                 </div>
 
                 <!-- Gauge Section -->
-                <div class="card p-8">
-                    <div class="flex flex-col lg:flex-row items-center gap-8">
+                <div class="card p-2">
+                    <div class="d-flex flex-column flex-lg-row align-items-center gap-5">
                         <!-- SVG Gauge -->
                         <div class="gauge-container flex-shrink-0">
-                            <svg id="gauge-svg" viewBox="0 0 320 180" class="w-full">
+                            <svg id="gauge-svg" viewBox="0 0 320 180" class="w-100">
                                 <defs>
                                     <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
                                         <stop offset="0%" stop-color="#ef4444"/>
@@ -295,18 +295,18 @@
                                 </g>
                             </svg>
                             <div class="text-center mt-2">
-                                <span id="gauge-label" class="text-4xl font-bold text-white font-mono" x-text="score"></span>
-                                <span class="text-sm text-slate-500 dark:text-slate-400">/100</span>
+                                <span id="gauge-label" class="display-6 fw-bold text-white font-monospace" x-text="score"></span>
+                                <span class="fs-sm text-muted dark:text-slate-400">/100</span>
                             </div>
                         </div>
 
                         <!-- Component Cards -->
-                        <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                        <div class="flex-fill row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-4 w-100">
                             <template x-for="(value, name) in components" :key="name">
-                                <div class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-xl p-4 hover:border-slate-500 transition-colors">
-                                    <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-2" x-text="name"></div>
-                                    <div class="flex items-end gap-2 mb-2">
-                                        <span class="text-2xl font-bold font-mono"
+                                <div class="bg-white dark:bg-[#0f172a] border border dark:border rounded-3 p-2  ">
+                                    <div class="fs-xs text-muted dark:text-slate-400 fw-semibold text-uppercase  mb-2" x-text="name"></div>
+                                    <div class="d-flex align-items-end gap-2 mb-2">
+                                        <span class="fs-1 fw-bold font-monospace"
                                               :class="{
                                                   'text-red-400': value <= 25,
                                                   'text-orange-400': value > 25 && value <= 45,
@@ -314,17 +314,17 @@
                                                   'text-lime-400': value > 55 && value <= 75,
                                                   'text-green-400': value > 75
                                               }" x-text="value"></span>
-                                        <span class="text-xs text-slate-500 mb-1">/100</span>
+                                        <span class="fs-xs text-muted mb-1">/100</span>
                                     </div>
-                                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                        <div class="h-full rounded-full transition-all duration-700"
+                                    <div class="w-100 h-2 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                        <div class="h-100 rounded-pill  "
                                              :style="{ width: value + '%' }"
                                              :class="{
-                                                 'bg-red-500': value <= 25,
-                                                 'bg-orange-500': value > 25 && value <= 45,
-                                                 'bg-yellow-500': value > 45 && value <= 55,
-                                                 'bg-lime-500': value > 55 && value <= 75,
-                                                 'bg-green-500': value > 75
+                                                 'bg-red': value <= 25,
+                                                 'bg-orange': value > 25 && value <= 45,
+                                                 'bg-yellow': value > 45 && value <= 55,
+                                                 'bg-lime': value > 55 && value <= 75,
+                                                 'bg-green': value > 75
                                              }"></div>
                                     </div>
                                 </div>
@@ -334,77 +334,77 @@
                 </div>
 
                 <!-- Historical Timeline -->
-                <div class="card p-6">
-                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <div class="card p-2">
+                    <h2 class="fs-3 fw-bold text-white mb-2 d-flex align-items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         30-Day Sentiment History
                     </h2>
                     <template x-if="history.length === 0">
-                        <p class="text-slate-500 text-center py-8">No historical data available yet.</p>
+                        <p class="text-muted text-center py-2">No historical data available yet.</p>
                     </template>
                     <template x-if="history.length > 0">
                         <div class="overflow-x-auto">
-                            <div class="flex items-end gap-1 h-36 min-w-max">
+                            <div class="d-flex align-items-end gap-1 h-36 min-w-max">
                                 <template x-for="item in history.slice(-30)" :key="item.timestamp">
-                                    <div class="flex flex-col items-center group relative">
+                                    <div class="d-flex flex-column align-items-center group position-relative">
                                         <div class="w-6 rounded-t"
                                              :style="{ height: (item.score * 1.2) + 'px' }"
                                              :class="{
-                                                 'bg-red-500': item.score <= 25,
-                                                 'bg-orange-500': item.score > 25 && item.score <= 45,
-                                                 'bg-yellow-500': item.score > 45 && item.score <= 55,
-                                                 'bg-lime-500': item.score > 55 && item.score <= 75,
-                                                 'bg-green-500': item.score > 75
+                                                 'bg-red': item.score <= 25,
+                                                 'bg-orange': item.score > 25 && item.score <= 45,
+                                                 'bg-yellow': item.score > 45 && item.score <= 55,
+                                                 'bg-lime': item.score > 55 && item.score <= 75,
+                                                 'bg-green': item.score > 75
                                              }"
                                              :title="item.score + ' - ' + item.label"></div>
-                                        <div class="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap font-mono transition-opacity z-10" x-text="item.score + ' · ' + item.label"></div>
+                                        <div class="position-absolute bottom-full mb-1 opacity-0  bg-white dark:bg-white text-white fs-6 rounded px-2 py-1 text-nowrap font-monospace  z-1" x-text="item.score + ' · ' + item.label"></div>
                                     </div>
                                 </template>
                             </div>
-                            <div class="flex items-center justify-between mt-2 text-[10px] text-slate-600 font-mono">
+                            <div class="d-flex align-items-center justify-content-between mt-2 fs-6 text-muted font-monospace">
                                 <span x-text="history.length > 0 ? history[Math.max(0, history.length - 30)].timestamp?.split('T')[0] : ''"></span>
                                 <span x-text="history.length > 0 ? history[history.length - 1]?.timestamp?.split('T')[0] : ''"></span>
                             </div>
                         </div>
                     </template>
                     <!-- Legend -->
-                    <div class="flex flex-wrap gap-3 mt-4">
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400"><span class="w-3 h-3 rounded bg-red-500"></span> Extreme Fear</div>
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400"><span class="w-3 h-3 rounded bg-orange-500"></span> Fear</div>
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400"><span class="w-3 h-3 rounded bg-yellow-500"></span> Neutral</div>
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400"><span class="w-3 h-3 rounded bg-lime-500"></span> Greed</div>
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400"><span class="w-3 h-3 rounded bg-green-500"></span> Extreme Greed</div>
+                    <div class="d-flex flex-wrap gap-3 mt-2">
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-danger"></span> Extreme Fear</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-warning"></span> Fear</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-warning"></span> Neutral</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-success"></span> Greed</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-success"></span> Extreme Greed</div>
                     </div>
                 </div>
 
                 <!-- Component Weights Info -->
-                <div class="card p-6">
-                    <h2 class="text-lg font-bold text-white mb-4">Index Composition</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Market Momentum</div>
-                            <div class="text-2xl font-bold text-white font-mono">25%</div>
-                            <div class="text-xs text-slate-500 mt-1">% of stocks above MA50</div>
+                <div class="card p-2">
+                    <h2 class="fs-3 fw-bold text-white mb-2">Index Composition</h2>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 gap-4">
+                        <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
+                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Market Momentum</div>
+                            <div class="fs-1 fw-bold text-white font-monospace">25%</div>
+                            <div class="fs-xs text-muted mt-1">% of stocks above MA50</div>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Stock Breadth</div>
-                            <div class="text-2xl font-bold text-white font-mono">25%</div>
-                            <div class="text-xs text-slate-500 mt-1">Advance/decline ratio</div>
+                        <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
+                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Stock Breadth</div>
+                            <div class="fs-1 fw-bold text-white font-monospace">25%</div>
+                            <div class="fs-xs text-muted mt-1">Advance/decline ratio</div>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Volatility</div>
-                            <div class="text-2xl font-bold text-white font-mono">25%</div>
-                            <div class="text-xs text-slate-500 mt-1">IHSG 20-day std dev</div>
+                        <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
+                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Volatility</div>
+                            <div class="fs-1 fw-bold text-white font-monospace">25%</div>
+                            <div class="fs-xs text-muted mt-1">IHSG 20-day std dev</div>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Foreign Flow</div>
-                            <div class="text-2xl font-bold text-white font-mono">12.5%</div>
-                            <div class="text-xs text-slate-500 mt-1">Net buy ratio</div>
+                        <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
+                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Foreign Flow</div>
+                            <div class="fs-1 fw-bold text-white font-monospace">12.5%</div>
+                            <div class="fs-xs text-muted mt-1">Net buy ratio</div>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Trading Volume</div>
-                            <div class="text-2xl font-bold text-white font-mono">12.5%</div>
-                            <div class="text-xs text-slate-500 mt-1">Volume vs 20-day avg</div>
+                        <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
+                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Trading Volume</div>
+                            <div class="fs-1 fw-bold text-white font-monospace">12.5%</div>
+                            <div class="fs-xs text-muted mt-1">Volume vs 20-day avg</div>
                         </div>
                     </div>
                 </div>
@@ -413,7 +413,7 @@
     </main>
 
     <!-- Mobile overlay -->
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 "></div>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +32,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="maTargets()" x-init="init()">
+<body class="h-100 d-flex" x-data="maTargets()" x-init="init()">
 
 <script>
 function maTargets() {
@@ -55,21 +55,21 @@ function maTargets() {
             return 'text-red-400';
         },
         probBg(p) {
-            if (p >= 75) return 'bg-green-900/30 border-green-700/50';
-            if (p >= 60) return 'bg-amber-900/30 border-amber-700/50';
-            return 'bg-red-900/30 border-red-700/50';
+            if (p >= 75) return 'bg-success-lt border-green-700/50';
+            if (p >= 60) return 'bg-warning-lt border-amber-700/50';
+            return 'bg-danger-lt border-danger/50';
         }
     }
 }
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
         <a href="/market/macro-dashboard" class="sidebar-link"><span>&#x1F30D;</span> Macro Dashboard</a>
         <a href="/market/yield-curve" class="sidebar-link"><span>&#x1F4C9;</span> Yield Curve</a>
@@ -81,84 +81,84 @@ function maTargets() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex-1 max-w-md hidden sm:block">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-fill max-w-md d-none d-sm-block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+    <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
-            <h1 class="text-xl lg:text-2xl font-bold text-white">M&A Target Screener</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Screen stocks with high M&A potential based on valuation, industry fragmentation, and corporate structure.</p>
+            <h1 class="fs-2 fs-1 fw-bold text-white">M&A Target Screener</h1>
+            <p class="fs-sm text-muted dark:text-slate-400 mt-0">Screen stocks with high M&A potential based on valuation, industry fragmentation, and corporate structure.</p>
         </div>
 
         <template x-if="loading">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-4">
                 <template x-for="i in 5" :key="i">
-                    <div class="card p-5 animate-pulse"><div class="h-5 bg-slate-100/50 dark:bg-slate-700/50 rounded w-1/2 mb-3"></div><div class="h-4 bg-slate-100/50 dark:bg-slate-700/50 rounded w-3/4 mb-2"></div><div class="h-4 bg-slate-100/50 dark:bg-slate-700/50 rounded w-full"></div></div>
+                    <div class="card p-2 "><div class="h-5 bg-body bg-opacity-50 dark:bg-secondary-lt rounded w-1 mb-2"></div><div class="h-4 bg-body bg-opacity-50 dark:bg-secondary-lt rounded w-3 mb-2"></div><div class="h-4 bg-body bg-opacity-50 dark:bg-secondary-lt rounded w-100"></div></div>
                 </template>
             </div>
         </template>
 
         <template x-if="!loading">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="row row-cols-1 row-cols-md-2 gap-4">
                 <template x-for="t in targets" :key="t.code">
                     <div class="target-card">
-                        <div class="flex items-start justify-between mb-3">
+                        <div class="d-flex align-items-start justify-content-between mb-2">
                             <div>
-                                <h3 class="text-lg font-bold text-white" x-text="t.code"></h3>
-                                <p class="text-sm text-slate-500 dark:text-slate-400" x-text="t.name"></p>
+                                <h3 class="fs-3 fw-bold text-white" x-text="t.code"></h3>
+                                <p class="fs-sm text-muted dark:text-slate-400" x-text="t.name"></p>
                             </div>
-                            <div class="text-center px-3 py-2 rounded-xl border" :class="probBg(t.probability_score)">
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">Probability</p>
-                                <p class="text-xl font-extrabold font-mono" :class="probColor(t.probability_score)" x-text="t.probability_score + '%'"></p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-2">
-                                <span class="text-slate-500">PER</span>
-                                <p class="font-mono text-slate-700 dark:text-slate-300 font-semibold" x-text="t.per + 'x'"></p>
-                            </div>
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-2">
-                                <span class="text-slate-500">PBV</span>
-                                <p class="font-mono text-slate-700 dark:text-slate-300 font-semibold" x-text="t.pbv + 'x'"></p>
-                            </div>
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-2">
-                                <span class="text-slate-500">Insider</span>
-                                <p class="font-mono text-slate-700 dark:text-slate-300 font-semibold" x-text="t.insider_ownership"></p>
-                            </div>
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-2">
-                                <span class="text-slate-500">Cash</span>
-                                <p class="font-mono text-slate-700 dark:text-slate-300 font-semibold" x-text="t.cash_position"></p>
+                            <div class="text-center px-2 py-2 rounded-3 border" :class="probBg(t.probability_score)">
+                                <p class="fs-xs text-muted dark:text-slate-400 mb-0">Probability</p>
+                                <p class="fs-2 fw-bolder font-monospace" :class="probColor(t.probability_score)" x-text="t.probability_score + '%'"></p>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-xs px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-300 border border-blue-700/40" x-text="t.sector"></span>
-                            <span class="text-xs text-slate-500" x-text="t.market_cap"></span>
+                        <div class="row row-cols-2 gap-2 mb-2 fs-xs">
+                            <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
+                                <span class="text-muted">PER</span>
+                                <p class="font-monospace text-body dark:text-body fw-semibold" x-text="t.per + 'x'"></p>
+                            </div>
+                            <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
+                                <span class="text-muted">PBV</span>
+                                <p class="font-monospace text-body dark:text-body fw-semibold" x-text="t.pbv + 'x'"></p>
+                            </div>
+                            <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
+                                <span class="text-muted">Insider</span>
+                                <p class="font-monospace text-body dark:text-body fw-semibold" x-text="t.insider_ownership"></p>
+                            </div>
+                            <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
+                                <span class="text-muted">Cash</span>
+                                <p class="font-monospace text-body dark:text-body fw-semibold" x-text="t.cash_position"></p>
+                            </div>
                         </div>
 
-                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed" x-text="t.rationale"></p>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="fs-xs px-2 py-0 rounded-pill bg-primary bg-opacity-25 text-primary border border-primary" x-text="t.sector"></span>
+                            <span class="fs-xs text-muted" x-text="t.market_cap"></span>
+                        </div>
+
+                        <p class="fs-sm text-muted dark:text-slate-400 lh-lg" x-text="t.rationale"></p>
                     </div>
                 </template>
             </div>
         </template>
     </main>
 </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

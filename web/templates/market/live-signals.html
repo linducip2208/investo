@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="signalsApp()" x-init="init()">
+<body class="h-100 d-flex" x-data="signalsApp()" x-init="init()">
     <script>
         function signalsApp() {
             return {
@@ -80,7 +80,7 @@
                 get neutralCount() { return this.signals.filter(function(s){return s.type==='NEUTRAL'}).length; },
                 confidenceClass(v) { if(v>=70)return'confidence-high'; if(v>=45)return'confidence-medium'; return'confidence-low'; },
                 cardClass(t) { if(t==='BUY')return'buy'; if(t==='SELL')return'sell'; return'neutral'; },
-                badgeClass(t) { if(t==='BUY')return'badge-buy'; if(t==='SELL')return'badge-sell'; return'badge-neutral'; },
+                badgeClass(t) { if(t==='BUY')return'bg-success-lt'; if(t==='SELL')return'bg-danger-lt'; return'bg-secondary-lt'; },
                 showDetail(s) { this.selectedSignal = s; },
                 closeDetail() { this.selectedSignal = null; },
                 formatPrice(v) {
@@ -98,12 +98,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -128,8 +128,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Tools</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -178,14 +178,14 @@
   <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
   <path d="M12 16h.01" />
 </svg></span> Anomalies</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dividen" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3" />
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -213,8 +213,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -236,7 +236,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -251,57 +251,57 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Live Trading Signals</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">AI-generated signals dari multi-indicator analysis. Auto-refresh setiap 60 detik.</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Live Trading Signals</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">AI-generated signals dari multi-indicator analysis. Auto-refresh setiap 60 detik.</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2 px-3 py-1.5 bg-[#f4f6fb] dark:bg-[#0b1120] border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-500 dark:text-slate-400">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-slate-400">
                         <span class="pulse-dot"></span>
                         <span x-text="'Live · '+lastUpdate"></span>
                     </div>
-                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">Refresh</button>
+                    <button @click="fetchData()" class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">Refresh</button>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3">
-                <div class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2 px-2 py-2 bg-white dark:bg-white rounded-3 border border dark:border">
                     <span class="widget-title mb-0">Signal Type:</span>
-                    <button @click="filter='ALL';applyFilter()" class="px-3 py-1 text-xs font-medium rounded-lg transition-colors" :class="filter==='ALL'?'bg-blue-600 text-white':'text-slate-400 hover:text-white'">ALL</button>
-                    <button @click="filter='BUY';applyFilter()" class="px-3 py-1 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='BUY'?'bg-green-600 text-white':'text-green-400 hover:text-green-300'">
+                    <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'text-slate-400 ">ALL</button>
+                    <button @click="filter='BUY';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='BUY'?'bg-green-600 text-white':'text-green-400 ">
                         BUY <span class="tabular-nums" x-text="buyCount"></span>
                     </button>
-                    <button @click="filter='SELL';applyFilter()" class="px-3 py-1 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='SELL'?'bg-red-600 text-white':'text-red-400 hover:text-red-300'">
+                    <button @click="filter='SELL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='SELL'?'bg-red-600 text-white':'text-red-400 ">
                         SELL <span class="tabular-nums" x-text="sellCount"></span>
                     </button>
-                    <button @click="filter='NEUTRAL';applyFilter()" class="px-3 py-1 text-xs font-medium rounded-lg transition-colors flex items-center gap-1" :class="filter==='NEUTRAL'?'bg-slate-600 text-white':'text-slate-400 hover:text-slate-300'">
+                    <button @click="filter='NEUTRAL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='NEUTRAL'?'bg-slate-600 text-white':'text-slate-400 ">
                         NEUTRAL <span class="tabular-nums" x-text="neutralCount"></span>
                     </button>
                 </div>
-                <span class="text-xs text-slate-500 font-mono" x-text="count+' signals'"></span>
+                <span class="fs-xs text-muted font-monospace" x-text="count+' signals'"></span>
             </div>
 
             <template x-if="loading && signals.length === 0">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4">
                 <template x-for="i in 6" :key="i">
-                    <div class="card p-5 space-y-3">
+                    <div class="card p-2 vstack gap-2">
                         <div style="width:100px;height:14px;background:#1e293b;border-radius:4px;animation:shimmer 1.8s infinite"></div>
                         <div style="width:160px;height:20px;background:#1e293b;border-radius:4px;animation:shimmer 1.8s infinite"></div>
                         <div style="height:6px;background:#1e293b;border-radius:3px;animation:shimmer 1.8s infinite"></div>
@@ -313,51 +313,51 @@
             </template>
 
             <template x-if="!loading || signals.length > 0">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 signal-grid">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4 signal-grid">
                 <template x-for="(signal, idx) in filtered" :key="signal.stock_code">
-                <div class="card p-5 signal-card animate-fade-slide" :class="cardClass(signal.type)" :style="'animation-delay:'+(idx*0.05)+'s'">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
+                <div class="card p-2 signal-card animate-fade-slide" :class="cardClass(signal.type)" :style="'animation-delay:'+(idx*0.05)+'s'">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
                             <span class="badge" :class="badgeClass(signal.type)" x-text="signal.type"></span>
-                            <span class="font-mono font-bold text-white text-sm" x-text="signal.stock_code"></span>
+                            <span class="font-monospace fw-bold text-white fs-sm" x-text="signal.stock_code"></span>
                         </div>
-                        <span class="text-[10px] text-slate-500 font-mono" x-text="formatTime(signal.created_at)"></span>
+                        <span class="fs-6 text-muted font-monospace" x-text="formatTime(signal.created_at)"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" x-text="signal.stock_name"></div>
-                        <div class="font-mono text-lg font-bold text-white" x-text="formatPrice(signal.price)"></div>
+                    <div class="mb-2">
+                        <div class="fs-sm fw-medium text-body dark:text-body mb-1" x-text="signal.stock_name"></div>
+                        <div class="font-monospace fs-3 fw-bold text-white" x-text="formatPrice(signal.price)"></div>
                     </div>
 
-                    <div class="mb-3">
-                        <div class="flex items-center justify-between text-xs mb-1">
-                            <span class="text-slate-500">Confidence</span>
-                            <span class="font-mono font-bold" :class="signal.confidence>=70?'text-green-400':signal.confidence>=45?'text-amber-400':'text-red-400'" x-text="signal.confidence+'%'"></span>
+                    <div class="mb-2">
+                        <div class="d-flex align-items-center justify-content-between fs-xs mb-1">
+                            <span class="text-muted">Confidence</span>
+                            <span class="font-monospace fw-bold" :class="signal.confidence>=70?'text-green-400':signal.confidence>=45?'text-amber-400':'text-red-400'" x-text="signal.confidence+'%'"></span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" :class="confidenceClass(signal.confidence)" :style="'width:'+signal.confidence+'%'"></div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 mb-3 p-3 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg">
+                    <div class="row row-cols-2 gap-3 mb-2 p-2 bg-body dark:bg-[#0b1120] rounded-2">
                         <div>
-                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Target</div>
-                            <div class="font-mono text-sm font-semibold text-white" x-text="formatPrice(signal.target_price)"></div>
+                            <div class="fs-6 text-muted text-uppercase ">Target</div>
+                            <div class="font-monospace fs-sm fw-semibold text-white" x-text="formatPrice(signal.target_price)"></div>
                         </div>
                         <div>
-                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Stop Loss</div>
-                            <div class="font-mono text-sm font-semibold text-red-400" x-text="formatPrice(signal.stop_loss)"></div>
+                            <div class="fs-6 text-muted text-uppercase ">Stop Loss</div>
+                            <div class="font-monospace fs-sm fw-semibold text-danger" x-text="formatPrice(signal.stop_loss)"></div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <div class="text-xs text-slate-500 mb-1">Reason</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed" x-text="signal.reason"></div>
+                    <div class="mb-2">
+                        <div class="fs-xs text-muted mb-1">Reason</div>
+                        <div class="fs-xs text-muted dark:text-slate-400 lh-lg" x-text="signal.reason"></div>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <a :href="'/saham/'+signal.stock_code+'/chart-pro'" class="flex-1 text-center px-3 py-2 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">View Chart</a>
-                        <button @click="showDetail(signal)" class="px-3 py-2 bg-slate-100/50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 rounded-lg text-xs font-medium border border-slate-600/30 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Detail</button>
+                    <div class="d-flex align-items-center gap-2">
+                        <a :href="'/saham/'+signal.stock_code+'/chart-pro'" class="flex-fill text-center px-2 py-2 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">View Chart</a>
+                        <button @click="showDetail(signal)" class="px-2 py-2 bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-slate-400 rounded-2 fs-xs fw-medium border border  dark:hover:bg-secondary-lt ">Detail</button>
                     </div>
                 </div>
                 </template>
@@ -365,10 +365,10 @@
             </template>
 
             <template x-if="!loading && filtered.length === 0">
-            <div class="text-center py-16">
-                <div class="text-5xl mb-4">&#x1F4AD;</div>
-                <p class="text-slate-500 dark:text-slate-400 text-lg font-medium">No signals found</p>
-                <p class="text-slate-500 text-sm mt-1">Coba ganti filter atau refresh data</p>
+            <div class="text-center py-2">
+                <div class="display-5 mb-2">&#x1F4AD;</div>
+                <p class="text-muted dark:text-slate-400 fs-3 fw-medium">No signals found</p>
+                <p class="text-muted fs-sm mt-1">Coba ganti filter atau refresh data</p>
             </div>
             </template>
         </main>
@@ -377,39 +377,39 @@
     <template x-if="selectedSignal">
     <div class="modal-overlay" @click.self="closeDetail()">
         <div class="modal-content">
-            <div class="flex items-center justify-between mb-5">
-                <div class="flex items-center gap-3">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center gap-3">
                     <span class="badge" :class="badgeClass(selectedSignal.type)" x-text="selectedSignal.type"></span>
-                    <span class="font-mono font-bold text-white text-lg" x-text="selectedSignal.stock_code"></span>
+                    <span class="font-monospace fw-bold text-white fs-3" x-text="selectedSignal.stock_code"></span>
                 </div>
-                <button @click="closeDetail()" class="p-1 text-slate-500 hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <button @click="closeDetail()" class="p-1 text-muted  "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
 
-            <div class="space-y-4">
-                <div class="text-sm text-slate-700 dark:text-slate-300" x-text="selectedSignal.stock_name"></div>
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="p-3 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg text-center">
-                        <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Entry Price</div>
-                        <div class="font-mono text-sm font-bold text-white" x-text="formatPrice(selectedSignal.price)"></div>
+            <div class="vstack gap-3">
+                <div class="fs-sm text-body dark:text-body" x-text="selectedSignal.stock_name"></div>
+                <div class="row row-cols-3 gap-3">
+                    <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2 text-center">
+                        <div class="fs-6 text-muted text-uppercase  mb-1">Entry Price</div>
+                        <div class="font-monospace fs-sm fw-bold text-white" x-text="formatPrice(selectedSignal.price)"></div>
                     </div>
-                    <div class="p-3 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg text-center">
-                        <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Target</div>
-                        <div class="font-mono text-sm font-bold text-green-400" x-text="formatPrice(selectedSignal.target_price)"></div>
+                    <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2 text-center">
+                        <div class="fs-6 text-muted text-uppercase  mb-1">Target</div>
+                        <div class="font-monospace fs-sm fw-bold text-success" x-text="formatPrice(selectedSignal.target_price)"></div>
                     </div>
-                    <div class="p-3 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg text-center">
-                        <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Stop Loss</div>
-                        <div class="font-mono text-sm font-bold text-red-400" x-text="formatPrice(selectedSignal.stop_loss)"></div>
+                    <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2 text-center">
+                        <div class="fs-6 text-muted text-uppercase  mb-1">Stop Loss</div>
+                        <div class="font-monospace fs-sm fw-bold text-danger" x-text="formatPrice(selectedSignal.stop_loss)"></div>
                     </div>
                 </div>
-                <div class="p-4 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg">
-                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Signal Analysis</div>
-                    <div class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed" x-text="selectedSignal.reason"></div>
+                <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2">
+                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Signal Analysis</div>
+                    <div class="fs-sm text-body dark:text-body lh-lg" x-text="selectedSignal.reason"></div>
                 </div>
-                <div class="p-4 bg-[#f4f6fb] dark:bg-[#0b1120] rounded-lg">
-                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Indicators Used</div>
-                    <div class="flex flex-wrap gap-2">
+                <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2">
+                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Indicators Used</div>
+                    <div class="d-flex flex-wrap gap-2">
                         <template x-for="ind in (selectedSignal.indicators || [])" :key="ind">
-                            <span class="px-2.5 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-medium border border-slate-600/30" x-text="ind"></span>
+                            <span class="px-2 py-1 bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body rounded-2 fs-xs fw-medium border border" x-text="ind"></span>
                         </template>
                     </div>
                 </div>
@@ -419,6 +419,6 @@
     </template>
 
     <style>@keyframes shimmer{0%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}100%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}}</style>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

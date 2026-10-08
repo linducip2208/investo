@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
         .main-content{margin-left:240px;padding:24px;min-height:calc(100vh - 61px)}
         .stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:20px}
         .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
-        .bg-success-dark{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
+        .bg-success{background:#064e3b}.bg-danger-dark{background:#7f1d1d}
         .corr-bar{height:8px;border-radius:4px;background:#334155;overflow:hidden}
         .corr-fill{height:100%;border-radius:4px;transition:width .5s}
         @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
@@ -41,39 +41,39 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
-        <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
+        <div class="d-flex align-items-center gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
-            <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-700 dark:text-slate-300 font-semibold">Google Trends</span>
+            <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
+            <span class="text-muted mx-2">/</span>
+            <span class="text-body dark:text-body fw-semibold">Google Trends</span>
         </div>
-        <div class="flex items-center gap-3">
-            [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
+        <div class="d-flex align-items-center gap-3">
+            [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
         </div>
     </div>
 
-    <aside class="sidebar" class="max-md:hidden" @click.outside="sidebarOpen=false">
-        <div class="p-4 space-y-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pasar</div>
+    <aside class="sidebar" class="d-none d-md-block" @click.outside="sidebarOpen=false">
+        <div class="p-2 vstack gap-1">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">Pasar</div>
             <a href="/saham" class="sidebar-link"><span>📊</span>Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span>Forex</a>
             <a href="/market/heatmap" class="sidebar-link"><span>🗺️</span>Heatmap</a>
             <a href="/market/bandarmologi" class="sidebar-link"><span>🕵️</span>Bandarmologi</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tools</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Tools</div>
             <a href="/screener" class="sidebar-link"><span>🔍</span>Screener</a>
             <a href="/berita" class="sidebar-link"><span>📰</span>Berita</a>
             <a href="/market/trend-scanner" class="sidebar-link"><span>📈</span>Trend Scanner</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Alt Data</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Alt Data</div>
             <a href="/market/google-trends" class="sidebar-link active"><span>📈</span>Google Trends</a>
             <a href="/market/social-buzz" class="sidebar-link"><span>💬</span>Social Buzz</a>
             <a href="/market/economic-proxy" class="sidebar-link"><span>🏭</span>Economic Proxy</a>
             <a href="/market/job-postings" class="sidebar-link"><span>💼</span>Job Postings</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Research</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Research</div>
             <a href="/market/thesis-backtester" class="sidebar-link"><span>🧪</span>Thesis Backtester</a>
             <a href="/market/factor-replication" class="sidebar-link"><span>📊</span>Factor Replication</a>
             <a href="/market/event-study" class="sidebar-link"><span>📅</span>Event Study</a>
@@ -82,38 +82,38 @@
         </div>
     </aside>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm"></div>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-1 "></div>
 
     <div class="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white">🔍 Google Trends Correlation</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
-                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
-                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data Google Trends real-time.</p>
+                <h1 class="fs-1 fw-bold text-white">🔍 Google Trends Correlation</h1>
+                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
+                <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data Google Trends real-time.</p>
                 </div>
             </div>
 
             [[range $i, $c := .Correlations]]
-            <div class="card p-6">
-                <div class="flex items-start justify-between flex-wrap gap-4 mb-4">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3">
-                            <h2 class="text-lg font-bold text-white">"[[$c.Keyword]]"</h2>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold [[if ge $c.Correlation 0.6]]bg-success-dark text-success[[else if ge $c.Correlation 0.3]]bg-yellow-900 text-warning[[else]]bg-danger-dark text-danger[[end]]">
+            <div class="card p-2">
+                <div class="d-flex align-items-start justify-content-between flex-wrap gap-4 mb-2">
+                    <div class="flex-fill">
+                        <div class="d-flex align-items-center gap-3">
+                            <h2 class="fs-3 fw-bold text-white">"[[$c.Keyword]]"</h2>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-semibold [[if ge $c.Correlation 0.6]]bg-success text-success[[else if ge $c.Correlation 0.3]]bg-warning-lt text-warning[[else]]bg-danger-dark text-danger[[end]]">
                                 r = [[$c.Correlation]]
                             </span>
                             [[if eq $c.Direction "inverse"]]
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-900/50 text-red-400">INVERSE</span>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-semibold bg-danger bg-opacity-50 text-danger">INVERSE</span>
                             [[end]]
                             [[if $c.IsIllustrative]]
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-900/50 text-amber-300 border border-amber-500/30">Data ilustratif</span>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-semibold bg-warning bg-opacity-50 text-warning border border-warning">Data ilustratif</span>
                             [[end]]
                         </div>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">[[$c.Description]]</p>
-                        <div class="flex items-center gap-4 mt-3">
-                            <span class="text-xs text-slate-500">Significance: <span class="font-semibold [[if eq $c.Significance "high"]]text-success[[else if eq $c.Significance "medium"]]text-warning[[else]]text-danger[[end]]">[[$c.Significance | toUpper]]</span></span>
-                            <span class="text-xs text-slate-500">Direction: <span class="font-semibold text-white">[[$c.Direction]]</span></span>
+                        <p class="text-muted dark:text-slate-400 fs-sm mt-2">[[$c.Description]]</p>
+                        <div class="d-flex align-items-center gap-4 mt-2">
+                            <span class="fs-xs text-muted">Significance: <span class="fw-semibold [[if eq $c.Significance "high"]]text-success[[else if eq $c.Significance "medium"]]text-warning[[else]]text-danger[[end]]">[[$c.Significance | toUpper]]</span></span>
+                            <span class="fs-xs text-muted">Direction: <span class="fw-semibold text-white">[[$c.Direction]]</span></span>
                         </div>
                     </div>
                 </div>
@@ -124,8 +124,8 @@
             [[end]]
 
             [[if not .Correlations]]
-            <div class="card p-12 text-center">
-                <p class="text-slate-500 text-lg">Data belum tersedia</p>
+            <div class="card p-2 text-center">
+                <p class="text-muted fs-3">Data belum tersedia</p>
             </div>
             [[end]]
         </div>
@@ -177,6 +177,6 @@
         [[end]]
     });
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -75,7 +75,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body x-data="heatmapApp()" x-init="init()" class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200">
+<body x-data="heatmapApp()" x-init="init()" class="bg-body dark:bg-[#0b1120] text-body dark:text-slate-200">
     <script>
         function heatmapApp() {
             return {
@@ -166,12 +166,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -231,8 +231,8 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -260,8 +260,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -283,7 +283,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -299,51 +299,51 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <a href="/dashboard/alerts" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
                 [[if .User]]
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
                 [[else]]
-                <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+                <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
                 [[end]]
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Market Heatmap</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Visualisasi pergerakan pasar. Toggle antara Saham IDX dan Forex.</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Market Heatmap</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Visualisasi pergerakan pasar. Toggle antara Saham IDX dan Forex.</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button @click="toggleFullscreen" class="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                <div class="d-flex align-items-center gap-3">
+                    <button @click="toggleFullscreen" class="d-flex align-items-center gap-2 px-2 py-2 rounded-3 border border dark:border fs-sm fw-medium text-body dark:text-body  dark:hover:bg-white ">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-                        <span class="hidden sm:inline">Fullscreen</span>
+                        <span class="d-none d-sm-inline">Fullscreen</span>
                     </button>
                     <span class="update-time" x-text="'Updated: '+lastUpdate"></span>
                 </div>
             </div>
 
             <!-- MODE SWITCHER -->
-            <div class="card p-3 flex items-center gap-3 flex-wrap">
-                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">View:</span>
-                <button @click="switchMode('stocks')" :class="mode==='stocks'?'mode-btn active bg-blue-900/40 text-blue-300 border border-blue-700/50':'mode-btn text-slate-500 dark:text-slate-400 border-slate-700'" class="px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors">Stocks IDX</button>
-                <button @click="switchMode('forex')" :class="mode==='forex'?'mode-btn active bg-blue-900/40 text-blue-300 border border-blue-700/50':'mode-btn text-slate-500 dark:text-slate-400 border-slate-700'" class="px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors">Forex</button>
-                <div class="w-px h-5 bg-slate-100 dark:bg-slate-700 mx-2"></div>
-                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">TF:</span>
+            <div class="card p-2 d-flex align-items-center gap-3 flex-wrap">
+                <span class="fs-xs fw-semibold text-muted text-uppercase ">View:</span>
+                <button @click="switchMode('stocks')" :class="mode==='stocks'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Stocks IDX</button>
+                <button @click="switchMode('forex')" :class="mode==='forex'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Forex</button>
+                <div class="w-px h-5 bg-body dark:bg-secondary-lt mx-2"></div>
+                <span class="fs-xs fw-semibold text-muted text-uppercase ">TF:</span>
                 <template x-for="tf in timeframes" :key="tf.v">
-                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'tf-btn active bg-blue-900/40 text-blue-300 border border-blue-700/50':'tf-btn text-slate-500 dark:text-slate-400 border-slate-700'" class="px-3 py-1 rounded-lg text-xs font-medium border transition-colors" x-text="tf.l"></button>
+                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'tf-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'tf-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-xs fw-medium border " x-text="tf.l"></button>
                 </template>
             </div>
 
@@ -363,22 +363,22 @@
                         <div class="breadth-seg" :style="{width:declinePct+'%',background:'#ef4444'}"></div>
                         <div class="breadth-seg" :style="{width:unchPct+'%',background:'#94a3b8'}"></div>
                     </div>
-                    <span class="hidden sm:inline text-slate-500 dark:text-slate-400" x-text="'A:'+advancePct+'% D:'+declinePct+'%'"></span>
+                    <span class="d-none d-sm-inline text-muted dark:text-slate-400" x-text="'A:'+advancePct+'% D:'+declinePct+'%'"></span>
                 </div>
                 </template>
 
                 <!-- SECTOR PERFORMANCE -->
                 <template x-if="sectorPerf.length>0">
-                <div class="card p-4">
+                <div class="card p-2">
                     <h3 class="widget-title">Sector Performance</h3>
-                    <div class="space-y-2">
+                    <div class="vstack gap-2">
                         <template x-for="sp in sectorPerf" :key="sp.name">
-                            <div class="flex items-center gap-3">
-                                <span class="text-xs text-slate-500 dark:text-slate-400 w-28 truncate" x-text="sp.name"></span>
-                                <div class="flex-1 h-2 bg-white dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="sector-perf-bar h-full" :style="{width:Math.min(100,Math.abs(sp.change)*10)+'%',background:sp.change>=0?'#22c55e':'#ef4444'}"></div>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-xs text-muted dark:text-slate-400 w-28 text-truncate" x-text="sp.name"></span>
+                                <div class="flex-fill h-2 bg-white dark:bg-white rounded-pill overflow-hidden">
+                                    <div class="sector-perf-bar h-100" :style="{width:Math.min(100,Math.abs(sp.change)*10)+'%',background:sp.change>=0?'#22c55e':'#ef4444'}"></div>
                                 </div>
-                                <span class="text-xs font-mono w-16 text-right" :class="sp.change>=0?'text-success':'text-danger'" x-text="(sp.change>=0?'+':'')+sp.change+'%'"></span>
+                                <span class="fs-xs font-monospace w-16 text-end" :class="sp.change>=0?'text-success':'text-danger'" x-text="(sp.change>=0?'+':'')+sp.change+'%'"></span>
                             </div>
                         </template>
                     </div>
@@ -386,19 +386,19 @@
                 </template>
 
                 <!-- SEARCH -->
-                <div class="search-wrapper mt-3">
+                <div class="search-wrapper mt-2">
                     <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <input type="text" class="search-input" placeholder="Cari kode atau nama saham..." x-model="search" @input="filterStocks()">
                 </div>
 
                 <!-- LEGEND -->
                 <div class="legend-bar gap-x-4">
-                    <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-2">Color Scale</span>
+                    <span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  me-2">Color Scale</span>
                     <template x-for="sw in legendSwatches" :key="sw.pct">
                         <div class="legend-item"><div class="legend-swatch" :style="{background:sw.color}"></div><span x-text="sw.pct"></span></div>
                     </template>
-                    <span class="text-slate-600 mx-2">|</span>
-                    <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-2">Size</span>
+                    <span class="text-muted mx-2">|</span>
+                    <span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  me-2">Size</span>
                     <div class="legend-item"><span class="legend-swatch" style="background:#334155;width:18px;height:18px"></span><span>XL</span></div>
                     <div class="legend-item"><span class="legend-swatch" style="background:#475569;width:14px;height:14px"></span><span>LG</span></div>
                     <div class="legend-item"><span class="legend-swatch" style="background:#64748b;width:10px;height:10px"></span><span>MD</span></div>
@@ -411,7 +411,7 @@
                         <div class="sector-block">
                             <div class="sector-header">
                                 <span class="sector-title" x-text="sector.name"></span>
-                                <span class="text-[10px] text-slate-500 font-mono" x-text="sector.stocks.length+' saham'"></span>
+                                <span class="fs-6 text-muted font-monospace" x-text="sector.stocks.length+' saham'"></span>
                             </div>
                             <div class="sector-grid">
                                 <template x-for="stock in sector.stocks" :key="stock.code">
@@ -421,7 +421,7 @@
                                        :style="{backgroundColor:stock.color}"
                                        @mouseenter="showTooltip($event,stock)"
                                        @mouseleave="hideTooltip()">
-                                        <div class="flex flex-col items-center">
+                                        <div class="d-flex flex-column align-items-center">
                                             <span class="cell-code" x-text="stock.code"></span>
                                             <span class="cell-pct" x-text="(stock.change>0?'+':'')+stock.change.toFixed(2)+'%'"></span>
                                         </div>
@@ -433,7 +433,7 @@
                 </div>
 
                 <template x-if="loading">
-                <div class="space-y-6">
+                <div class="vstack gap-4">
                     <template x-for="i in 4" :key="i"><div><div style="width:160px;height:18px;background:#1e293b;border-radius:4px;margin-bottom:8px;animation:shimmer 1.8s ease-in-out infinite"></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:3px"><template x-for="j in 20" :key="j"><div style="height:52px;background:#1e293b;border-radius:4px;animation:shimmer 1.8s ease-in-out infinite"></div></template></div></div></template>
                 </div>
                 </template>
@@ -444,25 +444,25 @@
             <template x-if="mode==='forex'">
             <div>
                 <template x-if="forexLoading">
-                <div class="space-y-4">
-                    <template x-for="i in 3" :key="i"><div class="h-24 bg-slate-100/30 dark:bg-slate-700/30 rounded-xl animate-pulse"></div></template>
+                <div class="vstack gap-3">
+                    <template x-for="i in 3" :key="i"><div class="h-24 bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 "></div></template>
                 </div>
                 </template>
 
                 <template x-if="!forexLoading && forexPairs.length>0">
                 <div>
-                    <div class="flex items-center gap-4 mb-4 text-[11px]">
-                        <div class="flex items-center gap-1.5"><div class="w-4 h-4 rounded" style="background:hsl(150,70%,45%)"></div><span class="text-slate-500 dark:text-slate-400">Base Strengthening</span></div>
-                        <div class="flex items-center gap-1.5"><div class="w-4 h-4 rounded" style="background:hsl(0,70%,45%)"></div><span class="text-slate-500 dark:text-slate-400">Base Weakening</span></div>
-                        <div class="flex items-center gap-1.5"><div class="w-4 h-4 rounded" style="background:#475569"></div><span class="text-slate-500 dark:text-slate-400">Neutral</span></div>
+                    <div class="d-flex align-items-center gap-4 mb-2 fs-6">
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(150,70%,45%)"></div><span class="text-muted dark:text-slate-400">Base Strengthening</span></div>
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(0,70%,45%)"></div><span class="text-muted dark:text-slate-400">Base Weakening</span></div>
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#475569"></div><span class="text-muted dark:text-slate-400">Neutral</span></div>
                     </div>
 
                     <div class="forex-grid">
                         <template x-for="pair in forexPairs" :key="pair.pair">
                             <a :href="'/forex/'+pair.pair.toLowerCase()" class="forex-cell" :style="{backgroundColor:pair.bgColor}">
-                                <span class="font-mono text-lg font-bold text-white" x-text="pair.pair"></span>
-                                <span class="text-xs text-slate-700 dark:text-slate-300 mt-0.5 truncate max-w-full" x-text="pair.name"></span>
-                                <span class="font-mono text-sm font-semibold mt-1 text-white" x-text="formatForexRate(pair.rate)"></span>
+                                <span class="font-monospace fs-3 fw-bold text-white" x-text="pair.pair"></span>
+                                <span class="fs-xs text-body dark:text-body mt-0 text-truncate max-w-full" x-text="pair.name"></span>
+                                <span class="font-monospace fs-sm fw-semibold mt-1 text-white" x-text="formatForexRate(pair.rate)"></span>
                             </a>
                         </template>
                     </div>
@@ -470,9 +470,9 @@
                 </template>
 
                 <template x-if="!forexLoading && forexPairs.length===0">
-                <div class="py-16 text-center">
-                    <svg class="mx-auto h-12 w-12 text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
-                    <p class="text-slate-500 font-medium">No forex data available</p>
+                <div class="py-2 text-center">
+                    <svg class="mx-auto h-12 w-12 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
+                    <p class="text-muted fw-medium">No forex data available</p>
                 </div>
                 </template>
             </div>
@@ -490,6 +490,6 @@
         </main>
     </div>
     <style>@keyframes shimmer{0%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}100%{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}}</style>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

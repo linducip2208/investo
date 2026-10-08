@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,7 +62,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="forexPro()" x-init="init()">
+<body class="h-100 d-flex" x-data="forexPro()" x-init="init()">
     <script>
         function forexPro() {
             return {
@@ -88,12 +88,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -105,7 +105,7 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 17l6 -6l4 4l8 -8" />
   <path d="M14 7l7 0l0 7" />
-</svg></span> Saham IDX <span class="ml-auto text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">[[.TotalStocks]]</span></a>
+</svg></span> Saham IDX <span class="ms-auto fs-6 bg-body dark:bg-secondary-lt px-1 py-0 rounded text-body dark:text-body">[[.TotalStocks]]</span></a>
             <a href="/forex" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -139,19 +139,19 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
   <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
   <path d="M12 12l0 .01" />
   <path d="M3 13a20 20 0 0 0 18 0" />
-</svg></span> Portofolio <span class="ml-auto text-[10px] bg-blue-900/40 px-1.5 py-0.5 rounded text-blue-300">[[.PortfolioCount]]</span></a>
+</svg></span> Portofolio <span class="ms-auto fs-6 bg-primary bg-opacity-50 px-1 py-0 rounded text-primary">[[.PortfolioCount]]</span></a>
             <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
-</svg></span> Watchlist <span class="ml-auto text-[10px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300">[[.WatchlistCount]]</span></a>
+</svg></span> Watchlist <span class="ms-auto fs-6 bg-warning bg-opacity-50 px-1 py-0 rounded text-warning">[[.WatchlistCount]]</span></a>
             <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
@@ -168,8 +168,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -191,7 +191,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -207,85 +207,85 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <!-- SESSION INDICATORS -->
-            <div class="hidden sm:flex items-center gap-2 text-xs">
-                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
-                     :class="session==='tokyo'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
-                    <span class="session-dot" :class="session==='tokyo'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> Tokyo
+            <div class="d-none d-sm-flex align-items-center gap-2 fs-xs">
+                <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
+                     :class="session==='tokyo'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
+                    <span class="session-dot" :class="session==='tokyo'?'bg-green animate-pulse':'bg-slate-600'"></span> Tokyo
                 </div>
-                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
-                     :class="session==='london'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
-                    <span class="session-dot" :class="session==='london'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> London
+                <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
+                     :class="session==='london'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
+                    <span class="session-dot" :class="session==='london'?'bg-green animate-pulse':'bg-slate-600'"></span> London
                 </div>
-                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-300"
-                     :class="session==='ny'?'bg-emerald-900/30 text-emerald-400 border border-emerald-800':'bg-slate-800 text-slate-500'">
-                    <span class="session-dot" :class="session==='ny'?'bg-emerald-500 animate-pulse':'bg-slate-600'"></span> New York
+                <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
+                     :class="session==='ny'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
+                    <span class="session-dot" :class="session==='ny'?'bg-green animate-pulse':'bg-slate-600'"></span> New York
                 </div>
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 space-y-4 overflow-y-auto" x-data="{chartPair:'',chartOverlay:false}">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto" x-data="{chartPair:'',chartOverlay:false}">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2 mb-1">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Forex Pro Terminal</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5" x-text="clock"></p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Forex Pro Terminal</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="clock"></p>
                 </div>
-                <div class="flex gap-2">
-                    <a href="/forex" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-xl transition-colors">Daftar Pair</a>
+                <div class="d-flex gap-2">
+                    <a href="/forex" class="px-2 py-2 bg-body dark:bg-secondary-lt  text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">Daftar Pair</a>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div class="row row-cols-1 row-cols-lg-4 gap-4">
                 <!-- STRENGTH METER -->
-                <div class="card p-4 lg:col-span-1">
+                <div class="card p-2 col">
                     <div class="widget-title">Currency Strength Meter</div>
-                    <div class="space-y-2">
+                    <div class="vstack gap-2">
                         [[if .Strength]][[range .Strength]]
-                        <div class="flex items-center gap-2">
-                            <span class="w-8 text-xs font-bold text-slate-700 dark:text-slate-300">[[.Currency]]</span>
-                            <div class="flex-1 h-5 bg-slate-100/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
-                                <div class="h-full rounded-full transition-all duration-500 flex items-center justify-end pr-1.5"
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="w-8 fs-xs fw-bold text-body dark:text-body">[[.Currency]]</span>
+                            <div class="flex-fill h-5 bg-body bg-opacity-50 dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                <div class="h-100 rounded-pill   d-flex align-items-center justify-content-end pe-1"
                                      style="width:[[.Strength]]%; background:[[if ge .Change 0.0]]linear-gradient(90deg,#10b981,#34d399)[[else]]linear-gradient(90deg,#ef4444,#f87171)[[end]]">
-                                    <span class="text-[10px] font-bold text-white drop-shadow">[[printf "%.0f" .Strength]]</span>
+                                    <span class="fs-6 fw-bold text-white drop-shadow">[[printf "%.0f" .Strength]]</span>
                                 </div>
                             </div>
-                            <span class="text-[10px] font-mono w-12 text-right [[if ge .Change 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Change 0.0]]+[[end]][[printf "%.1f" .Change]]%</span>
+                            <span class="fs-6 font-monospace w-12 text-end [[if ge .Change 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Change 0.0]]+[[end]][[printf "%.1f" .Change]]%</span>
                         </div>
                         [[end]][[end]]
                     </div>
                 </div>
 
                 <!-- RATES MATRIX -->
-                <div class="card p-4 lg:col-span-2 overflow-x-auto">
+                <div class="card p-2 col-lg-8 overflow-x-auto">
                     <div class="widget-title">Live Rates Matrix</div>
-                    <table class="w-full text-xs font-mono border-collapse">
+                    <table class="table table-vcenter table-hover w-100 fs-xs font-monospace border-collapse">
                         <thead>
                             <tr>
-                                <th class="p-1.5 text-slate-500 dark:text-slate-400 font-medium"></th>
-                                [[range .Currencies]]<th class="p-1.5 text-center font-bold text-slate-700 dark:text-slate-300">[[.]]</th>[[end]]
+                                <th class="p-1 text-muted dark:text-slate-400 fw-medium"></th>
+                                [[range .Currencies]]<th class="p-1 text-center fw-bold text-body dark:text-body">[[.]]</th>[[end]]
                             </tr>
                         </thead>
                         <tbody>
                         [[if .Grid]][[range $i, $row := .Grid]]
                             <tr>
-                                <td class="p-1.5 font-bold text-slate-700 dark:text-slate-300">[[$row.Base]]</td>
+                                <td class="p-1 fw-bold text-body dark:text-body">[[$row.Base]]</td>
                                 [[range $j, $rate := $row.Rates]]
-                                <td class="p-1 text-center rate-cell [[if eq $row.Base (index $.Currencies $j)]]bg-slate-800 text-slate-500[[else if gt $rate 0.0]]bg-blue-900/20 text-blue-300[[end]]"
+                                <td class="p-1 text-center rate-cell [[if eq $row.Base (index $.Currencies $j)]]bg-white text-slate-500[[else if gt $rate 0.0]]bg-info-lt/20 text-info[[end]]"
                                     [[if gt $rate 0.0]]@click="openChart('[[$row.Base]]/[[index $.Currencies $j]]')" title="[[$row.Base]]/[[index $.Currencies $j]]"[[end]]>
                                     [[if eq $row.Base (index $.Currencies $j)]]1[[else if gt $rate 0.0]][[printf "%.4f" $rate]][[else]]--[[end]]
                                 </td>
@@ -297,18 +297,18 @@
                 </div>
 
                 <!-- CARRY TRADE -->
-                <div class="card p-4 lg:col-span-1">
+                <div class="card p-2 col">
                     <div class="widget-title">Carry Trade Opportunities</div>
-                    <div class="space-y-2 max-h-[400px] overflow-y-auto">
+                    <div class="vstack gap-2 max-h-400 overflow-y-auto">
                         [[if .CarryTrades]][[range .CarryTrades]]
-                        <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-100/30 dark:bg-slate-700/30">
+                        <div class="d-flex align-items-center justify-content-between p-2 rounded-2 bg-body bg-opacity-25 dark:bg-secondary-lt/30">
                             <div>
-                                <div class="text-xs font-bold text-white">[[.Pair]]</div>
-                                <div class="text-[10px] text-slate-500 dark:text-slate-400">[[.Direction]]</div>
+                                <div class="fs-xs fw-bold text-white">[[.Pair]]</div>
+                                <div class="fs-6 text-muted dark:text-slate-400">[[.Direction]]</div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-xs font-mono font-bold [[if ge .Return 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Return 0.0]]+[[end]][[printf "%.2f" .Return]]%</div>
-                                <div class="text-[10px] text-slate-500 dark:text-slate-400">Spread [[printf "%.2f" .Spread]]%</div>
+                            <div class="text-end">
+                                <div class="fs-xs font-monospace fw-bold [[if ge .Return 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Return 0.0]]+[[end]][[printf "%.2f" .Return]]%</div>
+                                <div class="fs-6 text-muted dark:text-slate-400">Spread [[printf "%.2f" .Spread]]%</div>
                             </div>
                         </div>
                         [[end]][[end]]
@@ -318,19 +318,19 @@
 
             <!-- ARBITRAGE -->
             [[if .Arbitrage]]
-            <div class="card p-4">
+            <div class="card p-2">
                 <div class="widget-title">Triangular Arbitrage</div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 gap-2">
                     [[range .Arbitrage]]
-                    <div class="flex items-center justify-between p-2.5 rounded-lg [[if ge .ProfitPercent 1.0]]bg-emerald-900/20 border border-emerald-800[[else]]bg-slate-700/30[[end]]">
-                        <div class="text-xs font-mono">
-                            <span class="font-bold text-slate-800 dark:text-slate-200">[[index .Path 0]]</span>
-                            <span class="text-slate-500"> &#x2192; </span>
-                            <span class="font-bold text-slate-800 dark:text-slate-200">[[index .Path 1]]</span>
-                            <span class="text-slate-500"> &#x2192; </span>
-                            <span class="font-bold text-slate-800 dark:text-slate-200">[[index .Path 2]]</span>
+                    <div class="d-flex align-items-center justify-content-between p-2 rounded-2 [[if ge .ProfitPercent 1.0]]bg-success-lt/20 border border-emerald-800[[else]]bg-secondary-lt/30[[end]]">
+                        <div class="fs-xs font-monospace">
+                            <span class="fw-bold text-body dark:text-slate-200">[[index .Path 0]]</span>
+                            <span class="text-muted"> &#x2192; </span>
+                            <span class="fw-bold text-body dark:text-slate-200">[[index .Path 1]]</span>
+                            <span class="text-muted"> &#x2192; </span>
+                            <span class="fw-bold text-body dark:text-slate-200">[[index .Path 2]]</span>
                         </div>
-                        <span class="text-xs font-mono font-bold [[if ge .ProfitPercent 1.0]]text-success[[else]]text-slate-500[[end]]">[[printf "%.4f" .ProfitPercent]]%</span>
+                        <span class="fs-xs font-monospace fw-bold [[if ge .ProfitPercent 1.0]]text-success[[else]]text-slate-500[[end]]">[[printf "%.4f" .ProfitPercent]]%</span>
                     </div>
                     [[end]]
                 </div>
@@ -338,14 +338,14 @@
             [[end]]
 
             <!-- PAIR LIST -->
-            <div class="card p-4">
+            <div class="card p-2">
                 <div class="widget-title">Pair List &mdash; Click for Chart</div>
-                <div class="flex flex-wrap gap-1.5">
+                <div class="d-flex flex-wrap gap-1">
                     [[if .Pairs]][[range .Pairs]]
                     <button @click="openChart('[[.Base]]/[[.Quote]]')"
-                            class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-blue-900/30 hover:text-blue-400 transition-colors border border-slate-600/50">
+                            class="px-2 py-1 fs-xs fw-medium rounded-2 bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body    border border">
                         [[.Base]]/[[.Quote]]
-                        <span class="ml-1 text-[10px] text-slate-500 font-mono">[[printf "%.4f" .Rate]]</span>
+                        <span class="ms-1 fs-6 text-muted font-monospace">[[printf "%.4f" .Rate]]</span>
                     </button>
                     [[end]][[end]]
                 </div>
@@ -356,14 +356,14 @@
     <!-- CHART OVERLAY -->
     <div x-show="chartOverlay" class="chart-overlay" @click.self="closeChart()">
         <div class="chart-modal" @click.stop>
-            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                <h3 class="font-bold text-lg text-white" x-text="chartPair"></h3>
+            <div class="d-flex align-items-center justify-content-between px-2 py-2 border-bottom border dark:border">
+                <h3 class="fw-bold fs-3 text-white" x-text="chartPair"></h3>
                 <button @click="closeChart()"
-                        class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        class="p-2 rounded-2 text-muted dark:text-slate-400   dark:hover:bg-secondary-lt ">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div id="chart-container" class="flex-1 w-full"></div>
+            <div id="chart-container" class="flex-fill w-100"></div>
         </div>
     </div>
 
@@ -413,7 +413,7 @@
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (!data || data.error) {
-                        container.innerHTML = '<div class="flex items-center justify-center h-full text-slate-500 dark:text-slate-400">No chart data available for ' + base + '/' + quote + '</div>';
+                        container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-slate-400">No chart data available for ' + base + '/' + quote + '</div>';
                         return;
                     }
                     if (!Array.isArray(data) || data.length === 0) return;
@@ -425,10 +425,10 @@
                     chart.timeScale().fitContent();
                 })
                 .catch(function() {
-                    container.innerHTML = '<div class="flex items-center justify-center h-full text-slate-500 dark:text-slate-400">Error loading chart</div>';
+                    container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-slate-400">Error loading chart</div>';
                 });
         }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

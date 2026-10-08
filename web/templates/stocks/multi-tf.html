@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +34,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="multiTF()" x-init="init()">
+<body class="h-100 d-flex" x-data="multiTF()" x-init="init()">
     <script>
     function multiTF() {
         return {
@@ -106,12 +106,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
             <a href="/saham" class="sidebar-link"><span>📈</span> Saham IDX</a>
             <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span>📋</span> [[.Stock.Code]] Detail</a>
@@ -124,47 +124,47 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex items-center gap-4">
-                <span class="font-mono text-lg font-bold text-white">[[.Stock.Code]]</span>
-                <span class="text-sm text-slate-500 dark:text-slate-400">[[.Stock.Name]]</span>
-                <span class="font-mono text-lg font-bold text-white">[[.LatestPrice.PriceFormatted]]</span>
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="d-flex align-items-center gap-4">
+                <span class="font-monospace fs-3 fw-bold text-white">[[.Stock.Code]]</span>
+                <span class="fs-sm text-muted dark:text-slate-400">[[.Stock.Name]]</span>
+                <span class="font-monospace fs-3 fw-bold text-white">[[.LatestPrice.PriceFormatted]]</span>
             </div>
             [[template "components/market-clock.html" .]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" style="min-height:65vh">
-                <div class="card p-3 flex flex-col">
-                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">Daily</div>
-                    <div id="daily-chart" class="flex-1" style="min-height:250px"></div>
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto vstack gap-3">
+            <div class="row row-cols-1 row-cols-md-3 gap-4" style="min-height:65vh">
+                <div class="card p-2 d-flex flex-column">
+                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Daily</div>
+                    <div id="daily-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
-                <div class="card p-3 flex flex-col">
-                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">Weekly</div>
-                    <div id="weekly-chart" class="flex-1" style="min-height:250px"></div>
+                <div class="card p-2 d-flex flex-column">
+                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Weekly</div>
+                    <div id="weekly-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
-                <div class="card p-3 flex flex-col">
-                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">Monthly</div>
-                    <div id="monthly-chart" class="flex-1" style="min-height:250px"></div>
+                <div class="card p-2 d-flex flex-column">
+                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Monthly</div>
+                    <div id="monthly-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
             </div>
-            <div class="card p-5">
-                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Edge Multi-Timeframe · Analisa Pola Harga</div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div class="bg-white/40 dark:bg-slate-800/40 rounded-xl p-3">
-                        <div class="text-xs text-blue-400 font-semibold mb-1">Daily</div>
-                        <p class="text-slate-500 dark:text-slate-400">Gunakan timeframe daily untuk entry harian dan swing trading. Cari support/resistance harian.</p>
+            <div class="card p-2">
+                <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Edge Multi-Timeframe · Analisa Pola Harga</div>
+                <div class="row row-cols-1 row-cols-md-3 gap-4 fs-sm">
+                    <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
+                        <div class="fs-xs text-primary fw-semibold mb-1">Daily</div>
+                        <p class="text-muted dark:text-slate-400">Gunakan timeframe daily untuk entry harian dan swing trading. Cari support/resistance harian.</p>
                     </div>
-                    <div class="bg-white/40 dark:bg-slate-800/40 rounded-xl p-3">
-                        <div class="text-xs text-purple-400 font-semibold mb-1">Weekly</div>
-                        <p class="text-slate-500 dark:text-slate-400">Timeframe mingguan menunjukkan trend jangka menengah. Konfirmasi sinyal daily dengan struktur weekly.</p>
+                    <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
+                        <div class="fs-xs text-primary fw-semibold mb-1">Weekly</div>
+                        <p class="text-muted dark:text-slate-400">Timeframe mingguan menunjukkan trend jangka menengah. Konfirmasi sinyal daily dengan struktur weekly.</p>
                     </div>
-                    <div class="bg-white/40 dark:bg-slate-800/40 rounded-xl p-3">
-                        <div class="text-xs text-emerald-400 font-semibold mb-1">Monthly</div>
-                        <p class="text-slate-500 dark:text-slate-400">Timeframe bulanan untuk investasi jangka panjang. Identifikasi akumulasi/distribusi institusional.</p>
+                    <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
+                        <div class="fs-xs text-success fw-semibold mb-1">Monthly</div>
+                        <p class="text-muted dark:text-slate-400">Timeframe bulanan untuk investasi jangka panjang. Identifikasi akumulasi/distribusi institusional.</p>
                     </div>
                 </div>
             </div>
@@ -180,6 +180,6 @@
             });
         });
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

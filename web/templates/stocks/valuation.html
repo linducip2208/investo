@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +50,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="valuation()" x-init="init()">
+<body class="h-100 d-flex" x-data="valuation()" x-init="init()">
 
 <script>
 function valuation() {
@@ -87,24 +87,24 @@ function valuation() {
             this.loadingScores = false;
         },
         healthBarColor(score) {
-            if(score>=80) return 'bg-emerald-500'; if(score>=60) return 'bg-blue-500';
-            if(score>=40) return 'bg-amber-500'; return 'bg-red-500';
+            if(score>=80) return 'bg-green'; if(score>=60) return 'bg-blue';
+            if(score>=40) return 'bg-amber-500'; return 'bg-red';
         },
         piotroskiRatingColor(rating) {
-            if(rating==='Strong') return 'bg-emerald-500'; if(rating==='Good') return 'bg-blue-500';
-            if(rating==='Average') return 'bg-amber-500'; return 'bg-red-500';
+            if(rating==='Strong') return 'bg-green'; if(rating==='Good') return 'bg-blue';
+            if(rating==='Average') return 'bg-amber-500'; return 'bg-red';
         }
     };
 }
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200/50 dark:border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border/50 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border/50">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -129,8 +129,8 @@ function valuation() {
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Detail</p>
+        <div class="border-top border dark:border/50 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Stock Detail</p>
         <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -174,7 +174,7 @@ function valuation() {
   <path d="M3 11c0 .888 .772 1.45 2 2" />
 </svg></span> Valuasi</a>
     </nav>
-    <div class="p-3 border-t border-slate-200/50 dark:border-slate-700/50">
+    <div class="p-2 border-top border dark:border/50">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -190,78 +190,78 @@ function valuation() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+            <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="/saham/[[.Stock.Code]]" class="hover:text-blue-400 transition-colors">[[.Stock.Code]]</a>
+            <a href="/saham/[[.Stock.Code]]" class=" ">[[.Stock.Code]]</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-white font-medium">Valuasi</span>
+            <span class="text-white fw-medium">Valuasi</span>
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
     <!-- CONTENT -->
-    <main class="flex-1 px-4 lg:px-8 py-6 overflow-y-auto space-y-6">
+    <main class="flex-fill px-2 px-lg-5 py-2 overflow-y-auto vstack gap-4">
 
         <!-- PAGE HEADER -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-3">
             <div>
-                <div class="flex items-center gap-3 flex-wrap">
-                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
-                    <span class="px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-lg text-xs font-semibold">Valuasi</span>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <h1 class="fs-1 fs-1 fw-bold text-body dark:text-[#f8fafc] font-monospace">[[.Stock.Code]]</h1>
+                    <span class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-semibold">Valuasi</span>
                 </div>
-                <p class="mt-1 text-lg text-slate-500 dark:text-slate-400">[[.Stock.Name]]</p>
+                <p class="mt-1 fs-3 text-muted dark:text-slate-400">[[.Stock.Name]]</p>
             </div>
-            <div class="text-right">
-                <span class="text-xs text-slate-500">Harga Saat Ini</span>
-                <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.CurrentPrice | formatPrice]]</div>
+            <div class="text-end">
+                <span class="fs-xs text-muted">Harga Saat Ini</span>
+                <div class="font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">Rp [[.Valuation.CurrentPrice | formatPrice]]</div>
             </div>
         </div>
 
         <!-- TARGET HARGA RATA-RATA -->
         <div>
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white border border-slate-200/50 dark:border-slate-700/50">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="bg-gradient bg-gradient-from-slate bg-gradient-to-slate rounded-4 p-2 p-sm-5 text-white border border dark:border/50">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                     <div>
-                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Target Harga Rata-Rata</span>
-                        <div class="mt-1 text-4xl sm:text-5xl font-bold">Rp [[.Valuation.AverageTarget | formatPrice]]</div>
-                        <div class="mt-2 flex items-center gap-2">
-                            <span class="text-sm text-slate-500 dark:text-slate-400">Upside:</span>
+                        <span class="fs-xs fw-medium text-muted dark:text-slate-400 text-uppercase ">Target Harga Rata-Rata</span>
+                        <div class="mt-1 display-6 display-5 fw-bold">Rp [[.Valuation.AverageTarget | formatPrice]]</div>
+                        <div class="mt-2 d-flex align-items-center gap-2">
+                            <span class="fs-sm text-muted dark:text-slate-400">Upside:</span>
                             [[if ge .Valuation.UpsidePercent 0.0]]
-                            <span class="text-lg font-bold text-success">+[[.Valuation.UpsidePercent]]%</span>
+                            <span class="fs-3 fw-bold text-success">+[[.Valuation.UpsidePercent]]%</span>
                             [[else]]
-                            <span class="text-lg font-bold text-danger">[[.Valuation.UpsidePercent]]%</span>
+                            <span class="fs-3 fw-bold text-danger">[[.Valuation.UpsidePercent]]%</span>
                             [[end]]
                         </div>
                     </div>
                     <div>
                         [[if eq .Valuation.Recommendation "BUY"]]
-                        <div class="px-6 py-3 bg-emerald-500/20 border border-emerald-400/40 rounded-xl text-center">
-                            <div class="text-[10px] font-medium text-emerald-300 uppercase tracking-widest">Rekomendasi</div>
-                            <div class="text-3xl font-bold text-emerald-400">BUY</div>
+                        <div class="px-2 py-2 bg-success bg-opacity-25 border border-success rounded-3 text-center">
+                            <div class="fs-6 fw-medium text-success text-uppercase ">Rekomendasi</div>
+                            <div class="fs-1 fw-bold text-success">BUY</div>
                         </div>
                         [[else if eq .Valuation.Recommendation "HOLD"]]
-                        <div class="px-6 py-3 bg-amber-500/20 border border-amber-400/40 rounded-xl text-center">
-                            <div class="text-[10px] font-medium text-amber-300 uppercase tracking-widest">Rekomendasi</div>
-                            <div class="text-3xl font-bold text-amber-400">HOLD</div>
+                        <div class="px-2 py-2 bg-warning bg-opacity-25 border border-warning rounded-3 text-center">
+                            <div class="fs-6 fw-medium text-warning text-uppercase ">Rekomendasi</div>
+                            <div class="fs-1 fw-bold text-warning">HOLD</div>
                         </div>
                         [[else]]
-                        <div class="px-6 py-3 bg-red-500/20 border border-red-400/40 rounded-xl text-center">
-                            <div class="text-[10px] font-medium text-red-300 uppercase tracking-widest">Rekomendasi</div>
-                            <div class="text-3xl font-bold text-red-400">SELL</div>
+                        <div class="px-2 py-2 bg-danger bg-opacity-25 border border-danger rounded-3 text-center">
+                            <div class="fs-6 fw-medium text-danger text-uppercase ">Rekomendasi</div>
+                            <div class="fs-1 fw-bold text-danger">SELL</div>
                         </div>
                         [[end]]
                     </div>
@@ -271,35 +271,35 @@ function valuation() {
 
         <!-- FUNDAMENTAL SCORE CARD -->
         <div x-show="!loadingScores">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Fundamental Score Card</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Fundamental Score Card</h2>
+            <div class="row row-cols-1 row-cols-lg-3 gap-4 mb-2">
                 <!-- Health Score -->
-                <div class="card p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Health Score</h3>
-                        <span class="text-xs text-slate-500">/100</span>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="fw-semibold text-body dark:text-[#f8fafc]">Health Score</h3>
+                        <span class="fs-xs text-muted">/100</span>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="relative w-20 h-20 flex-shrink-0">
-                            <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="position-relative w-20 h-20 flex-shrink-0">
+                            <svg class="w-20 h-20 rotate-n90" viewBox="0 0 36 36">
                                 <circle cx="18" cy="18" r="15.5" fill="none" stroke="#334155" stroke-width="2"/>
                                 <circle cx="18" cy="18" r="15.5" fill="none" stroke-width="3" stroke-linecap="round" :stroke="(healthScore&&healthScore.total_score>=80)?'#34d399':(healthScore&&healthScore.total_score>=60)?'#3b82f6':(healthScore&&healthScore.total_score>=40)?'#f59e0b':'#f87171'" :stroke-dasharray="(healthScore?(healthScore.total_score/100*97.4):0)+' 97.4'"/>
                             </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-xl font-bold text-slate-900 dark:text-[#f8fafc]" x-text="healthScore?healthScore.total_score:'--'"></span>
+                            <div class="position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
+                                <span class="fs-2 fw-bold text-body dark:text-[#f8fafc]" x-text="healthScore?healthScore.total_score:'--'"></span>
                             </div>
                         </div>
-                        <div class="flex-1 space-y-1.5 text-xs">
+                        <div class="flex-fill vstack gap-1 fs-xs">
                             <template x-if="healthScore&&healthScore.category_scores">
                                 <div>
                                     <template x-for="(score,cat) in healthScore.category_scores" :key="cat">
-                                        <div class="flex items-center justify-between">
-                                            <span x-text="cat" class="text-slate-500 dark:text-slate-400"></span>
-                                            <div class="flex items-center gap-1.5">
-                                                <div class="w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                                    <div class="h-full rounded-full" :class="score>=(healthScore.category_max[cat]*0.7)?'bg-emerald-500':score>=(healthScore.category_max[cat]*0.4)?'bg-blue-500':'bg-red-500'" :style="'width:'+(score/healthScore.category_max[cat]*100)+'%'"></div>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <span x-text="cat" class="text-muted dark:text-slate-400"></span>
+                                            <div class="d-flex align-items-center gap-1">
+                                                <div class="w-20 h-1.5 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                                    <div class="h-100 rounded-pill" :class="score>=(healthScore.category_max[cat]*0.7)?'bg-green':score>=(healthScore.category_max[cat]*0.4)?'bg-blue':'bg-red'" :style="'width:'+(score/healthScore.category_max[cat]*100)+'%'"></div>
                                                 </div>
-                                                <span class="font-mono font-medium text-slate-700 dark:text-slate-300" x-text="score+'/'+healthScore.category_max[cat]"></span>
+                                                <span class="font-monospace fw-medium text-body dark:text-body" x-text="score+'/'+healthScore.category_max[cat]"></span>
                                             </div>
                                         </div>
                                     </template>
@@ -308,70 +308,70 @@ function valuation() {
                         </div>
                     </div>
                     <template x-if="healthScore&&healthScore.flags&&healthScore.flags.length>0">
-                        <div class="mt-3 pt-3 border-t border-slate-200/50 dark:border-slate-700/50">
+                        <div class="mt-2 pt-2 border-top border dark:border/50">
                             <template x-for="flag in healthScore.flags" :key="flag">
-                                <span class="inline-block px-2 py-0.5 bg-red-900/20 text-red-400 rounded-md text-[10px] font-medium mr-1 mb-1" x-text="flag"></span>
+                                <span class="d-inline-block px-2 py-0 bg-danger bg-opacity-25 text-danger rounded-2 fs-6 fw-medium me-1 mb-1" x-text="flag"></span>
                             </template>
                         </div>
                     </template>
                 </div>
 
                 <!-- DuPont -->
-                <div class="card p-6">
-                    <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc] mb-3">DuPont Analysis</h3>
+                <div class="card p-2">
+                    <h3 class="fw-semibold text-body dark:text-[#f8fafc] mb-2">DuPont Analysis</h3>
                     <template x-if="dupont&&dupont.roe">
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">ROE</span><span class="font-mono font-bold text-slate-900 dark:text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
-                            <div class="h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden flex">
-                                <div class="h-full bg-blue-500" :style="'width:'+Math.min(dupont.net_margin*100,50)+'%'"></div>
-                                <div class="h-full bg-purple-500" :style="'width:'+Math.min(dupont.asset_turnover*100,30)+'%'"></div>
-                                <div class="h-full bg-amber-500" :style="'width:'+Math.min((dupont.equity_multiplier-1)*50,20)+'%'"></div>
+                        <div class="vstack gap-2 fs-sm">
+                            <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">ROE</span><span class="font-monospace fw-bold text-body dark:text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
+                            <div class="h-3 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden d-flex">
+                                <div class="h-100 bg-primary" :style="'width:'+Math.min(dupont.net_margin*100,50)+'%'"></div>
+                                <div class="h-100 bg-primary" :style="'width:'+Math.min(dupont.asset_turnover*100,30)+'%'"></div>
+                                <div class="h-100 bg-warning" :style="'width:'+Math.min((dupont.equity_multiplier-1)*50,20)+'%'"></div>
                             </div>
                         </div>
                     </template>
                 </div>
 
                 <!-- Altman Z-Score -->
-                <div class="card p-6">
-                    <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc] mb-3">Altman Z-Score</h3>
+                <div class="card p-2">
+                    <h3 class="fw-semibold text-body dark:text-[#f8fafc] mb-2">Altman Z-Score</h3>
                     <template x-if="altman&&altman.z_score">
                         <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-3xl font-bold" :class="altman.z_score>2.99?'text-emerald-400':altman.z_score>1.81?'text-amber-400':'text-red-400'" x-text="altman.z_score.toFixed(2)"></span>
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white" :class="altman.z_score>2.99?'bg-emerald-500':altman.z_score>1.81?'bg-amber-500':'bg-red-500'" x-text="altman.zone"></span>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fs-1 fw-bold" :class="altman.z_score>2.99?'text-emerald-400':altman.z_score>1.81?'text-amber-400':'text-red-400'" x-text="altman.z_score.toFixed(2)"></span>
+                                <span class="px-2 py-1 rounded-pill fs-xs fw-semibold text-white" :class="altman.z_score>2.99?'bg-green':altman.z_score>1.81?'bg-amber-500':'bg-red'" x-text="altman.zone"></span>
                             </div>
-                            <div class="relative w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div class="absolute inset-0 rounded-full" style="background:linear-gradient(to right,#f87171 0%,#f87171 30%,#f59e0b 30%,#f59e0b 50%,#34d399 50%,#34d399 100%)"></div>
-                                <div class="absolute top-0 -translate-x-1/2 w-2.5 h-2.5 bg-white border-2 border-slate-900 rounded-full shadow" :style="'left:'+Math.min(Math.max(altman.z_score/5*100,0),100)+'%'"></div>
+                            <div class="position-relative w-100 h-3 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                <div class="position-absolute top-0 bottom-0 start-0 end-0 rounded-pill" style="background:linear-gradient(to right,#f87171 0%,#f87171 30%,#f59e0b 30%,#f59e0b 50%,#34d399 50%,#34d399 100%)"></div>
+                                <div class="position-absolute top-0 -translate-x-1/2 w-2.5 h-2.5 bg-white border-2 border rounded-pill shadow" :style="'left:'+Math.min(Math.max(altman.z_score/5*100,0),100)+'%'"></div>
                             </div>
-                            <div class="flex justify-between text-[10px] text-slate-500 mt-1"><span>Distress</span><span>Grey</span><span>Safe</span></div>
+                            <div class="d-flex justify-content-between fs-6 text-muted mt-1"><span>Distress</span><span>Grey</span><span>Safe</span></div>
                         </div>
                     </template>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="row row-cols-1 row-cols-lg-2 gap-4">
                 <!-- Piotroski -->
-                <div class="card p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Piotroski F-Score</h3>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="fw-semibold text-body dark:text-[#f8fafc]">Piotroski F-Score</h3>
                         <template x-if="piotroski&&piotroski.score!==undefined">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold text-white" :class="piotroskiRatingColor(piotroski.rating)" x-text="piotroski.score+'/9 '+piotroski.rating"></span>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-bold text-white" :class="piotroskiRatingColor(piotroski.rating)" x-text="piotroski.score+'/9 '+piotroski.rating"></span>
                         </template>
                     </div>
                     <template x-if="piotroski&&piotroski.details&&piotroski.details.length>0">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div class="row row-cols-1 row-cols-sm-3 gap-2">
                             <template x-for="(detail,idx) in piotroski.details" :key="idx">
-                                <div class="flex items-start gap-2 p-2 rounded-lg" :class="detail.passed?'bg-emerald-900/10':'bg-red-900/10'">
+                                <div class="d-flex align-items-start gap-2 p-2 rounded-2" :class="detail.passed?'bg-success-lt/10':'bg-danger-lt/10'">
                                     <template x-if="detail.passed">
-                                        <svg class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                        <svg class="w-4 h-4 text-success flex-shrink-0 mt-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                                     </template>
                                     <template x-if="!detail.passed">
-                                        <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+                                        <svg class="w-4 h-4 text-danger flex-shrink-0 mt-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
                                     </template>
                                     <div>
-                                        <p class="text-[11px] font-medium" :class="detail.passed?'text-emerald-300':'text-red-300'" x-text="detail.criterion"></p>
-                                        <p class="text-[10px] text-slate-500 leading-tight" x-text="detail.description"></p>
+                                        <p class="fs-6 fw-medium" :class="detail.passed?'text-success':'text-danger'" x-text="detail.criterion"></p>
+                                        <p class="fs-6 text-muted lh-1" x-text="detail.description"></p>
                                     </div>
                                 </div>
                             </template>
@@ -380,23 +380,23 @@ function valuation() {
                 </div>
 
                 <!-- Beneish M-Score -->
-                <div class="card p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Beneish M-Score</h3>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="fw-semibold text-body dark:text-[#f8fafc]">Beneish M-Score</h3>
                         <template x-if="beneish&&beneish.m_score!==undefined">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold text-white" :class="beneish.manipulation_likely?'bg-red-500':'bg-emerald-500'" x-text="beneish.manipulation_likely?'Manipulation Likely':'Clean'"></span>
+                            <span class="px-2 py-1 rounded-pill fs-xs fw-bold text-white" :class="beneish.manipulation_likely?'bg-red':'bg-green'" x-text="beneish.manipulation_likely?'Manipulation Likely':'Clean'"></span>
                         </template>
                     </div>
                     <template x-if="beneish&&beneish.m_score!==undefined">
                         <div>
-                            <div class="flex items-baseline gap-2 mb-3">
-                                <span class="text-2xl font-bold" :class="beneish.manipulation_likely?'text-red-400':'text-emerald-400'" x-text="beneish.m_score.toFixed(2)"></span>
-                                <span class="text-xs text-slate-500" x-text="beneish.manipulation_likely?'(> -1.78)':'(&lt; -1.78)'"></span>
+                            <div class="d-flex align-items-baseline gap-2 mb-2">
+                                <span class="fs-1 fw-bold" :class="beneish.manipulation_likely?'text-red-400':'text-emerald-400'" x-text="beneish.m_score.toFixed(2)"></span>
+                                <span class="fs-xs text-muted" x-text="beneish.manipulation_likely?'(> -1.78)':'(&lt; -1.78)'"></span>
                             </div>
                             <template x-if="beneish.components">
-                                <div class="space-y-1.5 text-xs">
+                                <div class="vstack gap-1 fs-xs">
                                     <template x-for="(val,key) in beneish.components" :key="key">
-                                        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400" x-text="key"></span><span class="font-mono font-medium text-slate-700 dark:text-slate-300" x-text="val.toFixed(2)"></span></div>
+                                        <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400" x-text="key"></span><span class="font-monospace fw-medium text-body dark:text-body" x-text="val.toFixed(2)"></span></div>
                                     </template>
                                 </div>
                             </template>
@@ -407,88 +407,88 @@ function valuation() {
         </div>
 
         <!-- LOADING SKELETON -->
-        <div x-show="loadingScores" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div class="card p-6 h-48 animate-pulse"></div>
-            <div class="card p-6 h-48 animate-pulse"></div>
-            <div class="card p-6 h-48 animate-pulse"></div>
+        <div x-show="loadingScores" class="row row-cols-1 row-cols-lg-3 gap-4">
+            <div class="card p-2 h-48 "></div>
+            <div class="card p-2 h-48 "></div>
+            <div class="card p-2 h-48 "></div>
         </div>
 
         <!-- MODEL VALUASI -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Model Valuasi</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="card p-6">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-8 h-8 bg-indigo-900/30 rounded-lg flex items-center justify-center"><span class="text-indigo-400 font-bold text-sm">DCF</span></div>
-                        <span class="text-xs text-slate-500">Discounted Cash Flow</span>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Model Valuasi</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gap-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-primary bg-opacity-25 rounded-2 d-flex align-items-center justify-content-center"><span class="text-primary fw-bold fs-sm">DCF</span></div>
+                        <span class="fs-xs text-muted">Discounted Cash Flow</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.DCFValue | formatPrice]]</div>
+                    <div class="font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">Rp [[.Valuation.DCFValue | formatPrice]]</div>
                     [[if gt .Valuation.CurrentPrice 0]]
-                    <div class="mt-1.5">
+                    <div class="mt-1">
                         [[if ge .Valuation.DCFValue .Valuation.CurrentPrice]]
-                        <span class="text-xs font-medium text-success">Di atas harga saat ini</span>
+                        <span class="fs-xs fw-medium text-success">Di atas harga saat ini</span>
                         [[else]]
-                        <span class="text-xs font-medium text-danger">Di bawah harga saat ini</span>
+                        <span class="fs-xs fw-medium text-danger">Di bawah harga saat ini</span>
                         [[end]]
                     </div>
                     [[end]]
-                    <p class="mt-3 text-xs text-slate-500 leading-relaxed">Estimasi arus kas masa depan didiskontokan ke nilai sekarang dengan WACC 10%</p>
+                    <p class="mt-2 fs-xs text-muted lh-lg">Estimasi arus kas masa depan didiskontokan ke nilai sekarang dengan WACC 10%</p>
                 </div>
-                <div class="card p-6">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-8 h-8 bg-amber-900/30 rounded-lg flex items-center justify-center"><span class="text-amber-400 font-bold text-sm">GR</span></div>
-                        <span class="text-xs text-slate-500">Graham Number</span>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-warning bg-opacity-25 rounded-2 d-flex align-items-center justify-content-center"><span class="text-warning fw-bold fs-sm">GR</span></div>
+                        <span class="fs-xs text-muted">Graham Number</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.GrahamValue | formatPrice]]</div>
-                    <p class="mt-3 text-xs text-slate-500 leading-relaxed">Rumus Benjamin Graham: sqrt(22.5 x EPS x BVPS)</p>
+                    <div class="font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">Rp [[.Valuation.GrahamValue | formatPrice]]</div>
+                    <p class="mt-2 fs-xs text-muted lh-lg">Rumus Benjamin Graham: sqrt(22.5 x EPS x BVPS)</p>
                 </div>
-                <div class="card p-6">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-8 h-8 bg-emerald-900/30 rounded-lg flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">LY</span></div>
-                        <span class="text-xs text-slate-500">Peter Lynch Fair Value</span>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-success bg-opacity-25 rounded-2 d-flex align-items-center justify-content-center"><span class="text-success fw-bold fs-sm">LY</span></div>
+                        <span class="fs-xs text-muted">Peter Lynch Fair Value</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.LynchValue | formatPrice]]</div>
-                    <p class="mt-3 text-xs text-slate-500 leading-relaxed">EPS x tingkat pertumbuhan proyeksi (12%)</p>
+                    <div class="font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">Rp [[.Valuation.LynchValue | formatPrice]]</div>
+                    <p class="mt-2 fs-xs text-muted lh-lg">EPS x tingkat pertumbuhan proyeksi (12%)</p>
                 </div>
-                <div class="card p-6">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-8 h-8 bg-purple-900/30 rounded-lg flex items-center justify-center"><span class="text-purple-400 font-bold text-sm">PBV</span></div>
-                        <span class="text-xs text-slate-500">PBV-Based</span>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-primary bg-opacity-25 rounded-2 d-flex align-items-center justify-content-center"><span class="text-primary fw-bold fs-sm">PBV</span></div>
+                        <span class="fs-xs text-muted">PBV-Based</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.PBVValue | formatPrice]]</div>
-                    <p class="mt-3 text-xs text-slate-500 leading-relaxed">Rata-rata PBV sektor x BVPS</p>
+                    <div class="font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">Rp [[.Valuation.PBVValue | formatPrice]]</div>
+                    <p class="mt-2 fs-xs text-muted lh-lg">Rata-rata PBV sektor x BVPS</p>
                 </div>
             </div>
         </div>
 
         <!-- PEER COMPARISON -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Perbandingan dengan Industri</h2>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Perbandingan dengan Industri</h2>
             [[if .PeerComp]]
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Kode</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Nama</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">PER</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">PBV</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">ROE</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">DER</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hide-xs">NPM</th>
+                            <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Kode</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Nama</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">PER</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">PBV</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">ROE</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">DER</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-xs">NPM</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             [[range .PeerComp.Peers]]
-                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors [[if eq .Code $.Stock.Code]]bg-blue-900/10[[end]]">
-                                <td class="px-5 py-3"><a href="/saham/[[.Code]]" class="font-bold text-blue-400 hover:underline font-mono">[[.Code]]</a></td>
-                                <td class="px-5 py-3 text-slate-900 dark:text-[#f8fafc] max-w-[140px] truncate">[[.Name]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.PER]]x</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.PBV]]x</td>
-                                <td class="px-5 py-3 text-right font-mono [[if ge .ROE 15.0]]text-success[[else if ge .ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.ROE]]%</td>
-                                <td class="px-5 py-3 text-right font-mono [[if le .DER 1.0]]text-success[[else if le .DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.DER]]x</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300 hide-xs">[[.NPM]]%</td>
+                            <tr class=" dark:hover:bg-secondary-lt/30  [[if eq .Code $.Stock.Code]]bg-info-lt/10[[end]]">
+                                <td class="px-2 py-2"><a href="/saham/[[.Code]]" class="fw-bold text-primary  font-monospace">[[.Code]]</a></td>
+                                <td class="px-2 py-2 text-body dark:text-[#f8fafc] max-w-140 text-truncate">[[.Name]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.PER]]x</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.PBV]]x</td>
+                                <td class="px-2 py-2 text-end font-monospace [[if ge .ROE 15.0]]text-success[[else if ge .ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.ROE]]%</td>
+                                <td class="px-2 py-2 text-end font-monospace [[if le .DER 1.0]]text-success[[else if le .DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.DER]]x</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body hide-xs">[[.NPM]]%</td>
                             </tr>
                             [[end]]
                         </tbody>
@@ -496,34 +496,34 @@ function valuation() {
                 </div>
             </div>
             [[else]]
-            <div class="card p-12 text-center text-slate-500"><p>Data perbandingan industri tidak tersedia</p></div>
+            <div class="card p-2 text-center text-muted"><p>Data perbandingan industri tidak tersedia</p></div>
             [[end]]
         </div>
 
         <!-- RIWAYAT DIVIDEN -->
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Riwayat Dividen</h2>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Riwayat Dividen</h2>
             [[if .Dividends]]
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Ex-Date</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Payment</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Dividen</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Yield</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hide-xs">Tipe</th>
+                            <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Ex-Date</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Payment</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Dividen</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Yield</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-xs">Tipe</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             [[range .Dividends]]
-                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
-                                <td class="px-5 py-3 font-mono text-slate-900 dark:text-[#f8fafc]">[[.ExDate]]</td>
-                                <td class="px-5 py-3 font-mono text-slate-700 dark:text-slate-300">[[.PaymentDate]]</td>
-                                <td class="px-5 py-3 text-right font-mono font-semibold text-success">Rp [[.Dividend | formatPrice]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.Yield]]%</td>
-                                <td class="px-5 py-3 hide-xs">[[if eq .Type "cash"]]<span class="px-2 py-0.5 bg-emerald-900/30 text-emerald-400 rounded-md text-[11px] font-medium">Tunai</span>[[else]]<span class="px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md text-[11px] font-medium">Saham</span>[[end]]</td>
+                            <tr class=" dark:hover:bg-secondary-lt/30 ">
+                                <td class="px-2 py-2 font-monospace text-body dark:text-[#f8fafc]">[[.ExDate]]</td>
+                                <td class="px-2 py-2 font-monospace text-body dark:text-body">[[.PaymentDate]]</td>
+                                <td class="px-2 py-2 text-end font-monospace fw-semibold text-success">Rp [[.Dividend | formatPrice]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.Yield]]%</td>
+                                <td class="px-2 py-2 hide-xs">[[if eq .Type "cash"]]<span class="px-2 py-0 bg-success bg-opacity-25 text-success rounded-2 fs-6 fw-medium">Tunai</span>[[else]]<span class="px-2 py-0 bg-primary bg-opacity-25 text-primary rounded-2 fs-6 fw-medium">Saham</span>[[end]]</td>
                             </tr>
                             [[end]]
                         </tbody>
@@ -531,30 +531,30 @@ function valuation() {
                 </div>
             </div>
             [[else]]
-            <div class="card p-12 text-center text-slate-500"><p>Belum ada data dividen tersedia</p></div>
+            <div class="card p-2 text-center text-muted"><p>Belum ada data dividen tersedia</p></div>
             [[end]]
         </div>
 
         <!-- RINGKASAN KEUANGAN -->
         [[if .Fundamentals]]
         <div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Ringkasan Keuangan</h2>
+            <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Ringkasan Keuangan</h2>
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Periode</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Pendapatan</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Laba Bersih</th>
+                            <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Periode</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Pendapatan</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Laba Bersih</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border dark:divide-slate-700/30">
                             [[range .Fundamentals]]
-                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
-                                <td class="px-5 py-3 font-medium text-slate-900 dark:text-[#f8fafc]">[[.Period]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.Revenue | formatPrice]]</td>
-                                <td class="px-5 py-3 text-right font-mono [[if ge .NetIncome 0]]text-success[[else]]text-danger[[end]] font-medium">[[.NetIncome | formatPrice]]</td>
+                            <tr class=" dark:hover:bg-secondary-lt/30 ">
+                                <td class="px-2 py-2 fw-medium text-body dark:text-[#f8fafc]">[[.Period]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">[[.Revenue | formatPrice]]</td>
+                                <td class="px-2 py-2 text-end font-monospace [[if ge .NetIncome 0]]text-success[[else]]text-danger[[end]] fw-medium">[[.NetIncome | formatPrice]]</td>
                             </tr>
                             [[end]]
                         </tbody>
@@ -575,6 +575,6 @@ function valuation() {
 {"@context":"https://schema.org","@type":"Corporation","name":"[[.Stock.Name]]","tickerSymbol":"[[.Stock.Code]]","description":"Valuasi saham [[.Stock.Code]] berdasarkan DCF, Graham Number, Peter Lynch, dan PBV-based."}
 </script>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +34,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="competitive()" x-init="fetch()">
+<body class="h-100 d-flex" x-data="competitive()" x-init="fetch()">
     <script>
         function competitive() {
             return {
@@ -63,13 +63,13 @@
                     } catch(e) { this.companies = []; }
                 },
                 rankColor(rank) {
-                    if (rank === 1) return 'bg-yellow-500 text-yellow-900';
+                    if (rank === 1) return 'bg-yellow text-yellow-900';
                     if (rank === 2) return 'bg-slate-400 text-slate-900';
                     if (rank === 3) return 'bg-amber-600 text-amber-100';
-                    return 'bg-slate-700 text-slate-300';
+                    return 'bg-secondary-lt text-body';
                 },
                 shareBar(pct) {
-                    if (pct > 25) return 'bg-blue-500';
+                    if (pct > 25) return 'bg-blue';
                     if (pct > 10) return 'bg-blue-400';
                     if (pct > 5) return 'bg-blue-300';
                     return 'bg-slate-500';
@@ -78,12 +78,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -96,8 +96,8 @@
   <path d="M3 17l6 -6l4 4l8 -8" />
   <path d="M14 7l7 0l0 7" />
 </svg></span> Saham IDX</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Quantitative Research</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Quantitative Research</p>
             <a href="/market/factor-exposure" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
@@ -119,8 +119,8 @@
   <path d="M19.071 4.929c-1.562 -1.562 -6 .337 -9.9 4.243c-3.905 3.905 -5.804 8.337 -4.242 9.9c1.562 1.561 6 -.338 9.9 -4.244c3.905 -3.905 5.804 -8.337 4.242 -9.9" />
   <path d="M4.929 4.929c-1.562 1.562 .337 6 4.243 9.9c3.905 3.905 8.337 5.804 9.9 4.242c1.561 -1.562 -.338 -6 -4.244 -9.9c-3.905 -3.905 -8.337 -5.804 -9.9 -4.242" />
 </svg></span> Smart Beta</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Supply Chain</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Supply Chain</p>
             <a href="/market/supply-chain" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M9 15l6 -6" />
@@ -141,7 +141,7 @@
   <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
   <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
 </svg></span> Competitive</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -150,7 +150,7 @@
   <path d="M3 13a20 20 0 0 0 18 0" />
 </svg></span> Portofolio</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -159,37 +159,37 @@
         </div>
     </aside>
 
-    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-40 flex items-center justify-between px-6">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors">
+    <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="text-sm text-slate-500 dark:text-slate-400"><span class="text-slate-600">Supply Chain /</span> Competitive Landscape</div>
-        <div class="flex items-center gap-3">
+        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Supply Chain /</span> Competitive Landscape</div>
+        <div class="d-flex align-items-center gap-3">
             [[if .User]]
-            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-white transition-colors">
-                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body  ">
+                <span class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
+    <main class="flex-fill ms-0 ml-60 mt-2 p-2">
         <template x-if="!loaded">
-            <div class="card p-8 flex flex-col items-center justify-center space-y-4">
-                <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-slate-500 dark:text-slate-400">Loading competitive landscape...</p>
+            <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
+                <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
+                <p class="text-muted dark:text-slate-400">Loading competitive landscape...</p>
             </div>
         </template>
 
         <template x-if="loaded">
-            <div class="space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="vstack gap-4">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
-                        <h1 class="text-2xl font-bold text-white">Competitive Landscape</h1>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Porter's Five Forces analysis for IDX sectors</p>
+                        <h1 class="fs-1 fw-bold text-white">Competitive Landscape</h1>
+                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Porter's Five Forces analysis for IDX sectors</p>
                     </div>
                     <select x-model="selectedSector" @change="loadSector()"
-                            class="bg-white dark:bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none">
+                            class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
                         <template x-for="s in sectors" :key="s.name">
                             <option :value="s.name" x-text="s.name + ' (' + s.count + ' stocks)'"></option>
                         </template>
@@ -197,60 +197,60 @@
                 </div>
 
                 <template x-if="companies.length > 0">
-                    <div class="space-y-4">
+                    <div class="vstack gap-3">
                         <template x-for="(c, idx) in companies" :key="c.code">
-                            <div class="card p-5">
-                                <div class="flex items-start gap-4">
+                            <div class="card p-2">
+                                <div class="d-flex align-items-start gap-4">
                                     <div class="rank-badge flex-shrink-0" :class="rankColor(idx + 1)" x-text="idx + 1"></div>
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <span class="font-mono font-bold text-white text-lg" x-text="c.code"></span>
-                                            <span class="text-slate-700 dark:text-slate-300" x-text="c.name"></span>
+                                    <div class="flex-fill">
+                                        <div class="d-flex align-items-center gap-3 mb-2">
+                                            <span class="font-monospace fw-bold text-white fs-3" x-text="c.code"></span>
+                                            <span class="text-body dark:text-body" x-text="c.name"></span>
                                         </div>
-                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-3">
+                                        <div class="row row-cols-2 row-cols-md-4 gap-3 fs-sm mb-2">
                                             <div>
-                                                <div class="text-[10px] text-slate-500 uppercase">Market Share</div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="font-mono font-semibold text-blue-400" x-text="c.market_share.toFixed(1) + '%'"></span>
-                                                    <div class="flex-1 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                                        <div class="h-full rounded-full" :class="shareBar(c.market_share)" :style="{ width: Math.min(100, c.market_share * 3) + '%' }"></div>
+                                                <div class="fs-6 text-muted text-uppercase">Market Share</div>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="font-monospace fw-semibold text-primary" x-text="c.market_share.toFixed(1) + '%'"></span>
+                                                    <div class="flex-fill h-1.5 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
+                                                        <div class="h-100 rounded-pill" :class="shareBar(c.market_share)" :style="{ width: Math.min(100, c.market_share * 3) + '%' }"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="text-[10px] text-slate-500 uppercase">Revenue Growth</div>
-                                                <span class="font-mono" :class="c.revenue_growth > 0 ? 'text-green-400' : 'text-red-400'" x-text="c.revenue_growth.toFixed(1) + '%'"></span>
+                                                <div class="fs-6 text-muted text-uppercase">Revenue Growth</div>
+                                                <span class="font-monospace" :class="c.revenue_growth > 0 ? 'text-green-400' : 'text-red-400'" x-text="c.revenue_growth.toFixed(1) + '%'"></span>
                                             </div>
                                             <div>
-                                                <div class="text-[10px] text-slate-500 uppercase">Porter Rivalry</div>
-                                                <span class="font-mono text-slate-700 dark:text-slate-300" x-text="c.rivalry + '/10'"></span>
+                                                <div class="fs-6 text-muted text-uppercase">Porter Rivalry</div>
+                                                <span class="font-monospace text-body dark:text-body" x-text="c.rivalry + '/10'"></span>
                                             </div>
                                             <div>
-                                                <div class="text-[10px] text-slate-500 uppercase">Barrier to Entry</div>
-                                                <span class="font-mono text-slate-700 dark:text-slate-300" x-text="c.barrier + '/10'"></span>
+                                                <div class="fs-6 text-muted text-uppercase">Barrier to Entry</div>
+                                                <span class="font-monospace text-body dark:text-body" x-text="c.barrier + '/10'"></span>
                                             </div>
                                         </div>
-                                        <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
-                                            <div class="text-[10px] text-slate-500 uppercase mb-1">Key Differentiator</div>
-                                            <span class="text-xs text-slate-500 dark:text-slate-400" x-text="c.differentiator"></span>
+                                        <div class="border-top border dark:border pt-2">
+                                            <div class="fs-6 text-muted text-uppercase mb-1">Key Differentiator</div>
+                                            <span class="fs-xs text-muted dark:text-slate-400" x-text="c.differentiator"></span>
                                         </div>
-                                        <div class="mt-3 bg-white/50 dark:bg-slate-800/50 rounded-lg p-3">
-                                            <div class="text-[10px] text-slate-500 uppercase mb-2">Porter's Five Forces Summary</div>
-                                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
+                                        <div class="mt-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
+                                            <div class="fs-6 text-muted text-uppercase mb-2">Porter's Five Forces Summary</div>
+                                            <div class="row row-cols-2 row-cols-md-5 gap-2 fs-6">
                                                 <div class="text-center">
-                                                    <div class="font-semibold" :class="c.supplier_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Supplier: ' + c.supplier_power + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.supplier_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Supplier: ' + c.supplier_power + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="font-semibold" :class="c.buyer_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Buyer: ' + c.buyer_power + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.buyer_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Buyer: ' + c.buyer_power + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="font-semibold" :class="c.rivalry > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Rivalry: ' + c.rivalry + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.rivalry > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Rivalry: ' + c.rivalry + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="font-semibold" :class="c.barrier < 5 ? 'text-red-400' : 'text-green-400'" x-text="'Entry: ' + c.barrier + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.barrier < 5 ? 'text-red-400' : 'text-green-400'" x-text="'Entry: ' + c.barrier + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="font-semibold" :class="c.substitute > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Sub: ' + c.substitute + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.substitute > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Sub: ' + c.substitute + '/10'"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -262,13 +262,13 @@
                 </template>
 
                 <template x-if="companies.length === 0">
-                    <div class="card p-12 text-center text-slate-500">Select a sector to view competitive landscape.</div>
+                    <div class="card p-2 text-center text-muted">Select a sector to view competitive landscape.</div>
                 </template>
             </div>
         </template>
     </main>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 "></div>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +43,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="blockTrades()" x-init="init()">
+<body class="h-100 d-flex" x-data="blockTrades()" x-init="init()">
     <script>
         function blockTrades() {
             return {
@@ -71,12 +71,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" id="sidebar">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" id="sidebar">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -101,8 +101,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Tools</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Tools</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -137,7 +137,7 @@
   <path d="M12 12l-8 -4.5" />
   <path d="M16 5.25l-8 4.5" />
 </svg></span> Block Trades</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/market/live-signals" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
@@ -161,7 +161,7 @@
   <path d="M9 16l.01 0" />
   <path d="M13 16l2 0" />
 </svg></span> Market Recap</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -184,7 +184,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -199,37 +199,37 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">&#x1F4E6; Block Trade Scanner</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Deteksi transaksi besar (>10x rata-rata volume) yang menandakan aktivitas institusional.</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">&#x1F4E6; Block Trade Scanner</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Deteksi transaksi besar (>10x rata-rata volume) yang menandakan aktivitas institusional.</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button @click="fetchData()" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium border border-blue-600/30 hover:bg-blue-600/30 transition-colors">&#x1F504; Refresh</button>
-                    <span class="text-xs text-slate-500 font-mono" x-text="'Updated: '+lastUpdate"></span>
+                <div class="d-flex align-items-center gap-2">
+                    <button @click="fetchData()" class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">&#x1F504; Refresh</button>
+                    <span class="fs-xs text-muted font-monospace" x-text="'Updated: '+lastUpdate"></span>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-end gap-4">
+            <div class="d-flex flex-wrap align-items-end gap-4">
                 <div>
-                    <label class="block text-xs text-slate-500 uppercase tracking-wider mb-1">Minimum Value (Rp)</label>
-                    <div class="flex gap-2">
-                        <select x-model.number="minValue" @change="fetchData()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                    <label class="d-block fs-xs text-muted text-uppercase  mb-1">Minimum Value (Rp)</label>
+                    <div class="d-flex gap-2">
+                        <select x-model.number="minValue" @change="fetchData()" class="bg-white dark:bg-white border border dark:border rounded-2 px-2 py-2 fs-sm text-white  ">
                             <option value="10000000">10 Jt</option>
                             <option value="50000000">50 Jt</option>
                             <option value="100000000" selected>100 Jt</option>
@@ -242,59 +242,59 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="card p-4 text-center">
-                    <div class="text-2xl font-bold text-green-400" x-text="trades.filter(t => t.type === 'buy').length"></div>
-                    <div class="text-xs text-slate-500 mt-1">Buy Block</div>
+            <div class="row row-cols-2 row-cols-sm-4 gap-3">
+                <div class="card p-2 text-center">
+                    <div class="fs-1 fw-bold text-success" x-text="trades.filter(t => t.type === 'buy').length"></div>
+                    <div class="fs-xs text-muted mt-1">Buy Block</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <div class="text-2xl font-bold text-red-400" x-text="trades.filter(t => t.type === 'sell').length"></div>
-                    <div class="text-xs text-slate-500 mt-1">Sell Block</div>
+                <div class="card p-2 text-center">
+                    <div class="fs-1 fw-bold text-danger" x-text="trades.filter(t => t.type === 'sell').length"></div>
+                    <div class="fs-xs text-muted mt-1">Sell Block</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-400" x-text="trades.length"></div>
-                    <div class="text-xs text-slate-500 mt-1">Total Blocks</div>
+                <div class="card p-2 text-center">
+                    <div class="fs-1 fw-bold text-primary" x-text="trades.length"></div>
+                    <div class="fs-xs text-muted mt-1">Total Blocks</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <div class="text-sm font-mono text-amber-400 mt-2" x-text="trades.length > 0 ? trades.reduce((max,t) => t.multiple > max ? t.multiple : max, 0).toFixed(1)+'x' : '-'"></div>
-                    <div class="text-xs text-slate-500 mt-1">Max Multiple</div>
+                <div class="card p-2 text-center">
+                    <div class="fs-sm font-monospace text-warning mt-2" x-text="trades.length > 0 ? trades.reduce((max,t) => t.multiple > max ? t.multiple : max, 0).toFixed(1)+'x' : '-'"></div>
+                    <div class="fs-xs text-muted mt-1">Max Multiple</div>
                 </div>
             </div>
 
             <div class="card overflow-hidden">
                 <div class="table-responsive">
-                    <table class="w-full">
+                    <table class="table table-vcenter table-hover w-100">
                         <thead>
-                            <tr class="border-b border-slate-200 dark:border-slate-700">
-                                <th class="table-header text-left px-4 py-3">Saham</th>
-                                <th class="table-header text-right px-4 py-3">Price</th>
-                                <th class="table-header text-right px-4 py-3">Volume</th>
-                                <th class="table-header text-right px-4 py-3 hidden sm:table-cell">Value (Rp)</th>
-                                <th class="table-header text-center px-4 py-3">Type</th>
-                                <th class="table-header text-center px-4 py-3 hidden md:table-cell">Multiple</th>
+                            <tr class="border-bottom border dark:border">
+                                <th class="table-header text-start px-2 py-2">Saham</th>
+                                <th class="table-header text-end px-2 py-2">Price</th>
+                                <th class="table-header text-end px-2 py-2">Volume</th>
+                                <th class="table-header text-end px-2 py-2 d-none d-sm-table-cell">Value (Rp)</th>
+                                <th class="table-header text-center px-2 py-2">Type</th>
+                                <th class="table-header text-center px-2 py-2 d-none d-md-table-cell">Multiple</th>
                             </tr>
                         </thead>
                         <tbody>
                             <template x-for="(t, idx) in trades" :key="t.code+idx">
-                            <tr class="table-row border-b border-slate-200/50 dark:border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.01)+'s'">
-                                <td class="px-4 py-3">
-                                    <a :href="'/saham/'+t.code" class="font-mono font-bold text-sm text-white hover:text-blue-400" x-text="t.code"></a>
-                                    <div class="text-xs text-slate-500 truncate max-w-[120px]" x-text="t.name"></div>
+                            <tr class="table-row border-bottom border dark:border-slate-800/50 animate-fade-slide" :style="'animation-delay:'+(idx*0.01)+'s'">
+                                <td class="px-2 py-2">
+                                    <a :href="'/saham/'+t.code" class="font-monospace fw-bold fs-sm text-white " x-text="t.code"></a>
+                                    <div class="fs-xs text-muted text-truncate max-w-120" x-text="t.name"></div>
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="formatPrice(t.price)"></td>
-                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-700 dark:text-slate-300" x-text="formatVolume(t.volume)"></td>
-                                <td class="px-4 py-3 hidden sm:table-cell">
-                                    <div class="flex items-center gap-2 justify-end">
+                                <td class="px-2 py-2 text-end font-monospace fs-sm text-white" x-text="formatPrice(t.price)"></td>
+                                <td class="px-2 py-2 text-end font-monospace fs-xs text-body dark:text-body" x-text="formatVolume(t.volume)"></td>
+                                <td class="px-2 py-2 d-none d-sm-table-cell">
+                                    <div class="d-flex align-items-center gap-2 justify-content-end">
                                         <div class="value-bar-wrap min-w-[80px]">
                                             <div class="value-bar" :style="'width:'+valueBarWidth(t.value)"></div>
                                         </div>
-                                        <span class="font-mono text-sm text-slate-700 dark:text-slate-300" x-text="formatValue(t.value)"></span>
+                                        <span class="font-monospace fs-sm text-body dark:text-body" x-text="formatValue(t.value)"></span>
                                     </div>
                                 </td>
-                                <td class="px-4 py-3 text-center">
-                                    <span class="badge" :class="t.type==='buy'?'badge-buy':'badge-sell'" x-text="t.type.toUpperCase()"></span>
+                                <td class="px-2 py-2 text-center">
+                                    <span class="badge" :class="t.type==='buy'?'bg-success-lt':'bg-danger-lt'" x-text="t.type.toUpperCase()"></span>
                                 </td>
-                                <td class="px-4 py-3 text-center font-mono text-xs hidden md:table-cell" :class="t.multiple>=20?'text-amber-400 font-bold':t.multiple>=15?'text-yellow-400':'text-slate-400'" x-text="formatMultiple(t.multiple)"></td>
+                                <td class="px-2 py-2 text-center font-monospace fs-xs d-none d-md-table-cell" :class="t.multiple>=20?'text-amber-400 font-bold':t.multiple>=15?'text-yellow-400':'text-slate-400'" x-text="formatMultiple(t.multiple)"></td>
                             </tr>
                             </template>
                         </tbody>
@@ -302,7 +302,7 @@
                 </div>
 
                 <template x-if="loading">
-                <div class="p-8 space-y-3">
+                <div class="p-2 vstack gap-2">
                     <template x-for="i in 6" :key="i">
                         <div style="width:100%;height:40px;background:#1e293b;border-radius:6px" class="animate-shimmer"></div>
                     </template>
@@ -310,17 +310,17 @@
                 </template>
 
                 <template x-if="!loading && trades.length === 0">
-                <div class="text-center py-12">
-                    <div class="text-4xl mb-3">&#x1F4E6;</div>
-                    <p class="text-slate-500 dark:text-slate-400 font-medium">No block trades detected</p>
-                    <p class="text-slate-500 text-sm mt-1">Tidak ada transaksi >10x rata-rata dengan nilai minimum yang dipilih.</p>
+                <div class="text-center py-2">
+                    <div class="display-6 mb-2">&#x1F4E6;</div>
+                    <p class="text-muted dark:text-slate-400 fw-medium">No block trades detected</p>
+                    <p class="text-muted fs-sm mt-1">Tidak ada transaksi >10x rata-rata dengan nilai minimum yang dipilih.</p>
                 </div>
                 </template>
             </div>
         </main>
     </div>
     <style>@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}.animate-shimmer{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}</style>
-    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
     <script src="/static/js/app.js" defer></script>
 </body>
 </html>

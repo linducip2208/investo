@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="stockDetail()" x-init="init()">
+<body class="h-100 d-flex" x-data="stockDetail()" x-init="init()">
 
 <script>
 function defaultTimeframe(days) {
@@ -408,12 +408,12 @@ function stockDetail() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200/50 dark:border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border/50 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border/50">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -459,8 +459,8 @@ function stockDetail() {
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+        <div class="border-top border dark:border/50 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
         <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -488,8 +488,8 @@ function stockDetail() {
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
-        <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Analisis</p>
+        <div class="border-top border dark:border/50 my-2"></div>
+        <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Analisis</p>
         <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
@@ -517,7 +517,7 @@ function stockDetail() {
   <path d="M4 20h14" />
 </svg></span> Chart Pro</a>
     </nav>
-    <div class="p-3 border-t border-slate-200/50 dark:border-slate-700/50">
+    <div class="p-2 border-top border dark:border/50">
         <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -533,78 +533,78 @@ function stockDetail() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+            <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-white font-medium">[[.Stock.Code]]</span>
+            <span class="text-white fw-medium">[[.Stock.Code]]</span>
         </div>
-        <div class="flex-1 max-w-md hidden sm:block mx-4">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <div class="flex-fill max-w-md d-none d-sm-block mx-2">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[template "components/market-clock.html" .]]
-            <a href="/dashboard/alerts" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
+            <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
     <!-- CONTENT -->
-    <main class="flex-1 px-4 lg:px-8 py-6 overflow-y-auto space-y-5">
+    <main class="flex-fill px-2 px-lg-5 py-2 overflow-y-auto vstack gap-3">
 
         <!-- STOCK HEADER -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-3">
             <div>
-                <div class="flex items-center gap-3 flex-wrap">
-                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
-                    <span class="px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-lg text-xs font-semibold">[[.Sector.Name]]</span>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <h1 class="fs-1 fs-1 fw-bold text-body dark:text-[#f8fafc] font-monospace">[[.Stock.Code]]</h1>
+                    <span class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-semibold">[[.Sector.Name]]</span>
                 </div>
-                <p class="mt-1 text-lg text-slate-500 dark:text-slate-400">[[.Stock.Name]]</p>
+                <p class="mt-1 fs-3 text-muted dark:text-slate-400">[[.Stock.Name]]</p>
                 [[if .Stock.Website]]
-                <a href="[[.Stock.Website]]" target="_blank" rel="noopener" class="inline-flex items-center gap-1 mt-1 text-sm text-blue-400 hover:underline">
+                <a href="[[.Stock.Website]]" target="_blank" rel="noopener" class="d-inline-flex align-items-center gap-1 mt-1 fs-sm text-primary ">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     [[.Stock.Website]]
                 </a>
                 [[end]]
             </div>
-            <div class="flex gap-2">
-                <a href="/saham/[[.Stock.Code]]/chart-pro" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Chart Pro</a>
-                <a href="/saham/[[.Stock.Code]]/teknikal" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-xl transition-colors">Teknikal</a>
+            <div class="d-flex gap-2">
+                <a href="/saham/[[.Stock.Code]]/chart-pro" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Chart Pro</a>
+                <a href="/saham/[[.Stock.Code]]/teknikal" class="px-2 py-2 bg-body dark:bg-secondary-lt  text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">Teknikal</a>
             </div>
         </div>
 
         <!-- PRICE + STATS ROW -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div class="row row-cols-1 row-cols-lg-4 gap-5">
             <!-- PRICE CARD -->
-            <div class="card p-6 lg:col-span-1">
-                <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Harga Terakhir</span>
-                <div class="mt-1 font-mono text-3xl font-bold text-slate-900 dark:text-[#f8fafc]">[[.LatestPrice.PriceFormatted]]</div>
-                <div class="flex items-center gap-3 mt-2">
+            <div class="card p-2 col">
+                <span class="fs-xs fw-medium text-muted text-uppercase ">Harga Terakhir</span>
+                <div class="mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.LatestPrice.PriceFormatted]]</div>
+                <div class="d-flex align-items-center gap-3 mt-2">
                     [[if ge .LatestPrice.ChangePercent 0.0]]
-                    <span class="font-mono text-lg font-semibold text-success">+[[.LatestPrice.ChangeFormatted]] (+[[.LatestPrice.ChangePercent]]%)</span>
+                    <span class="font-monospace fs-3 fw-semibold text-success">+[[.LatestPrice.ChangeFormatted]] (+[[.LatestPrice.ChangePercent]]%)</span>
                     [[else]]
-                    <span class="font-mono text-lg font-semibold text-danger">[[.LatestPrice.ChangeFormatted]] ([[.LatestPrice.ChangePercent]]%)</span>
+                    <span class="font-monospace fs-3 fw-semibold text-danger">[[.LatestPrice.ChangeFormatted]] ([[.LatestPrice.ChangePercent]]%)</span>
                     [[end]]
                 </div>
-                <div class="flex items-center gap-6 mt-4 text-sm">
-                    <div><span class="text-slate-500 block text-xs">Volume</span><span class="font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.LatestPrice.VolumeFormatted]]</span></div>
+                <div class="d-flex align-items-center gap-6 mt-2 fs-sm">
+                    <div><span class="text-muted d-block fs-xs">Volume</span><span class="font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.LatestPrice.VolumeFormatted]]</span></div>
                     [[if .LatestPrice.Open]]
-                    <div><span class="text-slate-500 block text-xs">Open</span><span class="font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.LatestPrice.OpenFormatted]]</span></div>
+                    <div><span class="text-muted d-block fs-xs">Open</span><span class="font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.LatestPrice.OpenFormatted]]</span></div>
                     [[end]]
                 </div>
                 [[if .Sparkline]]
-                <div class="mt-5 h-16">
-                    <svg viewBox="0 0 200 60" class="w-full h-full" preserveAspectRatio="none">
+                <div class="mt-2 h-16">
+                    <svg viewBox="0 0 200 60" class="w-100 h-100" preserveAspectRatio="none">
                         <polyline fill="none" stroke="[[if ge .LatestPrice.ChangePercent 0.0]]#34d399[[else]]#f87171[[end]]" stroke-width="2" points="[[.Sparkline]]"/>
                         <polygon fill="[[if ge .LatestPrice.ChangePercent 0.0]]url(#sgUp)[[else]]url(#sgDown)[[end]]" points="[[.SparklineArea]]"/>
                         <defs>
@@ -617,26 +617,26 @@ function stockDetail() {
             </div>
 
             <!-- STAT CARDS -->
-            <div class="lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="card p-5 stat-card flex flex-col justify-between">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider">Market Cap</span>
-                    <span class="text-xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1">[[.Fundamentals.MarketCapFormatted]]</span>
-                    <span class="text-[10px] text-slate-600 mt-1">Kapitalisasi Pasar</span>
+            <div class="col-12 row row-cols-2 row-cols-lg-4 gap-4">
+                <div class="card p-2 stat-card d-flex flex-column justify-content-between">
+                    <span class="fs-xs text-muted text-uppercase ">Market Cap</span>
+                    <span class="fs-2 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1">[[.Fundamentals.MarketCapFormatted]]</span>
+                    <span class="fs-6 text-muted mt-1">Kapitalisasi Pasar</span>
                 </div>
-                <div class="card p-5 stat-card flex flex-col justify-between">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider">PER</span>
-                    <span class="text-xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1">[[.Fundamentals.PER]]</span>
-                    <span class="text-[10px] text-slate-600 mt-1">Price to Earnings</span>
+                <div class="card p-2 stat-card d-flex flex-column justify-content-between">
+                    <span class="fs-xs text-muted text-uppercase ">PER</span>
+                    <span class="fs-2 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1">[[.Fundamentals.PER]]</span>
+                    <span class="fs-6 text-muted mt-1">Price to Earnings</span>
                 </div>
-                <div class="card p-5 stat-card flex flex-col justify-between">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider">PBV</span>
-                    <span class="text-xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1">[[.Fundamentals.PBV]]</span>
-                    <span class="text-[10px] text-slate-600 mt-1">Price to Book Value</span>
+                <div class="card p-2 stat-card d-flex flex-column justify-content-between">
+                    <span class="fs-xs text-muted text-uppercase ">PBV</span>
+                    <span class="fs-2 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1">[[.Fundamentals.PBV]]</span>
+                    <span class="fs-6 text-muted mt-1">Price to Book Value</span>
                 </div>
-                <div class="card p-5 stat-card flex flex-col justify-between">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider">EPS</span>
-                    <span class="text-xl font-bold font-mono text-slate-900 dark:text-[#f8fafc] mt-1">[[.Fundamentals.EPSFormatted]]</span>
-                    <span class="text-[10px] text-slate-600 mt-1">Earning per Share</span>
+                <div class="card p-2 stat-card d-flex flex-column justify-content-between">
+                    <span class="fs-xs text-muted text-uppercase ">EPS</span>
+                    <span class="fs-2 fw-bold font-monospace text-body dark:text-[#f8fafc] mt-1">[[.Fundamentals.EPSFormatted]]</span>
+                    <span class="fs-6 text-muted mt-1">Earning per Share</span>
                 </div>
             </div>
         </div>
@@ -644,141 +644,141 @@ function stockDetail() {
         <!-- TAB NAVIGATION + CONTENT -->
         <div class="card overflow-hidden">
             <!-- TABS -->
-            <div class="flex border-b border-slate-200/50 dark:border-slate-700/50 overflow-x-auto">
-                <button @click="activeTab='ringkasan'" :class="activeTab==='ringkasan'?'active':'text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold whitespace-nowrap transition-colors">Ringkasan</button>
-                <button @click="activeTab='chart';$nextTick(()=>initChart())" :class="activeTab==='chart'?'active':'text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold whitespace-nowrap transition-colors">Chart</button>
-                <button @click="activeTab='fundamental'" :class="activeTab==='fundamental'?'active':'text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold whitespace-nowrap transition-colors">Fundamental</button>
-                <button @click="activeTab='berita'" :class="activeTab==='berita'?'active':'text-slate-400 hover:text-slate-200'" class="tab-btn px-5 py-3.5 text-sm font-semibold whitespace-nowrap transition-colors">Berita</button>
+            <div class="d-flex border-bottom border dark:border/50 overflow-x-auto">
+                <button @click="activeTab='ringkasan'" :class="activeTab==='ringkasan'?'active':'text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold text-nowrap ">Ringkasan</button>
+                <button @click="activeTab='chart';$nextTick(()=>initChart())" :class="activeTab==='chart'?'active':'text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold text-nowrap ">Chart</button>
+                <button @click="activeTab='fundamental'" :class="activeTab==='fundamental'?'active':'text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold text-nowrap ">Fundamental</button>
+                <button @click="activeTab='berita'" :class="activeTab==='berita'?'active':'text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold text-nowrap ">Berita</button>
             </div>
 
             <!-- RINGKASAN -->
-            <div x-show="activeTab==='ringkasan'" class="p-6">
+            <div x-show="activeTab==='ringkasan'" class="p-2">
                 [[if .Stock.Description]]
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">[[.Stock.Description]]</p>
+                <p class="text-body dark:text-body lh-lg fs-sm">[[.Stock.Description]]</p>
                 [[end]]
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">Market Cap</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.MarketCapFormatted]]</span>
+                <div class="row row-cols-2 row-cols-sm-3 gap-4 mt-2">
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">Market Cap</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.MarketCapFormatted]]</span>
                     </div>
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">PER</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.PER]]</span>
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">PER</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.PER]]</span>
                     </div>
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">PBV</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.PBV]]</span>
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">PBV</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.PBV]]</span>
                     </div>
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">EPS</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.EPSFormatted]]</span>
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">EPS</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.EPSFormatted]]</span>
                     </div>
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">Dividend Yield</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.DividendYield]]%</span>
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">Dividend Yield</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.DividendYield]]%</span>
                     </div>
-                    <div class="bg-slate-100/30 dark:bg-slate-700/30 rounded-xl p-4">
-                        <span class="text-xs text-slate-500 dark:text-slate-400">52W Range</span>
-                        <span class="block mt-1 font-mono text-sm font-semibold text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.Low52WFormatted]] &mdash; [[.Fundamentals.High52WFormatted]]</span>
-                        [[if lt .HistoryDays 365]]<span class="block mt-1 text-[10px] text-slate-500">dari [[.HistoryDays]] hari riwayat (sejak listing)</span>[[end]]
+                    <div class="bg-body bg-opacity-25 dark:bg-secondary-lt/30 rounded-3 p-2">
+                        <span class="fs-xs text-muted dark:text-slate-400">52W Range</span>
+                        <span class="d-block mt-1 font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[.Fundamentals.Low52WFormatted]] &mdash; [[.Fundamentals.High52WFormatted]]</span>
+                        [[if lt .HistoryDays 365]]<span class="d-block mt-1 fs-6 text-muted">dari [[.HistoryDays]] hari riwayat (sejak listing)</span>[[end]]
                     </div>
                 </div>
             </div>
 
             <!-- CHART TAB -->
             <div x-show="activeTab==='chart'" class="p-0">
-                <div class="border-b border-slate-200/50 dark:border-slate-700/50 px-3 py-2 flex flex-wrap items-center gap-2">
-                    <div class="flex items-center bg-white dark:bg-slate-800 rounded-lg p-0.5">
+                <div class="border-bottom border dark:border/50 px-2 py-2 d-flex flex-wrap align-items-center gap-2">
+                    <div class="d-flex align-items-center bg-white dark:bg-white rounded-2 p-0">
                         <template x-for="tf in timeframes" :key="tf.v">
-                            <button @click="setTimeframe(tf.v)" :class="timeframe===tf.v?'bg-blue-600 text-white':'text-slate-400 hover:text-slate-200'" class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors" x-text="tf.l"></button>
+                            <button @click="setTimeframe(tf.v)" :class="timeframe===tf.v?'bg-blue-600 text-white':'text-slate-400 " class="px-2 py-1 fs-xs fw-medium rounded-2 " x-text="tf.l"></button>
                         </template>
                     </div>
-                    <div class="w-px h-5 bg-slate-600"></div>
-                    <button @click="drawTool=(drawTool==='hline'?null:'hline')" :class="drawTool==='hline'?'drawing-btn active':'drawing-btn text-slate-500 dark:text-slate-400 hover:bg-slate-700'" class="px-2 py-1 text-xs font-medium border border-slate-600 rounded-lg transition-colors">
-                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/></svg>H-Line
+                    <div class="w-px h-5 bg-body"></div>
+                    <button @click="drawTool=(drawTool==='hline'?null:'hline')" :class="drawTool==='hline'?'drawing-btn active':'drawing-btn text-muted dark:text-slate-400 " class="px-2 py-1 fs-xs fw-medium border border rounded-2 ">
+                        <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/></svg>H-Line
                     </button>
-                    <button @click="drawTool=(drawTool==='trendline'?null:'trendline');drawingModeClicks=[]" :class="drawTool==='trendline'?'drawing-btn active':'drawing-btn text-slate-500 dark:text-slate-400 hover:bg-slate-700'" class="px-2 py-1 text-xs font-medium border border-slate-600 rounded-lg transition-colors">
-                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20L20 4"/></svg>Trendline
+                    <button @click="drawTool=(drawTool==='trendline'?null:'trendline');drawingModeClicks=[]" :class="drawTool==='trendline'?'drawing-btn active':'drawing-btn text-muted dark:text-slate-400 " class="px-2 py-1 fs-xs fw-medium border border rounded-2 ">
+                        <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20L20 4"/></svg>Trendline
                     </button>
-                    <button @click="drawTool=(drawTool==='rect'?null:'rect');drawingModeClicks=[]" :class="drawTool==='rect'?'drawing-btn active':'drawing-btn text-slate-500 dark:text-slate-400 hover:bg-slate-700'" class="px-2 py-1 text-xs font-medium border border-slate-600 rounded-lg transition-colors">
-                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4h8a2 2 0 012 2v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Rect
+                    <button @click="drawTool=(drawTool==='rect'?null:'rect');drawingModeClicks=[]" :class="drawTool==='rect'?'drawing-btn active':'drawing-btn text-muted dark:text-slate-400 " class="px-2 py-1 fs-xs fw-medium border border rounded-2 ">
+                        <svg class="w-3 h-3 d-inline me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4h8a2 2 0 012 2v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Rect
                     </button>
-                    <button @click="undoDrawing()" class="px-2 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 border border-slate-600 rounded-lg transition-colors" title="Undo (Ctrl+Z)">
+                    <button @click="undoDrawing()" class="px-2 py-1 fs-xs fw-medium text-muted dark:text-slate-400  dark:hover:text-slate-200 border border rounded-2 " title="Undo (Ctrl+Z)">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
                     </button>
-                    <button @click="clearAllDrawings()" class="px-2 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-danger border border-slate-600 rounded-lg transition-colors" title="Clear All">
+                    <button @click="clearAllDrawings()" class="px-2 py-1 fs-xs fw-medium text-muted dark:text-slate-400  border border rounded-2 " title="Clear All">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
-                    <div class="w-px h-5 bg-slate-600"></div>
-                    <button @click="toggleCompare()" :class="compareMode?'bg-amber-900/40 text-amber-300':'text-slate-400 hover:text-amber-400'" class="px-2 py-1 text-xs font-medium border border-slate-600 rounded-lg transition-colors">Compare</button>
+                    <div class="w-px h-5 bg-body"></div>
+                    <button @click="toggleCompare()" :class="compareMode?'bg-warning-lt text-warning':'text-slate-400 " class="px-2 py-1 fs-xs fw-medium border border rounded-2 ">Compare</button>
                     <template x-if="compareMode">
-                        <div class="flex items-center gap-1">
-                            <input type="text" placeholder="Cari saham..." x-model="compareSearch" @input="searchCompare()" class="text-xs px-2 py-1 rounded-lg border border-slate-600 bg-white dark:bg-slate-800 w-28 focus:outline-none focus:ring-1 focus:ring-blue-500 text-white">
+                        <div class="d-flex align-items-center gap-1">
+                            <input type="text" placeholder="Cari saham..." x-model="compareSearch" @input="searchCompare()" class="fs-xs px-2 py-1 rounded-2 border border bg-white dark:bg-white w-28    text-white">
                             <template x-if="compareResults.length > 0">
-                                <select @change="selectCompare($event.target.value)" class="text-xs rounded-lg border border-slate-600 bg-white dark:bg-slate-800 px-1 py-1 text-white">
+                                <select @change="selectCompare($event.target.value)" class="fs-xs rounded-2 border border bg-white dark:bg-white px-1 py-1 text-white">
                                     <option value="">Pilih...</option>
                                     <template x-for="r in compareResults" :key="r.code||r.Code">
                                         <option :value="r.code||r.Code" x-text="(r.code||r.Code)+' - '+(r.name||r.Name)"></option>
                                     </template>
                                 </select>
                             </template>
-                            <button @click="removeCompare()" class="text-xs text-danger hover:text-red-400 px-1">x</button>
+                            <button @click="removeCompare()" class="fs-xs text-danger  px-1">x</button>
                         </div>
                     </template>
                 </div>
-                <div class="relative">
-                    <div id="chart-container" class="w-full h-[300px] sm:h-[450px]" data-code="[[.Stock.Code]]"></div>
-                    <div x-show="chartLoading" class="absolute inset-0 flex items-center justify-center bg-[#f4f6fb]/60 dark:bg-[#0b1120]/60 z-10">
-                        <div class="flex flex-col items-center gap-2">
-                            <svg class="animate-spin h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                            <span class="text-sm text-slate-500 dark:text-slate-400">Memuat chart...</span>
+                <div class="position-relative">
+                    <div id="chart-container" class="w-100 h-300 h-[450px]" data-code="[[.Stock.Code]]"></div>
+                    <div x-show="chartLoading" class="position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center bg-body bg-opacity-50 dark:bg-[#0b1120]/60 z-1">
+                        <div class="d-flex flex-column align-items-center gap-2">
+                            <svg class=" h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                            <span class="fs-sm text-muted dark:text-slate-400">Memuat chart...</span>
                         </div>
                     </div>
-                    <div x-show="chartError" class="absolute inset-0 flex items-center justify-center bg-[#f4f6fb]/60 dark:bg-[#0b1120]/60 z-10">
+                    <div x-show="chartError" class="position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center bg-body bg-opacity-50 dark:bg-[#0b1120]/60 z-1">
                         <div class="text-center">
-                            <svg class="mx-auto h-10 w-10 mb-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
-                            <p class="text-sm text-slate-500 dark:text-slate-400">Chart data unavailable</p>
-                            <button @click="chartError=false;initChart()" class="mt-2 text-xs text-blue-400 hover:underline">Coba lagi</button>
+                            <svg class="mx-auto h-10 w-10 mb-2 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                            <p class="fs-sm text-muted dark:text-slate-400">Chart data unavailable</p>
+                            <button @click="chartError=false;initChart()" class="mt-2 fs-xs text-primary ">Coba lagi</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- FUNDAMENTAL TAB -->
-            <div x-show="activeTab==='fundamental'" class="p-6">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Data Keuangan</span>
-                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full [[if eq .Fundamentals.Source "yahoo"]]bg-emerald-900/40 text-emerald-400[[else if eq .Fundamentals.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-amber-900/40 text-amber-400[[end]]">
+            <div x-show="activeTab==='fundamental'" class="p-2">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fs-xs fw-semibold text-uppercase  text-muted dark:text-slate-400">Data Keuangan</span>
+                    <span class="fs-6 fw-semibold px-2 py-0 rounded-pill [[if eq .Fundamentals.Source "yahoo"]]bg-success-lt text-emerald-400[[else if eq .Fundamentals.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-warning-lt text-amber-400[[end]]">
                         [[if eq .Fundamentals.Source "yahoo"]]Data: Yahoo Finance[[else if eq .Fundamentals.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]
                     </span>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50">
-                                <th class="text-left py-2.5 pr-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Metrik</th>
-                                <th class="text-right py-2.5 px-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Nilai</th>
+                            <tr class="border-bottom border dark:border/50">
+                                <th class="text-start py-2 pe-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Metrik</th>
+                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Nilai</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">Market Cap</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.MarketCapFormatted]]</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">PER</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.PER]]x</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">PBV</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.PBV]]x</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">EPS</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.EPSFormatted]]</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">ROE</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.ROE]]%</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">ROA</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.ROA]]%</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">DER</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.DER]]x</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">NPM</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.NPM]]%</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">Dividend Yield</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.DividendYield]]%</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">Pendapatan</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.RevenueFormatted]]</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">Laba Bersih</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.NetIncomeFormatted]]</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">BVPS</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.BVPSFormatted]]</td></tr>
-                            <tr><td class="py-2.5 text-slate-700 dark:text-slate-300">Jumlah Saham</td><td class="py-2.5 text-right font-mono font-medium text-slate-900 dark:text-[#f8fafc]">[[.Fundamentals.SharesOutstandingFormatted]]</td></tr>
+                        <tbody class="divide-y border dark:divide-slate-700/30">
+                            <tr><td class="py-2 text-body dark:text-body">Market Cap</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.MarketCapFormatted]]</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">PER</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.PER]]x</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">PBV</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.PBV]]x</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">EPS</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.EPSFormatted]]</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">ROE</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.ROE]]%</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">ROA</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.ROA]]%</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">DER</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.DER]]x</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">NPM</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.NPM]]%</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">Dividend Yield</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.DividendYield]]%</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">Pendapatan</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.RevenueFormatted]]</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">Laba Bersih</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.NetIncomeFormatted]]</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">BVPS</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.BVPSFormatted]]</td></tr>
+                            <tr><td class="py-2 text-body dark:text-body">Jumlah Saham</td><td class="py-2 text-end font-monospace fw-medium text-body dark:text-[#f8fafc]">[[.Fundamentals.SharesOutstandingFormatted]]</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4">
-                    <a href="/saham/[[.Stock.Code]]/fundamental" class="inline-flex items-center gap-1 text-sm font-medium text-blue-400 hover:underline">
+                <div class="mt-2">
+                    <a href="/saham/[[.Stock.Code]]/fundamental" class="d-inline-flex align-items-center gap-1 fs-sm fw-medium text-primary ">
                         Lihat data fundamental lengkap
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
@@ -786,18 +786,18 @@ function stockDetail() {
             </div>
 
             <!-- BERITA TAB -->
-            <div x-show="activeTab==='berita'" class="p-6">
+            <div x-show="activeTab==='berita'" class="p-2">
                 [[if .News]]
-                <div class="space-y-4">
+                <div class="vstack gap-3">
                     [[range .News]]
-                    <a href="[[.URL]]" target="_blank" rel="noopener" class="block p-4 rounded-xl border border-slate-200/50 dark:border-slate-700/50 hover:border-blue-700/50 hover:bg-blue-900/10 transition-all group">
-                        <div class="flex items-start justify-between gap-4">
+                    <a href="[[.URL]]" target="_blank" rel="noopener" class="d-block p-2 rounded-3 border border dark:border/50    group">
+                        <div class="d-flex align-items-start justify-content-between gap-4">
                             <div>
-                                <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc] group-hover:text-blue-400 transition-colors line-clamp-2">[[.Title]]</h3>
-                                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">[[.Summary]]</p>
+                                <h3 class="fw-semibold text-body dark:text-[#f8fafc]   line-clamp-2">[[.Title]]</h3>
+                                <p class="mt-1 fs-sm text-muted dark:text-slate-400 line-clamp-2">[[.Summary]]</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3 mt-3 text-xs text-slate-500">
+                        <div class="d-flex align-items-center gap-3 mt-2 fs-xs text-muted">
                             <span>[[.Source]]</span>
                             <span>[[.PublishedAt]]</span>
                         </div>
@@ -805,38 +805,38 @@ function stockDetail() {
                     [[end]]
                 </div>
                 [[else]]
-                <div class="py-12 text-center text-slate-500">
-                    <svg class="mx-auto h-10 w-10 mb-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                    <p class="font-medium">Belum ada berita</p>
+                <div class="py-2 text-center text-muted">
+                    <svg class="mx-auto h-10 w-10 mb-2 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                    <p class="fw-medium">Belum ada berita</p>
                 </div>
                 [[end]]
             </div>
         </div>
 
         <!-- SAHAM SERUPA -->
-        <div class="mt-6" x-data="similarStocks()" x-init="fetchSimilar()">
-            <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Saham Serupa · Karena Anda lihat [[.Stock.Code]]</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" x-show="!loading">
+        <div class="mt-2" x-data="similarStocks()" x-init="fetchSimilar()">
+            <h2 class="fs-sm fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Saham Serupa · Karena Anda lihat [[.Stock.Code]]</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-3" x-show="!loading">
                 <template x-for="s in similar" :key="s.stock_code">
-                    <a :href="'/saham/' + s.stock_code" class="card p-4 hover:border-blue-500/40 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="font-mono font-bold text-white group-hover:text-blue-400 transition-colors" x-text="s.stock_code"></span>
-                            <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded" :class="s.similarity_score >= 70 ? 'bg-green-900/30 text-green-400' : s.similarity_score >= 40 ? 'bg-amber-900/30 text-amber-400' : 'bg-slate-700 text-slate-400'" x-text="s.similarity_score + '%'"></span>
+                    <a :href="'/saham/' + s.stock_code" class="card p-2   group">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="font-monospace fw-bold text-white  " x-text="s.stock_code"></span>
+                            <span class="fs-xs font-monospace fw-semibold px-2 py-0 rounded" :class="s.similarity_score >= 70 ? 'bg-success-lt text-green-400' : s.similarity_score >= 40 ? 'bg-warning-lt text-amber-400' : 'bg-secondary-lt text-slate-400'" x-text="s.similarity_score + '%'"></span>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mb-2" x-text="s.name"></p>
-                        <div class="flex flex-wrap gap-1">
+                        <p class="fs-xs text-muted dark:text-slate-400 line-clamp-1 mb-2" x-text="s.name"></p>
+                        <div class="d-flex flex-wrap gap-1">
                             <template x-for="f in s.common_factors.slice(0,2)" :key="f">
-                                <span class="text-[10px] bg-slate-100/50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded" x-text="f"></span>
+                                <span class="fs-6 bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-slate-400 px-1 py-0 rounded" x-text="f"></span>
                             </template>
                         </div>
-                        <div class="flex justify-between mt-2 pt-2 border-t border-slate-200/30 dark:border-slate-700/30 text-[10px]">
-                            <span class="text-slate-500" x-text="s.sector_name"></span>
-                            <span class="text-slate-500 font-mono" x-text="'PER ' + s.per"></span>
+                        <div class="d-flex justify-content-between mt-2 pt-2 border-top border dark:border/30 fs-6">
+                            <span class="text-muted" x-text="s.sector_name"></span>
+                            <span class="text-muted font-monospace" x-text="'PER ' + s.per"></span>
                         </div>
                     </a>
                 </template>
             </div>
-            <div x-show="loading" class="text-center py-8 text-slate-500">Mencari saham serupa...</div>
+            <div x-show="loading" class="text-center py-2 text-muted">Mencari saham serupa...</div>
         </div>
     </main>
 </div>
@@ -862,6 +862,6 @@ function similarStocks() {
 </script>
 [[template "components/voice-search.html" .]]
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>
