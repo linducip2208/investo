@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="customIndex()">
+<body class="h-100 d-flex" x-data="customIndex()">
     <script>
         function customIndex() {
             return {
@@ -134,12 +134,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -164,8 +164,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Analytics</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -196,8 +196,8 @@
   <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
   <path d="M9.7 17l4.6 0" />
 </svg></span> Trade Ideas</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -220,7 +220,7 @@
   <path d="M16 4l0 2" />
 </svg></span> Custom Index</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -230,30 +230,30 @@
     </aside>
 
     <!-- TOPBAR -->
-    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-40 flex items-center justify-between px-6">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors">
+    <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="text-sm text-slate-500 dark:text-slate-400"><span class="text-slate-600">Dashboard /</span> Custom Indices</div>
-        <div class="flex items-center gap-3">
+        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Dashboard /</span> Custom Indices</div>
+        <div class="d-flex align-items-center gap-3">
             [[if .User]]
-            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-white transition-colors">
-                <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
+            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-slate-300  ">
+                <span class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 ml-0 lg:ml-60 mt-16 p-6">
-        <div class="space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <main class="flex-fill ms-0 ml-60 mt-2 p-2">
+        <div class="vstack gap-4">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-white">Custom Indices</h1>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Build and track your own market index</p>
+                    <h1 class="fs-1 fw-bold text-white">Custom Indices</h1>
+                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Build and track your own market index</p>
                 </div>
                 <button @click="modalOpen=true"
-                        class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl font-semibold text-sm hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg shadow-blue-600/20">
+                        class="d-flex align-items-center gap-2 px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white rounded-3 fw-semibold fs-sm    shadow-lg ">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Buat Indeks Baru
                 </button>
@@ -261,38 +261,38 @@
 
             <!-- Indices Grid -->
             <template x-if="indices.length === 0">
-                <div class="card p-12 text-center">
-                    <div class="text-4xl mb-3">📐</div>
-                    <div class="text-slate-500 dark:text-slate-400 text-lg mb-2">Belum ada indeks</div>
-                    <p class="text-slate-600 text-sm mb-4">Buat indeks kustom pertama Anda dengan memilih saham-saham pilihan</p>
-                    <button @click="modalOpen=true" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors">Buat Indeks Baru</button>
+                <div class="card p-2 text-center">
+                    <div class="display-6 mb-2">📐</div>
+                    <div class="text-muted dark:text-slate-400 fs-3 mb-2">Belum ada indeks</div>
+                    <p class="text-muted fs-sm mb-2">Buat indeks kustom pertama Anda dengan memilih saham-saham pilihan</p>
+                    <button @click="modalOpen=true" class="px-2 py-2 bg-primary text-white rounded-3 fw-semibold fs-sm  ">Buat Indeks Baru</button>
                 </div>
             </template>
 
             <template x-if="indices.length > 0">
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4">
                     <template x-for="idx in indices" :key="idx.id">
-                        <div class="card p-5 hover:border-slate-500 transition-all cursor-pointer" @click="showDetail(idx.id)">
-                            <div class="flex items-start justify-between mb-3">
+                        <div class="card p-2   cursor-pointer" @click="showDetail(idx.id)">
+                            <div class="d-flex align-items-start justify-content-between mb-2">
                                 <div>
-                                    <h3 class="font-bold text-white text-lg" x-text="idx.name"></h3>
-                                    <span class="text-xs text-slate-500 font-mono" x-text="idx.stock_count + ' saham'"></span>
+                                    <h3 class="fw-bold text-white fs-3" x-text="idx.name"></h3>
+                                    <span class="fs-xs text-muted font-monospace" x-text="idx.stock_count + ' saham'"></span>
                                 </div>
-                                <span class="text-xl text-blue-400">📐</span>
+                                <span class="fs-2 text-primary">📐</span>
                             </div>
-                            <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="row row-cols-2 gap-3 fs-sm">
                                 <div>
-                                    <div class="text-xs text-slate-500 mb-0.5">Base Value</div>
-                                    <span class="font-mono font-semibold text-white" x-text="idx.base_value"></span>
+                                    <div class="fs-xs text-muted mb-0">Base Value</div>
+                                    <span class="font-monospace fw-semibold text-white" x-text="idx.base_value"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 mb-0.5">Created</div>
-                                    <span class="text-slate-500 dark:text-slate-400" x-text="idx.created_at"></span>
+                                    <div class="fs-xs text-muted mb-0">Created</div>
+                                    <span class="text-muted dark:text-slate-400" x-text="idx.created_at"></span>
                                 </div>
                             </div>
-                            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 flex justify-between">
-                                <button @click.stop="showDetail(idx.id)" class="text-xs text-blue-400 hover:text-blue-300 font-medium">Lihat Detail</button>
-                                <button @click.stop="deleteIndex(idx.id)" class="text-xs text-red-400 hover:text-red-300 font-medium">Hapus</button>
+                            <div class="mt-2 pt-2 border-top border dark:border-slate-700 d-flex justify-content-between">
+                                <button @click.stop="showDetail(idx.id)" class="fs-xs text-primary  fw-medium">Lihat Detail</button>
+                                <button @click.stop="deleteIndex(idx.id)" class="fs-xs text-danger  fw-medium">Hapus</button>
                             </div>
                         </div>
                     </template>
@@ -301,39 +301,39 @@
         </div>
 
         <!-- Create Modal -->
-        <div x-show="modalOpen" @click.self="modalOpen=false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
-                <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-white">Buat Indeks Baru</h2>
-                    <button @click="modalOpen=false" class="text-slate-500 dark:text-slate-400 hover:text-white transition-colors p-1">
+        <div x-show="modalOpen" @click.self="modalOpen=false" class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-center justify-content-center bg-black/60  p-2">
+            <div class="bg-body dark:bg-slate-900 border border dark:border-slate-700 rounded-4 w-100 max-w-2xl max-h-85 overflow-y-auto shadow-lg" @click.stop="">
+                <div class="p-2 border-bottom border dark:border-slate-700 d-flex align-items-center justify-content-between">
+                    <h2 class="fs-3 fw-bold text-white">Buat Indeks Baru</h2>
+                    <button @click="modalOpen=false" class="text-muted dark:text-slate-400   p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
-                <form id="create-form" action="/dashboard/indices" method="POST" class="p-6 space-y-5" @submit.prevent="createIndex()">
+                <form id="create-form" action="/dashboard/indices" method="POST" class="p-2 vstack gap-3" @submit.prevent="createIndex()">
                     <div>
-                        <label class="block text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">Nama Indeks</label>
+                        <label class="d-block fs-sm text-muted dark:text-slate-400 mb-1 fw-medium">Nama Indeks</label>
                         <input type="text" name="name" x-model="newName" placeholder="contoh: Indeks Teknologi" required
-                               class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none text-sm">
+                               class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 text-white    fs-sm">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">Nilai Dasar (Base Value)</label>
+                        <label class="d-block fs-sm text-muted dark:text-slate-400 mb-1 fw-medium">Nilai Dasar (Base Value)</label>
                         <input type="number" name="base_value" x-model.number="newBaseValue" step="1" min="1"
-                               class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:outline-none text-sm">
+                               class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 text-white   fs-sm">
                     </div>
                     <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="block text-sm text-slate-500 dark:text-slate-400 font-medium">Pilih Saham</label>
-                            <span class="text-xs font-mono text-slate-500" x-text="selectedStocks.length + ' selected'"></span>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <label class="d-block fs-sm text-muted dark:text-slate-400 fw-medium">Pilih Saham</label>
+                            <span class="fs-xs font-monospace text-muted" x-text="selectedStocks.length + ' selected'"></span>
                         </div>
-                        <div class="max-h-60 overflow-y-auto space-y-1 bg-white dark:bg-slate-800 rounded-xl p-3">
+                        <div class="max-h-60 overflow-y-auto vstack gap-1 bg-white dark:bg-slate-800 rounded-3 p-2">
                             <template x-for="stock in allStocks" :key="stock.code">
-                                <div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                <div class="d-flex align-items-center gap-3 py-1 px-2 rounded-2  dark:hover:bg-slate-700 ">
                                     <input type="checkbox" :id="'chk-' + stock.code" :checked="selectedStocks.includes(stock.code)" @change="toggleStock(stock.code)"
-                                           class="w-4 h-4 rounded border-slate-500 text-blue-600 focus:ring-blue-500 bg-slate-100 dark:bg-slate-700">
-                                    <label :for="'chk-' + stock.code" class="flex-1 cursor-pointer text-sm">
-                                        <span class="font-mono text-white font-semibold" x-text="stock.code"></span>
-                                        <span class="text-slate-500 dark:text-slate-400 ml-2" x-text="stock.name"></span>
+                                           class="w-4 h-4 rounded border text-primary  bg-body dark:bg-slate-700">
+                                    <label :for="'chk-' + stock.code" class="flex-fill cursor-pointer fs-sm">
+                                        <span class="font-monospace text-white fw-semibold" x-text="stock.code"></span>
+                                        <span class="text-muted dark:text-slate-400 ms-2" x-text="stock.name"></span>
                                     </label>
                                 </div>
                             </template>
@@ -342,19 +342,19 @@
 
                     <template x-if="selectedStocks.length > 0">
                         <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <label class="block text-sm text-slate-500 dark:text-slate-400 font-medium">Bobot Saham</label>
-                                <span class="text-xs font-mono" :class="weightTotal === 100 ? 'text-success' : 'text-danger'" x-text="'Total: ' + weightTotal.toFixed(1) + '%'"></span>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <label class="d-block fs-sm text-muted dark:text-slate-400 fw-medium">Bobot Saham</label>
+                                <span class="fs-xs font-monospace" :class="weightTotal === 100 ? 'text-success' : 'text-danger'" x-text="'Total: ' + weightTotal.toFixed(1) + '%'"></span>
                             </div>
-                            <div class="space-y-3">
+                            <div class="vstack gap-2">
                                 <template x-for="code in selectedStocks" :key="code">
-                                    <div class="flex items-center gap-3">
-                                        <span class="font-mono text-sm text-white w-16 flex-shrink-0" x-text="code"></span>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="font-monospace fs-sm text-white w-16 flex-shrink-0" x-text="code"></span>
                                         <input type="range" min="0" max="100" step="0.5"
                                                :value="stockWeights[code] || 0"
                                                @input="updateWeight(code, $event.target.value)"
-                                               class="flex-1">
-                                        <span class="font-mono text-sm text-slate-700 dark:text-slate-300 w-14 text-right flex-shrink-0" x-text="(stockWeights[code] || 0).toFixed(1) + '%'"></span>
+                                               class="flex-fill">
+                                        <span class="font-monospace fs-sm text-body dark:text-slate-300 w-14 text-end flex-shrink-0" x-text="(stockWeights[code] || 0).toFixed(1) + '%'"></span>
                                     </div>
                                 </template>
                             </div>
@@ -363,7 +363,7 @@
 
                     <button type="submit"
                             :disabled="!newName.trim() || selectedStocks.length === 0"
-                            class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl font-semibold text-sm hover:from-blue-700 hover:to-blue-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20">
+                            class="w-100 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white rounded-3 fw-semibold fs-sm    disabled:opacity-50 disabled:cursor-not-allowed shadow-lg ">
                         Buat Indeks
                     </button>
                 </form>
@@ -371,53 +371,53 @@
         </div>
 
         <!-- Detail Modal -->
-        <div x-show="detailOpen" @click.self="detailOpen=false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
-                <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-white" x-text="indexDetail ? indexDetail.index.name : ''"></h2>
-                    <button @click="detailOpen=false" class="text-slate-500 dark:text-slate-400 hover:text-white transition-colors p-1">
+        <div x-show="detailOpen" @click.self="detailOpen=false" class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-center justify-content-center bg-black/60  p-2">
+            <div class="bg-body dark:bg-slate-900 border border dark:border-slate-700 rounded-4 w-100 max-w-3xl max-h-85 overflow-y-auto shadow-lg" @click.stop="">
+                <div class="p-2 border-bottom border dark:border-slate-700 d-flex align-items-center justify-content-between">
+                    <h2 class="fs-3 fw-bold text-white" x-text="indexDetail ? indexDetail.index.name : ''"></h2>
+                    <button @click="detailOpen=false" class="text-muted dark:text-slate-400   p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <template x-if="indexDetail">
-                    <div class="p-6 space-y-5">
+                    <div class="p-2 vstack gap-3">
                         <!-- Index Value -->
-                        <div class="flex items-center gap-6">
+                        <div class="d-flex align-items-center gap-6">
                             <div>
-                                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Current Value</div>
-                                <div class="text-4xl font-bold text-white font-mono" x-text="indexDetail.current_value.toLocaleString()"></div>
+                                <div class="fs-xs text-muted text-uppercase  mb-1">Current Value</div>
+                                <div class="display-6 fw-bold text-white font-monospace" x-text="indexDetail.current_value.toLocaleString()"></div>
                             </div>
                             <div>
-                                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Change</div>
-                                <div class="text-2xl font-bold font-mono" :class="indexDetail.change_pct >= 0 ? 'text-success' : 'text-danger'" x-text="(indexDetail.change_pct >= 0 ? '+' : '') + indexDetail.change_pct.toFixed(2) + '%'"></div>
+                                <div class="fs-xs text-muted text-uppercase  mb-1">Change</div>
+                                <div class="fs-1 fw-bold font-monospace" :class="indexDetail.change_pct >= 0 ? 'text-success' : 'text-danger'" x-text="(indexDetail.change_pct >= 0 ? '+' : '') + indexDetail.change_pct.toFixed(2) + '%'"></div>
                             </div>
                             <div>
-                                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Base</div>
-                                <div class="text-xl font-bold text-slate-500 dark:text-slate-400 font-mono" x-text="indexDetail.index.base_value"></div>
+                                <div class="fs-xs text-muted text-uppercase  mb-1">Base</div>
+                                <div class="fs-2 fw-bold text-muted dark:text-slate-400 font-monospace" x-text="indexDetail.index.base_value"></div>
                             </div>
                         </div>
 
                         <!-- Components Table -->
                         <div>
-                            <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Index Components</h3>
-                            <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
-                                <table class="w-full">
+                            <h3 class="fs-sm fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Index Components</h3>
+                            <div class="overflow-hidden rounded-3 border border dark:border-slate-700">
+                                <table class="table table-vcenter table-hover w-100">
                                     <thead>
-                                        <tr class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider bg-white dark:bg-slate-800">
-                                            <th class="text-left px-4 py-3 font-semibold">Code</th>
-                                            <th class="text-right px-4 py-3 font-semibold">Weight</th>
-                                            <th class="text-right px-4 py-3 font-semibold">Price</th>
-                                            <th class="text-right px-4 py-3 font-semibold">Change</th>
+                                        <tr class="border-bottom border dark:border-slate-700 fs-xs text-muted dark:text-slate-400 text-uppercase  bg-white dark:bg-slate-800">
+                                            <th class="text-start px-2 py-2 fw-semibold">Code</th>
+                                            <th class="text-end px-2 py-2 fw-semibold">Weight</th>
+                                            <th class="text-end px-2 py-2 fw-semibold">Price</th>
+                                            <th class="text-end px-2 py-2 fw-semibold">Change</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <template x-for="comp in indexDetail.components" :key="comp.code">
-                                            <tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-white/30 dark:hover:bg-slate-800/30 transition-colors">
-                                                <td class="px-4 py-3 font-mono text-sm font-semibold text-white" x-text="comp.code"></td>
-                                                <td class="px-4 py-3 text-right font-mono text-sm text-slate-700 dark:text-slate-300" x-text="comp.weight.toFixed(1) + '%'"></td>
-                                                <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="comp.price"></td>
-                                                <td class="px-4 py-3 text-right font-mono text-sm" :class="comp.change >= 0 ? 'text-success' : 'text-danger'" x-text="(comp.change >= 0 ? '+' : '') + comp.change.toFixed(2) + '%'"></td>
+                                            <tr class="border-bottom border dark:border-slate-800  dark:hover:bg-slate-800/30 ">
+                                                <td class="px-2 py-2 font-monospace fs-sm fw-semibold text-white" x-text="comp.code"></td>
+                                                <td class="px-2 py-2 text-end font-monospace fs-sm text-body dark:text-slate-300" x-text="comp.weight.toFixed(1) + '%'"></td>
+                                                <td class="px-2 py-2 text-end font-monospace fs-sm text-white" x-text="comp.price"></td>
+                                                <td class="px-2 py-2 text-end font-monospace fs-sm" :class="comp.change >= 0 ? 'text-success' : 'text-danger'" x-text="(comp.change >= 0 ? '+' : '') + comp.change.toFixed(2) + '%'"></td>
                                             </tr>
                                         </template>
                                     </tbody>
@@ -428,16 +428,16 @@
                 </template>
 
                 <template x-if="!indexDetail">
-                    <div class="p-12 text-center">
-                        <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                        <p class="text-slate-500 dark:text-slate-400">Loading index details...</p>
+                    <div class="p-2 text-center">
+                        <div class="w-12 h-12 border-4 border-primary border-top rounded-pill  mx-auto mb-2"></div>
+                        <p class="text-muted dark:text-slate-400">Loading index details...</p>
                     </div>
                 </template>
             </div>
         </div>
     </main>
 
-    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+    <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black/50 z-2 "></div>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

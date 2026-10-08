@@ -310,6 +310,43 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .h-4 { height: 1rem; }
 .w-24 { width: 6rem; }
 
+/* max-width / max-height companions (documented layout constants) */
+.max-w-xs { max-width: 20rem; }
+.max-w-sm { max-width: 24rem; }
+.max-w-md { max-width: 28rem; }
+.max-w-lg { max-width: 32rem; }
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-5xl { max-width: 64rem; }
+.max-w-120 { max-width: 120px; }
+.max-w-140 { max-width: 140px; }
+.max-w-150 { max-width: 150px; }
+.max-w-160 { max-width: 160px; }
+.max-w-200 { max-width: 200px; }
+.max-w-220 { max-width: 220px; }
+.max-w-280 { max-width: 280px; }
+.max-h-85 { max-height: 85vh; }
+.max-h-90 { max-height: 90vh; }
+.max-h-60 { max-height: 15rem; }
+.min-w-0 { min-width: 0; }
+.resize-none { resize: none; }
+
+/* app-shell width companions (sidebar offsets) */
+.w-60 { width: 15rem; }
+.w-64 { width: 16rem; }
+.ms-60 { margin-left: 15rem; }
+.ms-64 { margin-left: 16rem; }
+.ms-64 { margin-left: 16rem; }
+.left-60 { left: 15rem; }
+
+/* transform companions */
+.rotate-90 { transform: rotate(90deg); }
+.rotate-n90 { transform: rotate(-90deg); }
+
+/* native controls follow theme */
+input[type="checkbox"], input[type="radio"] { accent-color: var(--ui-primary); }
+
 /* dashboard app shell companions */
 .app-side { width: 15rem; }
 .app-offset { margin-left: 0; }

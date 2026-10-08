@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="paperTrading()" x-init="init()">
+<body class="h-100 d-flex" x-data="paperTrading()" x-init="init()">
     <script>
         function paperTrading() {
             return {
@@ -141,12 +141,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" :class="{'open':sidebarOpen}">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" :class="{'open':sidebarOpen}">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -171,8 +171,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -190,8 +190,8 @@
   <path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
   <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
 </svg></span> Paper Trading</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Otomasi</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Otomasi</p>
             <a href="/bots" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4" />
@@ -211,8 +211,8 @@
   <path d="M7 15l.01 0" />
   <path d="M11 15l2 0" />
 </svg></span> Paket</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -234,14 +234,14 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
   <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
 </svg></span> Pengaturan</a>
             <form method="POST" action="/logout" style="margin:0">
-                <button type="submit" class="sidebar-link text-danger w-full text-left"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <button type="submit" class="sidebar-link text-danger w-100 text-start"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
   <path d="M9 12h12l-3 -3" />
@@ -251,130 +251,130 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-slate-400 ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q)location.href='/saham?search='+encodeURIComponent(q)}">
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white    " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             [[if .User]]
-            <div class="flex items-center gap-3 ml-auto">
+            <div class="d-flex align-items-center gap-3 ms-auto">
                 <template x-if="currentPlan">
                     <a href="/pricing" class="plan-badge-upgrade" :class="planBadge.color" style="color:#fff;">
                         <span x-text="planBadge.label"></span>
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                     </a>
                 </template>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
             [[end]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-6 overflow-y-auto">
-            <div class="flex items-center justify-between flex-wrap gap-3">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-4 overflow-y-auto">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div>
-                    <h1 class="text-2xl lg:text-3xl font-bold text-white">Paper Trading</h1>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Simulasi trading saham dengan uang virtual Rp 100 juta</p>
+                    <h1 class="fs-1 fs-1 fw-bold text-white">Paper Trading</h1>
+                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Simulasi trading saham dengan uang virtual Rp 100 juta</p>
                 </div>
             </div>
 
-            <div x-show="error" class="card border-red-500/30 p-4 flex items-center gap-3" style="background:rgba(220,38,38,.08)" @click="error=''" x-cloak>
-                <svg class="w-5 h-5 text-danger shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span class="text-sm text-danger" x-text="error"></span>
+            <div x-show="error" class="card border-danger/30 p-2 d-flex align-items-center gap-3" style="background:rgba(220,38,38,.08)" @click="error=''" x-cloak>
+                <svg class="w-5 h-5 text-danger flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="fs-sm text-danger" x-text="error"></span>
             </div>
-            <div x-show="success" class="card border-green-500/30 p-4 flex items-center gap-3" style="background:rgba(16,185,129,.08)" x-cloak>
-                <svg class="w-5 h-5 text-success shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span class="text-sm text-success" x-text="success"></span>
-            </div>
-
-            <div class="grid lg:grid-cols-4 gap-4">
-                <div class="card p-5 lg:col-span-1">
-                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Saldo Tunai</p>
-                    <p class="text-2xl font-extrabold text-white font-mono" x-text="portfolio ? fmt(portfolio.cash_balance) : '-'"></p>
-                </div>
-                <div class="card p-5 lg:col-span-1">
-                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Nilai Pasar</p>
-                    <p class="text-2xl font-extrabold text-white font-mono" x-text="portfolio ? fmt(portfolio.market_value) : '-'"></p>
-                </div>
-                <div class="card p-5 lg:col-span-1">
-                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Total Aset</p>
-                    <p class="text-2xl font-extrabold text-white font-mono" x-text="portfolio ? fmt(portfolio.total_value) : '-'"></p>
-                </div>
-                <div class="card p-5 lg:col-span-1">
-                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Total P/L</p>
-                    <p class="text-2xl font-extrabold font-mono" :class="portfolio && portfolio.total_pl >= 0 ? 'text-success' : 'text-danger'" x-text="portfolio ? (portfolio.total_pl >= 0 ? '+' : '') + fmt(portfolio.total_pl) + ' (' + (portfolio.total_pl_pct||0).toFixed(2) + '%)' : '-'"></p>
-                </div>
+            <div x-show="success" class="card border-success/30 p-2 d-flex align-items-center gap-3" style="background:rgba(16,185,129,.08)" x-cloak>
+                <svg class="w-5 h-5 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="fs-sm text-success" x-text="success"></span>
             </div>
 
-            <div class="card p-6">
-                <h3 class="font-semibold text-white mb-4 flex items-center gap-2"><span>&#x1F4C8;</span> Buy / Sell</h3>
-                <div class="grid md:grid-cols-4 gap-3 items-end">
+            <div class="row row-cols-lg-4 gap-4">
+                <div class="card p-2 col">
+                    <p class="fs-xs text-muted text-uppercase  mb-1">Saldo Tunai</p>
+                    <p class="fs-1 fw-bolder text-white font-monospace" x-text="portfolio ? fmt(portfolio.cash_balance) : '-'"></p>
+                </div>
+                <div class="card p-2 col">
+                    <p class="fs-xs text-muted text-uppercase  mb-1">Nilai Pasar</p>
+                    <p class="fs-1 fw-bolder text-white font-monospace" x-text="portfolio ? fmt(portfolio.market_value) : '-'"></p>
+                </div>
+                <div class="card p-2 col">
+                    <p class="fs-xs text-muted text-uppercase  mb-1">Total Aset</p>
+                    <p class="fs-1 fw-bolder text-white font-monospace" x-text="portfolio ? fmt(portfolio.total_value) : '-'"></p>
+                </div>
+                <div class="card p-2 col">
+                    <p class="fs-xs text-muted text-uppercase  mb-1">Total P/L</p>
+                    <p class="fs-1 fw-bolder font-monospace" :class="portfolio && portfolio.total_pl >= 0 ? 'text-success' : 'text-danger'" x-text="portfolio ? (portfolio.total_pl >= 0 ? '+' : '') + fmt(portfolio.total_pl) + ' (' + (portfolio.total_pl_pct||0).toFixed(2) + '%)' : '-'"></p>
+                </div>
+            </div>
+
+            <div class="card p-2">
+                <h3 class="fw-semibold text-white mb-2 d-flex align-items-center gap-2"><span>&#x1F4C8;</span> Buy / Sell</h3>
+                <div class="row row-cols-md-4 gap-3 align-items-end">
                     <div>
-                        <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Kode Saham</label>
+                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Kode Saham</label>
                         <input x-model="tradeForm.code" class="input-field" placeholder="BBCA" @keydown.enter="executeTrade()">
                     </div>
                     <div>
-                        <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Tipe</label>
+                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Tipe</label>
                         <select x-model="tradeForm.type" class="input-field">
                             <option value="buy">Buy (Beli)</option>
                             <option value="sell">Sell (Jual)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Lot (100 lembar/lot)</label>
+                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Lot (100 lembar/lot)</label>
                         <input x-model.number="tradeForm.quantity" type="number" class="input-field" placeholder="Jumlah lot" min="1" step="1">
                     </div>
                     <div>
-                        <button @click="executeTrade()" :disabled="loading" class="btn w-full" :class="tradeForm.type === 'buy' ? 'btn-primary' : 'btn-danger'">
+                        <button @click="executeTrade()" :disabled="loading" class="btn w-100" :class="tradeForm.type === 'buy' ? 'btn-primary' : 'btn-danger'">
                             <span x-show="!loading" x-text="tradeForm.type === 'buy' ? 'Buy' : 'Sell'"></span>
                             <span x-show="loading">Proses...</span>
                         </button>
                     </div>
                 </div>
-                <p class="text-xs text-slate-600 mt-3">Fee 0.15% per transaksi. Harga menggunakan data pasar terbaru.</p>
+                <p class="fs-xs text-muted mt-2">Fee 0.15% per transaksi. Harga menggunakan data pasar terbaru.</p>
             </div>
 
             <div class="card overflow-hidden">
-                <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                    <h3 class="font-semibold text-white">Holdings</h3>
-                    <span class="text-xs text-slate-500" x-text="holdings.length + ' saham'"></span>
+                <div class="p-2 border-bottom border dark:border-slate-700 d-flex align-items-center justify-content-between">
+                    <h3 class="fw-semibold text-white">Holdings</h3>
+                    <span class="fs-xs text-muted" x-text="holdings.length + ' saham'"></span>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
-                                <th class="px-5 py-3">Saham</th>
-                                <th class="px-5 py-3 text-right">Qty</th>
-                                <th class="px-5 py-3 text-right">Avg Price</th>
-                                <th class="px-5 py-3 text-right">Harga Pasar</th>
-                                <th class="px-5 py-3 text-right">Nilai Pasar</th>
-                                <th class="px-5 py-3 text-right">P/L</th>
-                                <th class="px-5 py-3 text-right">P/L%</th>
+                            <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                                <th class="px-2 py-2">Saham</th>
+                                <th class="px-2 py-2 text-end">Qty</th>
+                                <th class="px-2 py-2 text-end">Avg Price</th>
+                                <th class="px-2 py-2 text-end">Harga Pasar</th>
+                                <th class="px-2 py-2 text-end">Nilai Pasar</th>
+                                <th class="px-2 py-2 text-end">P/L</th>
+                                <th class="px-2 py-2 text-end">P/L%</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                        <tbody class="divide-y border/50 dark:divide-slate-700/50">
                             <template x-if="holdings.length === 0">
-                                <tr><td colspan="7" class="px-5 py-12 text-center text-slate-600">Belum ada holdings. Mulai trading dengan buy saham.</td></tr>
+                                <tr><td colspan="7" class="px-2 py-2 text-center text-muted">Belum ada holdings. Mulai trading dengan buy saham.</td></tr>
                             </template>
                             <template x-for="h in holdings" :key="h.stock_code">
-                                <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                    <td class="px-5 py-3">
-                                        <span class="font-semibold text-white font-mono" x-text="h.stock_code"></span>
-                                        <span class="text-xs text-slate-500 ml-2" x-text="h.stock_name || ''"></span>
+                                <tr class=" dark:hover:bg-slate-700/20 ">
+                                    <td class="px-2 py-2">
+                                        <span class="fw-semibold text-white font-monospace" x-text="h.stock_code"></span>
+                                        <span class="fs-xs text-muted ms-2" x-text="h.stock_name || ''"></span>
                                     </td>
-                                    <td class="px-5 py-3 text-right font-mono" x-text="fmtNum(h.quantity, 2)"></td>
-                                    <td class="px-5 py-3 text-right font-mono" x-text="fmtNum(h.avg_price, 2)"></td>
-                                    <td class="px-5 py-3 text-right font-mono" x-text="fmtNum(h.current_price, 2)"></td>
-                                    <td class="px-5 py-3 text-right font-mono text-white" x-text="fmt(h.market_value)"></td>
-                                    <td class="px-5 py-3 text-right font-mono" :class="pctClass(h.pl)">
+                                    <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(h.quantity, 2)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(h.avg_price, 2)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(h.current_price, 2)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace text-white" x-text="fmt(h.market_value)"></td>
+                                    <td class="px-2 py-2 text-end font-monospace" :class="pctClass(h.pl)">
                                         <span x-text="pctSign(h.pl) + fmt(Math.abs(h.pl||0))"></span>
                                     </td>
-                                    <td class="px-5 py-3 text-right font-mono" :class="pctClass(h.pl_percent)">
+                                    <td class="px-2 py-2 text-end font-monospace" :class="pctClass(h.pl_percent)">
                                         <span x-text="pctSign(h.pl_percent) + (h.pl_percent||0).toFixed(2) + '%'"></span>
                                     </td>
                                 </tr>
@@ -384,39 +384,39 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-5 gap-6">
-                <div class="card overflow-hidden lg:col-span-3">
-                    <div class="p-5 border-b border-slate-200 dark:border-slate-700">
-                        <h3 class="font-semibold text-white">Riwayat Trading</h3>
+            <div class="row row-cols-lg-5 gap-6">
+                <div class="card overflow-hidden col-lg-7">
+                    <div class="p-2 border-bottom border dark:border-slate-700">
+                        <h3 class="fw-semibold">Riwayat Trading</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                             <thead>
-                                <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
-                                    <th class="px-5 py-3">Waktu</th>
-                                    <th class="px-5 py-3">Saham</th>
-                                    <th class="px-5 py-3 text-center">Tipe</th>
-                                    <th class="px-5 py-3 text-right">Qty</th>
-                                    <th class="px-5 py-3 text-right">Harga</th>
-                                    <th class="px-5 py-3 text-right">Total</th>
-                                    <th class="px-5 py-3 text-right">Fee</th>
+                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                                    <th class="px-2 py-2">Waktu</th>
+                                    <th class="px-2 py-2">Saham</th>
+                                    <th class="px-2 py-2 text-center">Tipe</th>
+                                    <th class="px-2 py-2 text-end">Qty</th>
+                                    <th class="px-2 py-2 text-end">Harga</th>
+                                    <th class="px-2 py-2 text-end">Total</th>
+                                    <th class="px-2 py-2 text-end">Fee</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                            <tbody class="divide-y border/50 dark:divide-slate-700/50">
                                 <template x-if="trades.length === 0">
-                                    <tr><td colspan="7" class="px-5 py-12 text-center text-slate-600">Belum ada transaksi.</td></tr>
+                                    <tr><td colspan="7" class="px-2 py-2 text-center text-muted">Belum ada transaksi.</td></tr>
                                 </template>
                                 <template x-for="t in trades" :key="t.id">
-                                    <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                        <td class="px-5 py-2.5 text-xs text-slate-500 font-mono" x-text="new Date(t.executed_at).toLocaleString('id-ID')"></td>
-                                        <td class="px-5 py-2.5 font-semibold text-white font-mono" x-text="t.stock_code"></td>
-                                        <td class="px-5 py-2.5 text-center">
-                                            <span class="badge" :class="t.type==='buy'?'bg-green-900/30 text-success':'bg-red-900/30 text-danger'" x-text="t.type.toUpperCase()"></span>
+                                    <tr class=" dark:hover:bg-slate-700/20 ">
+                                        <td class="px-2 py-2 fs-xs text-muted font-monospace" x-text="new Date(t.executed_at).toLocaleString('id-ID')"></td>
+                                        <td class="px-2 py-2 fw-semibold text-white font-monospace" x-text="t.stock_code"></td>
+                                        <td class="px-2 py-2 text-center">
+                                            <span class="badge" :class="t.type==='buy'?'bg-success-lt text-success':'bg-danger-lt text-danger'" x-text="t.type.toUpperCase()"></span>
                                         </td>
-                                        <td class="px-5 py-2.5 text-right font-mono" x-text="fmtNum(t.quantity, 2)"></td>
-                                        <td class="px-5 py-2.5 text-right font-mono" x-text="fmtNum(t.price, 2)"></td>
-                                        <td class="px-5 py-2.5 text-right font-mono" x-text="fmtNum(t.total, 2)"></td>
-                                        <td class="px-5 py-2.5 text-right font-mono text-slate-500" x-text="fmtNum(t.fee, 2)"></td>
+                                        <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(t.quantity, 2)"></td>
+                                        <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(t.price, 2)"></td>
+                                        <td class="px-2 py-2 text-end font-monospace" x-text="fmtNum(t.total, 2)"></td>
+                                        <td class="px-2 py-2 text-end font-monospace text-muted" x-text="fmtNum(t.fee, 2)"></td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -424,31 +424,31 @@
                     </div>
                 </div>
 
-                <div class="card overflow-hidden lg:col-span-2">
-                    <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                        <h3 class="font-semibold text-white">Leaderboard</h3>
-                        <a href="/api/paper-trading/leaderboard" class="text-xs text-blue-400 hover:underline">JSON</a>
+                <div class="card overflow-hidden col-lg-5">
+                    <div class="p-2 border-bottom border dark:border-slate-700 d-flex align-items-center justify-content-between">
+                        <h3 class="fw-semibold">Leaderboard</h3>
+                        <a href="/api/paper-trading/leaderboard" class="fs-xs text-primary ">JSON</a>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                             <thead>
-                                <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
-                                    <th class="px-5 py-3 w-8">#</th>
-                                    <th class="px-5 py-3">User</th>
-                                    <th class="px-5 py-3 text-right">Return</th>
+                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                                    <th class="px-2 py-2 w-8">#</th>
+                                    <th class="px-2 py-2">User</th>
+                                    <th class="px-2 py-2 text-end">Return</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200/50 dark:divide-slate-700/50">
+                            <tbody class="divide-y border/50 dark:divide-slate-700/50">
                                 <template x-if="leaderboard.length === 0">
-                                    <tr><td colspan="3" class="px-5 py-12 text-center text-slate-600">Belum ada data leaderboard.</td></tr>
+                                    <tr><td colspan="3" class="px-2 py-2 text-center text-muted">Belum ada data leaderboard.</td></tr>
                                 </template>
                                 <template x-for="(lb, i) in leaderboard" :key="lb.portfolio_id">
-                                    <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                        <td class="px-5 py-2.5 font-mono text-xs" :class="i < 3 ? 'text-yellow-400 font-bold' : 'text-slate-500'" x-text="'#'+(i+1)"></td>
-                                        <td class="px-5 py-2.5">
-                                            <span class="text-white text-sm" x-text="'User #' + lb.user_id"></span>
+                                    <tr class=" dark:hover:bg-slate-700/20 ">
+                                        <td class="px-2 py-2 font-monospace fs-xs" :class="i < 3 ? 'text-yellow-400 font-bold' : 'text-slate-500'" x-text="'#'+(i+1)"></td>
+                                        <td class="px-2 py-2">
+                                            <span class="text-white fs-sm" x-text="'User #' + lb.user_id"></span>
                                         </td>
-                                        <td class="px-5 py-2.5 text-right font-mono font-semibold" :class="lb.return_pct >= 0 ? 'text-success' : 'text-danger'">
+                                        <td class="px-2 py-2 text-end font-monospace fw-semibold" :class="lb.return_pct >= 0 ? 'text-success' : 'text-danger'">
                                             <span x-text="(lb.return_pct >= 0 ? '+' : '') + lb.return_pct.toFixed(2) + '%'"></span>
                                         </td>
                                     </tr>
@@ -460,7 +460,7 @@
             </div>
         </main>
     </div>
-    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" @click="sidebarOpen=false" :class="{'!block':sidebarOpen}"></div>
+    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" @click="sidebarOpen=false" :class="{'!block':sidebarOpen}"></div>
     <script src="/static/js/app.js" defer></script>
 </body>
 </html>

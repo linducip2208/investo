@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +39,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="portfolioList()">
+<body class="h-100 d-flex" x-data="portfolioList()">
     <script>
         function portfolioList() {
             return {
@@ -60,12 +60,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -111,8 +111,8 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -140,8 +140,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -163,7 +163,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -179,144 +179,144 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4 mb-2">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">Portofolio Saya</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Kelola dan pantau portofolio investasi Anda</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">Portofolio Saya</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Kelola dan pantau portofolio investasi Anda</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-3">
-                    <button @click="modalOpen = true" class="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-900/30 transition-all">
-                        <svg class="w-4 h-4 inline mr-1.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <button @click="modalOpen = true" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue   text-white fs-sm fw-semibold rounded-3 shadow-lg  ">
+                        <svg class="w-4 h-4 d-inline me-1 mt-n1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                         Buat Portofolio Baru
                     </button>
-                    <button @click="importModalOpen = true" class="px-4 py-2.5 bg-slate-100/50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-600/50 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-xl transition-all">
-                        <svg class="w-4 h-4 inline mr-1.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    <button @click="importModalOpen = true" class="px-2 py-2 bg-body/50 dark:bg-slate-700/50  dark:hover:bg-slate-700 border border/50 text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">
+                        <svg class="w-4 h-4 d-inline me-1 mt-n1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                         Impor CSV
                     </button>
                 </div>
             </div>
 
             [[if .Portfolios]]
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-4">
                 [[range .Portfolios]]
-                <a href="/dashboard/portfolios/[[.ID]]" class="block group">
-                    <div class="card p-5 hover:border-blue-500/50 transition-all duration-200">
-                        <div class="flex items-start justify-between mb-3">
-                            <h3 class="font-semibold text-base text-white group-hover:text-blue-400 transition-colors">[[.Name]]</h3>
-                            <svg class="w-5 h-5 text-slate-600 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="/dashboard/portfolios/[[.ID]]" class="d-block group">
+                    <div class="card p-2   ">
+                        <div class="d-flex align-items-start justify-content-between mb-2">
+                            <h3 class="fw-semibold fs-base text-white  ">[[.Name]]</h3>
+                            <svg class="w-5 h-5 text-muted  " fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </div>
                         [[if .Description]]
-                        <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">[[.Description]]</p>
+                        <p class="fs-sm text-muted dark:text-slate-400 line-clamp-2 mb-2">[[.Description]]</p>
                         [[end]]
-                        <div class="flex items-center gap-5 text-sm">
+                        <div class="d-flex align-items-center gap-5 fs-sm">
                             <div>
-                                <span class="text-xs text-slate-500">Item</span>
-                                <span class="block font-semibold text-white font-mono">[[.ItemCount]]</span>
+                                <span class="fs-xs text-muted">Item</span>
+                                <span class="d-block fw-semibold text-white font-monospace">[[.ItemCount]]</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500">Nilai Total</span>
-                                <span class="block font-semibold text-white font-mono">[[.TotalValueFormatted]]</span>
+                                <span class="fs-xs text-muted">Nilai Total</span>
+                                <span class="d-block fw-semibold text-white font-monospace">[[.TotalValueFormatted]]</span>
                             </div>
                             [[if .GainLossPercent]]
                             <div>
-                                <span class="text-xs text-slate-500">G/L</span>
-                                <span class="block font-mono font-semibold [[if ge .GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLossPercent 0.0]]+[[end]][[.GainLossPercent]]%</span>
+                                <span class="fs-xs text-muted">G/L</span>
+                                <span class="d-block font-monospace fw-semibold [[if ge .GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLossPercent 0.0]]+[[end]][[.GainLossPercent]]%</span>
                             </div>
                             [[end]]
                         </div>
-                        <div class="mt-4 pt-4 border-t border-slate-200/50 dark:border-slate-700/50">
-                            <span class="text-xs text-slate-500">Dibuat [[.CreatedAt]]</span>
+                        <div class="mt-2 pt-2 border-top border/50 dark:border-slate-700/50">
+                            <span class="fs-xs text-muted">Dibuat [[.CreatedAt]]</span>
                         </div>
                     </div>
                 </a>
                 [[end]]
             </div>
             [[else]]
-            <div class="text-center py-20">
-                <div class="text-6xl mb-4 opacity-30">💼</div>
-                <p class="text-slate-500 dark:text-slate-400 font-medium mb-1">Belum ada portofolio</p>
-                <p class="text-sm text-slate-500 mb-4">Buat portofolio pertama Anda untuk mulai melacak investasi</p>
-                <button @click="modalOpen = true" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Buat Portofolio</button>
+            <div class="text-center py-2">
+                <div class="display-4 mb-2 opacity-30">💼</div>
+                <p class="text-muted dark:text-slate-400 fw-medium mb-1">Belum ada portofolio</p>
+                <p class="fs-sm text-muted mb-2">Buat portofolio pertama Anda untuk mulai melacak investasi</p>
+                <button @click="modalOpen = true" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Buat Portofolio</button>
             </div>
             [[end]]
         </main>
     </div>
 
     <!-- CREATE MODAL -->
-    <div x-show="modalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="modalOpen = false">
-        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="modalOpen = false"></div>
-        <div class="relative card p-6 w-full max-w-md" @click.outside="modalOpen = false">
-            <div class="flex items-center justify-between mb-5">
-                <h2 class="text-lg font-bold text-white">Portofolio Baru</h2>
-                <button @click="modalOpen = false" class="p-1 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    <div x-show="modalOpen" class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-center justify-content-center p-2" @keydown.escape.window="modalOpen = false">
+        <div class="position-fixed top-0 bottom-0 start-0 end-0 bg-black/60 " @click="modalOpen = false"></div>
+        <div class="position-relative card p-2 w-100 max-w-md" @click.outside="modalOpen = false">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="fs-3 fw-bold text-white">Portofolio Baru</h2>
+                <button @click="modalOpen = false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form method="POST" action="/dashboard/portfolios" @submit="if(!newName.trim()){event.preventDefault();alert('Nama wajib diisi')}">
                 <input type="hidden" name="name" :value="newName">
                 <input type="hidden" name="description" :value="newDesc">
-                <div class="space-y-4">
+                <div class="vstack gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nama Portofolio <span class="text-danger">*</span></label>
-                        <input x-model="newName" type="text" required placeholder="Contoh: Portofolio Jangka Panjang" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Nama Portofolio <span class="text-danger">*</span></label>
+                        <input x-model="newName" type="text" required placeholder="Contoh: Portofolio Jangka Panjang" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white      ">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Deskripsi</label>
-                        <textarea x-model="newDesc" rows="3" placeholder="Deskripsi singkat portofolio..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"></textarea>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Deskripsi</label>
+                        <textarea x-model="newDesc" rows="3" placeholder="Deskripsi singkat portofolio..." class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white       resize-none"></textarea>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 mt-6">
-                    <button type="button" @click="modalOpen = false" class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-600 transition-colors">Batal</button>
-                    <button type="submit" class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 hover:from-blue-700 hover:to-blue-800 transition-all">Simpan</button>
+                <div class="d-flex align-items-center gap-3 mt-2">
+                    <button type="button" @click="modalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                    <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg    ">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- IMPORT MODAL -->
-    <div x-show="importModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4" @keydown.escape.window="importModalOpen = false">
-        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="importModalOpen = false"></div>
-        <div class="relative card p-6 w-full max-w-md" @click.outside="importModalOpen = false">
-            <div class="flex items-center justify-between mb-5">
-                <h2 class="text-lg font-bold text-white">Impor CSV</h2>
-                <button @click="importModalOpen = false" class="p-1 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    <div x-show="importModalOpen" class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-center justify-content-center p-2" @keydown.escape.window="importModalOpen = false">
+        <div class="position-fixed top-0 bottom-0 start-0 end-0 bg-black/60 " @click="importModalOpen = false"></div>
+        <div class="position-relative card p-2 w-100 max-w-md" @click.outside="importModalOpen = false">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="fs-3 fw-bold text-white">Impor CSV</h2>
+                <button @click="importModalOpen = false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form method="POST" action="/dashboard/portfolios/import" enctype="multipart/form-data">
-                <div class="space-y-4">
-                    <div class="border-2 border-dashed border-slate-600 rounded-xl p-6 text-center hover:border-blue-500/50 transition-colors">
-                        <svg class="mx-auto h-10 w-10 text-slate-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                        <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all">
+                <div class="vstack gap-3">
+                    <div class="border-2 border-dashed border rounded-3 p-2 text-center  ">
+                        <svg class="mx-auto h-10 w-10 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                        <label class="cursor-pointer d-inline-flex align-items-center gap-2 px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-2   ">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                             Pilih File CSV
-                            <input type="file" name="csv_file" accept=".csv" class="hidden" required>
+                            <input type="file" name="csv_file" accept=".csv" class="d-none" required>
                         </label>
-                        <p class="mt-3 text-xs text-slate-500">Format: code,quantity,avg_price,notes</p>
+                        <p class="mt-2 fs-xs text-muted">Format: code,quantity,avg_price,notes</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 mt-6">
-                    <button type="button" @click="importModalOpen = false" class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-600 transition-colors">Batal</button>
-                    <button type="submit" class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 hover:from-blue-700 hover:to-blue-800 transition-all">Impor</button>
+                <div class="d-flex align-items-center gap-3 mt-2">
+                    <button type="button" @click="importModalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                    <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg    ">Impor</button>
                 </div>
             </form>
         </div>
     </div>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

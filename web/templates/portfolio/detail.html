@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,19 +71,19 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false, showAddForm: false, buyPrice:0, sellPrice:0, quantity:0, feePercent:0.15, weather:null }" x-init="initPieChart();fetchWeather()">
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false, showAddForm: false, buyPrice:0, sellPrice:0, quantity:0, feePercent:0.15, weather:null }" x-init="initPieChart();fetchWeather()">
     <script>
         function fetchWeather() {
             fetch('/api/portfolios/[[.Portfolio.ID]]/weather').then(function(r){return r.json()}).then(function(d){document.querySelector('[x-data]').__x.$data.weather = d}).catch(function(){});
         }
     </script>
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -120,8 +120,8 @@
   <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
   <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
 </svg></span> Dividen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -149,8 +149,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -167,7 +167,7 @@
   <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
 </svg></span> Leaderboard</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -183,58 +183,58 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block">
+                <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
-            <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-5">
-                <a href="/dashboard/portfolios" class="hover:text-blue-400 transition-colors">Portofolio</a>
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
+            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+                <a href="/dashboard/portfolios" class=" ">Portofolio</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-white font-medium">[[.Portfolio.Name]]</span>
+                <span class="text-white fw-medium">[[.Portfolio.Name]]</span>
             </nav>
 
             <!-- SUMMARY CARDS -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <div class="card p-5" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
-                    <span class="text-xs font-medium text-blue-200 uppercase tracking-wider">Nilai Total</span>
-                    <div class="mt-2 text-3xl font-bold text-white font-mono">[[.Portfolio.TotalValueFormatted]]</div>
+            <div class="row row-cols-1 row-cols-sm-3 gap-4 mb-2">
+                <div class="card p-2" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
+                    <span class="fs-xs fw-medium text-primary text-uppercase ">Nilai Total</span>
+                    <div class="mt-2 fs-1 fw-bold text-white font-monospace">[[.Portfolio.TotalValueFormatted]]</div>
                 </div>
-                <div class="card p-5 [[if ge .Portfolio.TotalGainLoss 0.0]]gradient-green[[else]]bg-gradient-to-r from-red-800 to-red-600[[end]]">
-                    <span class="text-xs font-medium text-white/70 uppercase tracking-wider">Total Gain/Loss</span>
-                    <div class="mt-2 text-3xl font-bold text-white font-mono">[[if ge .Portfolio.TotalGainLoss 0.0]]+[[end]][[.Portfolio.TotalGainLossFormatted]]</div>
+                <div class="card p-2 [[if ge .Portfolio.TotalGainLoss 0.0]]gradient-green[[else]]bg-gradient-to-r from-red-800 to-red-600[[end]]">
+                    <span class="fs-xs fw-medium text-white/70 text-uppercase ">Total Gain/Loss</span>
+                    <div class="mt-2 fs-1 fw-bold text-white font-monospace">[[if ge .Portfolio.TotalGainLoss 0.0]]+[[end]][[.Portfolio.TotalGainLossFormatted]]</div>
                 </div>
-                <div class="card p-5">
-                    <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Gain/Loss %</span>
-                    <div class="mt-2 text-3xl font-bold font-mono [[if ge .Portfolio.GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Portfolio.GainLossPercent 0.0]]+[[end]][[.Portfolio.GainLossPercent]]%</div>
+                <div class="card p-2">
+                    <span class="fs-xs fw-medium text-muted dark:text-slate-400 text-uppercase ">Gain/Loss %</span>
+                    <div class="mt-2 fs-1 fw-bold font-monospace [[if ge .Portfolio.GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Portfolio.GainLossPercent 0.0]]+[[end]][[.Portfolio.GainLossPercent]]%</div>
                 </div>
             </div>
 
             <!-- PORTFOLIO WEATHER -->
-            <div x-show="weather" class="card p-5 mb-6" :style="'background:linear-gradient(135deg,'+(weather.pl_percent>=0?'#1e3a8a,#3b82f6':'#7f1d1d,#991b1b')+')'">
-                <div class="flex items-center gap-4">
-                    <span class="text-5xl" x-text="weather.emoji"></span>
-                    <div class="flex-1">
-                        <h2 class="text-lg font-bold text-white" x-text="weather.one_liner"></h2>
-                        <div class="flex items-center gap-3 mt-1">
-                            <span class="text-sm text-white/70">P/L Hari Ini:</span>
-                            <span class="font-mono font-bold text-lg" :class="weather.pl_percent>=0?'text-emerald-300':'text-red-300'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
-                            <span class="font-mono text-sm text-white/50" x-text="'Suhu: '+weather.temperature+'°'"></span>
+            <div x-show="weather" class="card p-2 mb-2" :style="'background:linear-gradient(135deg,'+(weather.pl_percent>=0?'#1e3a8a,#3b82f6':'#7f1d1d,#991b1b')+')'">
+                <div class="d-flex align-items-center gap-4">
+                    <span class="display-5" x-text="weather.emoji"></span>
+                    <div class="flex-fill">
+                        <h2 class="fs-3 fw-bold text-white" x-text="weather.one_liner"></h2>
+                        <div class="d-flex align-items-center gap-3 mt-1">
+                            <span class="fs-sm text-white/70">P/L Hari Ini:</span>
+                            <span class="font-monospace fw-bold fs-3" :class="weather.pl_percent>=0?'text-success':'text-danger'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
+                            <span class="font-monospace fs-sm text-white/50" x-text="'Suhu: '+weather.temperature+'°'"></span>
                         </div>
-                        <div class="flex flex-wrap gap-3 mt-3" x-show="weather.details && weather.details.length">
+                        <div class="d-flex flex-wrap gap-3 mt-2" x-show="weather.details && weather.details.length">
                             <template x-for="d in weather.details" :key="d">
-                                <span class="text-xs bg-white/10 text-white/80 px-2.5 py-1 rounded-lg" x-text="d"></span>
+                                <span class="fs-xs bg-white/10 text-white/80 px-2 py-1 rounded-2" x-text="d"></span>
                             </template>
                         </div>
                     </div>
@@ -242,8 +242,8 @@
             </div>
 
             [[if .Allocation]]
-            <div class="card p-5 mb-6">
-                <h2 class="widget-title mb-3">Alokasi Portofolio</h2>
+            <div class="card p-2 mb-2">
+                <h2 class="widget-title mb-2">Alokasi Portofolio</h2>
                 <div class="max-w-xs mx-auto" style="height: 260px;">
                     <canvas id="allocation-chart"></canvas>
                 </div>
@@ -251,71 +251,71 @@
             [[end]]
 
             <!-- HOLDINGS TABLE -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-3 mb-2">
                 <h2 class="widget-title mb-0">Daftar Holding</h2>
-                <button @click="showAddForm = !showAddForm" class="px-4 py-2 text-sm font-medium text-blue-400 bg-blue-900/20 rounded-xl hover:bg-blue-900/40 transition-colors" x-text="showAddForm ? 'Tutup Form' : '+ Tambah Saham'"></button>
+                <button @click="showAddForm = !showAddForm" class="px-2 py-2 fs-sm fw-medium text-primary bg-primary/20 rounded-3  " x-text="showAddForm ? 'Tutup Form' : '+ Tambah Saham'"></button>
             </div>
 
-            <div x-show="showAddForm" class="card p-4 mb-4">
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div x-show="showAddForm" class="card p-2 mb-2">
+                <div class="row row-cols-1 row-cols-sm-4 gap-3">
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Kode Saham</label>
-                        <input id="add-code" type="text" placeholder="BBCA" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase">
+                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Kode Saham</label>
+                        <input id="add-code" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white      text-uppercase">
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Jumlah (Lot)</label>
-                        <input id="add-qty" type="number" min="1" placeholder="10" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Jumlah (Lot)</label>
+                        <input id="add-qty" type="number" min="1" placeholder="10" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     ">
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Harga Rata</label>
-                        <input id="add-price" type="number" step="1" placeholder="Harga per lembar" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Rata</label>
+                        <input id="add-price" type="number" step="1" placeholder="Harga per lembar" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     ">
                     </div>
-                    <div class="flex items-end">
-                        <button onclick="addHolding()" class="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all">Tambah</button>
+                    <div class="d-flex align-items-end">
+                        <button onclick="addHolding()" class="w-100 px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-2   ">Tambah</button>
                     </div>
                 </div>
             </div>
 
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
-                                <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jumlah</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Harga Rata</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Harga Pasar</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nilai Pasar</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">G/L</th>
-                                <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
+                            <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kode</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Nama</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Jumlah</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Harga Rata</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Harga Pasar</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Nilai Pasar</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">G/L</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border/30 dark:divide-slate-700/30">
                             [[range .Holdings]]
-                            <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                <td class="px-4 py-3.5">
-                                    <a href="/saham/[[.Code]]" class="font-bold text-blue-400 hover:underline">[[.Code]]</a>
+                            <tr class=" dark:hover:bg-slate-700/20 ">
+                                <td class="px-2 py-2">
+                                    <a href="/saham/[[.Code]]" class="fw-bold text-primary ">[[.Code]]</a>
                                 </td>
-                                <td class="px-4 py-3.5 text-slate-700 dark:text-slate-300 hidden sm:table-cell max-w-[120px] truncate">[[.Name]]</td>
-                                <td class="px-4 py-3.5 text-right font-mono text-white">[[.Quantity]]</td>
-                                <td class="px-4 py-3.5 text-right font-mono text-slate-500 dark:text-slate-400 hidden md:table-cell">[[.AvgPriceFormatted]]</td>
-                                <td class="px-4 py-3.5 text-right font-mono font-semibold text-white">[[.CurrentPriceFormatted]]</td>
-                                <td class="px-4 py-3.5 text-right font-mono text-white">[[.MarketValueFormatted]]</td>
-                                <td class="px-4 py-3.5 text-right font-mono">
-                                    <span class="block font-semibold [[if ge .GainLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLoss 0.0]]+[[end]][[.GainLossFormatted]]</span>
-                                    <span class="block text-xs [[if ge .GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLossPercent 0.0]]+[[end]][[.GainLossPercent]]%</span>
+                                <td class="px-2 py-2 text-body dark:text-slate-300 d-none d-table-cell max-w-120 text-truncate">[[.Name]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-white">[[.Quantity]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-muted dark:text-slate-400 d-none d-table-cell">[[.AvgPriceFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace fw-semibold text-white">[[.CurrentPriceFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-white">[[.MarketValueFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace">
+                                    <span class="d-block fw-semibold [[if ge .GainLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLoss 0.0]]+[[end]][[.GainLossFormatted]]</span>
+                                    <span class="d-block fs-xs [[if ge .GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainLossPercent 0.0]]+[[end]][[.GainLossPercent]]%</span>
                                 </td>
-                                <td class="px-4 py-3.5 text-right">
-                                    <button onclick="removeHolding('[[.ID]]')" class="p-1.5 text-slate-500 hover:text-danger transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                                <td class="px-2 py-2 text-end">
+                                    <button onclick="removeHolding('[[.ID]]')" class="p-1 text-muted  "><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                                 </td>
                             </tr>
                             [[end]]
                             [[if not .Holdings]]
                             <tr>
-                                <td colspan="8" class="px-6 py-16 text-center text-slate-500">
-                                    <p class="font-medium">Belum ada holding</p>
-                                    <p class="text-sm mt-1">Klik "Tambah Saham" untuk menambahkan saham ke portofolio</p>
+                                <td colspan="8" class="px-2 py-2 text-center text-muted">
+                                    <p class="fw-medium">Belum ada holding</p>
+                                    <p class="fs-sm mt-1">Klik "Tambah Saham" untuk menambahkan saham ke portofolio</p>
                                 </td>
                             </tr>
                             [[end]]
@@ -325,24 +325,24 @@
             </div>
 
             <!-- P/L CALCULATOR -->
-            <div class="card p-5 mt-6" x-data="{}">
-                <h2 class="widget-title mb-4">Kalkulator Profit/Loss</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-                    <div><label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Harga Beli</label><input type="number" x-model="buyPrice" step="1" placeholder="1000" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
-                    <div><label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Harga Jual</label><input type="number" x-model="sellPrice" step="1" placeholder="1500" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
-                    <div><label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Jumlah (Lot)</label><input type="number" x-model="quantity" step="1" placeholder="10" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
-                    <div><label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Fee (%)</label><input type="number" x-model="feePercent" step="0.01" placeholder="0.15" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+            <div class="card p-2 mt-2" x-data="{}">
+                <h2 class="widget-title mb-2">Kalkulator Profit/Loss</h2>
+                <div class="row row-cols-2 row-cols-sm-4 gap-3 mb-2">
+                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Beli</label><input type="number" x-model="buyPrice" step="1" placeholder="1000" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Jual</label><input type="number" x-model="sellPrice" step="1" placeholder="1500" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Jumlah (Lot)</label><input type="number" x-model="quantity" step="1" placeholder="10" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Fee (%)</label><input type="number" x-model="feePercent" step="0.01" placeholder="0.15" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-500 dark:text-slate-400">Total Beli</span><div class="mt-1 font-mono text-sm font-bold text-white" x-text="'Rp ' + ((buyPrice||0)*(quantity||0)*100).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-500 dark:text-slate-400">Total Jual</span><div class="mt-1 font-mono text-sm font-bold text-white" x-text="'Rp ' + (((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-500 dark:text-slate-400">Profit Kotor</span><div class="mt-1 font-mono text-sm font-bold" :class="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100))>=0?'text-success':'text-danger'" x-text="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-500 dark:text-slate-400">Profit Bersih</span><div class="mt-1 font-mono text-sm font-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3"><span class="text-xs text-slate-500 dark:text-slate-400">ROI %</span><div class="mt-1 font-mono text-sm font-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0?'+':'')+((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100).toFixed(2)+'%'"></div></div>
+                <div class="row row-cols-2 row-cols-sm-5 gap-3">
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Beli</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + ((buyPrice||0)*(quantity||0)*100).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Jual</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + (((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Profit Kotor</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100))>=0?'text-success':'text-danger'" x-text="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Profit Bersih</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">ROI %</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0?'+':'')+((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100).toFixed(2)+'%'"></div></div>
                 </div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

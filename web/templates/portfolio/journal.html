@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,13 +43,13 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false }">
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false }">
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -89,8 +89,8 @@
   <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
   <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
 </svg></span> Strategy Builder</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -125,7 +125,7 @@
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -140,69 +140,69 @@
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1"></div>
-            <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-                <span class="text-white font-medium">Trade Journal</span>
+    <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill"></div>
+            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-slate-400">
+                <span class="text-white fw-medium">Trade Journal</span>
             </div>
-            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-200 dark:border-slate-700">
+            <div class="d-flex align-items-center gap-2 ms-auto ps-2 border-start border dark:border-slate-700">
                 [[if .User]]
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 [[end]]
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto" x-data="tradeJournal()">
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto" x-data="tradeJournal()">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">📓 Trade Journal</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Catat setiap trade untuk evaluasi dan improvement</p>
+                    <h1 class="fs-2 fs-1 fw-bold text-white">📓 Trade Journal</h1>
+                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Catat setiap trade untuk evaluasi dan improvement</p>
                 </div>
                 <button @click="showModal = true"
-                    class="px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg">
+                    class="px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3    shadow-lg">
                     + New Trade Entry
                 </button>
             </div>
 
             [[if .Stats]]
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Total Trades</span>
-                    <div class="mt-1.5 font-mono text-2xl font-bold text-white">[[.Stats.TotalTrades]]</div>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 gap-3">
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Total Trades</span>
+                    <div class="mt-1 font-monospace fs-1 fw-bold text-white">[[.Stats.TotalTrades]]</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Win Rate</span>
-                    <div class="mt-1.5 font-mono text-2xl font-bold [[if ge .Stats.WinRate 50.0]]text-success[[else]]text-danger[[end]]">[[printf "%.0f" .Stats.WinRate]]%</div>
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Win Rate</span>
+                    <div class="mt-1 font-monospace fs-1 fw-bold [[if ge .Stats.WinRate 50.0]]text-success[[else]]text-danger[[end]]">[[printf "%.0f" .Stats.WinRate]]%</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Total P/L</span>
-                    <div class="mt-1.5 font-mono text-lg font-bold [[if ge .Stats.TotalPL 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Stats.TotalPL 0.0]]+[[end]]Rp [[printf "%.0f" .Stats.TotalPL]]</div>
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Total P/L</span>
+                    <div class="mt-1 font-monospace fs-3 fw-bold [[if ge .Stats.TotalPL 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Stats.TotalPL 0.0]]+[[end]]Rp [[printf "%.0f" .Stats.TotalPL]]</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Avg P/L</span>
-                    <div class="mt-1.5 font-mono text-lg font-bold [[if ge .Stats.AvgPL 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Stats.AvgPL 0.0]]+[[end]]Rp [[printf "%.0f" .Stats.AvgPL]]</div>
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Avg P/L</span>
+                    <div class="mt-1 font-monospace fs-3 fw-bold [[if ge .Stats.AvgPL 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Stats.AvgPL 0.0]]+[[end]]Rp [[printf "%.0f" .Stats.AvgPL]]</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Best Trade</span>
-                    <div class="mt-1.5 font-mono text-lg font-bold text-success">+Rp [[printf "%.0f" .Stats.BestTrade]]</div>
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Best Trade</span>
+                    <div class="mt-1 font-monospace fs-3 fw-bold text-success">+Rp [[printf "%.0f" .Stats.BestTrade]]</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Worst Trade</span>
-                    <div class="mt-1.5 font-mono text-lg font-bold text-danger">Rp [[printf "%.0f" .Stats.WorstTrade]]</div>
+                <div class="card p-2 text-center">
+                    <span class="fs-6 fw-semibold text-muted text-uppercase ">Worst Trade</span>
+                    <div class="mt-1 font-monospace fs-3 fw-bold text-danger">Rp [[printf "%.0f" .Stats.WorstTrade]]</div>
                 </div>
             </div>
             [[end]]
 
-            <div class="flex flex-wrap items-center gap-3">
-                <div class="flex items-center gap-2">
-                    <label class="text-xs text-slate-500 dark:text-slate-400">Filter:</label>
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <label class="fs-xs text-muted dark:text-slate-400">Filter:</label>
                     <input type="text" x-model="filterStock" placeholder="Kode saham..."
-                        class="w-28 bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                        class="w-28 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-1 fs-xs text-white font-monospace text-uppercase   ">
                 </div>
-                <select x-model="filterOutcome" class="bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500">
+                <select x-model="filterOutcome" class="bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-1 fs-xs text-white  ">
                     <option value="">Semua Outcome</option>
                     <option value="win">Win</option>
                     <option value="loss">Loss</option>
@@ -212,69 +212,69 @@
 
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
-                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Saham</th>
-                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Arah</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Entry</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Exit</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Qty</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">P/L</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">ROI</th>
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">Strategi</th>
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">Emosi</th>
-                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider"></th>
+                            <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
+                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Arah</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Entry</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Exit</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Qty</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">P/L</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">ROI</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Strategi</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Emosi</th>
+                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase "></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                        <tbody class="divide-y border/30 dark:divide-slate-700/30">
                             [[if .Journals]]
                             [[range .Journals]]
-                            <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                                <td class="px-4 py-3">
-                                    <a href="/saham/[[.StockCode]]" class="font-bold text-blue-400 hover:underline text-sm">[[.StockCode]]</a>
+                            <tr class=" dark:hover:bg-slate-700/20 ">
+                                <td class="px-2 py-2">
+                                    <a href="/saham/[[.StockCode]]" class="fw-bold text-primary  fs-sm">[[.StockCode]]</a>
                                 </td>
-                                <td class="px-4 py-3 text-center">
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full [[if eq .Direction "buy"]]badge-buy[[else]]badge-sell[[end]]">[[if eq .Direction "buy"]]BUY[[else]]SELL[[end]]</span>
+                                <td class="px-2 py-2 text-center">
+                                    <span class="fs-6 fw-bold px-2 py-0 rounded-pill [[if eq .Direction "buy"]]badge-buy[[else]]badge-sell[[end]]">[[if eq .Direction "buy"]]BUY[[else]]SELL[[end]]</span>
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-xs hidden sm:table-cell">
+                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-table-cell">
                                     <div class="text-white">Rp [[printf "%.0f" .EntryPrice]]</div>
-                                    <div class="text-slate-500">[[.EntryDate.Format "02 Jan 06"]]</div>
+                                    <div class="text-muted">[[.EntryDate.Format "02 Jan 06"]]</div>
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-xs hidden sm:table-cell">
+                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-table-cell">
                                     [[if .ExitPrice]]
                                     <div class="text-white">Rp [[printf "%.0f" .ExitPrice]]</div>
-                                    [[if .ExitDate]]<div class="text-slate-500">[[.ExitDate.Format "02 Jan 06"]]</div>[[end]]
+                                    [[if .ExitDate]]<div class="text-muted">[[.ExitDate.Format "02 Jan 06"]]</div>[[end]]
                                     [[else]]
-                                    <span class="text-slate-500">Open</span>
+                                    <span class="text-muted">Open</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-500 dark:text-slate-400 hidden md:table-cell">[[printf "%.0f" .Quantity]]</td>
-                                <td class="px-4 py-3 text-right font-mono text-xs font-semibold">
+                                <td class="px-2 py-2 text-end font-monospace fs-xs text-muted dark:text-slate-400 d-none d-table-cell">[[printf "%.0f" .Quantity]]</td>
+                                <td class="px-2 py-2 text-end font-monospace fs-xs fw-semibold">
                                     [[if .ProfitLoss]]
                                     <span class="[[if ge .ProfitLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .ProfitLoss 0.0]]+[[end]]Rp [[printf "%.0f" .ProfitLoss]]</span>
                                     [[else]]
-                                    <span class="text-slate-500">--</span>
+                                    <span class="text-muted">--</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-xs font-semibold">
+                                <td class="px-2 py-2 text-end font-monospace fs-xs fw-semibold">
                                     [[if .ProfitLossPct]]
                                     <span class="[[if ge .ProfitLossPct 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .ProfitLossPct 0.0]]+[[end]][[printf "%.2f" .ProfitLossPct]]%</span>
                                     [[else]]
-                                    <span class="text-slate-500">--</span>
+                                    <span class="text-muted">--</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 hidden lg:table-cell max-w-[120px] truncate">[[.StrategyUsed]]</td>
-                                <td class="px-4 py-3 hidden lg:table-cell">
+                                <td class="px-2 py-2 fs-xs text-muted dark:text-slate-400 d-none d-table-cell max-w-120 text-truncate">[[.StrategyUsed]]</td>
+                                <td class="px-2 py-2 d-none d-table-cell">
                                     [[if .Emotions]]
                                     <span class="emotion-tag [[if eq .Emotions "Confident"]]emotion-confident[[else if eq .Emotions "Nervous"]]emotion-nervous[[else if eq .Emotions "FOMO"]]emotion-fomo[[else if eq .Emotions "Patient"]]emotion-patient[[else if eq .Emotions "Regretful"]]emotion-regretful[[else]]emotion-patient[[end]]">[[.Emotions]]</span>
                                     [[else]]
-                                    <span class="text-slate-600">--</span>
+                                    <span class="text-muted">--</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-center">
-                                    <form method="POST" action="/dashboard/journal/[[.ID]]/delete" onsubmit="return confirm('Hapus entry ini?')" class="inline">
-                                        <button type="submit" class="text-slate-600 hover:text-danger transition-colors p-1">
+                                <td class="px-2 py-2 text-center">
+                                    <form method="POST" action="/dashboard/journal/[[.ID]]/delete" onsubmit="return confirm('Hapus entry ini?')" class="d-inline">
+                                        <button type="submit" class="text-muted   p-1">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </form>
@@ -283,10 +283,10 @@
                             [[end]]
                             [[else]]
                             <tr>
-                                <td colspan="10" class="px-6 py-16 text-center text-slate-500">
-                                    <div class="text-4xl mb-3">📓</div>
-                                    <p class="text-sm">Belum ada entry trade journal.</p>
-                                    <p class="text-xs mt-1">Klik "New Trade Entry" untuk mulai mencatat trade pertama Anda.</p>
+                                <td colspan="10" class="px-2 py-2 text-center text-muted">
+                                    <div class="display-6 mb-2">📓</div>
+                                    <p class="fs-sm">Belum ada entry trade journal.</p>
+                                    <p class="fs-xs mt-1">Klik "New Trade Entry" untuk mulai mencatat trade pertama Anda.</p>
                                 </td>
                             </tr>
                             [[end]]
@@ -295,53 +295,53 @@
                 </div>
             </div>
 
-            <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-transition>
-                <div class="card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.outside="showModal = false">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-bold text-white">New Trade Entry</h2>
-                        <button @click="showModal = false" class="text-slate-500 dark:text-slate-400 hover:text-white p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            <div x-show="showModal" class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-center justify-content-center p-2 bg-black/60 " x-transition>
+                <div class="card p-2 w-100 max-w-lg max-h-90 overflow-y-auto" @click.outside="showModal = false">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h2 class="fs-3 fw-bold text-white">New Trade Entry</h2>
+                        <button @click="showModal = false" class="text-muted dark:text-slate-400  p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                     </div>
-                    <form method="POST" action="/dashboard/journal" class="space-y-3">
+                    <form method="POST" action="/dashboard/journal" class="vstack gap-2">
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Kode Saham</label>
-                            <input type="text" name="stock_code" required placeholder="BBCA" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Kode Saham</label>
+                            <input type="text" name="stock_code" required placeholder="BBCA" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace text-uppercase   ">
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="row row-cols-2 gap-3">
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Entry Date</label>
-                                <input type="date" name="entry_date" required class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Entry Date</label>
+                                <input type="date" name="entry_date" required class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             </div>
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Exit Date</label>
-                                <input type="date" name="exit_date" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Entry Price</label>
-                                <input type="number" name="entry_price" required step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Exit Price</label>
-                                <input type="number" name="exit_price" step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Exit Date</label>
+                                <input type="date" name="exit_date" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="row row-cols-2 gap-3">
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Quantity (lot)</label>
-                                <input type="number" name="quantity" required step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Entry Price</label>
+                                <input type="number" name="entry_price" required step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
                             </div>
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Direction</label>
-                                <select name="direction" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Exit Price</label>
+                                <input type="number" name="exit_price" step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
+                            </div>
+                        </div>
+                        <div class="row row-cols-2 gap-3">
+                            <div>
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Quantity (lot)</label>
+                                <input type="number" name="quantity" required step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
+                            </div>
+                            <div>
+                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Direction</label>
+                                <select name="direction" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                     <option value="buy">BUY (Long)</option>
                                     <option value="sell">SELL (Short)</option>
                                 </select>
                             </div>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Strategi</label>
-                            <select name="strategy_used" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Strategi</label>
+                            <select name="strategy_used" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih Strategi --</option>
                                 <option value="Golden Cross Swing">Golden Cross Swing</option>
                                 <option value="RSI Mean Reversion">RSI Mean Reversion</option>
@@ -355,8 +355,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Emosi</label>
-                            <select name="emotions" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Emosi</label>
+                            <select name="emotions" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih --</option>
                                 <option value="Confident">Confident (Percaya Diri)</option>
                                 <option value="Nervous">Nervous (Gugup)</option>
@@ -366,8 +366,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Outcome</label>
-                            <select name="outcome" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Outcome</label>
+                            <select name="outcome" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih --</option>
                                 <option value="win">Win</option>
                                 <option value="loss">Loss</option>
@@ -375,12 +375,12 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Catatan</label>
-                            <textarea name="notes" rows="3" placeholder="Alasan entry, lesson learned, dll..." class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"></textarea>
+                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Catatan</label>
+                            <textarea name="notes" rows="3" placeholder="Alasan entry, lesson learned, dll..." class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white    resize-none"></textarea>
                         </div>
-                        <div class="flex gap-3 pt-2">
-                            <button type="button" @click="showModal = false" class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Batal</button>
-                            <button type="submit" class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg">Simpan</button>
+                        <div class="d-flex gap-3 pt-2">
+                            <button type="button" @click="showModal = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body/50 dark:bg-slate-700/50 border border rounded-3  dark:hover:bg-slate-700 ">Batal</button>
+                            <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3    shadow-lg">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -402,6 +402,6 @@
         }
     }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

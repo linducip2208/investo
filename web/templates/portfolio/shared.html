@@ -29,88 +29,88 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="min-h-screen antialiased">
-    <nav class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2.5 shrink-0">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-                <span class="font-bold text-lg text-white">Investo</span>
+<body class="min-vh-100 antialiased">
+    <nav class="position-sticky top-0 z-3 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800">
+        <div class="max-w-5xl mx-auto px-2 px-sm-4 h-16 d-flex align-items-center justify-content-between">
+            <a href="/" class="d-flex align-items-center gap-2 flex-shrink-0">
+                <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+                <span class="fw-bold fs-3 text-white">Investo</span>
             </a>
-            <div class="flex items-center gap-3">
+            <div class="d-flex align-items-center gap-3">
                 [[if .User]]
-                <a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Dashboard</a>
                 [[else]]
-                <a href="/login" class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-white rounded-lg transition-colors">Masuk</a>
-                <a href="/register" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Daftar</a>
+                <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300  rounded-2 ">Masuk</a>
+                <a href="/register" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Daftar</a>
                 [[end]]
             </div>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        <div class="flex items-center gap-4 mb-8">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-900/30">
+    <main class="max-w-5xl mx-auto px-2 px-sm-4 py-2">
+        <div class="d-flex align-items-center gap-4 mb-2">
+            <div class="w-12 h-12 rounded-3 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center shadow-lg ">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-white">[[.Portfolio.Name]]</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Portofolio dibagikan via Investo</p>
+                <h1 class="fs-1 fs-1 fw-bold text-white">[[.Portfolio.Name]]</h1>
+                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Portofolio dibagikan via Investo</p>
             </div>
         </div>
 
         [[if .Portfolio.Description]]
-        <div class="card p-5 mb-6"><p class="text-slate-500 dark:text-slate-400 text-sm">[[.Portfolio.Description]]</p></div>
+        <div class="card p-2 mb-2"><p class="text-muted dark:text-slate-400 fs-sm">[[.Portfolio.Description]]</p></div>
         [[end]]
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div class="card p-4"><span class="text-xs text-slate-500 uppercase tracking-wider">Total Holdings</span><p class="text-2xl font-bold text-white mt-1">[[len .Holdings]]</p></div>
-            <div class="card p-4"><span class="text-xs text-slate-500 uppercase tracking-wider">Dibagikan</span><p class="text-2xl font-bold text-white mt-1">[[.Share.ViewsCount]]x dilihat</p></div>
+        <div class="row row-cols-1 row-cols-sm-2 gap-4 mb-2">
+            <div class="card p-2"><span class="fs-xs text-muted text-uppercase ">Total Holdings</span><p class="fs-1 fw-bold text-white mt-1">[[len .Holdings]]</p></div>
+            <div class="card p-2"><span class="fs-xs text-muted text-uppercase ">Dibagikan</span><p class="fs-1 fw-bold text-white mt-1">[[.Share.ViewsCount]]x dilihat</p></div>
         </div>
 
-        <div class="card overflow-hidden mb-8">
+        <div class="card overflow-hidden mb-2">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
-                        <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
-                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
-                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jumlah</th>
-                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Harga Rata</th>
-                            [[if .Holdings]][[range .Holdings]][[if .Notes]]<th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Catatan</th>[[end]][[end]][[end]]
+                        <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kode</th>
+                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Nama</th>
+                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Jumlah</th>
+                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Harga Rata</th>
+                            [[if .Holdings]][[range .Holdings]][[if .Notes]]<th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Catatan</th>[[end]][[end]][[end]]
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                    <tbody class="divide-y border/30 dark:divide-slate-700/30">
                         [[range .Holdings]]
-                        <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
-                            <td class="px-4 py-3.5"><span class="font-bold text-white">[[.Code]]</span></td>
-                            <td class="px-4 py-3.5 text-slate-500 dark:text-slate-400 hidden sm:table-cell max-w-[150px] truncate">[[.Name]]</td>
-                            <td class="px-4 py-3.5 text-right font-mono text-white">[[.Quantity]]</td>
-                            <td class="px-4 py-3.5 text-right font-mono text-slate-500 dark:text-slate-400">[[.AvgPriceFormatted]]</td>
-                            [[if .Notes]]<td class="px-4 py-3.5 text-right text-slate-500 text-xs hidden md:table-cell">[[.Notes]]</td>[[end]]
+                        <tr class=" dark:hover:bg-slate-700/20 ">
+                            <td class="px-2 py-2"><span class="fw-bold text-white">[[.Code]]</span></td>
+                            <td class="px-2 py-2 text-muted dark:text-slate-400 d-none d-table-cell max-w-150 text-truncate">[[.Name]]</td>
+                            <td class="px-2 py-2 text-end font-monospace text-white">[[.Quantity]]</td>
+                            <td class="px-2 py-2 text-end font-monospace text-muted dark:text-slate-400">[[.AvgPriceFormatted]]</td>
+                            [[if .Notes]]<td class="px-2 py-2 text-end text-muted fs-xs d-none d-table-cell">[[.Notes]]</td>[[end]]
                         </tr>
                         [[end]]
                         [[if not .Holdings]]
-                        <tr><td colspan="5" class="px-6 py-12 text-center text-slate-500">Portofolio ini belum memiliki holding.</td></tr>
+                        <tr><td colspan="5" class="px-2 py-2 text-center text-muted">Portofolio ini belum memiliki holding.</td></tr>
                         [[end]]
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="gradient-blue rounded-2xl shadow-xl p-8 text-center">
-            <h2 class="text-2xl font-bold mb-2 text-white">Kelola Portofolio Sendiri</h2>
-            <p class="text-blue-200 mb-6 max-w-md mx-auto">Buat dan lacak portofolio investasi Anda sendiri dengan Investo. Gratis!</p>
+        <div class="gradient-blue rounded-4 shadow-lg p-2 text-center">
+            <h2 class="fs-1 fw-bold mb-2 text-white">Kelola Portofolio Sendiri</h2>
+            <p class="text-primary mb-2 max-w-md mx-auto">Buat dan lacak portofolio investasi Anda sendiri dengan Investo. Gratis!</p>
             [[if .User]]
-            <a href="/dashboard/portfolios" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl shadow-md transition-all">Portofolio Saya</a>
+            <a href="/dashboard/portfolios" class="d-inline-flex align-items-center gap-2 px-2 py-2 bg-white text-primary fw-semibold rounded-3 shadow ">Portofolio Saya</a>
             [[else]]
-            <a href="/register" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl shadow-md transition-all">Buat Akun Gratis</a>
+            <a href="/register" class="d-inline-flex align-items-center gap-2 px-2 py-2 bg-white text-primary fw-semibold rounded-3 shadow ">Buat Akun Gratis</a>
             [[end]]
         </div>
     </main>
 
-    <footer class="border-t border-slate-200 dark:border-slate-800 mt-12">
-        <div class="max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-500">Portofolio ini dibagikan melalui <a href="/" class="text-blue-400 hover:underline">Investo</a>. Data bersumber dari IDX.</div>
+    <footer class="border-top border dark:border-slate-800 mt-2">
+        <div class="max-w-5xl mx-auto px-2 py-2 text-center fs-xs text-muted">Portofolio ini dibagikan melalui <a href="/" class="text-primary ">Investo</a>. Data bersumber dari IDX.</div>
     </footer>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

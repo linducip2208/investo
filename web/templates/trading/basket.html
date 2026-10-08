@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,15 +43,15 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="basketTrading()" x-init="init()">
+<body class="h-100 d-flex" x-data="basketTrading()" x-init="init()">
 
-<aside class="sidebar w-64 shrink-0 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-[#1e293b] flex flex-col h-full overflow-y-auto" :class="{ 'open fixed inset-y-0 left-0 z-50 shadow-2xl': sidebarOpen }">
-    <div class="p-5">
-        <div class="flex items-center gap-2 mb-6">
-            <span class="text-2xl">💹</span>
-            <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar w-64 flex-shrink-0 bg-white dark:bg-[#0f172a] border-end border dark:border-[#1e293b] d-flex flex-column h-100 overflow-y-auto" :class="{ 'open position-fixed top-0 bottom-0 start-0 z-3 shadow-2xl': sidebarOpen }">
+    <div class="p-2">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="fs-1">💹</span>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex flex-col gap-1">
+        <nav class="d-flex flex-column gap-1">
             <a href="/dashboard" class="sidebar-link"><span>📊</span> Dashboard</a>
             <a href="/saham" class="sidebar-link"><span>📈</span> Saham</a>
             <a href="/forex" class="sidebar-link"><span>💱</span> Forex</a>
@@ -64,36 +64,36 @@
     </div>
 </aside>
 
-<div class="flex-1 flex flex-col min-w-0" @click="sidebarOpen=false">
-    <header class="h-14 bg-white dark:bg-[#0f172a] border-b border-slate-200 dark:border-[#1e293b] flex items-center justify-between px-5 shrink-0">
-        <div class="flex items-center gap-3">
-            <button @click.stop="sidebarOpen=!sidebarOpen" class="lg:hidden text-slate-500 dark:text-slate-400 hover:text-white p-1 btn-touch">
+<div class="flex-fill d-flex flex-column min-w-0" @click="sidebarOpen=false">
+    <header class="h-14 bg-white dark:bg-[#0f172a] border-bottom border dark:border-[#1e293b] d-flex align-items-center justify-content-between px-2 flex-shrink-0">
+        <div class="d-flex align-items-center gap-3">
+            <button @click.stop="sidebarOpen=!sidebarOpen" class="d-lg-none text-muted dark:text-slate-400  p-1 btn-touch">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <span class="font-semibold text-white text-base">🧺 Basket Trading</span>
+            <span class="fw-semibold text-white fs-base">🧺 Basket Trading</span>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="/trading/orders" class="text-sm text-blue-400 hover:text-blue-300">Conditional Orders →</a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/trading/orders" class="fs-sm text-primary ">Conditional Orders →</a>
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto p-5 space-y-5">
+    <main class="flex-fill overflow-y-auto p-2 vstack gap-3">
 
-        <div x-show="message" x-transition class="px-4 py-3 rounded-xl text-sm font-medium" :class="messageType==='success'?'bg-emerald-900/50 text-emerald-300 border border-emerald-700':'bg-red-900/50 text-red-300 border border-red-700'" x-text="message"></div>
+        <div x-show="message" x-transition class="px-2 py-2 rounded-3 fs-sm fw-medium" :class="messageType==='success'?'bg-success-lt text-success border border-success':'bg-danger-lt text-danger border border-danger'" x-text="message"></div>
 
-        <div class="card p-5">
-            <h2 class="text-lg font-bold text-white mb-4">📝 Buat Basket Baru</h2>
-            <div class="space-y-3">
+        <div class="card p-2">
+            <h2 class="fs-3 fw-bold text-white mb-2">📝 Buat Basket Baru</h2>
+            <div class="vstack gap-2">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Nama Basket</label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-1">Nama Basket</label>
                     <input type="text" x-model="basketName" placeholder="e.g. Big Banks Basket" class="input-field">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Saham dalam Basket</label>
-                    <div class="space-y-2" id="stock-rows">
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-2">Saham dalam Basket</label>
+                    <div class="vstack gap-2" id="stock-rows">
                         <template x-for="(item, idx) in stocks" :key="idx">
-                            <div class="flex items-center gap-2">
+                            <div class="d-flex align-items-center gap-2">
                                 <input type="text" x-model="item.code" placeholder="Kode" class="input-field w-24" @input="calcEstimate()">
                                 <input type="number" x-model="item.quantity" placeholder="Qty (lot)" class="input-field w-28" @input="calcEstimate()" min="1" step="100">
                                 <select x-model="item.type" class="input-field w-24">
@@ -107,10 +107,10 @@
                     <button @click="addStock()" class="btn btn-sm mt-2" style="background:#334155;color:#e2e8f0">+ Tambah Saham</button>
                 </div>
 
-                <div class="flex items-center gap-3 pt-2">
+                <div class="d-flex align-items-center gap-3 pt-2">
                     <button @click="createBasket()" class="btn btn-primary" :disabled="loading">
                         <span x-show="!loading">💾 Simpan Basket</span>
-                        <span x-show="loading" class="animate-pulse">⏳ Menyimpan...</span>
+                        <span x-show="loading" class="">⏳ Menyimpan...</span>
                     </button>
                     <button @click="executeAll()" class="btn btn-success" :disabled="loading || savedBaskets.length === 0">
                         <span>🚀 Execute All Pending</span>
@@ -119,22 +119,22 @@
             </div>
         </div>
 
-        <div class="card p-5">
-            <h2 class="text-lg font-bold text-white mb-4">📋 Basket Tersimpan</h2>
-            <div x-show="savedBaskets.length === 0" class="text-slate-500 text-sm py-4 text-center">Belum ada basket tersimpan</div>
-            <div class="space-y-3" x-show="savedBaskets.length > 0">
+        <div class="card p-2">
+            <h2 class="fs-3 fw-bold text-white mb-2">📋 Basket Tersimpan</h2>
+            <div x-show="savedBaskets.length === 0" class="text-muted fs-sm py-2 text-center">Belum ada basket tersimpan</div>
+            <div class="vstack gap-2" x-show="savedBaskets.length > 0">
                 <template x-for="basket in savedBaskets" :key="basket.id">
-                    <div class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#334155] rounded-xl p-4">
-                        <div class="flex items-center justify-between mb-2">
+                    <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 p-2">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
                             <div>
-                                <span class="font-semibold text-white" x-text="basket.name"></span>
-                                <span class="ml-2 badge" :class="basket.status==='executed'?'bg-emerald-900 text-emerald-300':'bg-amber-900 text-amber-300'" x-text="basket.status"></span>
+                                <span class="fw-semibold text-white" x-text="basket.name"></span>
+                                <span class="ms-2 badge" :class="basket.status==='executed'?'bg-success-lt text-success':'bg-warning-lt text-warning'" x-text="basket.status"></span>
                             </div>
                             <button @click="executeBasket(basket.id)" x-show="basket.status==='pending'" class="btn btn-success btn-sm">▶ Execute</button>
                         </div>
-                        <div class="flex flex-wrap gap-1">
+                        <div class="d-flex flex-wrap gap-1">
                             <template x-for="item in basket.items" :key="item.code">
-                                <span class="text-xs bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 px-2 py-1 rounded-lg" x-text="item.type.toUpperCase() + ' ' + item.quantity + ' × ' + item.code"></span>
+                                <span class="fs-xs bg-white dark:bg-[#1e293b] text-body dark:text-slate-300 px-2 py-1 rounded-2" x-text="item.type.toUpperCase() + ' ' + item.quantity + ' × ' + item.code"></span>
                             </template>
                         </div>
                     </div>
@@ -142,23 +142,23 @@
             </div>
         </div>
 
-        <div class="card p-5">
-            <h2 class="text-lg font-bold text-white mb-4">🧮 Estimasi Biaya</h2>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-[#0f172a] rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Total Lot</div>
-                    <div class="text-xl font-bold text-blue-400" x-text="totalLots"></div>
+        <div class="card p-2">
+            <h2 class="fs-3 fw-bold text-white mb-2">🧮 Estimasi Biaya</h2>
+            <div class="row row-cols-3 gap-4">
+                <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
+                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Total Lot</div>
+                    <div class="fs-2 fw-bold text-primary" x-text="totalLots"></div>
                 </div>
-                <div class="bg-white dark:bg-[#0f172a] rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Jumlah Saham</div>
-                    <div class="text-xl font-bold text-blue-400" x-text="stockCount"></div>
+                <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
+                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Jumlah Saham</div>
+                    <div class="fs-2 fw-bold text-primary" x-text="stockCount"></div>
                 </div>
-                <div class="bg-white dark:bg-[#0f172a] rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Estimasi (Rp)</div>
-                    <div class="text-xl font-bold text-emerald-400" x-text="estimatedCost"></div>
+                <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
+                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Estimasi (Rp)</div>
+                    <div class="fs-2 fw-bold text-success" x-text="estimatedCost"></div>
                 </div>
             </div>
-            <p class="text-xs text-slate-500 mt-2">* Estimasi berdasarkan harga terakhir. Harga aktual bisa berbeda saat eksekusi.</p>
+            <p class="fs-xs text-muted mt-2">* Estimasi berdasarkan harga terakhir. Harga aktual bisa berbeda saat eksekusi.</p>
         </div>
 
     </main>
