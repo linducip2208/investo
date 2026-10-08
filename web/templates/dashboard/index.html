@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/lightweight-charts.js"></script>
@@ -41,7 +41,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="dashboard()" x-init="init()">
+<body class="h-100 d-flex" x-data="dashboard()" x-init="init()">
     <script>
         function dashboard() {
             return {
@@ -76,15 +76,15 @@
                     var self = this;
                     var g = document.getElementById('gainers-list');
                     if (g) g.innerHTML = this.gainers.map(function(s,i){
-                        return '<a href="/saham/'+s.code+'" class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-100/30 dark:hover:bg-slate-700/30 rounded-lg transition-colors">' +
-                            '<div class="flex items-center gap-3"><span class="text-xs text-slate-500 w-5">'+(i+1)+'</span><span class="font-semibold text-slate-800 dark:text-white w-12">'+s.code+'</span><span class="text-xs text-slate-500 dark:text-slate-400 truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
-                            '<div class="text-right"><span class="font-mono text-sm text-slate-800 dark:text-white">' + self.fmt(s.price) + '</span><span class="font-mono text-xs text-success block">+'+(s.change||0).toFixed(1)+'%</span></div></a>';
+                        return '<a href="/saham/'+s.code+'" class="d-flex align-items-center justify-content-between py-2 px-2  dark:hover:bg-white/30 rounded-2 ">' +
+                            '<div class="d-flex align-items-center gap-3"><span class="fs-xs text-muted w-5">'+(i+1)+'</span><span class="fw-semibold text-body dark:text-white w-12">'+s.code+'</span><span class="fs-xs text-muted dark:text-muted text-truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
+                            '<div class="text-end"><span class="font-monospace fs-sm text-body dark:text-white">' + self.fmt(s.price) + '</span><span class="font-monospace fs-xs text-success d-block">+'+(s.change||0).toFixed(1)+'%</span></div></a>';
                     }).join('');
                     var l = document.getElementById('losers-list');
                     if (l) l.innerHTML = this.losers.map(function(s,i){
-                        return '<a href="/saham/'+s.code+'" class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-100/30 dark:hover:bg-slate-700/30 rounded-lg transition-colors">' +
-                            '<div class="flex items-center gap-3"><span class="text-xs text-slate-500 w-5">'+(i+1)+'</span><span class="font-semibold text-slate-800 dark:text-white w-12">'+s.code+'</span><span class="text-xs text-slate-500 dark:text-slate-400 truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
-                            '<div class="text-right"><span class="font-mono text-sm text-slate-800 dark:text-white">' + self.fmt(s.price) + '</span><span class="font-mono text-xs text-danger block">'+(s.change||0).toFixed(1)+'%</span></div></a>';
+                        return '<a href="/saham/'+s.code+'" class="d-flex align-items-center justify-content-between py-2 px-2  dark:hover:bg-white/30 rounded-2 ">' +
+                            '<div class="d-flex align-items-center gap-3"><span class="fs-xs text-muted w-5">'+(i+1)+'</span><span class="fw-semibold text-body dark:text-white w-12">'+s.code+'</span><span class="fs-xs text-muted dark:text-muted text-truncate w-24">'+(s.name||'').substring(0,20)+'</span></div>' +
+                            '<div class="text-end"><span class="font-monospace fs-sm text-body dark:text-white">' + self.fmt(s.price) + '</span><span class="font-monospace fs-xs text-danger d-block">'+(s.change||0).toFixed(1)+'%</span></div></a>';
                     }).join('');
                 },
                 renderBreadth() {
@@ -92,17 +92,17 @@
                     if (bb && this.breadth) {
                         var b = this.breadth;
                         var adv = b.advance||0, dec = b.decline||0, total = adv+dec||1;
-                        bb.innerHTML = '<div class="flex items-center gap-0.5 h-5 rounded overflow-hidden">' +
-                            '<div style="width:'+(adv/total*100)+'%" class="h-full bg-emerald-500/80 text-white flex items-center pl-2 text-[10px] font-mono">'+adv+' \u2191</div>' +
-                            '<div style="width:'+(dec/total*100)+'%" class="h-full bg-red-500/80 text-white flex items-center pl-2 text-[10px] font-mono">'+dec+' \u2193</div></div>';
+                        bb.innerHTML = '<div class="d-flex align-items-center gap-0 h-5 rounded overflow-hidden">' +
+                            '<div style="width:'+(adv/total*100)+'%" class="h-100 bg-success/80 text-white d-flex align-items-center ps-2 fs-6 font-monospace">'+adv+' \u2191</div>' +
+                            '<div style="width:'+(dec/total*100)+'%" class="h-100 bg-danger/80 text-white d-flex align-items-center ps-2 fs-6 font-monospace">'+dec+' \u2193</div></div>';
                     }
                 },
                 renderForex() {
                     var fm = document.getElementById('forex-list');
                     if (fm) fm.innerHTML = this.forex.map(function(p){
-                        return '<a href="/forex/'+p.pair.replace('/','-')+'" class="flex items-center justify-between py-2 px-3 hover:bg-slate-100/30 dark:hover:bg-slate-700/30 rounded-lg transition-colors text-sm">' +
-                            '<span class="font-semibold text-slate-800 dark:text-white font-mono">'+p.pair+'</span>' +
-                            '<span class="font-mono text-slate-500 dark:text-slate-400">'+(p.close||0).toFixed(4)+'</span></a>';
+                        return '<a href="/forex/'+p.pair.replace('/','-')+'" class="d-flex align-items-center justify-content-between py-2 px-2  dark:hover:bg-white/30 rounded-2  fs-sm">' +
+                            '<span class="fw-semibold text-body dark:text-white font-monospace">'+p.pair+'</span>' +
+                            '<span class="font-monospace text-muted dark:text-muted">'+(p.close||0).toFixed(4)+'</span></a>';
                     }).join('');
                 },
                 fmt(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; },
@@ -118,12 +118,12 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" >
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-slate-900 dark:text-white">Investo</span>
+    <aside class="sidebar app-side position-fixed top-0 bottom-0 start-0 z-3 bg-body border-end d-flex flex-column">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-body dark:text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-0">
             <a href="/dashboard" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -135,7 +135,7 @@
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 17l6 -6l4 4l8 -8" />
   <path d="M14 7l7 0l0 7" />
-</svg></span> Saham <span class="ml-auto text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">[[.TotalStocks]]</span></a>
+</svg></span> Saham <span class="ms-auto fs-6 bg-body dark:bg-white px-1 py-0 rounded text-body dark:text-body">[[.TotalStocks]]</span></a>
             <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -154,8 +154,8 @@
   <path d="M4 4a16 16 0 0 1 16 16" />
   <path d="M4 11a9 9 0 0 1 9 9" />
 </svg></span> Signal Center</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analysis</p>
+            <div class="border-top border dark:border my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Market Analysis</p>
             <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
@@ -452,8 +452,8 @@
   <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
   <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
 </svg></span> Industry Life</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Intelligence</p>
+            <div class="border-top border dark:border my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">AI Intelligence</p>
             <a href="/ai/coach" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1" />
@@ -573,8 +573,8 @@
   <path d="M12 6l0 13" />
   <path d="M21 6l0 13" />
 </svg></span> Stock Story</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -608,8 +608,8 @@
   <path d="M13 8l2 0" />
   <path d="M13 12l2 0" />
 </svg></span> Trade Journal</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Community</p>
+            <div class="border-top border dark:border my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Community</p>
             <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -641,7 +641,7 @@
   <path d="M13.5 6.5l4 4" />
 </svg></span> Blog</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -711,104 +711,104 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block">
-                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-body/90  border-bottom border dark:border d-flex align-items-center px-2 px-lg-2 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted  dark:hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill d-none d-sm-block" style="max-width:28rem">
+                <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-body dark:text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
-                <div class="flex items-center gap-2 ml-auto">
+                <div class="d-flex align-items-center gap-2 ms-auto">
                 [[template "components/market-clock.html" .]]
-                <button onclick="location.href='/dashboard/alerts'" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-white dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-slate-800 dark:text-white hidden sm:block">[[.User.Name]]</span>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted  dark:hover:text-white  rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-body dark:text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-2 vstack gap-3 overflow-y-auto">
             
             <!-- HEADER ROW -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2">
                 <div>
-                    <h1 class="text-xl lg:text-2xl font-bold text-slate-900 dark:text-white">Selamat datang, [[.User.Name]]</h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5" x-text="clock"><span id="ws-status" class="text-xs text-slate-500 font-mono ml-2">CONNECTING</span></p>
+                    <h1 class="fs-2 fs-1 fw-bold text-body dark:text-white">Selamat datang, [[.User.Name]]</h1>
+                    <p class="fs-sm text-muted dark:text-muted mt-0" x-text="clock"><span id="ws-status" class="fs-xs text-muted font-monospace ms-2">CONNECTING</span></p>
                 </div>
-                <div class="flex gap-2 items-center">
+                <div class="d-flex gap-2 align-items-center">
                     <template x-if="weather">
-                        <div class="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2">
-                            <span class="text-xl" x-text="weather.emoji"></span>
-                            <div class="text-xs">
-                                <span class="text-slate-700 dark:text-slate-300 block" x-text="weather.one_liner"></span>
-                                <span class="font-mono font-bold" :class="weather.pl_percent>=0?'text-success':'text-danger'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
+                        <div class="d-flex align-items-center gap-2 bg-white/80 dark:bg-white/80 border border/50 dark:border/50 rounded-3 px-2 py-2">
+                            <span class="fs-2" x-text="weather.emoji"></span>
+                            <div class="fs-xs">
+                                <span class="text-body dark:text-body d-block" x-text="weather.one_liner"></span>
+                                <span class="font-monospace fw-bold" :class="weather.pl_percent>=0?'text-success':'text-danger'" x-text="(weather.pl_percent>=0?'+':'')+weather.pl_percent.toFixed(2)+'%'"></span>
                             </div>
                         </div>
                     </template>
-                    <a href="/dashboard/portfolios" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">+ Portfolio</a>
-                    <a href="/screener" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-xl transition-colors">Screener</a>
+                    <a href="/dashboard/portfolios" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">+ Portfolio</a>
+                    <a href="/screener" class="px-2 py-2 bg-body dark:bg-white  text-body dark:text-body fs-sm fw-medium rounded-3 ">Screener</a>
                 </div>
             </div>
 
             <!-- TICKER BAR -->
-            <div class="bg-white/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-4 py-2.5 overflow-hidden">
-                <div class="flex gap-8 animate-[ticker_40s_linear_infinite]" style="min-width:200%">
+            <div class="bg-white/50 dark:bg-white/50 border border/50 dark:border/50 rounded-3 px-2 py-2 overflow-hidden">
+                <div class="d-flex gap-5 animate-ticker" style="min-width:200%">
                     <template x-for="(s,i) in ticker.concat(ticker)" :key="i">
-                        <span class="inline-flex items-center gap-2 text-sm whitespace-nowrap shrink-0">
-                            <span class="font-semibold text-slate-800 dark:text-white font-mono" x-text="s.code"></span>
-                            <span class="text-slate-500 dark:text-slate-400 font-mono" x-text="fmt(s.price)"></span>
-                            <span :class="(s.change||0)>=0?'text-success':'text-danger'" class="font-mono text-xs" x-text="((s.change||0)>=0?'+':'')+(s.change||0).toFixed(1)+'%'"></span>
+                        <span class="d-inline-flex align-items-center gap-2 fs-sm text-nowrap flex-shrink-0">
+                            <span class="fw-semibold text-body dark:text-white font-monospace" x-text="s.code"></span>
+                            <span class="text-muted dark:text-muted font-monospace" x-text="fmt(s.price)"></span>
+                            <span :class="(s.change||0)>=0?'text-success':'text-danger'" class="font-monospace fs-xs" x-text="((s.change||0)>=0?'+':'')+(s.change||0).toFixed(1)+'%'"></span>
                         </span>
                     </template>
                 </div>
             </div>
 
             <!-- STAT CARDS -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="card gradient-blue p-5 text-white">
-                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-blue-200 uppercase tracking-wider">Total Saham</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
-                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.TotalStocks]]</div>
-                    <span class="text-xs text-blue-200 mt-1">Emiten IDX</span>
+            <div class="row row-cols-2 row-cols-lg-4 gap-4">
+                <div class="card gradient-blue p-2 text-white">
+                    <div class="d-flex align-items-center justify-content-between mb-2"><span class="fs-xs fw-medium text-primary text-uppercase ">Total Saham</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+                    <div class="fs-1 fs-1 fw-bold font-monospace">[[.TotalStocks]]</div>
+                    <span class="fs-xs text-primary mt-1">Emiten IDX</span>
                 </div>
-                <div class="card gradient-cyan p-5 text-white">
-                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-cyan-200 uppercase tracking-wider">Portofolio</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.PortfolioCount]]</div>
-                    <span class="text-xs text-cyan-200 mt-1">Aktif</span>
+                <div class="card gradient-cyan p-2 text-white">
+                    <div class="d-flex align-items-center justify-content-between mb-2"><span class="fs-xs fw-medium text-info text-uppercase ">Portofolio</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+                    <div class="fs-1 fs-1 fw-bold font-monospace">[[.PortfolioCount]]</div>
+                    <span class="fs-xs text-info mt-1">Aktif</span>
                 </div>
-                <div class="card gradient-green p-5 text-white">
-                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-emerald-200 uppercase tracking-wider">Watchlist</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg></div>
-                    <div class="text-2xl lg:text-3xl font-bold font-mono">[[.WatchlistCount]]</div>
-                    <span class="text-xs text-emerald-200 mt-1">Tersimpan</span>
+                <div class="card gradient-green p-2 text-white">
+                    <div class="d-flex align-items-center justify-content-between mb-2"><span class="fs-xs fw-medium text-success text-uppercase ">Watchlist</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg></div>
+                    <div class="fs-1 fs-1 fw-bold font-monospace">[[.WatchlistCount]]</div>
+                    <span class="fs-xs text-success mt-1">Tersimpan</span>
                 </div>
-                <div class="card gradient-purple p-5 text-white">
-                    <div class="flex items-center justify-between mb-3"><span class="text-xs font-medium text-purple-200 uppercase tracking-wider">Indeks</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6zM15 9a1 1 0 011-1h4a1 1 0 011 1v10a1 1 0 01-1 1h-4a1 1 0 01-1-1v-10zM9 5a1 1 0 011-1h4a1 1 0 011 1v14a1 1 0 01-1 1h-4a1 1 0 01-1-1v-14z"/></svg></div>
-                    <div class="text-2xl lg:text-3xl font-bold font-mono">IDX</div>
-                    <span class="text-xs text-purple-200 mt-1">Pasar Reguler</span>
+                <div class="card gradient-purple p-2 text-white">
+                    <div class="d-flex align-items-center justify-content-between mb-2"><span class="fs-xs fw-medium text-primary text-uppercase ">Indeks</span><svg class="w-7 h-7 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6zM15 9a1 1 0 011-1h4a1 1 0 011 1v10a1 1 0 01-1 1h-4a1 1 0 01-1-1v-10zM9 5a1 1 0 011-1h4a1 1 0 011 1v14a1 1 0 01-1 1h-4a1 1 0 01-1-1v-14z"/></svg></div>
+                    <div class="fs-1 fs-1 fw-bold font-monospace">IDX</div>
+                    <span class="fs-xs text-primary mt-1">Pasar Reguler</span>
                 </div>
             </div>
 
             <!-- BREADTH BAR -->
-            <div class="card p-4">
+            <div class="card p-2">
                 <div class="widget-title">Market Breadth</div>
                 <div id="breadth-bar"></div>
             </div>
 
             <!-- CHART + NEWS ROW -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div class="card p-4 lg:col-span-2">
+            <div class="row row-cols-1 row-cols-lg-3 gap-4">
+                <div class="card p-2 col-lg-8">
                     <div class="widget-title">IHSG Composite · 1 Tahun</div>
                     <div id="main-chart" style="height:320px"></div>
                 </div>
-                <div class="card p-4">
+                <div class="card p-2">
                     <div class="widget-title">Berita Terbaru</div>
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         [[range .News]]
-                        <a href="/berita/[[.Slug]]" class="block hover:bg-slate-100/30 dark:hover:bg-slate-700/30 rounded-lg p-2 -mx-2 transition-colors">
-                            <p class="text-sm text-slate-800 dark:text-white leading-snug line-clamp-2">[[.Title]]</p>
-                            <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-500">
-                                [[if .Source]]<span class="text-blue-400">[[.Source]]</span>[[end]]
+                        <a href="/berita/[[.Slug]]" class="d-block  dark:hover:bg-white/30 rounded-2 p-2 mx-n2 ">
+                            <p class="fs-sm text-body dark:text-white lh-sm line-clamp-2">[[.Title]]</p>
+                            <div class="d-flex align-items-center gap-2 mt-1 fs-xs text-muted">
+                                [[if .Source]]<span class="text-primary">[[.Source]]</span>[[end]]
                                 <span>[[.PublishedAt.Format "02 Jan 15:04"]]</span>
                             </div>
                         </a>
@@ -818,57 +818,57 @@
             </div>
 
             <!-- GAINERS + LOSERS + FOREX -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="card p-4">
+            <div class="row row-cols-1 row-cols-md-3 gap-4">
+                <div class="card p-2">
                     <div class="widget-title text-success">Top Gainers</div>
-                    <div id="gainers-list" class="space-y-0.5"></div>
+                    <div id="gainers-list" class="vstack gap-0"></div>
                 </div>
-                <div class="card p-4">
+                <div class="card p-2">
                     <div class="widget-title text-danger">Top Losers</div>
-                    <div id="losers-list" class="space-y-0.5"></div>
+                    <div id="losers-list" class="vstack gap-0"></div>
                 </div>
-                <div class="card p-4">
+                <div class="card p-2">
                     <div class="widget-title">Forex Rates</div>
-                    <div id="forex-list" class="space-y-0.5"></div>
+                    <div id="forex-list" class="vstack gap-0"></div>
                 </div>
             </div>
 
             <!-- BOTTOM: PORTFOLIOS + WATCHLISTS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-3">
+            <div class="row row-cols-1 row-cols-md-2 gap-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
                         <span class="widget-title mb-0">Portofolio Anda</span>
-                        <a href="/dashboard/portfolios" class="text-xs text-blue-400 hover:underline">+ Baru</a>
+                        <a href="/dashboard/portfolios" class="fs-xs text-primary ">+ Baru</a>
                     </div>
                     [[if .Portfolios]]
-                    <div class="space-y-2">
+                    <div class="vstack gap-2">
                         [[range .Portfolios]]
-                        <a href="/dashboard/portfolios/[[.ID]]" class="flex items-center justify-between p-3 bg-slate-100/30 dark:bg-slate-700/30 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-xl transition-colors">
-                            <div class="flex items-center gap-3"><svg class="w-5 h-5" style="color:var(--ui-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span class="font-medium text-slate-800 dark:text-white">[[.Name]]</span></div>
-                            <span class="text-xs text-slate-500">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
+                        <a href="/dashboard/portfolios/[[.ID]]" class="d-flex align-items-center justify-content-between p-2 bg-body/30 dark:bg-white/30  dark:hover:bg-white/50 rounded-3 ">
+                            <div class="d-flex align-items-center gap-3"><svg class="w-5 h-5" style="color:var(--ui-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span class="fw-medium text-body dark:text-white">[[.Name]]</span></div>
+                            <span class="fs-xs text-muted">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
                         </a>
                         [[end]]
                     </div>
                     [[else]]
-                    <p class="text-sm text-slate-500 text-center py-6">Belum ada portofolio</p>
+                    <p class="fs-sm text-muted text-center py-2">Belum ada portofolio</p>
                     [[end]]
                 </div>
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-3">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
                         <span class="widget-title mb-0">Watchlist Anda</span>
-                        <a href="/dashboard/watchlists" class="text-xs text-blue-400 hover:underline">+ Baru</a>
+                        <a href="/dashboard/watchlists" class="fs-xs text-primary ">+ Baru</a>
                     </div>
                     [[if .Watchlists]]
-                    <div class="space-y-2">
+                    <div class="vstack gap-2">
                         [[range .Watchlists]]
-                        <a href="/dashboard/watchlists" class="flex items-center justify-between p-3 bg-slate-100/30 dark:bg-slate-700/30 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-xl transition-colors">
-                            <div class="flex items-center gap-3"><svg class="w-5 h-5" style="color:var(--ui-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg><span class="font-medium text-slate-800 dark:text-white">[[.Name]]</span></div>
-                            <span class="text-xs text-slate-500">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
+                        <a href="/dashboard/watchlists" class="d-flex align-items-center justify-content-between p-2 bg-body/30 dark:bg-white/30  dark:hover:bg-white/50 rounded-3 ">
+                            <div class="d-flex align-items-center gap-3"><svg class="w-5 h-5" style="color:var(--ui-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg><span class="fw-medium text-body dark:text-white">[[.Name]]</span></div>
+                            <span class="fs-xs text-muted">[[if .IsDefault]]Default[[else]]Custom[[end]]</span>
                         </a>
                         [[end]]
                     </div>
                     [[else]]
-                    <p class="text-sm text-slate-500 text-center py-6">Belum ada watchlist</p>
+                    <p class="fs-sm text-muted text-center py-2">Belum ada watchlist</p>
                     [[end]]
                 </div>
             </div>
@@ -879,15 +879,21 @@
     <script>
     (function(){
         var c = document.getElementById('main-chart');
-        if (!c) return;
-        var chart = LightweightCharts.createChart(c, {
-            layout: { background: { type: 'solid', color: '#1e293b' }, textColor: '#94a3b8' },
-            grid: { vertLines: { color: '#334155' }, horzLines: { color: '#334155' } },
-            crosshair: { mode: 0 }, timeScale: { borderColor: '#475569' },
-            rightPriceScale: { borderColor: '#475569' }, width: c.clientWidth, height: 320
-        });
-        var cs = chart.addCandlestickSeries({ upColor: '#34d399', downColor: '#f87171', borderUpColor: '#34d399', borderDownColor: '#f87171', wickUpColor: '#34d399', wickDownColor: '#f87171' });
-        chart.addHistogramSeries({ color: '#334155', priceFormat: { type: 'volume' }, priceScaleId: '', scaleMargins: { top: 0.85, bottom: 0 } });
+        if (!c || !window.LightweightCharts) return;
+        var css = function(n, fb){ try { var v = getComputedStyle(document.documentElement).getPropertyValue(n); return (v && v.trim()) || fb; } catch(e){ return fb; } };
+        var buildOpts = function(){
+            var dark = document.documentElement.classList.contains('dark');
+            return {
+                layout: { background: { type: 'solid', color: 'transparent' }, textColor: css('--ui-muted', dark ? '#a3b1cc' : '#5b6b82') },
+                grid: { vertLines: { color: css('--ui-border', dark ? '#2c3658' : '#e3e8f0') }, horzLines: { color: css('--ui-border', dark ? '#2c3658' : '#e3e8f0') } },
+                crosshair: { mode: 0 }, timeScale: { borderColor: css('--ui-border', dark ? '#2c3658' : '#e3e8f0') },
+                rightPriceScale: { borderColor: css('--ui-border', dark ? '#2c3658' : '#e3e8f0') }, width: c.clientWidth, height: 320
+            };
+        };
+        var chart = LightweightCharts.createChart(c, buildOpts());
+        document.addEventListener('investo:theme', function(){ chart.applyOptions(buildOpts()); });
+        var cs = chart.addCandlestickSeries({ upColor: '#18794e', downColor: '#c93a3a', borderUpColor: '#18794e', borderDownColor: '#c93a3a', wickUpColor: '#18794e', wickDownColor: '#c93a3a' });
+        chart.addHistogramSeries({ color: css('--ui-border', '#e3e8f0'), priceFormat: { type: 'volume' }, priceScaleId: '', scaleMargins: { top: 0.85, bottom: 0 } });
         fetch('/api/stocks/BBCA/chart?start=' + new Date(Date.now()-365*86400000).toISOString().slice(0,10)).then(r=>r.json()).then(function(d){
             if(!d||!d.prices||!d.prices.length) return;
             var cd=[],vd=[];
@@ -902,7 +908,7 @@
     </style>
     <script>
         (function(){
-            var ws = new WebSocket('ws://' + location.host + '/ws');
+            var ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
             ws.onmessage = function(e) {
                 try {
                     var d = JSON.parse(e.data);

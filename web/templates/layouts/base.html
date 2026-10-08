@@ -18,6 +18,8 @@
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d){document.documentElement.classList.add('dark');}
+    document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');
+    document.documentElement.style.colorScheme=d?'dark':'light';
     var m=document.querySelector('meta[name="theme-color"]');
     if(m&&d)m.setAttribute('content','#141b2e');}catch(e){}})();
     </script>

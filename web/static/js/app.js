@@ -26,6 +26,11 @@
     var mode = resolveTheme(pref);
     document.documentElement.classList.toggle("dark", mode === "dark");
     document.documentElement.setAttribute("data-theme", mode);
+    // Tabler v1 dark mode hook (data-bs-theme) + native color-scheme
+    try {
+      document.documentElement.setAttribute("data-bs-theme", mode);
+      document.documentElement.style.colorScheme = mode;
+    } catch (e) {}
     try {
       var meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", mode === "dark" ? "#141b2e" : "#f4f6fb");
