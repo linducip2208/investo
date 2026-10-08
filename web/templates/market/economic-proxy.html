@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -25,20 +29,26 @@
         @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
         @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="flex items-center gap-2 text-white font-bold text-lg"><span>💹</span><span class="font-display">Investo</span></a>
             <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-300 font-semibold">Economic Proxy</span>
+            <span class="text-slate-700 dark:text-slate-300 font-semibold">Economic Proxy</span>
         </div>
         <div class="flex items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -66,14 +76,14 @@
         <div class="max-w-7xl mx-auto space-y-6">
             <div>
                 <h1 class="text-2xl font-bold text-white">🏭 Satellite & Economic Proxy</h1>
-                <p class="text-slate-400 text-sm mt-1">Indikator alternatif untuk memproyeksikan aktivitas ekonomi sebelum data resmi GDP rilis</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Indikator alternatif untuk memproyeksikan aktivitas ekonomi sebelum data resmi GDP rilis</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 [[range .Proxies]]
                 <div class="card p-5 hover:border-blue-500/30 transition-colors">
                     <div class="flex items-start justify-between mb-3">
-                        <span class="px-2 py-1 rounded text-xs font-semibold bg-slate-800 text-slate-400">[[.Category]]</span>
+                        <span class="px-2 py-1 rounded text-xs font-semibold bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">[[.Category]]</span>
                         <span class="text-lg [[if eq .Trend "up"]]text-success[[else if eq .Trend "down"]]text-danger[[else]]text-warning[[end]]">
                             [[if eq .Trend "up"]]&#9650;[[else if eq .Trend "down"]]&#9660;[[else]]&#9644;[[end]]
                         </span>
@@ -108,5 +118,6 @@
             [[end]]
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

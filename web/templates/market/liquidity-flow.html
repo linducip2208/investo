@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -21,6 +25,12 @@
         .flow-positive{color:#34d399}
         .flow-negative{color:#f87171}
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="liquidityFlow()" x-init="init()">
@@ -105,8 +115,8 @@ function liquidityFlow() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
         <span class="font-bold text-lg text-white">Investo</span>
     </div>
@@ -124,14 +134,14 @@ function liquidityFlow() {
 
 <!-- MAIN -->
 <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-1 max-w-md hidden sm:block">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
         <div class="flex items-center gap-2 ml-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
                 <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
             </div>
@@ -144,7 +154,7 @@ function liquidityFlow() {
     <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
         <div>
             <h1 class="text-xl lg:text-2xl font-bold text-white">Liquidity Flow Tracker</h1>
-            <p class="text-sm text-slate-400 mt-0.5">Track foreign vs domestic investor flows in Indonesian equity market.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Track foreign vs domestic investor flows in Indonesian equity market.</p>
         </div>
 
         <template x-if="!loading && summary">
@@ -169,9 +179,9 @@ function liquidityFlow() {
         </template>
 
         <div class="card p-5">
-            <h3 class="text-sm font-semibold text-slate-300 mb-4">Flow History (30 days)</h3>
+            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Flow History (30 days)</h3>
             <template x-if="loading">
-                <div class="h-80 bg-slate-700/20 rounded-lg animate-pulse"></div>
+                <div class="h-80 bg-slate-100/20 dark:bg-slate-700/20 rounded-lg animate-pulse"></div>
             </template>
             <template x-if="!loading">
                 <div style="height:380px"><canvas id="flowChart"></canvas></div>
@@ -180,14 +190,14 @@ function liquidityFlow() {
 
         <template x-if="!loading && summary">
             <div class="card p-5">
-                <h3 class="text-sm font-semibold text-slate-300 mb-4">Who's Buying?</h3>
+                <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Who's Buying?</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div class="bg-slate-800/50 rounded-xl p-4">
-                        <p class="text-slate-400 mb-1">Total Foreign Buy (absolute)</p>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4">
+                        <p class="text-slate-500 dark:text-slate-400 mb-1">Total Foreign Buy (absolute)</p>
                         <p class="text-lg font-bold font-mono text-green-400" x-text="formatB(summary.foreign_buy)"></p>
                     </div>
-                    <div class="bg-slate-800/50 rounded-xl p-4">
-                        <p class="text-slate-400 mb-1">Total Foreign Sell (absolute)</p>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4">
+                        <p class="text-slate-500 dark:text-slate-400 mb-1">Total Foreign Sell (absolute)</p>
                         <p class="text-lg font-bold font-mono text-red-400" x-text="formatB(summary.foreign_sell)"></p>
                     </div>
                 </div>
@@ -195,5 +205,6 @@ function liquidityFlow() {
         </template>
     </main>
 </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

@@ -7,12 +7,16 @@
     <meta name="description" content="Perbandingan head-to-head saham [[.StockA.Code]] ([[.StockA.Name]]) vs [[.StockB.Code]] ([[.StockB.Name]]). Bandingkan harga, PER, PBV, ROE, dan metrik fundamental lainnya.">
     <meta property="og:title" content="[[.StockA.Code]] vs [[.StockB.Code]] &mdash; Perbandingan">
     <meta property="og:description" content="Lihat perbandingan [[.StockA.Code]] vs [[.StockB.Code]]: harga saham, rasio fundamental, dan kinerja.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/lightweight-charts.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -89,6 +93,12 @@
             $nextTick(() => initCompareChart());
         }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="font-sans bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen antialiased">
 
@@ -109,7 +119,7 @@
                 <a href="/dashboard/watchlists" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Watchlist</a>
             </nav>
             <div class="flex items-center gap-3">
-                <button @click="darkMode = !darkMode" class="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+                <button @click="darkMode = !darkMode" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
                     <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                     <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </button>
@@ -129,7 +139,7 @@
     <div class="mb-8 text-center">
         <h1 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
             <a href="/saham/[[.StockA.Code]]" class="text-brand-600 dark:text-brand-400 hover:underline">[[.StockA.Code]]</a>
-            <span class="text-slate-400 dark:text-slate-600 mx-3">vs</span>
+            <span class="text-slate-500 dark:text-slate-400 dark:text-slate-600 mx-3">vs</span>
             <a href="/saham/[[.StockB.Code]]" class="text-amber-600 dark:text-amber-400 hover:underline">[[.StockB.Code]]</a>
         </h1>
         <p class="mt-2 text-slate-500 dark:text-slate-400">[[.StockA.Name]] &bull; [[.StockB.Name]]</p>
@@ -197,12 +207,12 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                        <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Market Cap</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.MarketCapFormatted]]</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.MarketCapFormatted]]</td><td class="px-6 py-3.5 text-center font-mono text-xs text-slate-400">[[.Comparison.MarketCapDiff]]</td></tr>
+                        <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Market Cap</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.MarketCapFormatted]]</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.MarketCapFormatted]]</td><td class="px-6 py-3.5 text-center font-mono text-xs text-slate-500 dark:text-slate-400">[[.Comparison.MarketCapDiff]]</td></tr>
                         <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">PER</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.PER]]x</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.PER]]x</td><td class="px-6 py-3.5 text-center font-mono text-xs [[if .Comparison.PERHigher]]text-brand-600 dark:text-brand-400[[else]]text-amber-600 dark:text-amber-400[[end]]">[[.Comparison.PERDiff]]</td></tr>
                         <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">PBV</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.PBV]]x</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.PBV]]x</td><td class="px-6 py-3.5 text-center font-mono text-xs [[if .Comparison.PBVHigher]]text-brand-600 dark:text-brand-400[[else]]text-amber-600 dark:text-amber-400[[end]]">[[.Comparison.PBVDiff]]</td></tr>
                         <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">ROE</td><td class="px-6 py-3.5 text-right font-mono [[if ge (printf "%f" .StockA.Fundamentals.ROE) 15.0]]text-emerald-600 dark:text-emerald-400[[end]]">[[.StockA.Fundamentals.ROE]]%</td><td class="px-6 py-3.5 text-right font-mono [[if ge (printf "%f" .StockB.Fundamentals.ROE) 15.0]]text-emerald-600 dark:text-emerald-400[[end]]">[[.StockB.Fundamentals.ROE]]%</td><td class="px-6 py-3.5 text-center font-mono text-xs [[if .Comparison.ROEHigher]]text-brand-600 dark:text-brand-400[[else]]text-amber-600 dark:text-amber-400[[end]]">[[.Comparison.ROEDiff]]</td></tr>
                         <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Dividend Yield</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.DividendYield]]%</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.DividendYield]]%</td><td class="px-6 py-3.5 text-center font-mono text-xs [[if .Comparison.DivYieldHigher]]text-brand-600 dark:text-brand-400[[else]]text-amber-600 dark:text-amber-400[[end]]">[[.Comparison.DivYieldDiff]]</td></tr>
-                        <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Pendapatan</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.RevenueFormatted]]</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.RevenueFormatted]]</td><td class="px-6 py-3.5 text-center font-mono text-xs text-slate-400">[[.Comparison.RevenueDiff]]</td></tr>
+                        <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Pendapatan</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.RevenueFormatted]]</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.RevenueFormatted]]</td><td class="px-6 py-3.5 text-center font-mono text-xs text-slate-500 dark:text-slate-400">[[.Comparison.RevenueDiff]]</td></tr>
                         <tr><td class="px-6 py-3.5 text-slate-600 dark:text-slate-300 font-medium">Laba Bersih</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockA.Fundamentals.NetIncomeFormatted]]</td><td class="px-6 py-3.5 text-right font-mono text-slate-900 dark:text-white">[[.StockB.Fundamentals.NetIncomeFormatted]]</td><td class="px-6 py-3.5 text-center font-mono text-xs [[if .Comparison.NetIncomeHigher]]text-brand-600 dark:text-brand-400[[else]]text-amber-600 dark:text-amber-400[[end]]">[[.Comparison.NetIncomeDiff]]</td></tr>
                     </tbody>
                 </table>
@@ -224,7 +234,7 @@
 </main>
 
 <footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">
         <p>&copy; [[currentYear]] Investo. Data perbandingan bersumber dari IDX.</p>
     </div>
 </footer>
@@ -242,5 +252,6 @@
 }
 </script>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan Sistem · Admin · [[.AppName]]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
     <style>
@@ -40,42 +47,48 @@
             theme: { extend: { fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'], mono: ['JetBrains Mono','Fira Code','monospace'] } } },
         }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, saved: false }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
             <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
             <div>
                 <div class="font-bold text-base leading-tight">[[.AppName]]</div>
-                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
             </div>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Dashboard</span>
             </a>
-            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
                 <span class="text-sm">Pengguna</span>
             </a>
-            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="text-sm">Saham</span>
             </a>
-            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Sektor</span>
             </a>
-            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
+            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
                 <span class="text-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span class="text-sm">Blog</span>
             </a>
             <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
@@ -83,16 +96,16 @@
                 <span class="text-sm">Pengaturan</span>
             </a>
         </nav>
-        <div class="px-6 py-4 border-t border-slate-700/60 space-y-3">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm">
+        <div class="px-6 py-4 border-t border-slate-200/60 dark:border-slate-700/60 space-y-3">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors text-sm">
                 <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
                 <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
             </button>
-            <div class="flex items-center gap-3 px-3 py-2 text-slate-400 text-xs">
+            <div class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 text-xs">
                 <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
                 <div>
-                    <div class="text-slate-300 text-xs font-medium">[[.AdminName]]</div>
+                    <div class="text-slate-700 dark:text-slate-300 text-xs font-medium">[[.AdminName]]</div>
                     <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
                 </div>
             </div>
@@ -105,7 +118,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
             <div class="text-sm text-slate-500 font-medium hidden sm:block">[[.AppName]] Admin</div>
-            <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+            <span class="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
         </header>
 
         <div class="px-6 py-6 max-w-4xl mx-auto space-y-6">
@@ -117,14 +130,14 @@
             <div class="card rounded-2xl border shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
                     <h2 class="font-bold text-base text-slate-900 dark:text-white">Umum</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Pengaturan dasar aplikasi</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pengaturan dasar aplikasi</p>
                 </div>
                 <form method="POST" action="/admin/pengaturan" @submit="saved = true; setTimeout(() => saved = false, 3000)">
                     <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">App Name</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Nama aplikasi yang ditampilkan di title bar dan header</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Nama aplikasi yang ditampilkan di title bar dan header</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="text" name="app_name" value="[[.Settings.AppName]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
@@ -133,7 +146,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">App URL</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">URL publik aplikasi (contoh: https://investo.id)</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">URL publik aplikasi (contoh: https://investo.id)</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="url" name="app_url" value="[[.Settings.AppURL]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
@@ -142,7 +155,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Default Data Source</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Sumber data default untuk harga saham (IDX / Yahoo Finance / Alpha Vantage)</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Sumber data default untuk harga saham (IDX / Yahoo Finance / Alpha Vantage)</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <select name="default_data_source" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow appearance-none bg-no-repeat" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e&quot;); background-position: right 0.75rem center; background-size: 1.25rem;">
@@ -155,7 +168,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Scraper Interval (menit)</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Interval penjadwalan scraper data harga saham</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Interval penjadwalan scraper data harga saham</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="number" name="scraper_interval" value="[[.Settings.ScraperInterval]]" min="1" max="1440" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
@@ -164,7 +177,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Max Alerts Per User</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Batas maksimal alert/notifikasi per pengguna</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Batas maksimal alert/notifikasi per pengguna</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="number" name="max_alerts_per_user" value="[[.Settings.MaxAlertsPerUser]]" min="1" max="100" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
@@ -174,13 +187,13 @@
 
                     <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700">
                         <h2 class="font-bold text-base text-slate-900 dark:text-white mb-1">Email (SMTP)</h2>
-                        <p class="text-xs text-slate-400">Konfigurasi pengiriman email</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Konfigurasi pengiriman email</p>
                     </div>
                     <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Host</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Server SMTP untuk pengiriman email</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Server SMTP untuk pengiriman email</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="text" name="smtp_host" value="[[.Settings.SMTPHost]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="smtp.gmail.com">
@@ -189,7 +202,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Port</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Port SMTP (umum: 587 untuk TLS, 465 untuk SSL)</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Port SMTP (umum: 587 untuk TLS, 465 untuk SSL)</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="number" name="smtp_port" value="[[.Settings.SMTPPort]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="587">
@@ -198,7 +211,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Username</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Username akun SMTP</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Username akun SMTP</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="text" name="smtp_user" value="[[.Settings.SMTPUser]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="user@gmail.com">
@@ -207,7 +220,7 @@
                         <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                             <div>
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Password</label>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Password / App Password SMTP</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Password / App Password SMTP</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <input type="password" name="smtp_password" value="[[.Settings.SMTPPassword]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="••••••••">
@@ -253,5 +266,6 @@
         </div>
     </main>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

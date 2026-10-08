@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -36,22 +40,28 @@
         @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}}
         @media(max-width:640px){.main-content{padding:12px}.topbar{padding:12px 16px}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="flex items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-slate-800">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="flex items-center gap-2 text-white font-bold text-lg">
                 <span>💹</span><span class="font-display">Investo</span>
             </a>
             <span class="text-slate-500 mx-2">/</span>
-            <span class="text-slate-300 font-semibold">LQ45 Rebalance Predictor</span>
+            <span class="text-slate-700 dark:text-slate-300 font-semibold">LQ45 Rebalance Predictor</span>
         </div>
         <div class="flex items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-            [[else]]<a href="/login" class="text-sm text-slate-400 hover:text-white">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="text-sm text-slate-500 dark:text-slate-400 hover:text-white">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -82,7 +92,7 @@
         <div class="max-w-7xl mx-auto space-y-8">
             <div>
                 <h1 class="text-2xl font-bold text-white">⚖️ LQ45 Rebalance Predictor</h1>
-                <p class="text-slate-400 text-sm mt-1">Prediksi saham yang berpotensi masuk dan keluar LQ45 berdasarkan kriteria BEI</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Prediksi saham yang berpotensi masuk dan keluar LQ45 berdasarkan kriteria BEI</p>
             </div>
 
             <div>
@@ -95,11 +105,11 @@
                         <div class="flex items-start justify-between mb-3">
                             <div>
                                 <a href="/saham/[[.StockCode]]" class="text-white font-bold text-lg hover:text-green-400">[[.StockCode]]</a>
-                                <p class="text-slate-400 text-xs">[[.StockName]]</p>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs">[[.StockName]]</p>
                             </div>
                             <span class="badge badge-in">IN</span>
                         </div>
-                        <p class="text-slate-300 text-sm mb-3">[[.Reason]]</p>
+                        <p class="text-slate-700 dark:text-slate-300 text-sm mb-3">[[.Reason]]</p>
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Confidence</span>
@@ -110,15 +120,15 @@
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Market Cap</span>
-                                <span class="font-mono text-slate-400">Rp [[formatNumber .MarketCap]]</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">Rp [[formatNumber .MarketCap]]</span>
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Avg Volume</span>
-                                <span class="font-mono text-slate-400">[[formatVolume .AvgVolume]]</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">[[formatVolume .AvgVolume]]</span>
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Free Float</span>
-                                <span class="font-mono text-slate-400">[[printf "%.2f" .FreeFloat]]%</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">[[printf "%.2f" .FreeFloat]]%</span>
                             </div>
                         </div>
                     </div>
@@ -139,11 +149,11 @@
                         <div class="flex items-start justify-between mb-3">
                             <div>
                                 <a href="/saham/[[.StockCode]]" class="text-white font-bold text-lg hover:text-red-400">[[.StockCode]]</a>
-                                <p class="text-slate-400 text-xs">[[.StockName]]</p>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs">[[.StockName]]</p>
                             </div>
                             <span class="badge badge-out">OUT</span>
                         </div>
-                        <p class="text-slate-300 text-sm mb-3">[[.Reason]]</p>
+                        <p class="text-slate-700 dark:text-slate-300 text-sm mb-3">[[.Reason]]</p>
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Confidence</span>
@@ -154,15 +164,15 @@
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Market Cap</span>
-                                <span class="font-mono text-slate-400">Rp [[formatNumber .MarketCap]]</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">Rp [[formatNumber .MarketCap]]</span>
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Avg Volume</span>
-                                <span class="font-mono text-slate-400">[[formatVolume .AvgVolume]]</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">[[formatVolume .AvgVolume]]</span>
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span class="text-slate-500">Free Float</span>
-                                <span class="font-mono text-slate-400">[[printf "%.2f" .FreeFloat]]%</span>
+                                <span class="font-mono text-slate-500 dark:text-slate-400">[[printf "%.2f" .FreeFloat]]%</span>
                             </div>
                         </div>
                     </div>
@@ -174,10 +184,11 @@
             </div>
 
             <div class="card p-6 text-sm text-slate-500 leading-relaxed">
-                <p class="font-semibold text-slate-400 mb-2">📋 Metodologi</p>
+                <p class="font-semibold text-slate-500 dark:text-slate-400 mb-2">📋 Metodologi</p>
                 <p>Prediksi berdasarkan kriteria LQ45 BEI: kapitalisasi pasar (top 60), likuiditas transaksi, free float > 15%, dan kondisi fundamental. Evaluasi dilakukan setiap 6 bulan (Februari & Agustus). Confidence score merepresentasikan probabilitas prediksi berdasarkan data historis.</p>
             </div>
         </div>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

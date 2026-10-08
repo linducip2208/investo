@@ -29,22 +29,32 @@
         .reveal.visible{opacity:1;transform:translateY(0)}
         @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <a href="/" class="flex items-center gap-2.5"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-xl text-white">Investo</span></a>
             <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/saham" class="text-slate-300 hover:text-blue-400 transition-colors">Saham</a>
-                <a href="/blog" class="text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/saham" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Saham</a>
+                <a href="/blog" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
                 [[if .User]]
                 <a href="/dashboard" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Dashboard</a>
                 [[else]]
@@ -60,12 +70,12 @@
     <section class="mb-12 reveal">
         <span class="inline-block px-3 py-1 text-xs font-semibold bg-emerald-900/30 text-emerald-300 rounded-full mb-4">Komunitas</span>
         <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Komunitas Saham [[.City]]</h1>
-        <p class="text-base text-slate-400 mt-4">Temukan grup diskusi, workshop, dan sesi sharing pengalaman investasi saham di [[.City]] dan sekitarnya.</p>
+        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Temukan grup diskusi, workshop, dan sesi sharing pengalaman investasi saham di [[.City]] dan sekitarnya.</p>
     </section>
     <section class="mb-12 reveal">
         <div class="card p-6 lg:p-8">
             <h2 class="text-2xl font-bold text-white mb-4">Gabung Komunitas Investor di [[.City]]</h2>
-            <div class="space-y-4 text-slate-400 leading-relaxed">
+            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
                 <p>Di [[.City]] dan wilayah [[.Province]], semakin banyak investor yang tergabung dalam komunitas saham untuk saling belajar dan berbagi pengalaman.</p>
                 <p>Komunitas saham di [[.City]] biasanya mengadakan pertemuan rutin, baik online maupun offline, untuk membahas analisis pasar, strategi investasi, dan review portofolio.</p>
                 <h3 class="font-semibold text-white text-base mt-6">Aktivitas Komunitas</h3>
@@ -85,21 +95,21 @@
     <section class="mb-12 reveal">
         <span class="inline-block px-3 py-1 text-xs font-semibold bg-violet-900/30 text-violet-300 rounded-full mb-4">Aplikasi</span>
         <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Aplikasi Saham Terbaik untuk Investor di [[.City]]</h1>
-        <p class="text-base text-slate-400 mt-4">Rekomendasi aplikasi trading dan analisis saham terbaik untuk investor di [[.City]].</p>
+        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Rekomendasi aplikasi trading dan analisis saham terbaik untuk investor di [[.City]].</p>
     </section>
     <section class="mb-12 reveal">
         <div class="card p-6 lg:p-8">
             <h2 class="text-2xl font-bold text-white mb-4">Aplikasi Trading untuk [[.City]]</h2>
-            <div class="space-y-4 text-slate-400 leading-relaxed">
+            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
                 <p>Investor di [[.City]] dan [[.Province]] memiliki akses ke berbagai aplikasi trading saham yang terdaftar di OJK.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
                         <div class="font-semibold text-white">Full Service Sekuritas</div>
-                        <div class="text-sm text-slate-400 mt-1">Cocok untuk investor yang butuh riset dan rekomendasi dari analis profesional.</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cocok untuk investor yang butuh riset dan rekomendasi dari analis profesional.</div>
                     </div>
-                    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
                         <div class="font-semibold text-white">Online Trading Platform</div>
-                        <div class="text-sm text-slate-400 mt-1">Cocok untuk trader aktif dengan fitur chart dan order yang lengkap.</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cocok untuk trader aktif dengan fitur chart dan order yang lengkap.</div>
                     </div>
                 </div>
             </div>
@@ -109,12 +119,12 @@
     <section class="mb-12 reveal">
         <span class="inline-block px-3 py-1 text-xs font-semibold bg-blue-900/30 text-blue-300 rounded-full mb-4">Edukasi</span>
         <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Belajar Saham di [[.City]]</h1>
-        <p class="text-base text-slate-400 mt-4">Panduan lengkap belajar investasi saham untuk pemula di [[.City]], [[.Province]].</p>
+        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Panduan lengkap belajar investasi saham untuk pemula di [[.City]], [[.Province]].</p>
     </section>
     <section class="mb-12 reveal">
         <div class="card p-6 lg:p-8">
             <h2 class="text-2xl font-bold text-white mb-4">Mulai Investasi Saham di [[.City]]</h2>
-            <div class="space-y-4 text-slate-400 leading-relaxed">
+            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
                 <p>Di [[.City]], banyak investor yang mulai terjun ke pasar modal Indonesia melalui Bursa Efek Indonesia (BEI). Dengan modal mulai dari Rp 100.000, siapa pun bisa memulai investasi saham.</p>
                 <h3 class="font-semibold text-white text-base mt-6">Langkah Memulai</h3>
                 <ol class="list-decimal pl-6 space-y-2">
@@ -159,7 +169,7 @@
     </section>
 </main>
 
-<footer class="border-t border-slate-800 py-10">
+<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-lg text-white">Investo</span></div>
         <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
@@ -176,5 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 });
 </script>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

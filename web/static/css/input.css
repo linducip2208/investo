@@ -1,3 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Class-based dark mode (legacy templates toggle .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Fintech design tokens (Tailwind v4 theme) */
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+
+  --color-fintech-bg: #f4f6fb;
+  --color-fintech-surface: #ffffff;
+  --color-fintech-border: #e3e8f0;
+  --color-fintech-text: #16213a;
+  --color-fintech-muted: #64748b;
+  --color-fintech-primary: #2065d1;
+  --color-fintech-primary-dark: #184ea6;
+  --color-fintech-success: #18794e;
+  --color-fintech-danger: #c93a3a;
+  --color-fintech-warning: #b7791f;
+  --color-fintech-info: #2065d1;
+}

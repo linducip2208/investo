@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "assets": "node scripts/vendor-assets.js",
+    "css:tabler": "sass node_modules/@tabler/core/scss/tabler.scss web/static/css/vendor/tabler.css --style=compressed",
+    "css:tw": "tailwindcss -i web/static/css/input.css -o web/static/css/output.css --minify",
+    "build:assets": "npm run assets && npm run css:tabler && npm run css:tw",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,6 +15,16 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@tabler/core": "^1.6.1",
+    "@tabler/icons": "^3.49.0",
+    "alpinejs": "^3.17.4",
+    "chart.js": "^4.5.1",
+    "lightweight-charts": "^5.2.1",
+    "marked": "^18.1.0",
     "playwright": "^1.62.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "sass": "^1.105.1"
   }
 }

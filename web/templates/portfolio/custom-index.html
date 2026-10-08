@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -23,6 +27,12 @@
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;background:#3b82f6;border-radius:50%;cursor:pointer;border:2px solid #93c5fd}
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="customIndex()">
@@ -124,43 +134,110 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
-            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
-            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Market Analytics</p>
-            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
-            <a href="/market/fear-greed" class="sidebar-link"><span class="icon">😱</span> Fear & Greed</a>
-            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon">🔄</span> Sector Rotation</a>
-            <a href="/market/pair-trading" class="sidebar-link"><span class="icon">🔗</span> Pair Trading</a>
-            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon">💡</span> Trade Ideas</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+  <path d="M9 4v13" />
+  <path d="M15 7v13" />
+</svg></span> Heatmap</a>
+            <a href="/market/fear-greed" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 11a7 7 0 0 1 14 0v7a1.78 1.78 0 0 1 -3.1 1.4a1.65 1.65 0 0 0 -2.6 0a1.65 1.65 0 0 1 -2.6 0a1.65 1.65 0 0 0 -2.6 0a1.78 1.78 0 0 1 -3.1 -1.4v-7" />
+  <path d="M10 10l.01 0" />
+  <path d="M14 10l.01 0" />
+  <path d="M10 14a3.5 3.5 0 0 0 4 0" />
+</svg></span> Fear & Greed</a>
+            <a href="/market/sector-rotation" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+  <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+</svg></span> Sector Rotation</a>
+            <a href="/market/pair-trading" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 15l6 -6" />
+  <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
+  <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
+</svg></span> Pair Trading</a>
+            <a href="/market/trade-ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+  <path d="M9.7 17l4.6 0" />
+</svg></span> Trade Ideas</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
-            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
-            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
-            <a href="/dashboard/indices" class="sidebar-link active"><span class="icon">📐</span> Custom Index</a>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+            <a href="/dashboard/indices" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
+  <path d="M4 8l2 0" />
+  <path d="M4 12l3 0" />
+  <path d="M4 16l2 0" />
+  <path d="M8 4l0 2" />
+  <path d="M12 4l0 3" />
+  <path d="M16 4l0 2" />
+</svg></span> Custom Index</a>
         </nav>
-        <div class="p-3 border-t border-slate-800">
-            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
         </div>
     </aside>
 
     <!-- TOPBAR -->
-    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 z-40 flex items-center justify-between px-6">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
+    <header class="fixed top-0 right-0 left-0 lg:left-60 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-40 flex items-center justify-between px-6">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="text-sm text-slate-400"><span class="text-slate-600">Dashboard /</span> Custom Indices</div>
+        <div class="text-sm text-slate-500 dark:text-slate-400"><span class="text-slate-600">Dashboard /</span> Custom Indices</div>
         <div class="flex items-center gap-3">
             [[if .User]]
-            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+            <a href="/profil" class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-white transition-colors">
                 <span class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
@@ -173,7 +250,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-white">Custom Indices</h1>
-                    <p class="text-slate-400 text-sm mt-1">Build and track your own market index</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Build and track your own market index</p>
                 </div>
                 <button @click="modalOpen=true"
                         class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl font-semibold text-sm hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg shadow-blue-600/20">
@@ -186,7 +263,7 @@
             <template x-if="indices.length === 0">
                 <div class="card p-12 text-center">
                     <div class="text-4xl mb-3">📐</div>
-                    <div class="text-slate-400 text-lg mb-2">Belum ada indeks</div>
+                    <div class="text-slate-500 dark:text-slate-400 text-lg mb-2">Belum ada indeks</div>
                     <p class="text-slate-600 text-sm mb-4">Buat indeks kustom pertama Anda dengan memilih saham-saham pilihan</p>
                     <button @click="modalOpen=true" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors">Buat Indeks Baru</button>
                 </div>
@@ -210,10 +287,10 @@
                                 </div>
                                 <div>
                                     <div class="text-xs text-slate-500 mb-0.5">Created</div>
-                                    <span class="text-slate-400" x-text="idx.created_at"></span>
+                                    <span class="text-slate-500 dark:text-slate-400" x-text="idx.created_at"></span>
                                 </div>
                             </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between">
+                            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 flex justify-between">
                                 <button @click.stop="showDetail(idx.id)" class="text-xs text-blue-400 hover:text-blue-300 font-medium">Lihat Detail</button>
                                 <button @click.stop="deleteIndex(idx.id)" class="text-xs text-red-400 hover:text-red-300 font-medium">Hapus</button>
                             </div>
@@ -225,38 +302,38 @@
 
         <!-- Create Modal -->
         <div x-show="modalOpen" @click.self="modalOpen=false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
-                <div class="p-6 border-b border-slate-700 flex items-center justify-between">
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
+                <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-white">Buat Indeks Baru</h2>
-                    <button @click="modalOpen=false" class="text-slate-400 hover:text-white transition-colors p-1">
+                    <button @click="modalOpen=false" class="text-slate-500 dark:text-slate-400 hover:text-white transition-colors p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <form id="create-form" action="/dashboard/indices" method="POST" class="p-6 space-y-5" @submit.prevent="createIndex()">
                     <div>
-                        <label class="block text-sm text-slate-400 mb-1.5 font-medium">Nama Indeks</label>
+                        <label class="block text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">Nama Indeks</label>
                         <input type="text" name="name" x-model="newName" placeholder="contoh: Indeks Teknologi" required
-                               class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none text-sm">
+                               class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none text-sm">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-400 mb-1.5 font-medium">Nilai Dasar (Base Value)</label>
+                        <label class="block text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">Nilai Dasar (Base Value)</label>
                         <input type="number" name="base_value" x-model.number="newBaseValue" step="1" min="1"
-                               class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:outline-none text-sm">
+                               class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:outline-none text-sm">
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <label class="block text-sm text-slate-400 font-medium">Pilih Saham</label>
+                            <label class="block text-sm text-slate-500 dark:text-slate-400 font-medium">Pilih Saham</label>
                             <span class="text-xs font-mono text-slate-500" x-text="selectedStocks.length + ' selected'"></span>
                         </div>
-                        <div class="max-h-60 overflow-y-auto space-y-1 bg-slate-800 rounded-xl p-3">
+                        <div class="max-h-60 overflow-y-auto space-y-1 bg-white dark:bg-slate-800 rounded-xl p-3">
                             <template x-for="stock in allStocks" :key="stock.code">
-                                <div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-slate-700 transition-colors">
+                                <div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                                     <input type="checkbox" :id="'chk-' + stock.code" :checked="selectedStocks.includes(stock.code)" @change="toggleStock(stock.code)"
-                                           class="w-4 h-4 rounded border-slate-500 text-blue-600 focus:ring-blue-500 bg-slate-700">
+                                           class="w-4 h-4 rounded border-slate-500 text-blue-600 focus:ring-blue-500 bg-slate-100 dark:bg-slate-700">
                                     <label :for="'chk-' + stock.code" class="flex-1 cursor-pointer text-sm">
                                         <span class="font-mono text-white font-semibold" x-text="stock.code"></span>
-                                        <span class="text-slate-400 ml-2" x-text="stock.name"></span>
+                                        <span class="text-slate-500 dark:text-slate-400 ml-2" x-text="stock.name"></span>
                                     </label>
                                 </div>
                             </template>
@@ -266,7 +343,7 @@
                     <template x-if="selectedStocks.length > 0">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-sm text-slate-400 font-medium">Bobot Saham</label>
+                                <label class="block text-sm text-slate-500 dark:text-slate-400 font-medium">Bobot Saham</label>
                                 <span class="text-xs font-mono" :class="weightTotal === 100 ? 'text-success' : 'text-danger'" x-text="'Total: ' + weightTotal.toFixed(1) + '%'"></span>
                             </div>
                             <div class="space-y-3">
@@ -277,7 +354,7 @@
                                                :value="stockWeights[code] || 0"
                                                @input="updateWeight(code, $event.target.value)"
                                                class="flex-1">
-                                        <span class="font-mono text-sm text-slate-300 w-14 text-right flex-shrink-0" x-text="(stockWeights[code] || 0).toFixed(1) + '%'"></span>
+                                        <span class="font-mono text-sm text-slate-700 dark:text-slate-300 w-14 text-right flex-shrink-0" x-text="(stockWeights[code] || 0).toFixed(1) + '%'"></span>
                                     </div>
                                 </template>
                             </div>
@@ -295,10 +372,10 @@
 
         <!-- Detail Modal -->
         <div x-show="detailOpen" @click.self="detailOpen=false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
-                <div class="p-6 border-b border-slate-700 flex items-center justify-between">
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl" @click.stop="">
+                <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-white" x-text="indexDetail ? indexDetail.index.name : ''"></h2>
-                    <button @click="detailOpen=false" class="text-slate-400 hover:text-white transition-colors p-1">
+                    <button @click="detailOpen=false" class="text-slate-500 dark:text-slate-400 hover:text-white transition-colors p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
@@ -317,17 +394,17 @@
                             </div>
                             <div>
                                 <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Base</div>
-                                <div class="text-xl font-bold text-slate-400 font-mono" x-text="indexDetail.index.base_value"></div>
+                                <div class="text-xl font-bold text-slate-500 dark:text-slate-400 font-mono" x-text="indexDetail.index.base_value"></div>
                             </div>
                         </div>
 
                         <!-- Components Table -->
                         <div>
-                            <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Index Components</h3>
-                            <div class="overflow-hidden rounded-xl border border-slate-700">
+                            <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Index Components</h3>
+                            <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                                 <table class="w-full">
                                     <thead>
-                                        <tr class="border-b border-slate-700 text-xs text-slate-400 uppercase tracking-wider bg-slate-800">
+                                        <tr class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider bg-white dark:bg-slate-800">
                                             <th class="text-left px-4 py-3 font-semibold">Code</th>
                                             <th class="text-right px-4 py-3 font-semibold">Weight</th>
                                             <th class="text-right px-4 py-3 font-semibold">Price</th>
@@ -336,9 +413,9 @@
                                     </thead>
                                     <tbody>
                                         <template x-for="comp in indexDetail.components" :key="comp.code">
-                                            <tr class="border-b border-slate-800 hover:bg-slate-800/30 transition-colors">
+                                            <tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-white/30 dark:hover:bg-slate-800/30 transition-colors">
                                                 <td class="px-4 py-3 font-mono text-sm font-semibold text-white" x-text="comp.code"></td>
-                                                <td class="px-4 py-3 text-right font-mono text-sm text-slate-300" x-text="comp.weight.toFixed(1) + '%'"></td>
+                                                <td class="px-4 py-3 text-right font-mono text-sm text-slate-700 dark:text-slate-300" x-text="comp.weight.toFixed(1) + '%'"></td>
                                                 <td class="px-4 py-3 text-right font-mono text-sm text-white" x-text="comp.price"></td>
                                                 <td class="px-4 py-3 text-right font-mono text-sm" :class="comp.change >= 0 ? 'text-success' : 'text-danger'" x-text="(comp.change >= 0 ? '+' : '') + comp.change.toFixed(2) + '%'"></td>
                                             </tr>
@@ -353,7 +430,7 @@
                 <template x-if="!indexDetail">
                     <div class="p-12 text-center">
                         <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                        <p class="text-slate-400">Loading index details...</p>
+                        <p class="text-slate-500 dark:text-slate-400">Loading index details...</p>
                     </div>
                 </template>
             </div>
@@ -361,5 +438,6 @@
     </main>
 
     <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

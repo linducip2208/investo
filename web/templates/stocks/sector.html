@@ -7,11 +7,15 @@
     <meta name="description" content="Daftar 10 saham [[.SectorName]] terbaik tahun [[.Year]] berdasarkan kinerja dan fundamental. Data IDX lengkap dengan PER, PBV, dan market cap.">
     <meta property="og:title" content="Saham [[.SectorName]] Terbaik [[.Year]]">
     <meta property="og:description" content="Temukan saham [[.SectorName]] dengan kinerja terbaik di IDX. Ranking, harga, dan rasio keuangan.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -28,6 +32,12 @@
             }
         }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="font-sans bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen antialiased">
 
@@ -48,7 +58,7 @@
                 <a href="/dashboard/watchlists" class="text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors">Watchlist</a>
             </nav>
             <div class="flex items-center gap-3">
-                <button @click="darkMode = !darkMode" class="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+                <button @click="darkMode = !darkMode" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
                     <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                     <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </button>
@@ -98,7 +108,7 @@
                             [[if le $index 2]]
                             <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold [[if eq $index 0]]bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300[[else if eq $index 1]]bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300[[else]]bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300[[end]]">[[add $index 1]]</span>
                             [[else]]
-                            <span class="text-slate-400 dark:text-slate-500 font-mono text-xs">[[add $index 1]]</span>
+                            <span class="text-slate-500 dark:text-slate-400 dark:text-slate-500 font-mono text-xs">[[add $index 1]]</span>
                             [[end]]
                         </td>
                         <td class="px-4 sm:px-6 py-4">
@@ -120,7 +130,7 @@
                     [[end]]
                     [[if not .Stocks]]
                     <tr>
-                        <td colspan="9" class="px-6 py-16 text-center text-slate-400 dark:text-slate-500">Belum ada data saham untuk sektor ini</td>
+                        <td colspan="9" class="px-6 py-16 text-center text-slate-500 dark:text-slate-400 dark:text-slate-500">Belum ada data saham untuk sektor ini</td>
                     </tr>
                     [[end]]
                 </tbody>
@@ -141,7 +151,7 @@
 </main>
 
 <footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">
         <p>&copy; [[currentYear]] Investo. Data pasar bersumber dari IDX dan disajikan dengan penundaan.</p>
     </div>
 </footer>
@@ -166,5 +176,6 @@
 }
 </script>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Pipeline · Admin · Investo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
     <style>
@@ -89,22 +96,28 @@
             },
         }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, confirmBackfill: false, confirmFetch: false }" x-init="document.documentElement.classList.toggle('dark', darkMode);">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
             <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
             <div>
                 <div class="font-bold text-base leading-tight">Investo</div>
-                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
             </div>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Dashboard</span>
             </a>
             <a href="/admin/pipeline" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
@@ -122,7 +135,7 @@
             <div class="text-sm text-slate-500 font-medium hidden sm:block">Data Pipeline Monitor</div>
             <div class="flex items-center gap-4">
                 [[if .LastRunTime]]
-                <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">Last: [[.LastRunTime]]</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">Last: [[.LastRunTime]]</span>
                 [[end]]
             </div>
         </header>
@@ -217,7 +230,7 @@
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                     <div>
                         <h2 class="font-bold text-base text-slate-900 dark:text-white">Data Freshness</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Status update data per saham</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Status update data per saham</p>
                     </div>
                     <div class="flex gap-2 text-[11px]">
                         <span class="px-2 py-1 rounded-full status-badge fresh">Fresh (&lt;24h)</span>
@@ -250,7 +263,7 @@
                             [[end]]
                             [[if not .FreshnessData]]
                             <tr>
-                                <td colspan="5" class="px-5 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">Tidak ada data freshness. Lakukan fetch data terlebih dahulu.</td>
+                                <td colspan="5" class="px-5 py-10 text-center text-slate-500 dark:text-slate-400 dark:text-slate-500 text-sm">Tidak ada data freshness. Lakukan fetch data terlebih dahulu.</td>
                             </tr>
                             [[end]]
                         </tbody>
@@ -261,7 +274,7 @@
             <div class="card rounded-2xl border shadow-sm overflow-hidden">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
                     <h2 class="font-bold text-base text-slate-900 dark:text-white">Data Integrity Issues</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Masalah integritas data yang terdeteksi</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Masalah integritas data yang terdeteksi</p>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm table-row-hover">
@@ -306,5 +319,6 @@
         </div>
     </main>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

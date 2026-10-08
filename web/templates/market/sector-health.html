@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sector Health Index · Investo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -21,6 +25,12 @@
         .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#f59e0b}
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:12px!important}.stat-value{font-size:20px!important}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="sectorHealth()" x-init="init()">
@@ -38,8 +48,8 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
@@ -54,7 +64,7 @@
             <a href="/market/waran" class="sidebar-link"><span>🎫</span> Waran Tracker</a>
             <a href="/market/economic-calendar" class="sidebar-link"><span>📅</span> Economic Calendar</a>
             <a href="/calculators" class="sidebar-link"><span>🧮</span> Kalkulator</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <a href="/ideas" class="sidebar-link"><span>💡</span> Ideas</a>
             <a href="/leaderboard" class="sidebar-link"><span>🏆</span> Leaderboard</a>
             <a href="/blog" class="sidebar-link"><span>📝</span> Blog</a>
@@ -64,8 +74,8 @@
     <!-- MAIN -->
     <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-1">
                 <h1 class="text-lg font-bold text-white">Sector Health Index</h1>
             </div>
@@ -87,7 +97,7 @@
                                 <div class="text-[10px] uppercase font-semibold" :class="{'text-success': sec.health_score>=70, 'text-warning': sec.health_score>=40 && sec.health_score<70, 'text-danger': sec.health_score<40}">/100</div>
                             </div>
                         </div>
-                        <div class="w-full bg-slate-700/50 rounded-full h-2.5 mb-4">
+                        <div class="w-full bg-slate-100/50 dark:bg-slate-700/50 rounded-full h-2.5 mb-4">
                             <div class="h-2.5 rounded-full transition-all duration-700" :style="'width:'+sec.health_score+'%;background:'+gaugeColor(sec.health_score)"></div>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-center">
@@ -104,7 +114,7 @@
                                 <div class="text-sm font-mono text-white" x-text="sec.roe_avg + '%'"></div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-700/50 text-center">
+                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-200/50 dark:border-slate-700/50 text-center">
                             <div>
                                 <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-0.5">Momentum</div>
                                 <div class="text-xs font-mono" :class="sec.momentum_score>=50?'text-success':'text-warning'" x-text="sec.momentum_score"></div>
@@ -122,5 +132,6 @@
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

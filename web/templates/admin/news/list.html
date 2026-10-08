@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Berita · Admin · [[.AppName]]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
     <style>
@@ -46,59 +53,65 @@
             theme: { extend: { fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'], mono: ['JetBrains Mono','Fira Code','monospace'] } } },
         }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, deleteId: '', deleteTitle: '', showDeleteModal: false }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
             <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
             <div>
                 <div class="font-bold text-base leading-tight">[[.AppName]]</div>
-                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
             </div>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Dashboard</span>
             </a>
-            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
                 <span class="text-sm">Pengguna</span>
             </a>
-            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="text-sm">Saham</span>
             </a>
-            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Sektor</span>
             </a>
             <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
                 <span class="text-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span class="text-sm">Blog</span>
             </a>
-            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <span class="text-sm">Pengaturan</span>
             </a>
         </nav>
-        <div class="px-6 py-4 border-t border-slate-700/60 space-y-3">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm">
+        <div class="px-6 py-4 border-t border-slate-200/60 dark:border-slate-700/60 space-y-3">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors text-sm">
                 <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
                 <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
             </button>
-            <div class="flex items-center gap-3 px-3 py-2 text-slate-400 text-xs">
+            <div class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 text-xs">
                 <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
                 <div>
-                    <div class="text-slate-300 text-xs font-medium">[[.AdminName]]</div>
+                    <div class="text-slate-700 dark:text-slate-300 text-xs font-medium">[[.AdminName]]</div>
                     <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
                 </div>
             </div>
@@ -111,7 +124,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
             <div class="text-sm text-slate-500 font-medium hidden sm:block">[[.AppName]] Admin</div>
-            <span class="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+            <span class="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
         </header>
 
         <div class="px-6 py-6 max-w-7xl mx-auto space-y-6">
@@ -163,8 +176,8 @@
                             <tr>
                                 <td colspan="5" class="px-5 py-16 text-center">
                                     <div class="flex flex-col items-center gap-3">
-                                        <svg class="w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
-                                        <p class="text-slate-400 dark:text-slate-500 text-sm font-medium">Belum ada berita</p>
+                                        <svg class="w-12 h-12 text-slate-700 dark:text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
+                                        <p class="text-slate-500 dark:text-slate-400 dark:text-slate-500 text-sm font-medium">Belum ada berita</p>
                                         <a href="/admin/berita/create" class="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">Tambah berita pertama</a>
                                     </div>
                                 </td>
@@ -183,7 +196,7 @@
                         [[if .Pagination.HasPrev]]
                         <a href="?page=[[.Pagination.PrevPage]]" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium">Sebelumnya</a>
                         [[else]]
-                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Sebelumnya</span>
+                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Sebelumnya</span>
                         [[end]]
                         [[range .Pagination.Pages]]
                         [[if .IsCurrent]]
@@ -195,7 +208,7 @@
                         [[if .Pagination.HasNext]]
                         <a href="?page=[[.Pagination.NextPage]]" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium">Berikutnya</a>
                         [[else]]
-                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Berikutnya</span>
+                        <span class="px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-600 text-xs font-medium cursor-not-allowed">Berikutnya</span>
                         [[end]]
                     </div>
                 </div>
@@ -224,5 +237,6 @@
         </div>
     </div>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

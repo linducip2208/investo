@@ -5,10 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Documentation — Investo</title>
 <meta name="description" content="Public REST API v1 documentation for Investo stock & forex data platform.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -52,6 +56,12 @@
   ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
   pre[class*="language-"] { overflow-x: auto; white-space: pre; }
 </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans antialiased">
 
@@ -491,5 +501,6 @@ function tryEndpoint(btn, path) {
 }
 </script>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

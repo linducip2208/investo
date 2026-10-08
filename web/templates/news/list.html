@@ -11,11 +11,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Berita Pasar Modal — Investo</title>
     <meta name="description" content="Berita terkini pasar modal Indonesia. Update saham, forex, ekonomi makro, dan corporate action terbaru.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <style>
         @keyframes fadeSlideUp { 0% { transform: translateY(28px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
         .card-lift { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1); }
@@ -23,6 +27,12 @@
         .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="bg-white text-slate-800 font-sans antialiased dark:bg-slate-950 dark:text-slate-200">
@@ -71,7 +81,7 @@
 
             <div class="flex flex-col sm:flex-row gap-4 mb-8 reveal">
                 <div class="relative flex-1">
-                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <input type="text" placeholder="Cari berita..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
                 </div>
                 <select class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-600 dark:text-slate-300 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
@@ -88,7 +98,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full">[[.Source]]</span>
-                            <span class="text-xs text-slate-400">[[.PublishedAt]]</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">[[.PublishedAt]]</span>
                         </div>
                     </div>
                     <a href="/berita/[[.Slug]]" class="block group">
@@ -138,7 +148,7 @@
                         <li>
                             <a href="/berita?source=[[.Slug]]" class="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors py-1">
                                 <span>[[.Name]]</span>
-                                <span class="text-xs text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">[[.NewsCount]]</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">[[.NewsCount]]</span>
                             </a>
                         </li>
                         [[end]]
@@ -155,7 +165,7 @@
     </div>
 </div>
 
-<footer class="bg-slate-900 text-slate-300 py-10 border-t border-slate-800">
+<footer class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 py-10 border-t border-slate-200 dark:border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
             <span class="text-xl">🏦</span>
@@ -175,5 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 });
 </script>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

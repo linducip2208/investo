@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trade Journal &mdash; Investo</title>
     <meta name="description" content="Catat dan analisis setiap trade Anda. Track win rate, profit/loss, dan emosi trading.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -32,42 +36,118 @@
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:12px!important}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full flex" x-data="{ sidebarOpen: false }">
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
-            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
-            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
-            <a href="/market/strategy-builder" class="sidebar-link"><span class="icon">🧠</span> Strategy Builder</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+  <path d="M9 4v13" />
+  <path d="M15 7v13" />
+</svg></span> Heatmap</a>
+            <a href="/market/strategy-builder" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> Strategy Builder</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
-            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
-            <a href="/dashboard/journal" class="sidebar-link active"><span class="icon">📓</span> Trade Journal</a>
-            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
-            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
-            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">🧮</span> Tools</a>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+            <a href="/dashboard/journal" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+  <path d="M13 8l2 0" />
+  <path d="M13 12l2 0" />
+</svg></span> Trade Journal</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg></span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 5a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -14" />
+  <path d="M8 8a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1l0 -1" />
+  <path d="M8 14l0 .01" />
+  <path d="M12 14l0 .01" />
+  <path d="M16 14l0 .01" />
+  <path d="M8 17l0 .01" />
+  <path d="M12 17l0 .01" />
+  <path d="M16 17l0 .01" />
+</svg></span> Tools</a>
         </nav>
-        <div class="p-3 border-t border-slate-800">
-            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
-            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+  <path d="M9 12h12l-3 -3" />
+  <path d="M18 15l3 -3" />
+</svg></span> Keluar</a>
         </div>
     </aside>
 
     <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-1"></div>
-            <div class="flex items-center gap-3 text-sm text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                 <span class="text-white font-medium">Trade Journal</span>
             </div>
-            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-700">
+            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-200 dark:border-slate-700">
                 [[if .User]]
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
                 <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
@@ -79,7 +159,7 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
                 <div>
                     <h1 class="text-xl lg:text-2xl font-bold text-white">📓 Trade Journal</h1>
-                    <p class="text-sm text-slate-400 mt-0.5">Catat setiap trade untuk evaluasi dan improvement</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Catat setiap trade untuk evaluasi dan improvement</p>
                 </div>
                 <button @click="showModal = true"
                     class="px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg">
@@ -118,11 +198,11 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <div class="flex items-center gap-2">
-                    <label class="text-xs text-slate-400">Filter:</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400">Filter:</label>
                     <input type="text" x-model="filterStock" placeholder="Kode saham..."
-                        class="w-28 bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                        class="w-28 bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
                 </div>
-                <select x-model="filterOutcome" class="bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500">
+                <select x-model="filterOutcome" class="bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500">
                     <option value="">Semua Outcome</option>
                     <option value="win">Win</option>
                     <option value="loss">Loss</option>
@@ -134,23 +214,23 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b border-slate-700/50 bg-slate-800/30">
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Saham</th>
-                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Arah</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Entry</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Exit</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Qty</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">P/L</th>
-                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ROI</th>
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider hidden lg:table-cell">Strategi</th>
-                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider hidden lg:table-cell">Emosi</th>
-                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider"></th>
+                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Saham</th>
+                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Arah</th>
+                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Entry</th>
+                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Exit</th>
+                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Qty</th>
+                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">P/L</th>
+                                <th class="text-right px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">ROI</th>
+                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">Strategi</th>
+                                <th class="text-left px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">Emosi</th>
+                                <th class="text-center px-4 py-3 text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider"></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-700/30">
+                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                             [[if .Journals]]
                             [[range .Journals]]
-                            <tr class="hover:bg-slate-700/20 transition-colors">
+                            <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
                                 <td class="px-4 py-3">
                                     <a href="/saham/[[.StockCode]]" class="font-bold text-blue-400 hover:underline text-sm">[[.StockCode]]</a>
                                 </td>
@@ -169,7 +249,7 @@
                                     <span class="text-slate-500">Open</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-400 hidden md:table-cell">[[printf "%.0f" .Quantity]]</td>
+                                <td class="px-4 py-3 text-right font-mono text-xs text-slate-500 dark:text-slate-400 hidden md:table-cell">[[printf "%.0f" .Quantity]]</td>
                                 <td class="px-4 py-3 text-right font-mono text-xs font-semibold">
                                     [[if .ProfitLoss]]
                                     <span class="[[if ge .ProfitLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .ProfitLoss 0.0]]+[[end]]Rp [[printf "%.0f" .ProfitLoss]]</span>
@@ -184,7 +264,7 @@
                                     <span class="text-slate-500">--</span>
                                     [[end]]
                                 </td>
-                                <td class="px-4 py-3 text-xs text-slate-400 hidden lg:table-cell max-w-[120px] truncate">[[.StrategyUsed]]</td>
+                                <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 hidden lg:table-cell max-w-[120px] truncate">[[.StrategyUsed]]</td>
                                 <td class="px-4 py-3 hidden lg:table-cell">
                                     [[if .Emotions]]
                                     <span class="emotion-tag [[if eq .Emotions "Confident"]]emotion-confident[[else if eq .Emotions "Nervous"]]emotion-nervous[[else if eq .Emotions "FOMO"]]emotion-fomo[[else if eq .Emotions "Patient"]]emotion-patient[[else if eq .Emotions "Regretful"]]emotion-regretful[[else]]emotion-patient[[end]]">[[.Emotions]]</span>
@@ -219,49 +299,49 @@
                 <div class="card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.outside="showModal = false">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-bold text-white">New Trade Entry</h2>
-                        <button @click="showModal = false" class="text-slate-400 hover:text-white p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                        <button @click="showModal = false" class="text-slate-500 dark:text-slate-400 hover:text-white p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                     </div>
                     <form method="POST" action="/dashboard/journal" class="space-y-3">
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Kode Saham</label>
-                            <input type="text" name="stock_code" required placeholder="BBCA" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Kode Saham</label>
+                            <input type="text" name="stock_code" required placeholder="BBCA" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono uppercase placeholder-slate-500 focus:outline-none focus:border-blue-500">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Entry Date</label>
-                                <input type="date" name="entry_date" required class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Entry Date</label>
+                                <input type="date" name="entry_date" required class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Exit Date</label>
-                                <input type="date" name="exit_date" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Entry Price</label>
-                                <input type="number" name="entry_price" required step="1" placeholder="0" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Exit Price</label>
-                                <input type="number" name="exit_price" step="1" placeholder="0" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Exit Date</label>
+                                <input type="date" name="exit_date" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Quantity (lot)</label>
-                                <input type="number" name="quantity" required step="1" placeholder="0" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Entry Price</label>
+                                <input type="number" name="entry_price" required step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Direction</label>
-                                <select name="direction" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Exit Price</label>
+                                <input type="number" name="exit_price" step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Quantity (lot)</label>
+                                <input type="number" name="quantity" required step="1" placeholder="0" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Direction</label>
+                                <select name="direction" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                                     <option value="buy">BUY (Long)</option>
                                     <option value="sell">SELL (Short)</option>
                                 </select>
                             </div>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Strategi</label>
-                            <select name="strategy_used" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Strategi</label>
+                            <select name="strategy_used" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="">-- Pilih Strategi --</option>
                                 <option value="Golden Cross Swing">Golden Cross Swing</option>
                                 <option value="RSI Mean Reversion">RSI Mean Reversion</option>
@@ -275,8 +355,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Emosi</label>
-                            <select name="emotions" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Emosi</label>
+                            <select name="emotions" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="">-- Pilih --</option>
                                 <option value="Confident">Confident (Percaya Diri)</option>
                                 <option value="Nervous">Nervous (Gugup)</option>
@@ -286,8 +366,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Outcome</label>
-                            <select name="outcome" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Outcome</label>
+                            <select name="outcome" class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="">-- Pilih --</option>
                                 <option value="win">Win</option>
                                 <option value="loss">Loss</option>
@@ -295,11 +375,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Catatan</label>
-                            <textarea name="notes" rows="3" placeholder="Alasan entry, lesson learned, dll..." class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"></textarea>
+                            <label class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Catatan</label>
+                            <textarea name="notes" rows="3" placeholder="Alasan entry, lesson learned, dll..." class="w-full bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"></textarea>
                         </div>
                         <div class="flex gap-3 pt-2">
-                            <button type="button" @click="showModal = false" class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-300 bg-slate-700/50 border border-slate-600 rounded-xl hover:bg-slate-700 transition-colors">Batal</button>
+                            <button type="button" @click="showModal = false" class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/50 dark:bg-slate-700/50 border border-slate-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Batal</button>
                             <button type="submit" class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg">Simpan</button>
                         </div>
                     </form>
@@ -322,5 +402,6 @@
         }
     }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

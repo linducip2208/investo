@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Indicator · [[.Stock.Code]] · Investo</title>
     <meta name="description" content="Buat indikator kustom untuk [[.Stock.Code]] dengan formula parser.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/lightweight-charts.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -25,11 +29,17 @@
         @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         .animate-slide-up{animation:slideUp .3s ease-out}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full flex" x-data="customIndicatorApp()" x-init="init()">
 
-<aside class="w-64 bg-slate-900 border-r border-slate-700/50 flex flex-col shrink-0 hidden lg:flex" :class="{ 'flex': sidebarOpen, 'hidden': !sidebarOpen }">
-    <div class="px-5 py-4 border-b border-slate-700/50">
+<aside class="w-64 bg-slate-50 dark:bg-slate-900 border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col shrink-0 hidden lg:flex" :class="{ 'flex': sidebarOpen, 'hidden': !sidebarOpen }">
+    <div class="px-5 py-4 border-b border-slate-200/50 dark:border-slate-700/50">
         <a href="/saham/[[.Stock.Code]]" class="flex items-center gap-2 text-white font-bold text-lg">
             <span class="text-xl">💹</span><span>[[.Stock.Code]]</span>
         </a>
@@ -45,14 +55,14 @@
 </aside>
 
 <div class="flex-1 flex flex-col overflow-hidden">
-    <header class="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 px-6 py-3 flex items-center justify-between shrink-0">
+    <header class="bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
-            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-slate-800 transition-colors">
+            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
             <h1 class="font-bold text-white">Custom Indicator Builder</h1>
         </div>
-        <span class="text-xs text-slate-500 bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.Stock.Code]]</span>
+        <span class="text-xs text-slate-500 bg-white dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.Stock.Code]]</span>
     </header>
 
     <div class="flex-1 overflow-y-auto p-6 space-y-6">
@@ -61,14 +71,14 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="font-bold text-white">Formula</h3>
-                    <p class="text-sm text-slate-400 mt-0.5">Write your indicator formula using supported functions</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Write your indicator formula using supported functions</p>
                 </div>
                 <div class="flex gap-2">
                     <button @click="testFormula()" :disabled="testing" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-lg transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                         <span x-text="testing ? 'Running...' : 'Test'"></span>
                     </button>
-                    <button @click="showSaveModal = true" :disabled="!currentFormula" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2">
+                    <button @click="showSaveModal = true" :disabled="!currentFormula" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
                         Save
                     </button>
@@ -94,18 +104,18 @@
                     </div>
                 </template>
             </div>
-            <div class="mt-4 p-4 bg-slate-900/50 rounded-xl border border-slate-700/30">
-                <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Examples</h4>
+            <div class="mt-4 p-4 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-200/30 dark:border-slate-700/30">
+                <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Examples</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
-                    <button @click="currentFormula = 'SMA(20) > SMA(50)'; testFormula()" class="text-left p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg text-slate-400 hover:text-white transition-colors border border-slate-700/30">
+                    <button @click="currentFormula = 'SMA(20) > SMA(50)'; testFormula()" class="text-left p-3 bg-white/50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-lg text-slate-500 dark:text-slate-400 hover:text-white transition-colors border border-slate-200/30 dark:border-slate-700/30">
                         <div class="text-blue-400 font-semibold mb-1">Golden Cross</div>
                         SMA(20) > SMA(50)
                     </button>
-                    <button @click="currentFormula = 'RSI(14) < 30'; testFormula()" class="text-left p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg text-slate-400 hover:text-white transition-colors border border-slate-700/30">
+                    <button @click="currentFormula = 'RSI(14) < 30'; testFormula()" class="text-left p-3 bg-white/50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-lg text-slate-500 dark:text-slate-400 hover:text-white transition-colors border border-slate-200/30 dark:border-slate-700/30">
                         <div class="text-amber-400 font-semibold mb-1">Oversold</div>
                         RSI(14) < 30
                     </button>
-                    <button @click="currentFormula = 'RSI(14) > 70'; testFormula()" class="text-left p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg text-slate-400 hover:text-white transition-colors border border-slate-700/30">
+                    <button @click="currentFormula = 'RSI(14) > 70'; testFormula()" class="text-left p-3 bg-white/50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-lg text-slate-500 dark:text-slate-400 hover:text-white transition-colors border border-slate-200/30 dark:border-slate-700/30">
                         <div class="text-red-400 font-semibold mb-1">Overbought</div>
                         RSI(14) > 70
                     </button>
@@ -116,7 +126,7 @@
         <!-- Chart Preview -->
         <div class="card p-6" x-show="indicatorData.length > 0">
             <h3 class="font-bold text-white mb-4">Indicator Preview on Chart</h3>
-            <div id="chartContainer" class="w-full rounded-xl overflow-hidden border border-slate-700/30" style="height: 420px;"></div>
+            <div id="chartContainer" class="w-full rounded-xl overflow-hidden border border-slate-200/30 dark:border-slate-700/30" style="height: 420px;"></div>
             <div class="mt-3 flex items-center gap-4">
                 <span class="text-xs text-slate-500">Indicator values at last 5 candles:</span>
                 <div class="flex gap-1">
@@ -134,7 +144,7 @@
             <h3 class="font-bold text-white mb-4">Saved Indicators</h3>
             <div class="space-y-2">
                 <template x-for="(ind, idx) in savedIndicators" :key="idx">
-                    <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-slate-700/30 hover:border-slate-600/50 transition-colors">
+                    <div class="flex items-center justify-between p-3 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200/30 dark:border-slate-700/30 hover:border-slate-600/50 transition-colors">
                         <div class="flex-1">
                             <div class="font-semibold text-white text-sm" x-text="ind.name"></div>
                             <div class="text-slate-500 font-mono text-xs mt-0.5" x-text="ind.formula"></div>
@@ -153,20 +163,20 @@
 <!-- Save Modal -->
 <div x-show="showSaveModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" x-transition>
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showSaveModal = false"></div>
-    <div class="relative bg-slate-800 border border-slate-600 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+    <div class="relative bg-white dark:bg-slate-800 border border-slate-600 rounded-2xl p-6 w-full max-w-md shadow-2xl">
         <h3 class="text-lg font-bold text-white mb-4">Save Indicator</h3>
         <div class="space-y-4">
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Name</label>
-                <input x-model="saveName" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-white text-sm focus:border-blue-500 focus:outline-none" placeholder="My Custom Indicator">
+                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Name</label>
+                <input x-model="saveName" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-white text-sm focus:border-blue-500 focus:outline-none" placeholder="My Custom Indicator">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Formula</label>
-                <div class="bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-slate-400 font-mono text-sm" x-text="currentFormula"></div>
+                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Formula</label>
+                <div class="bg-slate-50 dark:bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-slate-500 dark:text-slate-400 font-mono text-sm" x-text="currentFormula"></div>
             </div>
             <div class="flex gap-2 pt-2">
                 <button @click="saveIndicator()" :disabled="saving" class="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm" x-text="saving ? 'Saving...' : 'Save'"></button>
-                <button @click="showSaveModal = false" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold rounded-xl transition-colors text-sm">Cancel</button>
+                <button @click="showSaveModal = false" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-xl transition-colors text-sm">Cancel</button>
             </div>
         </div>
     </div>
@@ -359,5 +369,6 @@ function customIndicatorApp() {
     }
 }
 </script>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

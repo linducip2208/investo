@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <meta name="description" content="Portfolio tools: Monte Carlo simulation, stress test, tax-loss harvesting, DRIP calculator, dan multi-year projection.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -28,6 +32,12 @@
         .tab-btn.inactive:hover{background:#1e293b;color:#e2e8f0;border-color:#475569}
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:12px!important}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="toolsPage()">
@@ -101,38 +111,108 @@
     </script>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
-            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
-            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-            <a href="/dividen" class="sidebar-link"><span class="icon">💵</span> Dividen</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+            <a href="/dividen" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3" />
+  <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />
+  <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+</svg></span> Dividen</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
-            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
-            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
-            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
-            <a href="/dashboard/portfolios/tools" class="sidebar-link active"><span class="icon">🧮</span> Tools</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg></span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 5a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -14" />
+  <path d="M8 8a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1l0 -1" />
+  <path d="M8 14l0 .01" />
+  <path d="M12 14l0 .01" />
+  <path d="M16 14l0 .01" />
+  <path d="M8 17l0 .01" />
+  <path d="M12 17l0 .01" />
+  <path d="M16 17l0 .01" />
+</svg></span> Tools</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
-            <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
-            <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+            <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+  <path d="M9.7 17l4.6 0" />
+</svg></span> Ideas</a>
+            <a href="/leaderboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 21l8 0" />
+  <path d="M12 17l0 4" />
+  <path d="M7 4l10 0" />
+  <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+  <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+</svg></span> Leaderboard</a>
         </nav>
-        <div class="p-3 border-t border-slate-800">
-            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
-            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+  <path d="M9 12h12l-3 -3" />
+  <path d="M18 15l3 -3" />
+</svg></span> Keluar</a>
         </div>
     </aside>
 
     <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex items-center gap-2 text-sm text-slate-400">
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <a href="/dashboard/portfolios" class="hover:text-blue-400 transition-colors">Portfolio</a>
                 <span>/</span>
                 <span class="text-white font-medium">Tools</span>
@@ -146,11 +226,11 @@
         <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
             <div>
                 <h1 class="text-xl lg:text-2xl font-bold text-white">Portfolio Tools</h1>
-                <p class="text-sm text-slate-400 mt-0.5">Simulasi risiko, tax-loss harvesting, DRIP calculator & proyeksi valuasi</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Simulasi risiko, tax-loss harvesting, DRIP calculator & proyeksi valuasi</p>
             </div>
 
             <!-- TAB NAVIGATION -->
-            <div class="flex flex-wrap gap-2 pb-4 border-b border-slate-800">
+            <div class="flex flex-wrap gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
                 <button @click="activeTab='monte-carlo'" :class="activeTab==='monte-carlo'?'tab-btn active':'tab-btn inactive'">Monte Carlo</button>
                 <button @click="activeTab='stress-test'" :class="activeTab==='stress-test'?'tab-btn active':'tab-btn inactive'">Stress Test</button>
                 <button @click="activeTab='tax-loss'" :class="activeTab==='tax-loss'?'tab-btn active':'tab-btn inactive'">Tax-Loss</button>
@@ -162,24 +242,24 @@
             <div x-show="activeTab==='monte-carlo'" class="space-y-5">
                 <div class="card p-5">
                     <h2 class="widget-title mb-1">Monte Carlo Simulation</h2>
-                    <p class="text-sm text-slate-400 mb-5">Simulasi ribuan skenario return portofolio berdasarkan data historis.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Simulasi ribuan skenario return portofolio berdasarkan data historis.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
-                            <select x-model.number="monteCarlo.portfolioId" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
+                            <select x-model.number="monteCarlo.portfolioId" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="0">Pilih portfolio...</option>
                                 [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Simulasi</label>
-                            <select x-model.number="monteCarlo.simulations" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Simulasi</label>
+                            <select x-model.number="monteCarlo.simulations" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="500">500</option><option value="1000" selected>1.000</option><option value="5000">5.000</option><option value="10000">10.000</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label>
-                            <select x-model.number="monteCarlo.years" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label>
+                            <select x-model.number="monteCarlo.years" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="1">1 Tahun</option><option value="3">3 Tahun</option><option value="5">5 Tahun</option><option value="10">10 Tahun</option>
                             </select>
                         </div>
@@ -192,10 +272,10 @@
                 </div>
 
                 <div x-show="monteCarlo.result" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Median Return</span><div class="mt-1.5 font-mono text-xl font-bold" :class="monteCarlo.result.median_return>=0?'text-success':'text-danger'" x-text="(monteCarlo.result.median_return>=0?'+':'')+monteCarlo.result.median_return.toFixed(2)+'%'"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Percentile 5%</span><div class="mt-1.5 font-mono text-xl font-bold text-danger" x-text="monteCarlo.result.percentile_5.toFixed(2)+'%'"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Percentile 95%</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'+'+monteCarlo.result.percentile_95.toFixed(2)+'%'"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Prob. Positive</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="monteCarlo.result.prob_positive.toFixed(1)+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Median Return</span><div class="mt-1.5 font-mono text-xl font-bold" :class="monteCarlo.result.median_return>=0?'text-success':'text-danger'" x-text="(monteCarlo.result.median_return>=0?'+':'')+monteCarlo.result.median_return.toFixed(2)+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Percentile 5%</span><div class="mt-1.5 font-mono text-xl font-bold text-danger" x-text="monteCarlo.result.percentile_5.toFixed(2)+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Percentile 95%</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'+'+monteCarlo.result.percentile_95.toFixed(2)+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Prob. Positive</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="monteCarlo.result.prob_positive.toFixed(1)+'%'"></div></div>
                 </div>
 
                 <div x-show="monteCarlo.result" class="card p-5">
@@ -208,10 +288,10 @@
             <div x-show="activeTab==='stress-test'" class="space-y-5">
                 <div class="card p-5">
                     <h2 class="widget-title mb-1">Stress Test Portfolio</h2>
-                    <p class="text-sm text-slate-400 mb-5">Uji ketahanan portfolio terhadap skenario krisis historis.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Uji ketahanan portfolio terhadap skenario krisis historis.</p>
                     <div class="mb-4">
-                        <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
-                        <select x-model.number="stressTest.portfolioId" class="w-full sm:w-64 bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
+                        <select x-model.number="stressTest.portfolioId" class="w-full sm:w-64 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="0">Pilih portfolio...</option>
                             [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
                         </select>
@@ -219,27 +299,27 @@
                     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <div @click="if(stressTest.portfolioId>0)runStressTest('2008_crash')" class="card p-5 cursor-pointer hover:border-red-500/50 transition-colors">
                             <div class="flex justify-between mb-2"><div><h3 class="font-bold text-white">Krisis 2008</h3><p class="text-xs text-slate-500">Global Financial Crisis</p></div><span class="font-mono text-sm text-danger font-bold">-50%</span></div>
-                            <p class="text-xs text-slate-400">Sektor keuangan & properti paling terdampak.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Sektor keuangan & properti paling terdampak.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('covid_crash')" class="card p-5 cursor-pointer hover:border-amber-500/50 transition-colors">
                             <div class="flex justify-between mb-2"><div><h3 class="font-bold text-white">COVID-19 2020</h3><p class="text-xs text-slate-500">Pandemi Global</p></div><span class="font-mono text-sm text-danger font-bold">-37%</span></div>
-                            <p class="text-xs text-slate-400">Pariwisata anjlok, kesehatan & teknologi naik.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Pariwisata anjlok, kesehatan & teknologi naik.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('1998_crisis')" class="card p-5 cursor-pointer hover:border-purple-500/50 transition-colors">
                             <div class="flex justify-between mb-2"><div><h3 class="font-bold text-white">Krisis 1998</h3><p class="text-xs text-slate-500">Moneter Asia</p></div><span class="font-mono text-sm text-danger font-bold">-60%</span></div>
-                            <p class="text-xs text-slate-400">Perbankan kolaps, IDR -80%.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Perbankan kolaps, IDR -80%.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('interest_hike')" class="card p-5 cursor-pointer hover:border-orange-500/50 transition-colors">
                             <div class="flex justify-between mb-2"><div><h3 class="font-bold text-white">Kenaikan Suku Bunga</h3><p class="text-xs text-slate-500">BI Rate +2%</p></div><span class="font-mono text-sm text-danger font-bold">-15%</span></div>
-                            <p class="text-xs text-slate-400">Properti & perbankan tertekan.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Properti & perbankan tertekan.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('commodity_boom')" class="card p-5 cursor-pointer hover:border-emerald-500/50 transition-colors">
                             <div class="flex justify-between mb-2"><div><h3 class="font-bold text-white">Commodity Boom</h3><p class="text-xs text-slate-500">Super Cycle</p></div><span class="font-mono text-sm text-success font-bold">+20%</span></div>
-                            <p class="text-xs text-slate-400">Batu bara +50%, energi melonjak.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Batu bara +50%, energi melonjak.</p>
                         </div>
                     </div>
-                    <div x-show="stressTest.loading" class="mt-4 flex items-center gap-2 text-slate-400 text-sm"><svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Menghitung dampak...</div>
-                    <div x-show="stressTest.result" class="mt-5 p-5 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div x-show="stressTest.loading" class="mt-4 flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm"><svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Menghitung dampak...</div>
+                    <div x-show="stressTest.result" class="mt-5 p-5 bg-white/30 dark:bg-slate-800/30 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
                         <h3 class="font-bold text-white text-lg mb-4" x-text="'Hasil: '+stressTest.result.scenario"></h3>
                         <div class="grid grid-cols-2 gap-4 mb-3">
                             <div><span class="text-xs text-slate-500 uppercase tracking-wider">Dampak Portfolio</span><div class="font-mono text-2xl font-bold" :class="stressTest.result.portfolio_change>=0?'text-success':'text-danger'" x-text="(stressTest.result.portfolio_change>=0?'+':'')+stressTest.result.portfolio_change.toFixed(2)+'%'"></div></div>
@@ -254,32 +334,32 @@
             <div x-show="activeTab==='tax-loss'" class="space-y-5">
                 <div class="card p-5">
                     <h2 class="widget-title mb-1">Tax-Loss Harvesting</h2>
-                    <p class="text-sm text-slate-400 mb-5">Identifikasi saham rugi yang bisa direalisasi untuk pengurangan pajak.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Identifikasi saham rugi yang bisa direalisasi untuk pengurangan pajak.</p>
                     <div class="flex flex-wrap gap-4 items-end mb-5">
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
-                            <select x-model.number="taxLoss.portfolioId" class="bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Portfolio</label>
+                            <select x-model.number="taxLoss.portfolioId" class="bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="0">Pilih portfolio...</option>
                                 [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
                             </select>
                         </div>
                         <button @click="runTaxLoss()" :disabled="taxLoss.portfolioId===0||taxLoss.loading" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-all disabled:cursor-not-allowed">Analisis</button>
                     </div>
-                    <div x-show="taxLoss.loading" class="flex items-center gap-2 text-slate-400 text-sm"><svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Analyzing...</div>
+                    <div x-show="taxLoss.loading" class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm"><svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Analyzing...</div>
                     <div x-show="taxLoss.results.length>0" class="overflow-x-auto mt-4">
                         <table class="w-full text-sm">
                             <thead>
-                                <tr class="border-b border-slate-700/50 bg-slate-800/30">
-                                    <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kode</th>
-                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Avg</th>
-                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current</th>
-                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Loss</th>
-                                    <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Rekomendasi</th>
+                                <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                                    <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
+                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Avg</th>
+                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Current</th>
+                                    <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Loss</th>
+                                    <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rekomendasi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-700/30">
+                            <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                                 <template x-for="row in taxLoss.results" :key="row.stock_code">
-                                    <tr class="hover:bg-slate-700/20 transition-colors">
+                                    <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
                                         <td class="px-4 py-3.5 font-bold text-blue-400" x-text="row.stock_code"></td>
                                         <td class="px-4 py-3.5 text-right font-mono" x-text="fmtNumber(row.avg_price)"></td>
                                         <td class="px-4 py-3.5 text-right font-mono" x-text="fmtNumber(row.current_price)"></td>
@@ -290,7 +370,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div x-show="taxLoss.results!==null&&taxLoss.results.length===0&&!taxLoss.loading" class="mt-4 p-6 text-center text-slate-500 bg-slate-800/20 rounded-xl border border-slate-700/30">Tidak ada saham rugi yang eligible.</div>
+                    <div x-show="taxLoss.results!==null&&taxLoss.results.length===0&&!taxLoss.loading" class="mt-4 p-6 text-center text-slate-500 bg-white/20 dark:bg-slate-800/20 rounded-xl border border-slate-200/30 dark:border-slate-700/30">Tidak ada saham rugi yang eligible.</div>
                 </div>
             </div>
 
@@ -298,24 +378,24 @@
             <div x-show="activeTab==='drip'" class="space-y-5">
                 <div class="card p-5">
                     <h2 class="widget-title mb-1">DRIP Calculator</h2>
-                    <p class="text-sm text-slate-400 mb-5">Hitung pertumbuhan investasi dengan Dividend Reinvestment Plan.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Hitung pertumbuhan investasi dengan Dividend Reinvestment Plan.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Kode Saham</label><input x-model="drip.stockCode" type="text" placeholder="BBCA" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Investasi (Rp)</label><input x-model.number="drip.investment" type="number" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label><select x-model.number="drip.years" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="1">1</option><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="30">30</option></select></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Reinvest</label><select x-model="drip.reinvest" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option :value="true">Ya</option><option :value="false">Tidak</option></select></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Kode Saham</label><input x-model="drip.stockCode" type="text" placeholder="BBCA" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Investasi (Rp)</label><input x-model.number="drip.investment" type="number" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label><select x-model.number="drip.years" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="1">1</option><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="30">30</option></select></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Reinvest</label><select x-model="drip.reinvest" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option :value="true">Ya</option><option :value="false">Tidak</option></select></div>
                     </div>
                     <button @click="runDrip()" :disabled="!drip.stockCode||drip.loading" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-all disabled:cursor-not-allowed">Hitung</button>
                 </div>
                 <div x-show="drip.result" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Nilai Akhir</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="'Rp '+fmtNumber(drip.result.final_value)"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Dividen</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'Rp '+fmtNumber(drip.result.total_dividends)"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Dividend Yield</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="drip.result.dividend_yield.toFixed(2)+'%'"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Lembar</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="drip.result.total_shares.toLocaleString()"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nilai Akhir</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="'Rp '+fmtNumber(drip.result.final_value)"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Dividen</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'Rp '+fmtNumber(drip.result.total_dividends)"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Dividend Yield</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="drip.result.dividend_yield.toFixed(2)+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Lembar</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="drip.result.total_shares.toLocaleString()"></div></div>
                 </div>
                 <div x-show="drip.result" class="card overflow-hidden">
-                    <div class="px-5 py-3 border-b border-slate-700/50"><h3 class="font-bold text-white">Year-by-Year Breakdown</h3></div>
-                    <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b border-slate-700/50 bg-slate-800/30"><th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Year</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Start</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Dividends</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">End</th></tr></thead><tbody class="divide-y divide-slate-700/30"><template x-for="row in drip.result.yearly_data" :key="row.year"><tr class="hover:bg-slate-700/20"><td class="px-4 py-3 font-bold text-white" x-text="row.year"></td><td class="px-4 py-3 text-right font-mono" x-text="'Rp '+fmtNumber(row.start_value)"></td><td class="px-4 py-3 text-right font-mono text-success" x-text="'Rp '+fmtNumber(row.dividends)"></td><td class="px-4 py-3 text-right font-mono font-semibold text-white" x-text="'Rp '+fmtNumber(row.end_value)"></td></tr></template></tbody></table></div>
+                    <div class="px-5 py-3 border-b border-slate-200/50 dark:border-slate-700/50"><h3 class="font-bold text-white">Year-by-Year Breakdown</h3></div>
+                    <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Year</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Start</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Dividends</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">End</th></tr></thead><tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30"><template x-for="row in drip.result.yearly_data" :key="row.year"><tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20"><td class="px-4 py-3 font-bold text-white" x-text="row.year"></td><td class="px-4 py-3 text-right font-mono" x-text="'Rp '+fmtNumber(row.start_value)"></td><td class="px-4 py-3 text-right font-mono text-success" x-text="'Rp '+fmtNumber(row.dividends)"></td><td class="px-4 py-3 text-right font-mono font-semibold text-white" x-text="'Rp '+fmtNumber(row.end_value)"></td></tr></template></tbody></table></div>
                 </div>
             </div>
 
@@ -323,26 +403,27 @@
             <div x-show="activeTab==='projection'" class="space-y-5">
                 <div class="card p-5">
                     <h2 class="widget-title mb-1">Multi-Year EPS Projection</h2>
-                    <p class="text-sm text-slate-400 mb-5">Proyeksikan EPS dan harga saham berdasarkan growth rate dan discount rate.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">Proyeksikan EPS dan harga saham berdasarkan growth rate dan discount rate.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Kode Saham</label><input x-model="projection.stockCode" type="text" placeholder="BBCA" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Growth Rate (%)</label><input type="range" x-model.number="projection.growth" min="0" max="50" step="0.5" class="w-full accent-blue-500"><div class="flex justify-between text-xs text-slate-400 mt-1"><span>0%</span><span class="font-mono text-blue-400" x-text="projection.growth+'%'"></span><span>50%</span></div></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Discount Rate (%)</label><input x-model.number="projection.discount" type="number" min="0" max="30" step="0.5" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label><select x-model.number="projection.years" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option></select></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Kode Saham</label><input x-model="projection.stockCode" type="text" placeholder="BBCA" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Growth Rate (%)</label><input type="range" x-model.number="projection.growth" min="0" max="50" step="0.5" class="w-full accent-blue-500"><div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1"><span>0%</span><span class="font-mono text-blue-400" x-text="projection.growth+'%'"></span><span>50%</span></div></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Discount Rate (%)</label><input x-model.number="projection.discount" type="number" min="0" max="30" step="0.5" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Tahun</label><select x-model.number="projection.years" class="w-full bg-white dark:bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option></select></div>
                     </div>
                     <button @click="runProjection()" :disabled="!projection.stockCode||projection.loading" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-all disabled:cursor-not-allowed">Proyeksikan</button>
                 </div>
                 <div x-show="projection.result" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">EPS Saat Ini</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="projection.result.initial_eps.toFixed(2)"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Growth Rate</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="projection.result.growth_rate+'%'"></div></div>
-                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Fair Value (DCF)</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'Rp '+fmtNumber(projection.result.fair_value)"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">EPS Saat Ini</span><div class="mt-1.5 font-mono text-xl font-bold text-white" x-text="projection.result.initial_eps.toFixed(2)"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth Rate</span><div class="mt-1.5 font-mono text-xl font-bold text-blue-400" x-text="projection.result.growth_rate+'%'"></div></div>
+                    <div class="card p-4"><span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fair Value (DCF)</span><div class="mt-1.5 font-mono text-xl font-bold text-success" x-text="'Rp '+fmtNumber(projection.result.fair_value)"></div></div>
                 </div>
                 <div x-show="projection.result" class="card overflow-hidden">
-                    <div class="px-5 py-3 border-b border-slate-700/50"><h3 class="font-bold text-white">Year-by-Year Projection</h3></div>
-                    <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b border-slate-700/50 bg-slate-800/30"><th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Year</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">EPS</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Price</th></tr></thead><tbody class="divide-y divide-slate-700/30"><template x-for="(eps,idx) in projection.result.projected_eps" :key="idx"><tr class="hover:bg-slate-700/20"><td class="px-4 py-3 font-bold text-white" x-text="idx+1"></td><td class="px-4 py-3 text-right font-mono text-white" x-text="eps.toFixed(2)"></td><td class="px-4 py-3 text-right font-mono font-semibold text-blue-400" x-text="'Rp '+fmtNumber(projection.result.projected_price[idx])"></td></tr></template></tbody></table></div>
+                    <div class="px-5 py-3 border-b border-slate-200/50 dark:border-slate-700/50"><h3 class="font-bold text-white">Year-by-Year Projection</h3></div>
+                    <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Year</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">EPS</th><th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Price</th></tr></thead><tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30"><template x-for="(eps,idx) in projection.result.projected_eps" :key="idx"><tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20"><td class="px-4 py-3 font-bold text-white" x-text="idx+1"></td><td class="px-4 py-3 text-right font-mono text-white" x-text="eps.toFixed(2)"></td><td class="px-4 py-3 text-right font-mono font-semibold text-blue-400" x-text="'Rp '+fmtNumber(projection.result.projected_price[idx])"></td></tr></template></tbody></table></div>
                 </div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

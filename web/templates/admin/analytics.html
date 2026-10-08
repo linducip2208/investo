@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Analytics · [[.AppName]]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|jetbrains-mono:400,500,600,700,800" rel="stylesheet">
     <style>
@@ -26,66 +33,72 @@
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter','system-ui','sans-serif'], mono: ['JetBrains Mono','monospace'] } } } }
     </script>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased" x-data="{ sidebarOpen: false }">
+<body class="bg-slate-950 text-slate-900 dark:text-slate-100 antialiased" x-data="{ sidebarOpen: false }">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto z-50" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto z-50" :class="{ open: sidebarOpen }">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
             <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
             <div>
                 <div class="font-bold text-base leading-tight">[[.AppName]]</div>
-                <div class="text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
             </div>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Dashboard</span>
             </a>
             <a href="/admin/analytics" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="text-sm">Analytics</span>
             </a>
-            <a href="/admin/feature-flags" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <a href="/admin/feature-flags" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
                 <span class="text-sm">Feature Flags</span>
             </a>
-            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
                 <span class="text-sm">Pengguna</span>
             </a>
-            <a href="/admin/stocks" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+            <a href="/admin/stocks" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="text-sm">Saham</span>
             </a>
-            <a href="/admin/sectors" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+            <a href="/admin/sectors" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="text-sm">Sektor</span>
             </a>
-            <a href="/admin/news" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
+            <a href="/admin/news" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
                 <span class="text-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span class="text-sm">Blog</span>
             </a>
-            <a href="/admin/settings" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <a href="/admin/settings" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <span class="text-sm">Pengaturan</span>
             </a>
-            <a href="/admin/pipeline" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0116 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="/admin/pipeline" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0116 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span class="text-sm">Pipeline</span>
             </a>
         </nav>
-        <div class="px-6 py-4 border-t border-slate-700/60">
-            <div class="flex items-center gap-3 px-3 py-2 text-slate-400 text-xs">
+        <div class="px-6 py-4 border-t border-slate-200/60 dark:border-slate-700/60">
+            <div class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 text-xs">
                 <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
                 <div>
-                    <div class="text-slate-300 text-xs font-medium">[[.User.Name]]</div>
+                    <div class="text-slate-700 dark:text-slate-300 text-xs font-medium">[[.User.Name]]</div>
                     <a href="/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
                 </div>
             </div>
@@ -93,26 +106,26 @@
     </aside>
 
     <main class="main-content" id="analytics-app" x-data="analyticsApp()" x-init="init()">
-        <header class="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
-            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors">
+        <header class="bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
-            <div class="text-sm text-slate-400 font-medium hidden sm:block">Admin Analytics</div>
-            <div class="text-[11px] text-slate-500 bg-slate-800 px-2.5 py-1 rounded-full font-mono">v3.0</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Admin Analytics</div>
+            <div class="text-[11px] text-slate-500 bg-white dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">v3.0</div>
         </header>
 
         <div class="px-6 py-6 max-w-7xl mx-auto space-y-8">
             <div>
                 <h1 class="text-2xl font-extrabold text-white">Analytics Dashboard</h1>
-                <p class="text-sm text-slate-400 mt-1">Platform usage metrics & user growth</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Platform usage metrics & user growth</p>
             </div>
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 <template x-for="card in statCards" :key="card.label">
-                    <div class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5 backdrop-blur-sm hover:border-slate-600/50 transition-all">
+                    <div class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-5 backdrop-blur-sm hover:border-slate-600/50 transition-all">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-slate-400 uppercase tracking-wider" x-text="card.label"></span>
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" x-text="card.label"></span>
                             <span class="w-8 h-8 rounded-xl flex items-center justify-center text-lg" :class="card.bgClass" x-html="card.icon"></span>
                         </div>
                         <div class="text-2xl font-extrabold font-mono text-white" x-text="card.value"></div>
@@ -123,13 +136,13 @@
 
             <!-- Charts Row -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-6">
+                <div class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-6">
                     <h3 class="font-semibold text-white mb-4">User Growth (30 Hari)</h3>
                     <div class="h-72">
                         <canvas id="userGrowthChart"></canvas>
                     </div>
                 </div>
-                <div class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-6">
+                <div class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-6">
                     <h3 class="font-semibold text-white mb-4">Feature Usage (Top 10)</h3>
                     <div class="h-72">
                         <canvas id="featureUsageChart"></canvas>
@@ -138,31 +151,31 @@
             </div>
 
             <!-- Recent Users Table -->
-            <div class="bg-slate-800/80 border border-slate-700/50 rounded-2xl overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-700/50 flex items-center justify-between">
+            <div class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
                     <div>
                         <h3 class="font-semibold text-white">Recent User Registrations</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Latest sign-ups with stats</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Latest sign-ups with stats</p>
                     </div>
                     <input type="text" x-model="userSearch" @input.debounce.500ms="loadUsers()" placeholder="Search users..."
-                           class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none w-48">
+                           class="bg-slate-50 dark:bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none w-48">
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-slate-900/50 border-b border-slate-700/50">
+                        <thead class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-200/50 dark:border-slate-700/50">
                             <tr>
-                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">User</th>
-                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Email</th>
-                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Portfolios</th>
-                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Logins</th>
-                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Last Active</th>
-                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Plan</th>
-                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-400 uppercase tracking-wider">Registered</th>
+                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">User</th>
+                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Portfolios</th>
+                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Logins</th>
+                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Last Active</th>
+                                <th class="text-center px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Plan</th>
+                                <th class="text-left px-6 py-3 font-semibold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Registered</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-700/30">
+                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                             <template x-for="u in userList" :key="u.id">
-                                <tr class="hover:bg-slate-700/30 transition-colors">
+                                <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
                                     <td class="px-6 py-3">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs" x-text="u.name.charAt(0).toUpperCase()"></div>
@@ -172,16 +185,16 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-3 text-slate-400 font-mono text-xs" x-text="u.email"></td>
+                                    <td class="px-6 py-3 text-slate-500 dark:text-slate-400 font-mono text-xs" x-text="u.email"></td>
                                     <td class="px-6 py-3 text-center font-mono text-white font-semibold" x-text="u.portfolio_count"></td>
-                                    <td class="px-6 py-3 text-center font-mono text-slate-400" x-text="u.login_count"></td>
-                                    <td class="px-6 py-3 text-slate-400 text-xs" x-text="u.last_active"></td>
+                                    <td class="px-6 py-3 text-center font-mono text-slate-500 dark:text-slate-400" x-text="u.login_count"></td>
+                                    <td class="px-6 py-3 text-slate-500 dark:text-slate-400 text-xs" x-text="u.last_active"></td>
                                     <td class="px-6 py-3 text-center">
                                         <span class="inline-flex px-2.5 py-1 rounded-lg text-[11px] font-semibold"
                                               :class="u.plan === 'whitelabel' ? 'bg-purple-900/50 text-purple-300' : u.plan === 'pro' ? 'bg-amber-900/50 text-amber-300' : u.plan === 'basic' ? 'bg-blue-900/50 text-blue-300' : 'bg-slate-700 text-slate-400'"
                                               x-text="u.plan || 'free'"></span>
                                     </td>
-                                    <td class="px-6 py-3 text-slate-400 text-xs" x-text="u.created_at ? u.created_at.slice(0,10) : '-'"></td>
+                                    <td class="px-6 py-3 text-slate-500 dark:text-slate-400 text-xs" x-text="u.created_at ? u.created_at.slice(0,10) : '-'"></td>
                                 </tr>
                             </template>
                             <tr x-show="userList.length === 0">
@@ -190,11 +203,11 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="px-6 py-4 border-t border-slate-700/50 flex items-center justify-between">
+                <div class="px-6 py-4 border-t border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
                     <span class="text-xs text-slate-500" x-text="'Page '+userPage+' of '+Math.ceil(userTotal/25)||1"></span>
                     <div class="flex gap-2">
-                        <button @click="userPage--; loadUsers()" :disabled="userPage <= 1" class="px-3 py-1.5 bg-slate-700 text-slate-300 rounded-lg text-xs hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">Prev</button>
-                        <button @click="userPage++; loadUsers()" :disabled="userPage * 25 >= userTotal" class="px-3 py-1.5 bg-slate-700 text-slate-300 rounded-lg text-xs hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">Next</button>
+                        <button @click="userPage--; loadUsers()" :disabled="userPage <= 1" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">Prev</button>
+                        <button @click="userPage++; loadUsers()" :disabled="userPage * 25 >= userTotal" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">Next</button>
                     </div>
                 </div>
             </div>
@@ -204,7 +217,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="font-semibold text-white text-lg">Revenue Summary</h3>
-                        <p class="text-sm text-slate-400 mt-1">Subscription plan distribution</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Subscription plan distribution</p>
                     </div>
                     <div class="flex items-center gap-6">
                         <div class="text-center">
@@ -379,5 +392,6 @@ function analyticsApp() {
     }
 }
 </script>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

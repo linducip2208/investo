@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Sources — Investo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
@@ -22,11 +29,17 @@
         .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
         .btn-outline:hover{background:#1e293b}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
-<body class="bg-[#0b1120] text-slate-200 flex">
+<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex">
 
-<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
         <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
         <span class="font-bold text-white">Investo</span>
     </div>
@@ -35,11 +48,11 @@
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
         <a href="/pengaturan/data-sources" class="nav-link active">📡 Data Sources</a>
@@ -50,17 +63,17 @@
 <div class="flex-1 min-w-0" x-data="dataSources()">
     <div class="max-w-3xl mx-auto px-6 py-6">
         <h1 class="text-xl font-bold text-white mb-1">Data Sources</h1>
-        <p class="text-sm text-slate-400 mb-6">BYOK — semua data source optional. Kalau kosong, pakai fallback gratis.</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">BYOK — semua data source optional. Kalau kosong, pakai fallback gratis.</p>
 
         <div class="space-y-4">
 
             <!-- Invezgo -->
             <div class="card p-5">
                 <h3 class="font-semibold text-white mb-1">🇮🇩 Invezgo / GOAPI (BEI Real-time)</h3>
-                <p class="text-xs text-slate-400 mb-3">Data real-time BEI: harga, fundamental, foreign flow. <a href="https://invezgo.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Data real-time BEI: harga, fundamental, foreign flow. <a href="https://invezgo.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
                 <div class="space-y-3">
-                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="invezgoKey" class="input-field" placeholder="Masukkan API key..."></div>
-                    <div><label class="text-xs text-slate-400 block mb-1">Base URL</label><input x-model="invezgoURL" class="input-field" placeholder="https://api.invezgo.com/v1"></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">API Key</label><input type="password" x-model="invezgoKey" class="input-field" placeholder="Masukkan API key..."></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Base URL</label><input x-model="invezgoURL" class="input-field" placeholder="https://api.invezgo.com/v1"></div>
                 </div>
                 <div class="flex gap-2 mt-3">
                     <button @click="saveDS('invezgo')" class="btn btn-primary">Save</button>
@@ -72,10 +85,10 @@
             <!-- OANDA -->
             <div class="card p-5">
                 <h3 class="font-semibold text-white mb-1">💱 OANDA (Forex Real-time)</h3>
-                <p class="text-xs text-slate-400 mb-3">Data forex real-time + historical. <a href="https://oanda.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Data forex real-time + historical. <a href="https://oanda.com" class="text-blue-400" target="_blank">Dapatkan API key →</a></p>
                 <div class="space-y-3">
-                    <div><label class="text-xs text-slate-400 block mb-1">API Key</label><input type="password" x-model="oandaKey" class="input-field" placeholder="Masukkan API key..."></div>
-                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Account ID</label><input x-model="oandaAccount" class="input-field" placeholder="XXX-XXX-XXXXXX"></div><div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Environment</label><select x-model="oandaEnv" class="input-field"><option value="practice">Practice</option><option value="live">Live</option></select></div></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">API Key</label><input type="password" x-model="oandaKey" class="input-field" placeholder="Masukkan API key..."></div>
+                    <div class="flex gap-3"><div class="flex-1"><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Account ID</label><input x-model="oandaAccount" class="input-field" placeholder="XXX-XXX-XXXXXX"></div><div class="flex-1"><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Environment</label><select x-model="oandaEnv" class="input-field"><option value="practice">Practice</option><option value="live">Live</option></select></div></div>
                 </div>
                 <div class="flex gap-2 mt-3">
                     <button @click="saveDS('oanda')" class="btn btn-primary">Save</button>
@@ -87,12 +100,12 @@
             <!-- Midtrans Payment Gateway -->
             <div class="card p-5">
                 <h3 class="font-semibold text-white mb-1">💳 Midtrans Payment Gateway</h3>
-                <p class="text-xs text-slate-400 mb-3">Pembayaran subscription paket Investo. <a href="https://dashboard.midtrans.com" class="text-blue-400" target="_blank">Dashboard Midtrans →</a></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Pembayaran subscription paket Investo. <a href="https://dashboard.midtrans.com" class="text-blue-400" target="_blank">Dashboard Midtrans →</a></p>
                 <div class="space-y-3">
-                    <div><label class="text-xs text-slate-400 block mb-1">Server Key</label><input type="password" x-model="midtransServer" class="input-field" placeholder="Masukkan Server Key..."></div>
-                    <div><label class="text-xs text-slate-400 block mb-1">Client Key</label><input type="password" x-model="midtransClient" class="input-field" placeholder="Masukkan Client Key..."></div>
-                    <div><label class="text-xs text-slate-400 block mb-1">Merchant ID</label><input x-model="midtransMerchant" class="input-field" placeholder="G123456"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" x-model="midtransActive" id="midtransActive"><label for="midtransActive" class="text-xs text-slate-400">Aktifkan Midtrans</label></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Server Key</label><input type="password" x-model="midtransServer" class="input-field" placeholder="Masukkan Server Key..."></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Client Key</label><input type="password" x-model="midtransClient" class="input-field" placeholder="Masukkan Client Key..."></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Merchant ID</label><input x-model="midtransMerchant" class="input-field" placeholder="G123456"></div>
+                    <div class="flex items-center gap-2"><input type="checkbox" x-model="midtransActive" id="midtransActive"><label for="midtransActive" class="text-xs text-slate-500 dark:text-slate-400">Aktifkan Midtrans</label></div>
                 </div>
                 <div class="flex gap-2 mt-3">
                     <button @click="saveDS('midtrans')" class="btn btn-primary">Save</button>
@@ -104,10 +117,10 @@
             <!-- WA Business -->
             <div class="card p-5">
                 <h3 class="font-semibold text-white mb-1">📱 WhatsApp Business API</h3>
-                <p class="text-xs text-slate-400 mb-3">Kirim sinyal trading ke WhatsApp user. <a href="https://business.whatsapp.com" class="text-blue-400" target="_blank">Setup →</a></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Kirim sinyal trading ke WhatsApp user. <a href="https://business.whatsapp.com" class="text-blue-400" target="_blank">Setup →</a></p>
                 <div class="space-y-3">
-                    <div><label class="text-xs text-slate-400 block mb-1">Phone Number ID</label><input type="password" x-model="waPhoneID" class="input-field" placeholder="Masukkan Phone Number ID..."></div>
-                    <div><label class="text-xs text-slate-400 block mb-1">Access Token</label><input type="password" x-model="waToken" class="input-field" placeholder="Masukkan Access Token..."></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Phone Number ID</label><input type="password" x-model="waPhoneID" class="input-field" placeholder="Masukkan Phone Number ID..."></div>
+                    <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Access Token</label><input type="password" x-model="waToken" class="input-field" placeholder="Masukkan Access Token..."></div>
                 </div>
                 <div class="flex gap-2 mt-3">
                     <button @click="saveDS('wa')" class="btn btn-primary">Save</button>
@@ -142,5 +155,6 @@ function dataSources() {
 }
 </script>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

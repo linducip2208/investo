@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Assessment Test &mdash; Investo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}
         ::-webkit-scrollbar{width:5px}
@@ -33,12 +37,18 @@
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.option-btn{font-size:13px;padding:10px 14px}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full flex" x-data="riskTest()" x-init="init()">
     <aside x-data
            :class="{'open': sidebarOpen}"
-           class="sidebar fixed left-0 top-0 h-full w-64 bg-[#0f172a] border-r border-[#1e293b] z-40 flex flex-col overflow-y-auto max-md:hidden">
-        <div class="p-5 border-b border-[#1e293b]">
+           class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-[#1e293b] z-40 flex flex-col overflow-y-auto max-md:hidden">
+        <div class="p-5 border-b border-slate-200 dark:border-[#1e293b]">
             <a href="/dashboard" class="flex items-center gap-3 text-white no-underline">
                 <span class="text-2xl">💹</span>
                 <span class="font-display font-bold text-lg">Investo</span>
@@ -60,7 +70,7 @@
                 Dashboard
             </a>
         </div>
-        <div class="p-4 border-t border-[#1e293b]">
+        <div class="p-4 border-t border-slate-200 dark:border-[#1e293b]">
             <div class="flex items-center gap-3">
                 <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">[[slice .User.Name 0 1]]</span>
                 <div>
@@ -74,16 +84,16 @@
     </aside>
 
     <div class="flex-1 ml-64 max-lg:ml-0 flex flex-col min-h-full">
-        <header class="sticky top-0 z-30 bg-[#0b1120]/90 backdrop-blur-md border-b border-[#1e293b]">
+        <header class="sticky top-0 z-30 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1e293b]">
             <div class="flex items-center justify-between px-6 py-3">
                 <div class="flex items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-[#1e293b] transition-colors">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-[#1e293b] transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                     <h1 class="text-lg font-semibold text-white">Risk Assessment Test</h1>
                 </div>
                 <div class="flex items-center gap-2">
-                    <a href="/dashboard" class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-[#1e293b] rounded-lg transition-colors">Dashboard</a>
+                    <a href="/dashboard" class="px-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-white hover:bg-white dark:hover:bg-[#1e293b] rounded-lg transition-colors">Dashboard</a>
                 </div>
             </div>
         </header>
@@ -98,13 +108,13 @@
                             <div class="w-12 h-12 gradient-blue rounded-xl flex items-center justify-center text-white text-xl">🎯</div>
                             <div>
                                 <h2 class="text-xl font-bold text-white">Profil Risiko Investasi</h2>
-                                <p class="text-sm text-slate-400">Jawab 10 pertanyaan untuk mengetahui profil risiko Anda</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Jawab 10 pertanyaan untuk mengetahui profil risiko Anda</p>
                             </div>
                         </div>
 
                         <div class="mb-6">
                             <div class="flex justify-between text-sm mb-2">
-                                <span class="text-slate-400">Progress</span>
+                                <span class="text-slate-500 dark:text-slate-400">Progress</span>
                                 <span class="text-blue-400 font-mono" x-text="answeredCount + '/10'">0/10</span>
                             </div>
                             <div class="progress-bar">
@@ -127,7 +137,7 @@
                                         <button class="option-btn"
                                                 :class="{ 'selected': answers['q' + (idx + 1)] === opt.value }"
                                                 @click="selectAnswer(idx + 1, opt.value)">
-                                            <span class="text-slate-400 mr-2" x-text="opt.label + '.'"></span>
+                                            <span class="text-slate-500 dark:text-slate-400 mr-2" x-text="opt.label + '.'"></span>
                                             <span x-text="opt.text"></span>
                                         </button>
                                     </template>
@@ -138,7 +148,7 @@
 
                     <div class="flex justify-between">
                         <button @click="prevQuestion" x-show="currentQ > 0"
-                                class="px-6 py-3 bg-[#1e293b] text-slate-300 rounded-lg hover:bg-[#334155] transition-colors text-sm font-medium">
+                                class="px-6 py-3 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-[#334155] transition-colors text-sm font-medium">
                             &larr; Sebelumnya
                         </button>
                         <div x-show="currentQ === 0" class="flex-1"></div>
@@ -171,28 +181,28 @@
                             </div>
                             <div class="mt-3">
                                 <span class="text-4xl font-bold text-white font-mono" x-text="result.score"></span>
-                                <span class="text-slate-400 text-sm">/100</span>
+                                <span class="text-slate-500 dark:text-slate-400 text-sm">/100</span>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                            <div class="card bg-[#0f172a] p-6">
-                                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Alokasi Aset Rekomendasi</h3>
+                            <div class="card bg-white dark:bg-[#0f172a] p-6">
+                                <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Alokasi Aset Rekomendasi</h3>
                                 <div class="relative w-48 h-48 mx-auto">
                                     <canvas id="allocationChart"></canvas>
                                 </div>
                                 <div class="mt-4 space-y-2" id="allocationLegend"></div>
                             </div>
-                            <div class="card bg-[#0f172a] p-6">
-                                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Deskripsi Profil</h3>
-                                <p class="text-sm text-slate-300 leading-relaxed" x-text="result.description"></p>
-                                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-6 mb-3">Rekomendasi</h3>
-                                <div class="text-sm text-slate-300 leading-relaxed" x-html="result.recommendation"></div>
+                            <div class="card bg-white dark:bg-[#0f172a] p-6">
+                                <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Deskripsi Profil</h3>
+                                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed" x-text="result.description"></p>
+                                <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-3">Rekomendasi</h3>
+                                <div class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed" x-html="result.recommendation"></div>
                             </div>
                         </div>
 
                         <div class="flex justify-center gap-3">
-                            <button @click="resetTest()" class="px-6 py-3 bg-[#1e293b] text-slate-300 rounded-lg hover:bg-[#334155] transition-colors text-sm font-medium">
+                            <button @click="resetTest()" class="px-6 py-3 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-[#334155] transition-colors text-sm font-medium">
                                 Ulangi Tes
                             </button>
                             <a href="/dashboard" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium inline-block">
@@ -397,9 +407,9 @@
                         <div class="flex items-center justify-between text-sm">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full" style="background:${colors[i]}"></span>
-                                <span class="text-slate-300">${label}</span>
+                                <span class="text-slate-700 dark:text-slate-300">${label}</span>
                             </div>
-                            <span class="text-slate-400 font-mono">${values[i]}%</span>
+                            <span class="text-slate-500 dark:text-slate-400 font-mono">${values[i]}%</span>
                         </div>
                     `).join('');
                 },
@@ -413,5 +423,6 @@
             };
         }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>
