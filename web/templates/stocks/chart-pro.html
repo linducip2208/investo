@@ -114,17 +114,20 @@ function rebuildChart() {
     });
 
     if (window.__chartType === 'line' || window.__chartType === 'area') {
-        proMain = proChart.addSeries(
-            window.__chartType === 'area' ? LightweightCharts.AreaSeries : LightweightCharts.LineSeries,
-            { lineColor: '#94a3b8', topColor: 'rgba(59,130,246,0.2)', bottomColor: 'rgba(59,130,246,0.02)', lineWidth: 2 }
-        );
+        if (window.__chartType === 'area') {
+            proMain = proChart.addAreaSeries(
+                { lineColor: '#94a3b8', topColor: 'rgba(59,130,246,0.2)', bottomColor: 'rgba(59,130,246,0.02)', lineWidth: 2 }
+            );
+        } else {
+            proMain = proChart.addLineSeries({ color: '#94a3b8', lineWidth: 2 });
+        }
         var lineData = [];
         for (var i = 0; i < allChartData.dates.length; i++) {
             lineData.push({ time: allChartData.dates[i], value: allChartData.prices[i].close });
         }
         proMain.setData(lineData);
     } else {
-        proMain = proChart.addSeries(LightweightCharts.CandlestickSeries, {
+        proMain = proChart.addCandlestickSeries({
             upColor: c.green, downColor: c.red, borderUpColor: c.green, borderDownColor: c.red,
             wickUpColor: c.green, wickDownColor: c.red,
         });
@@ -135,7 +138,7 @@ function rebuildChart() {
         proMain.setData(candleData);
     }
 
-    proVolume = proChart.addSeries(LightweightCharts.HistogramSeries, {
+    proVolume = proChart.addHistogramSeries({
         color: '#334155', priceFormat: { type: 'volume' }, priceScaleId: 'volume',
     });
     proChart.priceScale('volume').applyOptions({ scaleMargins: { top: 0.85, bottom: 0 }, visible: false });
@@ -173,7 +176,7 @@ function renderIndicatorsOnChart() {
                 var d = [];
                 allChartData.sma[cfg.p].forEach(function(v,i){ if(v) d.push({time:dates[i],value:v}); });
                 if (d.length > 0) {
-                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
+                    var s = proChart.addLineSeries({ color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
                     s.setData(d); indicatorSeries.push(s);
                 }
             }
@@ -186,7 +189,7 @@ function renderIndicatorsOnChart() {
                 var d = [];
                 allChartData.ema[cfg.p].forEach(function(v,i){ if(v) d.push({time:dates[i],value:v}); });
                 if (d.length > 0) {
-                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
+                    var s = proChart.addLineSeries({ color:cfg.c,lineWidth:1.5,priceLineVisible:false,lastValueVisible:true });
                     s.setData(d); indicatorSeries.push(s);
                 }
             }
@@ -200,7 +203,7 @@ function renderIndicatorsOnChart() {
                 var d = [];
                 allChartData.bb[b].forEach(function(v,idx){ if(v) d.push({time:dates[idx],value:v}); });
                 if (d.length > 0) {
-                    var s = proChart.addSeries(LightweightCharts.LineSeries, { color:colors[i],lineWidth:1,priceLineVisible:false,lastValueVisible:false });
+                    var s = proChart.addLineSeries({ color:colors[i],lineWidth:1,priceLineVisible:false,lastValueVisible:false });
                     s.setData(d); indicatorSeries.push(s);
                 }
             }
@@ -219,7 +222,7 @@ function renderAnnotationsOnChart() {
 
     annotations.forEach(function(a){
         if (a.price > 0 && a.date && proChart) {
-            var line = proChart.addSeries(LightweightCharts.LineSeries, {
+            var line = proChart.addLineSeries({
                 color: a.color || '#8b5cf6', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted,
                 priceLineVisible: false, lastValueVisible: true,
             });
@@ -312,11 +315,11 @@ function addSRLines(srLevels) {
     var from = dates[0], to = dates[dates.length-1];
     if (!from||!to) return;
     (srLevels.resistances||[]).slice(0,5).forEach(function(l){
-        var s = proChart.addSeries(LightweightCharts.LineSeries, { color:'rgba(248,113,113,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
+        var s = proChart.addLineSeries({ color:'rgba(248,113,113,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
         s.setData([{time:from,value:l.price},{time:to,value:l.price}]); indicatorSeries.push(s);
     });
     (srLevels.supports||[]).slice(0,5).forEach(function(l){
-        var s = proChart.addSeries(LightweightCharts.LineSeries, { color:'rgba(52,211,153,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
+        var s = proChart.addLineSeries({ color:'rgba(52,211,153,0.5)',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:true });
         s.setData([{time:from,value:l.price},{time:to,value:l.price}]); indicatorSeries.push(s);
     });
 }

@@ -1,0 +1,37 @@
+<div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
+    <span class="font-bold text-lg text-white">Investo</span>
+</div>
+<nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+    <a href="/dashboard" class="sidebar-link [[if eq .ActivePage "dashboard"]]active[[end]]"><span class="icon">📊</span> Dashboard</a>
+    <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham</a>
+    <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
+    <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
+    <a href="/ai/signal-center" class="sidebar-link"><span class="icon">📡</span> Signal Center</a>
+
+    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">AI</div>
+    <a href="/ai/coach" class="sidebar-link [[if eq .ActivePage "ai-coach"]]active[[end]]"><span class="icon">💬</span> AI Coach</a>
+    <a href="/ai/agents" class="sidebar-link [[if eq .ActivePage "ai-agents"]]active[[end]]"><span class="icon">🧠</span> Multi-Agent</a>
+    <a href="/ai/briefing" class="sidebar-link"><span class="icon">📰</span> Daily Briefing</a>
+    <a href="/ai/thesis" class="sidebar-link"><span class="icon">📝</span> Thesis Builder</a>
+    <a href="/ai/standup" class="sidebar-link"><span class="icon">☀️</span> Daily Standup</a>
+    <a href="/ai/voice-trade" class="sidebar-link"><span class="icon">🎤</span> Voice Trade</a>
+
+    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Portofolio</div>
+    <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
+    <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
+    <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
+    <a href="/dashboard/journal" class="sidebar-link"><span class="icon">📓</span> Trade Journal</a>
+
+    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Komunitas</div>
+    <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
+    <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    <a href="/blog" class="sidebar-link"><span class="icon">📝</span> Blog</a>
+
+    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Lainnya</div>
+    <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
+    <a href="/pengaturan/ai" class="sidebar-link"><span class="icon">🤖</span> AI Settings</a>
+    <a href="/docs" class="sidebar-link"><span class="icon">📖</span> Docs</a>
+    <a href="/pricing" class="sidebar-link"><span class="icon">💎</span> Pricing</a>
+    <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+</nav>

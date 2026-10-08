@@ -78,6 +78,11 @@
             <div>
                 <h1 class="text-2xl font-bold text-white">🌏 Foreign vs Domestic Flow</h1>
                 <p class="text-slate-400 text-sm mt-1">Aliran dana asing masuk dan keluar pasar saham Indonesia</p>
+                [[if .Flows]][[if (index .Flows 0).IsDemo]]
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif / demo</span> — contoh, bukan data real-time (feed foreign flow belum tersedia).</p>
+                </div>
+                [[end]][[end]]
             </div>
 
             <div class="net-summary">

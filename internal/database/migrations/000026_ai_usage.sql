@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS ai_usage_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    provider VARCHAR(50) NOT NULL,
+    feature VARCHAR(100) NOT NULL,
+    model VARCHAR(100),
+    tokens_in INT DEFAULT 0,
+    tokens_out INT DEFAULT 0,
+    latency_ms INT DEFAULT 0,
+    cost DECIMAL(10,6) DEFAULT 0,
+    user_id BIGINT,
+    success BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

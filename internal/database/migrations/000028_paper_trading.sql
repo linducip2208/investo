@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS paper_portfolios (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL DEFAULT 'Simulasi',
+    initial_balance DECIMAL(15,2) NOT NULL DEFAULT 100000000,
+    cash_balance DECIMAL(15,2) NOT NULL DEFAULT 100000000,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS paper_trades (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    portfolio_id BIGINT NOT NULL,
+    stock_code VARCHAR(10) NOT NULL,
+    type VARCHAR(10) NOT NULL,
+    quantity DECIMAL(15,4) NOT NULL,
+    price DECIMAL(15,2) NOT NULL,
+    total DECIMAL(15,2) NOT NULL,
+    fee DECIMAL(15,2) DEFAULT 0,
+    executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (portfolio_id) REFERENCES paper_portfolios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS paper_holdings (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    portfolio_id BIGINT NOT NULL,
+    stock_code VARCHAR(10) NOT NULL,
+    quantity DECIMAL(15,4) NOT NULL,
+    avg_price DECIMAL(15,2) NOT NULL,
+    UNIQUE KEY uk_portfolio_stock (portfolio_id, stock_code),
+    FOREIGN KEY (portfolio_id) REFERENCES paper_portfolios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

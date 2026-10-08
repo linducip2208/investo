@@ -66,6 +66,13 @@
             <div>
                 <h1 class="text-2xl font-bold text-white">📅 Seasonality Analysis &mdash; [[.Code]]</h1>
                 <p class="text-slate-400 text-sm mt-1">Analisis pola musiman return bulanan berdasarkan [[.Result.YearsAnalyzed]] tahun data historis</p>
+                [[if .Result.IsIllustrative]]
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. [[if .Result.Source]]<span class="text-slate-400">Sumber: [[.Result.Source]] · per [[.Result.AsOf]]</span>[[end]]</p>
+                </div>
+                [[else]]
+                [[if .Result.Source]]<p class="text-xs text-slate-500 mt-2">Sumber: [[.Result.Source]] · per [[.Result.AsOf]] · [[.Result.DataPoints]] observasi bulanan</p>[[end]]
+                [[end]]
             </div>
 
             <div class="card p-6 bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-blue-500/20">

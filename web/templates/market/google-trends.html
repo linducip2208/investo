@@ -79,6 +79,9 @@
             <div>
                 <h1 class="text-2xl font-bold text-white">🔍 Google Trends Correlation</h1>
                 <p class="text-slate-400 text-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data Google Trends real-time.</p>
+                </div>
             </div>
 
             [[range $i, $c := .Correlations]]
@@ -92,6 +95,9 @@
                             </span>
                             [[if eq $c.Direction "inverse"]]
                             <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-900/50 text-red-400">INVERSE</span>
+                            [[end]]
+                            [[if $c.IsIllustrative]]
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-900/50 text-amber-300 border border-amber-500/30">Data ilustratif</span>
                             [[end]]
                         </div>
                         <p class="text-slate-400 text-sm mt-2">[[$c.Description]]</p>

@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS news (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    slug VARCHAR(500) NOT NULL UNIQUE,
+    content TEXT,
+    source VARCHAR(255),
+    source_url VARCHAR(1000),
+    image_url VARCHAR(500),
+    published_at TIMESTAMP NULL,
+    sentiment_score DECIMAL(5,4) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS news_stocks (
+    news_id BIGINT NOT NULL,
+    stock_id BIGINT NOT NULL,
+    PRIMARY KEY (news_id, stock_id),
+    FOREIGN KEY (news_id) REFERENCES news(id) ON DELETE CASCADE,
+    FOREIGN KEY (stock_id) REFERENCES stocks(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

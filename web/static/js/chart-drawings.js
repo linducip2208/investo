@@ -113,7 +113,7 @@ class ChartDrawings {
 
   _renderTrendline(mainChart, d, visibleRange, colors) {
     if (!d.points || d.points.length < 2) return;
-    const line = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const line = mainChart.addLineSeries({
       color: d.color || '#3b82f6',
       lineWidth: d.lineWidth || 2,
       lineStyle: d.lineStyle === 'dashed' ? LightweightCharts.LineStyle.Dashed : LightweightCharts.LineStyle.Solid,
@@ -128,7 +128,7 @@ class ChartDrawings {
 
   _renderHorizontalLine(mainChart, d, visibleRange, colors) {
     if (!visibleRange.from || !visibleRange.to) return;
-    const line = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const line = mainChart.addLineSeries({
       color: d.color || '#f59e0b',
       lineWidth: d.lineWidth || 1.5,
       lineStyle: LightweightCharts.LineStyle.Dashed,
@@ -158,7 +158,7 @@ class ChartDrawings {
     ];
     levels.forEach(l => {
       const price = d.high - diff * l.ratio;
-      const line = mainChart.addSeries(LightweightCharts.LineSeries, {
+      const line = mainChart.addLineSeries({
         color: l.color,
         lineWidth: 1,
         lineStyle: LightweightCharts.LineStyle.Dashed,
@@ -182,7 +182,7 @@ class ChartDrawings {
     const fillColor = d.fillColor || 'rgba(59,130,246,0.15)';
     const borderColor = d.color || '#3b82f6';
 
-    const topLine = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const topLine = mainChart.addLineSeries({
       color: borderColor,
       lineWidth: 1,
       priceLineVisible: false,
@@ -193,7 +193,7 @@ class ChartDrawings {
       { time: bottomRight.time, value: topLeft.price },
     ]);
 
-    const bottomLine = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const bottomLine = mainChart.addLineSeries({
       color: borderColor,
       lineWidth: 1,
       priceLineVisible: false,
@@ -204,7 +204,7 @@ class ChartDrawings {
       { time: bottomRight.time, value: bottomRight.price },
     ]);
 
-    const leftLine = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const leftLine = mainChart.addLineSeries({
       color: borderColor,
       lineWidth: 1,
       priceLineVisible: false,
@@ -215,7 +215,7 @@ class ChartDrawings {
       { time: topLeft.time, value: topLeft.price },
     ]);
 
-    const rightLine = mainChart.addSeries(LightweightCharts.LineSeries, {
+    const rightLine = mainChart.addLineSeries({
       color: borderColor,
       lineWidth: 1,
       priceLineVisible: false,

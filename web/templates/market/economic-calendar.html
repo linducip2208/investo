@@ -118,6 +118,9 @@ function econCalendar() {
             <div>
                 <h1 class="text-xl lg:text-2xl font-bold text-white">Economic Calendar</h1>
                 <p class="text-sm text-slate-400 mt-0.5">Jadwal rilis data ekonomi global. BI Rate, FOMC, GDP, CPI, NFP, dan lainnya.</p>
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">📅 <span class="font-semibold">Jadwal tentatif</span> — tanggal perkiraan pola rilis rutin, dapat berubah. Bukan pengumuman resmi.</p>
+                </div>
             </div>
         </div>
 
@@ -195,6 +198,7 @@ function econCalendar() {
                                     </td>
                                     <td class="py-3 px-4 text-[13px]">
                                         <p class="text-slate-200" x-text="event.event"></p>
+                                        <span x-show="event.schedule==='tentative'" class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-500/30">tentatif — dapat berubah</span>
                                     </td>
                                     <td class="py-3 px-4 text-center">
                                         <span x-show="event.importance==='high'" class="dot-high inline-block"></span>

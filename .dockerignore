@@ -1,0 +1,15 @@
+.git
+.github
+.env
+.env.*
+!.env.example
+.tmp
+data
+node_modules
+build
+*.exe
+*-linux
+cron-fetch
+npm-debug.log*
+*.log
+scripts/screenshots

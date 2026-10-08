@@ -1,0 +1,811 @@
+package handler
+
+import (
+	"crypto/rand"
+	"crypto/subtle"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"html/template"
+	"io"
+	"log"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
+	"investo/internal/middleware"
+	"investo/internal/repository"
+	"investo/internal/service"
+
+	"github.com/gorilla/sessions"
+	"github.com/jmoiron/sqlx"
+)
+
+type AuthHandler struct {
+	AuthService  *service.AuthService
+	SessionStore sessions.Store
+	Templates    *template.Template
+	EmailService *service.EmailService
+	TOTPService  *service.TOTPService
+	SettingRepo  *repository.SettingRepository
+	DB           *sqlx.DB
+}
+
+func (h *AuthHandler) LoginPage(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"Title": "Masuk - Investo",
+	}
+	h.Templates.ExecuteTemplate(w, "auth/login.html", data)
+}
+
+func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		data := map[string]interface{}{
+			"Title": "Masuk - Investo",
+			"Error": "Invalid form data",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/login.html", data)
+		return
+	}
+
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+
+	if email == "" || password == "" {
+		data := map[string]interface{}{
+			"Title": "Masuk - Investo",
+			"Error": "Email dan password wajib diisi",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/login.html", data)
+		return
+	}
+
+	user, err := h.AuthService.Login(email, password)
+	if err != nil {
+		data := map[string]interface{}{
+			"Title": "Masuk - Investo",
+			"Error": err.Error(),
+		}
+		h.Templates.ExecuteTemplate(w, "auth/login.html", data)
+		return
+	}
+
+	// Enforce 2FA: users with TOTP enabled must complete the challenge
+	// before a full session is established.
+	if h.requires2FA(user.ID) {
+		if err := h.startPending2FA(w, r, user.ID); err != nil {
+			http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, "/2fa", http.StatusSeeOther)
+		return
+	}
+
+	returnTo, err := h.establishSession(w, r, user.ID)
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+
+	if returnTo != "" && returnTo != "/login" && returnTo != "/register" {
+		http.Redirect(w, r, returnTo, http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	}
+}
+
+func (h *AuthHandler) RegisterPage(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"Title": "Daftar - Investo",
+		"Name":  "",
+		"Email": "",
+	}
+	h.Templates.ExecuteTemplate(w, "auth/register.html", data)
+}
+
+func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		data := map[string]interface{}{
+			"Title": "Daftar - Investo",
+			"Error": "Invalid form data",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/register.html", data)
+		return
+	}
+
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	confirm := r.FormValue("password_confirm")
+
+	if name == "" || email == "" || password == "" {
+		data := map[string]interface{}{
+			"Title": "Daftar - Investo",
+			"Error": "Semua field wajib diisi",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/register.html", data)
+		return
+	}
+
+	if password != confirm {
+		data := map[string]interface{}{
+			"Title": "Daftar - Investo",
+			"Error": "Password dan konfirmasi tidak cocok",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/register.html", data)
+		return
+	}
+
+	user, err := h.AuthService.Register(name, email, password)
+	if err != nil {
+		data := map[string]interface{}{
+			"Title": "Daftar - Investo",
+			"Error": err.Error(),
+		}
+		h.Templates.ExecuteTemplate(w, "auth/register.html", data)
+		return
+	}
+
+	if _, err := h.establishSession(w, r, user.ID); err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
+	session, _ := h.SessionStore.Get(r, "investo-session")
+	if session != nil {
+		if repo := h.sessionRepo(); repo != nil {
+			if raw, _ := session.Values["session_token"].(string); raw != "" {
+				_ = repo.Revoke(service.HashToken(raw))
+			}
+		}
+		session.Values["user_id"] = nil
+		session.Values["session_token"] = nil
+		session.Values["pending_2fa_user_id"] = nil
+		session.Options.MaxAge = -1
+		session.Save(r, w)
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (h *AuthHandler) ProfilePage(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	data := map[string]interface{}{
+		"Title": "Profil - Investo",
+		"User":  user,
+	}
+	h.Templates.ExecuteTemplate(w, "user/profile.html", data)
+}
+
+func (h *AuthHandler) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Redirect(w, r, "/dashboard/profile", http.StatusSeeOther)
+		return
+	}
+
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	currentPassword := r.FormValue("current_password")
+	newPassword := r.FormValue("new_password")
+
+	err := h.AuthService.UpdateProfile(user.ID, name, email, currentPassword, newPassword)
+	if err != nil {
+		data := map[string]interface{}{
+			"Title": "Profil - Investo",
+			"User":  user,
+			"Error": err.Error(),
+		}
+		h.Templates.ExecuteTemplate(w, "user/profile.html", data)
+		return
+	}
+
+	session, _ := h.SessionStore.Get(r, "investo-session")
+	session.AddFlash("Profil berhasil diperbarui")
+	session.Save(r, w)
+
+	http.Redirect(w, r, "/dashboard/profile", http.StatusSeeOther)
+}
+
+func (h *AuthHandler) VerifyEmail(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	if token == "" {
+		data := map[string]interface{}{
+			"Title": "Verifikasi Email - Investo",
+			"Error": "Token tidak ditemukan",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/verify-email.html", data)
+		return
+	}
+
+	userID, err := h.EmailService.VerifyToken(token, "verify")
+	if err != nil {
+		data := map[string]interface{}{
+			"Title":   "Verifikasi Email - Investo",
+			"Error":   err.Error(),
+			"Success": false,
+		}
+		h.Templates.ExecuteTemplate(w, "auth/verify-email.html", data)
+		return
+	}
+
+	if _, err := h.DB.Exec("UPDATE users SET email_verified_at = NOW() WHERE id = ?", userID); err != nil {
+		log.Printf("VerifyEmail: update users error: %v", err)
+	}
+
+	data := map[string]interface{}{
+		"Title":   "Verifikasi Email - Investo",
+		"Success": true,
+	}
+	h.Templates.ExecuteTemplate(w, "auth/verify-email.html", data)
+}
+
+func (h *AuthHandler) ForgotPasswordPage(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"Title": "Lupa Password - Investo",
+	}
+	h.Templates.ExecuteTemplate(w, "auth/forgot-password.html", data)
+}
+
+func (h *AuthHandler) ForgotPassword(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		data := map[string]interface{}{"Title": "Lupa Password - Investo", "Error": "Invalid form data"}
+		h.Templates.ExecuteTemplate(w, "auth/forgot-password.html", data)
+		return
+	}
+
+	email := strings.TrimSpace(r.FormValue("email"))
+	if email == "" {
+		data := map[string]interface{}{"Title": "Lupa Password - Investo", "Error": "Email wajib diisi"}
+		h.Templates.ExecuteTemplate(w, "auth/forgot-password.html", data)
+		return
+	}
+
+	user, err := h.AuthService.UserRepo.FindByEmail(email)
+	if err != nil {
+		data := map[string]interface{}{
+			"Title":   "Lupa Password - Investo",
+			"Success": true,
+			"Message": "Jika email terdaftar, link reset password akan dikirim.",
+		}
+		h.Templates.ExecuteTemplate(w, "auth/forgot-password.html", data)
+		return
+	}
+
+	if err := h.EmailService.SendForgotPassword(email, user.ID); err != nil {
+		log.Printf("ForgotPassword: send email error: %v", err)
+	}
+
+	data := map[string]interface{}{
+		"Title":   "Lupa Password - Investo",
+		"Success": true,
+		"Message": "Jika email terdaftar, link reset password akan dikirim.",
+	}
+	h.Templates.ExecuteTemplate(w, "auth/forgot-password.html", data)
+}
+
+func (h *AuthHandler) ResetPasswordPage(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	data := map[string]interface{}{
+		"Title": "Reset Password - Investo",
+		"Token": token,
+	}
+	h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+}
+
+func (h *AuthHandler) ResetPassword(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": "Invalid form data"}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	token := r.FormValue("token")
+	password := r.FormValue("password")
+	confirm := r.FormValue("confirm")
+
+	if token == "" || password == "" {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": "Semua field wajib diisi"}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	if password != confirm {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": "Password tidak cocok"}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	if len(password) < 8 {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": "Password minimal 8 karakter"}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	userID, err := h.EmailService.VerifyPasswordReset(token)
+	if err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": err.Error()}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	// Consume the token before changing the password so it cannot be
+	// replayed; a SetPassword failure then just requires a fresh request.
+	if err := h.EmailService.ConsumePasswordReset(token); err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": err.Error()}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	if err := h.AuthService.SetPassword(userID, password); err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": err.Error()}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	data := map[string]interface{}{
+		"Title":   "Reset Password - Investo",
+		"Success": true,
+		"Message": "Password berhasil direset. Silakan login.",
+	}
+	h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+}
+
+func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request) {
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_state", http.StatusSeeOther)
+		return
+	}
+	expectedState, _ := session.Values["oauth_google_state"].(string)
+	providedState := r.URL.Query().Get("state")
+	delete(session.Values, "oauth_google_state")
+	_ = session.Save(r, w)
+	if expectedState == "" || len(expectedState) != len(providedState) || subtle.ConstantTimeCompare([]byte(expectedState), []byte(providedState)) != 1 {
+		http.Redirect(w, r, "/login?error=google_state", http.StatusSeeOther)
+		return
+	}
+
+	code := r.URL.Query().Get("code")
+	if code == "" {
+		http.Redirect(w, r, "/login?error=google_auth_failed", http.StatusSeeOther)
+		return
+	}
+
+	clientID, _ := h.SettingRepo.Get("oauth_google_client_id")
+	clientSecret, _ := h.SettingRepo.Get("oauth_google_client_secret")
+
+	if clientID == "" || clientSecret == "" {
+		http.Redirect(w, r, "/login?error=google_not_configured", http.StatusSeeOther)
+		return
+	}
+
+	tokenURL := "https://oauth2.googleapis.com/token"
+	form := url.Values{
+		"code":          {code},
+		"client_id":     {clientID},
+		"client_secret": {clientSecret},
+		"redirect_uri":  {fmt.Sprintf("%s/api/auth/google/callback", h.getAppURL(r))},
+		"grant_type":    {"authorization_code"},
+	}
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	request, err := http.NewRequestWithContext(r.Context(), http.MethodPost, tokenURL, strings.NewReader(form.Encode()))
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Printf("[Google OAuth] token exchange error: %v", err)
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
+	defer resp.Body.Close()
+
+	var tokenRes struct {
+		AccessToken string `json:"access_token"`
+		Error       string `json:"error"`
+	}
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil || resp.StatusCode < 200 || resp.StatusCode >= 300 || json.Unmarshal(body, &tokenRes) != nil {
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
+
+	if tokenRes.Error != "" {
+		log.Printf("[Google OAuth] token error: %s", tokenRes.Error)
+		http.Redirect(w, r, "/login?error=google_token", http.StatusSeeOther)
+		return
+	}
+
+	userReq, err := http.NewRequestWithContext(r.Context(), http.MethodGet, "https://www.googleapis.com/oauth2/v2/userinfo", nil)
+	if err != nil {
+		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
+		return
+	}
+	userReq.Header.Set("Authorization", "Bearer "+tokenRes.AccessToken)
+	userResp, err := client.Do(userReq)
+	if err != nil {
+		log.Printf("[Google OAuth] userinfo error: %v", err)
+		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
+		return
+	}
+	defer userResp.Body.Close()
+
+	var googleUser struct {
+		ID    string `json:"id"`
+		Email string `json:"email"`
+		Name  string `json:"name"`
+	}
+	body, err = io.ReadAll(io.LimitReader(userResp.Body, 1<<20))
+	if err != nil || userResp.StatusCode < 200 || userResp.StatusCode >= 300 || json.Unmarshal(body, &googleUser) != nil {
+		http.Redirect(w, r, "/login?error=google_userinfo", http.StatusSeeOther)
+		return
+	}
+
+	if googleUser.Email == "" {
+		http.Redirect(w, r, "/login?error=google_no_email", http.StatusSeeOther)
+		return
+	}
+
+	user, _ := h.AuthService.UserRepo.FindByEmail(googleUser.Email)
+	if user == nil {
+		user, err = h.AuthService.RegisterOAuth(googleUser.Name, googleUser.Email)
+		if err != nil {
+			log.Printf("[Google OAuth] register error: %v", err)
+			http.Redirect(w, r, "/login?error=google_register", http.StatusSeeOther)
+			return
+		}
+	}
+
+	if _, err := h.DB.Exec("UPDATE users SET google_id = ? WHERE id = ?", googleUser.ID, user.ID); err != nil {
+		log.Printf("[Google OAuth] update google_id error: %v", err)
+	}
+
+	// OAuth sign-in must also satisfy 2FA when the user enabled it.
+	if h.requires2FA(user.ID) {
+		if err := h.startPending2FA(w, r, user.ID); err != nil {
+			http.Redirect(w, r, "/login?error=session", http.StatusSeeOther)
+			return
+		}
+		http.Redirect(w, r, "/2fa", http.StatusSeeOther)
+		return
+	}
+
+	if _, err := h.establishSession(w, r, user.ID); err != nil {
+		http.Redirect(w, r, "/login?error=session", http.StatusSeeOther)
+		return
+	}
+
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+// GoogleOAuthStart creates a one-time state value before leaving the site.
+func (h *AuthHandler) GoogleOAuthStart(w http.ResponseWriter, r *http.Request) {
+	clientID, _ := h.SettingRepo.Get("oauth_google_client_id")
+	if clientID == "" {
+		http.Redirect(w, r, "/login?error=google_not_configured", http.StatusSeeOther)
+		return
+	}
+	state, err := randomToken(32)
+	if err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	session.Values["oauth_google_state"] = state
+	if err := session.Save(r, w); err != nil {
+		http.Error(w, "Gagal memulai OAuth", http.StatusInternalServerError)
+		return
+	}
+	params := url.Values{
+		"client_id":     {clientID},
+		"redirect_uri":  {fmt.Sprintf("%s/api/auth/google/callback", h.getAppURL(r))},
+		"response_type": {"code"},
+		"scope":         {"openid email profile"},
+		"state":         {state},
+	}
+	http.Redirect(w, r, "https://accounts.google.com/o/oauth2/v2/auth?"+params.Encode(), http.StatusSeeOther)
+}
+
+func (h *AuthHandler) establishSession(w http.ResponseWriter, r *http.Request, userID int64) (string, error) {
+	previous, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		return "", err
+	}
+	returnTo, _ := previous.Values["return_to"].(string)
+	if !safeReturnTo(returnTo) {
+		returnTo = ""
+	}
+	nonce, err := randomToken(32)
+	if err != nil {
+		return "", err
+	}
+	// Replace all pre-auth values. Cookie-backed sessions have no server-side ID;
+	// a fresh nonce guarantees the authenticated cookie is newly encoded.
+	values := map[interface{}]interface{}{
+		"user_id":       userID,
+		"session_nonce": nonce,
+	}
+	if repo := h.sessionRepo(); repo != nil {
+		raw, err := service.RandomToken(32)
+		if err != nil {
+			return "", err
+		}
+		if err := repo.Create(userID, service.HashToken(raw), r.UserAgent(), middleware.ClientIP(r)); err != nil {
+			return "", err
+		}
+		values["session_token"] = raw
+	}
+	previous.Values = values
+	if err := previous.Save(r, w); err != nil {
+		return "", err
+	}
+	return returnTo, nil
+}
+
+// sessionRepo returns the server-side session repository when one is wired
+// (nil-safe for backward compatibility).
+func (h *AuthHandler) sessionRepo() *repository.SessionRepository {
+	if h.AuthService == nil {
+		return nil
+	}
+	return h.AuthService.SessionRepo
+}
+
+// requires2FA reports whether a user has TOTP login enforcement enabled.
+// Failures resolve to false and are logged; the password check itself has
+// already succeeded at this point.
+func (h *AuthHandler) requires2FA(userID int64) bool {
+	if h.TOTPService == nil {
+		return false
+	}
+	enabled, err := h.TOTPService.Is2FAEnabled(userID)
+	if err != nil {
+		log.Printf("requires2FA user %d: %v", userID, err)
+		return false
+	}
+	return enabled
+}
+
+// startPending2FA parks the user ID in the cookie session (without granting
+// authentication) so TwoFactorVerify can finish the login. Any pre-auth
+// return_to hint is preserved for establishSession.
+func (h *AuthHandler) startPending2FA(w http.ResponseWriter, r *http.Request, userID int64) error {
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		return err
+	}
+	returnTo, _ := session.Values["return_to"].(string)
+	session.Values = map[interface{}]interface{}{
+		"pending_2fa_user_id": userID,
+	}
+	if safeReturnTo(returnTo) {
+		session.Values["return_to"] = returnTo
+	}
+	return session.Save(r, w)
+}
+
+func pending2FAUserID(session *sessions.Session) (int64, bool) {
+	if session == nil {
+		return 0, false
+	}
+	switch v := session.Values["pending_2fa_user_id"].(type) {
+	case int64:
+		return v, v != 0
+	case int:
+		return int64(v), v != 0
+	case int32:
+		return int64(v), v != 0
+	case float64:
+		return int64(v), v != 0
+	default:
+		return 0, false
+	}
+}
+
+// TwoFactorPage renders the login-time 2FA challenge for users who passed
+// the password step but have TOTP enabled.
+func (h *AuthHandler) TwoFactorPage(w http.ResponseWriter, r *http.Request) {
+	session, _ := h.SessionStore.Get(r, "investo-session")
+	if _, ok := pending2FAUserID(session); !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, twoFactorHTML(""))
+}
+
+// TwoFactorVerify checks the TOTP code and only then establishes the full
+// authenticated session (including the server-side session row).
+func (h *AuthHandler) TwoFactorVerify(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		return
+	}
+	code := strings.TrimSpace(r.FormValue("code"))
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+	userID, ok := pending2FAUserID(session)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if h.TOTPService == nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+	valid, err := h.TOTPService.VerifyTOTP(userID, code)
+	if err != nil || !valid {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Fprint(w, twoFactorHTML("Kode verifikasi salah atau kedaluwarsa. Coba lagi."))
+		return
+	}
+
+	returnTo, err := h.establishSession(w, r, userID)
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+
+	if returnTo != "" && returnTo != "/login" && returnTo != "/register" {
+		http.Redirect(w, r, returnTo, http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	}
+}
+
+func twoFactorHTML(errMsg string) string {
+	alert := ""
+	if errMsg != "" {
+		alert = `<div style="background:#7f1d1d;border:1px solid #ef4444;color:#fecaca;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px">` + template.HTMLEscapeString(errMsg) + `</div>`
+	}
+	return `<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Verifikasi 2FA - Investo</title></head>
+<body style="margin:0;padding:0;background:#0b1120;font-family:system-ui,sans-serif;color:#e2e8f0">
+<div style="max-width:400px;margin:80px auto;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:32px">
+<div style="font-size:22px;font-weight:800;margin-bottom:8px">Verifikasi 2 Langkah</div>
+<div style="font-size:13px;color:#94a3b8;margin-bottom:20px">Masukkan kode 6 digit dari aplikasi authenticator Anda.</div>
+` + alert + `
+<form method="POST" action="/2fa" autocomplete="off">
+<input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autofocus placeholder="123456"
+style="width:100%;box-sizing:border-box;background:#0f172a;border:1px solid #334155;color:#fff;border-radius:8px;padding:12px;font-size:20px;letter-spacing:8px;text-align:center" />
+<button type="submit" style="width:100%;margin-top:16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer">Verifikasi</button>
+</form>
+<div style="margin-top:16px;text-align:center;font-size:12px"><a href="/login" style="color:#60a5fa">Kembali ke halaman masuk</a></div>
+</div>
+</body>
+</html>`
+}
+
+func randomToken(size int) (string, error) {
+	value := make([]byte, size)
+	if _, err := rand.Read(value); err != nil {
+		return "", err
+	}
+	return base64.RawURLEncoding.EncodeToString(value), nil
+}
+
+func safeReturnTo(value string) bool {
+	return strings.HasPrefix(value, "/") && !strings.HasPrefix(value, "//") && value != "/login" && value != "/register"
+}
+
+func (h *AuthHandler) Enable2FA(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+		return
+	}
+
+	secret, qrURL, err := h.TOTPService.GenerateSecret(user.ID)
+	if err != nil {
+		writeJSONError(w, http.StatusInternalServerError, "gagal generate 2FA secret")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"secret":  secret,
+		"qr_url":  qrURL,
+	})
+}
+
+func (h *AuthHandler) Verify2FA(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+		return
+	}
+
+	var payload struct {
+		Code string `json:"code"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		writeJSONError(w, http.StatusBadRequest, "invalid payload")
+		return
+	}
+
+	valid, err := h.TOTPService.VerifyTOTP(user.ID, payload.Code)
+	if err != nil || !valid {
+		writeJSONError(w, http.StatusBadRequest, "kode TOTP tidak valid")
+		return
+	}
+
+	if err := h.TOTPService.Enable2FA(user.ID); err != nil {
+		writeJSONError(w, http.StatusInternalServerError, "gagal mengaktifkan 2FA")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+	})
+}
+
+func (h *AuthHandler) Disable2FA(w http.ResponseWriter, r *http.Request) {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+		return
+	}
+
+	if err := h.TOTPService.Disable2FA(user.ID); err != nil {
+		writeJSONError(w, http.StatusInternalServerError, "gagal menonaktifkan 2FA")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+	})
+}
+
+func (h *AuthHandler) getAppURL(r *http.Request) string {
+	appURL, _ := h.SettingRepo.Get("app_url")
+	if appURL != "" {
+		return appURL
+	}
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	return fmt.Sprintf("%s://%s", scheme, r.Host)
+}
+
+func atoi(s string) int {
+	v, _ := strconv.Atoi(s)
+	return v
+}
+
+func parseFloat(s string) float64 {
+	v, _ := strconv.ParseFloat(s, 64)
+	return v
+}

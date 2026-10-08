@@ -72,6 +72,9 @@
             <div>
                 <h1 class="text-2xl font-bold text-white">🚀 IPO Watch</h1>
                 <p class="text-slate-400 text-sm mt-1">Pantau IPO mendatang dan performa IPO terbaru di Bursa Efek Indonesia</p>
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data real-time. Verifikasi jadwal resmi di keterbukaan informasi BEI/IDX.</p>
+                </div>
             </div>
 
             <div>
@@ -86,6 +89,7 @@
                             </div>
                             <span class="px-3 py-1 rounded-lg text-xs font-semibold bg-blue-900/50 text-blue-400 border border-blue-800">[[.Sector]]</span>
                         </div>
+                        [[if .IsIllustrative]]<p class="text-[10px] text-amber-300 mt-1">⚠️ Data ilustratif[[if .Note]] — [[.Note]][[end]]</p>[[end]]
                         <div class="grid grid-cols-2 gap-3 text-sm">
                             <div>
                                 <span class="text-slate-500 text-xs">Harga Penawaran</span>

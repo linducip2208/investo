@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -40,7 +40,7 @@
 
             const isDark = document.documentElement.classList.contains('dark');
 
-            forexChart = createChart(container, {
+            forexChart = LightweightCharts.createChart(container, {
                 layout: {
                     background: { color: isDark ? '#1e293b' : '#ffffff' },
                     textColor: isDark ? '#94a3b8' : '#475569',
@@ -56,7 +56,7 @@
                 height: 400,
             });
 
-            forexCandleSeries = forexChart.addSeries(CandlestickSeries, {
+            forexCandleSeries = forexChart.addCandlestickSeries({
                 upColor: '#10b981',
                 downColor: '#ef4444',
                 borderUpColor: '#10b981',
@@ -65,7 +65,7 @@
                 wickDownColor: '#ef4444',
             });
 
-            forexVolumeSeries = forexChart.addSeries(HistogramSeries, {
+            forexVolumeSeries = forexChart.addHistogramSeries({
                 color: isDark ? '#334155' : '#e2e8f0',
                 priceFormat: { type: 'volume' },
                 priceScaleId: 'volume',
@@ -209,7 +209,7 @@
 
 <footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-400 dark:text-slate-500">
-        <p>&copy; [[.CurrentYear]] Investo. Data forex disajikan dengan penundaan.</p>
+        <p>&copy; [[currentYear]] Investo. Data forex disajikan dengan penundaan.</p>
     </div>
 </footer>
 
