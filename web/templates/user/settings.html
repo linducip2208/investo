@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]] — Investo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
@@ -14,11 +21,17 @@
         .nav-link:hover{background:#1e293b;color:#e2e8f0}
         .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
-<body class="bg-[#0b1120] text-slate-200 flex">
+<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex">
 
-<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
         <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
         <span class="font-bold text-white">Investo</span>
     </div>
@@ -27,15 +40,15 @@
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/dashboard/alerts" class="nav-link">🔔 Alert</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/ideas" class="nav-link">💡 Ideas</a>
         <a href="/market/recap" class="nav-link">📋 Recap</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link active">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
         <a href="/pengaturan/data-sources" class="nav-link">📡 Data Sources</a>
@@ -58,28 +71,28 @@
                 <div class="grid grid-cols-5 gap-2">
                     <label class="cursor-pointer rounded-lg border-2 border-blue-500 overflow-hidden">
                         <input type="radio" name="theme" value="bloomberg-dark" class="hidden" checked>
-                        <div class="h-10 bg-slate-800 flex items-end p-1"><div class="w-full h-5 rounded bg-slate-700"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-300">Bloomberg</div>
+                        <div class="h-10 bg-white dark:bg-slate-800 flex items-end p-1"><div class="w-full h-5 rounded bg-slate-100 dark:bg-slate-700"></div></div>
+                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Bloomberg</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-700 overflow-hidden">
+                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
                         <input type="radio" name="theme" value="terminal-green" class="hidden">
-                        <div class="h-10 bg-black flex items-end p-1"><div class="w-full h-5 rounded bg-[#111]"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-300">Terminal</div>
+                        <div class="h-10 bg-black flex items-end p-1"><div class="w-full h-5 rounded bg-white dark:bg-[#111]"></div></div>
+                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Terminal</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-700 overflow-hidden">
+                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
                         <input type="radio" name="theme" value="minimal-white" class="hidden">
                         <div class="h-10 bg-white flex items-end p-1"><div class="w-full h-5 rounded bg-slate-50"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-300">Minimal</div>
+                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Minimal</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-700 overflow-hidden">
+                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
                         <input type="radio" name="theme" value="midnight-blue" class="hidden">
-                        <div class="h-10 bg-[#0f172a] flex items-end p-1"><div class="w-full h-5 rounded bg-[#1e3a8a]"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-300">Midnight</div>
+                        <div class="h-10 bg-white dark:bg-[#0f172a] flex items-end p-1"><div class="w-full h-5 rounded bg-[#1e3a8a]"></div></div>
+                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Midnight</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-700 overflow-hidden">
+                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
                         <input type="radio" name="theme" value="soft-grey" class="hidden">
                         <div class="h-10 bg-slate-100 flex items-end p-1"><div class="w-full h-5 rounded bg-white"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-300">Soft</div>
+                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Soft</div>
                     </label>
                 </div>
             </div>
@@ -96,17 +109,17 @@
             <div class="card p-5">
                 <h2 class="font-semibold text-white mb-3">Timeframe Default</h2>
                 <div class="flex flex-wrap gap-2">
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1D" class="hidden">1H</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1W" class="hidden">1M</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1M" checked class="hidden">1B</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="3M" class="hidden">3B</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1Y" class="hidden">1T</label>
+                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1D" class="hidden">1H</label>
+                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1W" class="hidden">1M</label>
+                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1M" checked class="hidden">1B</label>
+                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="3M" class="hidden">3B</label>
+                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1Y" class="hidden">1T</label>
                 </div>
             </div>
 
             <div class="card p-5">
                 <h2 class="font-semibold text-white mb-3">Bahasa</h2>
-                <select name="language" class="w-full sm:w-48 px-3 py-2 rounded-lg border border-slate-700 bg-slate-800 text-white text-sm">
+                <select name="language" class="w-full sm:w-48 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-white text-sm">
                     <option value="id" selected>Bahasa Indonesia</option>
                     <option value="en">English</option>
                 </select>
@@ -119,5 +132,6 @@
     </div>
 </div>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

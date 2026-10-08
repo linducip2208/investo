@@ -1,37 +1,159 @@
-<div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+<div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
     <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
     <span class="font-bold text-lg text-white">Investo</span>
 </div>
 <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
-    <a href="/dashboard" class="sidebar-link [[if eq .ActivePage "dashboard"]]active[[end]]"><span class="icon">📊</span> Dashboard</a>
-    <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham</a>
-    <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-    <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-    <a href="/ai/signal-center" class="sidebar-link"><span class="icon">📡</span> Signal Center</a>
+    <a href="/dashboard" class="sidebar-link [[if eq .ActivePage "dashboard"]]active[[end]]"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+    <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham</a>
+    <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+    <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+    <a href="/ai/signal-center" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 19a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg></span> Signal Center</a>
 
-    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">AI</div>
-    <a href="/ai/coach" class="sidebar-link [[if eq .ActivePage "ai-coach"]]active[[end]]"><span class="icon">💬</span> AI Coach</a>
-    <a href="/ai/agents" class="sidebar-link [[if eq .ActivePage "ai-agents"]]active[[end]]"><span class="icon">🧠</span> Multi-Agent</a>
-    <a href="/ai/briefing" class="sidebar-link"><span class="icon">📰</span> Daily Briefing</a>
-    <a href="/ai/thesis" class="sidebar-link"><span class="icon">📝</span> Thesis Builder</a>
-    <a href="/ai/standup" class="sidebar-link"><span class="icon">☀️</span> Daily Standup</a>
-    <a href="/ai/voice-trade" class="sidebar-link"><span class="icon">🎤</span> Voice Trade</a>
+    <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">AI</div>
+    <a href="/ai/coach" class="sidebar-link [[if eq .ActivePage "ai-coach"]]active[[end]]"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1" />
+</svg></span> AI Coach</a>
+    <a href="/ai/agents" class="sidebar-link [[if eq .ActivePage "ai-agents"]]active[[end]]"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> Multi-Agent</a>
+    <a href="/ai/briefing" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" />
+  <path d="M8 8l4 0" />
+  <path d="M8 12l4 0" />
+  <path d="M8 16l4 0" />
+</svg></span> Daily Briefing</a>
+    <a href="/ai/thesis" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+  <path d="M13.5 6.5l4 4" />
+</svg></span> Thesis Builder</a>
+    <a href="/ai/standup" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+</svg></span> Daily Standup</a>
+    <a href="/ai/voice-trade" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 5a3 3 0 0 1 3 -3a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3a3 3 0 0 1 -3 -3l0 -5" />
+  <path d="M5 10a7 7 0 0 0 14 0" />
+  <path d="M8 21l8 0" />
+  <path d="M12 17l0 4" />
+</svg></span> Voice Trade</a>
 
-    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Portofolio</div>
-    <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">💼</span> Portofolio</a>
-    <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
-    <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
-    <a href="/dashboard/journal" class="sidebar-link"><span class="icon">📓</span> Trade Journal</a>
+    <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Portofolio</div>
+    <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+    <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+    <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg></span> Alert</a>
+    <a href="/dashboard/journal" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+  <path d="M13 8l2 0" />
+  <path d="M13 12l2 0" />
+</svg></span> Trade Journal</a>
 
-    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Komunitas</div>
-    <a href="/ideas" class="sidebar-link"><span class="icon">💡</span> Ideas</a>
-    <a href="/leaderboard" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
-    <a href="/blog" class="sidebar-link"><span class="icon">📝</span> Blog</a>
+    <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Komunitas</div>
+    <a href="/ideas" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+  <path d="M9.7 17l4.6 0" />
+</svg></span> Ideas</a>
+    <a href="/leaderboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 21l8 0" />
+  <path d="M12 17l0 4" />
+  <path d="M7 4l10 0" />
+  <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+  <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+</svg></span> Leaderboard</a>
+    <a href="/blog" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+  <path d="M13.5 6.5l4 4" />
+</svg></span> Blog</a>
 
-    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Lainnya</div>
-    <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
-    <a href="/pengaturan/ai" class="sidebar-link"><span class="icon">🤖</span> AI Settings</a>
-    <a href="/docs" class="sidebar-link"><span class="icon">📖</span> Docs</a>
-    <a href="/pricing" class="sidebar-link"><span class="icon">💎</span> Pricing</a>
-    <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+    <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-600 uppercase tracking-wider px-2">Lainnya</div>
+    <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
+    <a href="/pengaturan/ai" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4" />
+  <path d="M12 2v2" />
+  <path d="M9 12v9" />
+  <path d="M15 12v9" />
+  <path d="M5 16l4 -2" />
+  <path d="M15 14l4 2" />
+  <path d="M9 18h6" />
+  <path d="M10 8v.01" />
+  <path d="M14 8v.01" />
+</svg></span> AI Settings</a>
+    <a href="/docs" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+  <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+  <path d="M3 6l0 13" />
+  <path d="M12 6l0 13" />
+  <path d="M21 6l0 13" />
+</svg></span> Docs</a>
+    <a href="/pricing" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 5h12l3 5l-8.5 9.5a.7 .7 0 0 1 -1 0l-8.5 -9.5l3 -5" />
+  <path d="M10 12l-2 -2.2l.6 -1" />
+</svg></span> Pricing</a>
+    <a href="/logout" class="sidebar-link text-danger"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+  <path d="M9 12h12l-3 -3" />
+  <path d="M18 15l3 -3" />
+</svg></span> Keluar</a>
 </nav>

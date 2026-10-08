@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Right Issue Calculator · Investo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -23,6 +27,12 @@
         .result-row:last-child{border-bottom:none}
         .result-label{font-size:13px;color:#94a3b8}
         .result-value{font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#e2e8f0}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="rightIssueCalc()">
@@ -67,14 +77,14 @@
     </script>
 
     <div class="flex-1 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <a href="/calculators" class="text-slate-400 hover:text-white transition-colors">&larr; Kalkulator</a>
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <a href="/calculators" class="text-slate-500 dark:text-slate-400 hover:text-white transition-colors">&larr; Kalkulator</a>
             <div class="flex-1"><h1 class="text-lg font-bold text-white">Right Issue Calculator</h1></div>
         </header>
 
         <main class="flex-1 p-4 lg:p-6 overflow-y-auto max-w-3xl mx-auto w-full">
             <div class="card p-6 mb-6">
-                <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Input Data Right Issue</h2>
+                <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-5">Input Data Right Issue</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
                         <label>Harga Saham Saat Ini (Rp)</label>
@@ -102,7 +112,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4" x-show="terp > 0">
                 <div class="card p-5">
-                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Hasil Perhitungan</h3>
+                    <h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Hasil Perhitungan</h3>
                     <div class="result-row">
                         <span class="result-label">TERP (Theoretical Ex-Rights Price)</span>
                         <span class="result-value text-blue-400" x-text="fmt(terp)"></span>
@@ -121,18 +131,19 @@
                     </div>
                 </div>
                 <div class="card p-5">
-                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Rekomendasi</h3>
-                    <div class="bg-slate-800/40 rounded-xl p-4">
-                        <p class="text-sm text-slate-300 leading-relaxed" x-text="recommendation"></p>
+                    <h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Rekomendasi</h3>
+                    <div class="bg-white/40 dark:bg-slate-800/40 rounded-xl p-4">
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed" x-text="recommendation"></p>
                     </div>
                     <div class="mt-4 space-y-2 text-xs text-slate-500">
-                        <p><strong class="text-slate-400">TERP</strong> = Harga teoritis saham setelah ex-rights</p>
-                        <p><strong class="text-slate-400">Rights Value</strong> = (TERP - Harga Right Issue)</p>
-                        <p><strong class="text-slate-400">Weighted Formula</strong> = ((Old × P_old) + (New × P_right)) / (Old + New)</p>
+                        <p><strong class="text-slate-500 dark:text-slate-400">TERP</strong> = Harga teoritis saham setelah ex-rights</p>
+                        <p><strong class="text-slate-500 dark:text-slate-400">Rights Value</strong> = (TERP - Harga Right Issue)</p>
+                        <p><strong class="text-slate-500 dark:text-slate-400">Weighted Formula</strong> = ((Old × P_old) + (New × P_right)) / (Old + New)</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

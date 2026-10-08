@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Analysis &mdash; [[.Portfolio.Name]] &mdash; Investo</title>
     <meta name="description" content="Analisis risiko AI untuk portofolio [[.Portfolio.Name]]: VaR, drawdown, Sharpe ratio, beta, diversifikasi.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -29,46 +33,122 @@
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:12px!important}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full flex" x-data="{ sidebarOpen: false }">
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
-            <a href="/saham" class="sidebar-link"><span class="icon">📈</span> Saham IDX</a>
-            <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-            <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-            <a href="/market/heatmap" class="sidebar-link"><span class="icon">🗺️</span> Heatmap</a>
-            <a href="/market/strategy-builder" class="sidebar-link"><span class="icon">🧠</span> Strategy Builder</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+            <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+  <path d="M9 4v13" />
+  <path d="M15 7v13" />
+</svg></span> Heatmap</a>
+            <a href="/market/strategy-builder" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> Strategy Builder</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
-            <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon">💼</span> Portofolio</a>
-            <a href="/dashboard/journal" class="sidebar-link"><span class="icon">📓</span> Trade Journal</a>
-            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">⭐</span> Watchlist</a>
-            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">🔔</span> Alert</a>
-            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon">🧮</span> Tools</a>
+            <a href="/dashboard/portfolios" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+            <a href="/dashboard/journal" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+  <path d="M13 8l2 0" />
+  <path d="M13 12l2 0" />
+</svg></span> Trade Journal</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg></span> Alert</a>
+            <a href="/dashboard/portfolios/tools" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 5a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -14" />
+  <path d="M8 8a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1l0 -1" />
+  <path d="M8 14l0 .01" />
+  <path d="M12 14l0 .01" />
+  <path d="M16 14l0 .01" />
+  <path d="M8 17l0 .01" />
+  <path d="M12 17l0 .01" />
+  <path d="M16 17l0 .01" />
+</svg></span> Tools</a>
         </nav>
-        <div class="p-3 border-t border-slate-800">
-            <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
-            <a href="/logout" class="sidebar-link text-danger"><span class="icon">🚪</span> Keluar</a>
+        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+            <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
+            <a href="/logout" class="sidebar-link text-danger"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+  <path d="M9 12h12l-3 -3" />
+  <path d="M18 15l3 -3" />
+</svg></span> Keluar</a>
         </div>
     </aside>
 
     <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-1"></div>
-            <div class="flex items-center gap-3 text-sm text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                 <a href="/dashboard/portfolios" class="hover:text-blue-400 transition-colors">Portofolio</a>
                 <span>/</span>
                 <a href="/dashboard/portfolios/[[.Portfolio.ID]]" class="hover:text-blue-400 transition-colors">[[.Portfolio.Name]]</a>
                 <span>/</span>
                 <span class="text-white font-medium">Risk Analysis</span>
             </div>
-            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-700">
+            <div class="flex items-center gap-2.5 ml-auto pl-3 border-l border-slate-200 dark:border-slate-700">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
                 <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
             </div>
@@ -78,7 +158,7 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
                 <div>
                     <h1 class="text-xl lg:text-2xl font-bold text-white">[[.Portfolio.Name]] &mdash; Risk Analysis</h1>
-                    <p class="text-sm text-slate-400 mt-0.5">AI-powered portfolio risk assessment</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">AI-powered portfolio risk assessment</p>
                 </div>
             </div>
 
@@ -99,7 +179,7 @@
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
                             <span class="text-4xl font-mono font-extrabold text-white">[[printf "%.0f" .Risk.RiskScore]]</span>
-                            <span class="text-xs text-slate-400 mt-1">/ 100</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 mt-1">/ 100</span>
                         </div>
                     </div>
                     <div class="mt-4 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider
@@ -134,7 +214,7 @@
                     <div class="card p-4 sm:col-span-2">
                         <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Diversifikasi</span>
                         <div class="mt-1.5 font-mono text-xl font-bold [[if ge .Risk.DiversificationScore 70.0]]text-success[[else if ge .Risk.DiversificationScore 40.0]]text-warning[[else]]text-danger[[end]]">[[printf "%.0f" .Risk.DiversificationScore]]%</div>
-                        <div class="w-full bg-slate-700/50 rounded-full h-1.5 mt-2">
+                        <div class="w-full bg-slate-100/50 dark:bg-slate-700/50 rounded-full h-1.5 mt-2">
                             <div class="h-1.5 rounded-full transition-all duration-700 [[if ge .Risk.DiversificationScore 70.0]]bg-success[[else if ge .Risk.DiversificationScore 40.0]]bg-warning[[else]]bg-danger[[end]]" style="width:[[printf "%.0f" .Risk.DiversificationScore]]%"></div>
                         </div>
                     </div>
@@ -163,9 +243,9 @@
                 <div class="space-y-3">
                     [[$icons := list "1️⃣" "2️⃣" "3️⃣" "4️⃣" "5️⃣"]]
                     [[range $i, $rec := .Risk.Recommendations]]
-                    <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
                         <span class="text-lg flex-shrink-0">[[index $icons $i]]</span>
-                        <p class="text-sm text-slate-300 leading-relaxed">[[$rec]]</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">[[$rec]]</p>
                     </div>
                     [[end]]
                 </div>
@@ -174,7 +254,7 @@
             <div class="card p-12 text-center">
                 <div class="text-5xl mb-4">📊</div>
                 <h3 class="text-lg font-semibold text-white mb-2">Tidak dapat menganalisis risiko</h3>
-                <p class="text-slate-400 text-sm">Portfolio kosong atau data harga tidak tersedia.</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Portfolio kosong atau data harga tidak tersedia.</p>
             </div>
             [[end]]
         </main>
@@ -209,5 +289,6 @@
         [[end]][[end]]
     })();
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

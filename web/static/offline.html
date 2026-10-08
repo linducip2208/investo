@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f6fb">
+<title>Offline &middot; Investo</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/css/vendor/tabler.css">
+<link rel="stylesheet" href="/static/css/output.css">
+<link rel="stylesheet" href="/static/css/fintech.css">
+</head>
+<body>
+<main style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
+<div class="fin-state" style="max-width:480px;width:100%">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+<h3 data-i18n="error_title">Anda sedang offline</h3>
+<p>Koneksi internet terputus. Sebagian halaman yang pernah dibuka tersimpan dan tetap bisa diakses. Data pasar akan diperbarui otomatis saat koneksi kembali.</p>
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+<a href="/dashboard" class="fin-btn primary">Ke Dasbor</a>
+<button type="button" class="fin-btn subtle" onclick="window.location.reload()"><span data-i18n="retry">Coba lagi</span></button>
+</div>
+</div>
+</main>
+<script src="/static/js/app.js" defer></script>
+</body>
+</html>

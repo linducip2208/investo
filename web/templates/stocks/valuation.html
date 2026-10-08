@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +7,15 @@
     <meta name="description" content="Valuasi saham [[.Stock.Code]] ([[.Stock.Name]]): DCF, Graham, Lynch, PBV, peer comparison, dan rekomendasi.">
     <meta property="og:title" content="Valuasi [[.Stock.Code]] &mdash; [[.Stock.Name]]">
     <meta property="og:description" content="Target harga wajar [[.Stock.Code]] berdasarkan 4 model valuasi. Lihat rekomendasi beli/jual.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -38,6 +42,12 @@
         .sidebar-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
         .text-success{color:#34d399}.text-danger{color:#f87171}.text-warning{color:#fbbf24}
         @media(max-width:1023px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="valuation()" x-init="init()">
@@ -89,36 +99,102 @@ function valuation() {
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-700/50 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-700/50">
+<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col" class="max-md:hidden">
+    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200/50 dark:border-slate-700/50">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
         <span class="font-bold text-lg text-white">Investo</span>
     </div>
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        <a href="/dashboard" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
-        <a href="/saham" class="sidebar-link active"><span class="icon">📈</span> Saham IDX</a>
-        <a href="/forex" class="sidebar-link"><span class="icon">💱</span> Forex</a>
-        <a href="/screener" class="sidebar-link"><span class="icon">🔍</span> Screener</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+        <a href="/saham" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+        <a href="/forex" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
+        <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Stock Detail</p>
-        <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon">📄</span> Ringkasan</a>
-        <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon">📐</span> Analisa Teknikal</a>
-        <a href="/saham/[[.Stock.Code]]/chart-pro" class="sidebar-link"><span class="icon">📊</span> Chart Pro</a>
-        <a href="/saham/[[.Stock.Code]]/fundamental" class="sidebar-link"><span class="icon">📋</span> Data Fundamental</a>
-        <a href="/saham/[[.Stock.Code]]/valuation" class="sidebar-link" style="color:#93c5fd;font-weight:600"><span class="icon">💰</span> Valuasi</a>
+        <a href="/saham/[[.Stock.Code]]" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M9 9l1 0" />
+  <path d="M9 13l6 0" />
+  <path d="M9 17l6 0" />
+</svg></span> Ringkasan</a>
+        <a href="/saham/[[.Stock.Code]]/teknikal" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
+  <path d="M4 8l2 0" />
+  <path d="M4 12l3 0" />
+  <path d="M4 16l2 0" />
+  <path d="M8 4l0 2" />
+  <path d="M12 4l0 3" />
+  <path d="M16 4l0 2" />
+</svg></span> Analisa Teknikal</a>
+        <a href="/saham/[[.Stock.Code]]/chart-pro" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Chart Pro</a>
+        <a href="/saham/[[.Stock.Code]]/fundamental" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+  <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+  <path d="M9 12l.01 0" />
+  <path d="M13 12l2 0" />
+  <path d="M9 16l.01 0" />
+  <path d="M13 16l2 0" />
+</svg></span> Data Fundamental</a>
+        <a href="/saham/[[.Stock.Code]]/valuation" class="sidebar-link" style="color:#93c5fd;font-weight:600"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3" />
+  <path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" />
+  <path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598" />
+  <path d="M3 6v10c0 .888 .772 1.45 2 2" />
+  <path d="M3 11c0 .888 .772 1.45 2 2" />
+</svg></span> Valuasi</a>
     </nav>
-    <div class="p-3 border-t border-slate-700/50">
-        <a href="/pengaturan" class="sidebar-link"><span class="icon">⚙️</span> Pengaturan</a>
-        <a href="/logout" class="sidebar-link" style="color:#f87171"><span class="icon">🚪</span> Keluar</a>
+    <div class="p-3 border-t border-slate-200/50 dark:border-slate-700/50">
+        <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Pengaturan</a>
+        <a href="/logout" class="sidebar-link" style="color:#f87171"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+  <path d="M9 12h12l-3 -3" />
+  <path d="M18 15l3 -3" />
+</svg></span> Keluar</a>
     </div>
 </aside>
 
 <!-- MAIN -->
 <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
     <!-- TOPBAR -->
-    <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex items-center gap-2 text-sm text-slate-400">
+    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-4 lg:px-8 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
             <a href="/saham" class="hover:text-blue-400 transition-colors">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <a href="/saham/[[.Stock.Code]]" class="hover:text-blue-400 transition-colors">[[.Stock.Code]]</a>
@@ -127,7 +203,7 @@ function valuation() {
         </div>
         <div class="flex items-center gap-2 ml-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
                 <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
             </div>
@@ -144,26 +220,26 @@ function valuation() {
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
                 <div class="flex items-center gap-3 flex-wrap">
-                    <h1 class="text-2xl lg:text-3xl font-bold text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-[#f8fafc] font-mono">[[.Stock.Code]]</h1>
                     <span class="px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-lg text-xs font-semibold">Valuasi</span>
                 </div>
-                <p class="mt-1 text-lg text-slate-400">[[.Stock.Name]]</p>
+                <p class="mt-1 text-lg text-slate-500 dark:text-slate-400">[[.Stock.Name]]</p>
             </div>
             <div class="text-right">
                 <span class="text-xs text-slate-500">Harga Saat Ini</span>
-                <div class="font-mono text-2xl font-bold text-[#f8fafc]">Rp [[.Valuation.CurrentPrice | formatPrice]]</div>
+                <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.CurrentPrice | formatPrice]]</div>
             </div>
         </div>
 
         <!-- TARGET HARGA RATA-RATA -->
         <div>
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white border border-slate-700/50">
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white border border-slate-200/50 dark:border-slate-700/50">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Target Harga Rata-Rata</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Target Harga Rata-Rata</span>
                         <div class="mt-1 text-4xl sm:text-5xl font-bold">Rp [[.Valuation.AverageTarget | formatPrice]]</div>
                         <div class="mt-2 flex items-center gap-2">
-                            <span class="text-sm text-slate-400">Upside:</span>
+                            <span class="text-sm text-slate-500 dark:text-slate-400">Upside:</span>
                             [[if ge .Valuation.UpsidePercent 0.0]]
                             <span class="text-lg font-bold text-success">+[[.Valuation.UpsidePercent]]%</span>
                             [[else]]
@@ -195,12 +271,12 @@ function valuation() {
 
         <!-- FUNDAMENTAL SCORE CARD -->
         <div x-show="!loadingScores">
-            <h2 class="text-lg font-bold text-[#f8fafc] mb-4">Fundamental Score Card</h2>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Fundamental Score Card</h2>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
                 <!-- Health Score -->
                 <div class="card p-6">
                     <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-[#f8fafc]">Health Score</h3>
+                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Health Score</h3>
                         <span class="text-xs text-slate-500">/100</span>
                     </div>
                     <div class="flex items-center gap-4">
@@ -210,7 +286,7 @@ function valuation() {
                                 <circle cx="18" cy="18" r="15.5" fill="none" stroke-width="3" stroke-linecap="round" :stroke="(healthScore&&healthScore.total_score>=80)?'#34d399':(healthScore&&healthScore.total_score>=60)?'#3b82f6':(healthScore&&healthScore.total_score>=40)?'#f59e0b':'#f87171'" :stroke-dasharray="(healthScore?(healthScore.total_score/100*97.4):0)+' 97.4'"/>
                             </svg>
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-xl font-bold text-[#f8fafc]" x-text="healthScore?healthScore.total_score:'--'"></span>
+                                <span class="text-xl font-bold text-slate-900 dark:text-[#f8fafc]" x-text="healthScore?healthScore.total_score:'--'"></span>
                             </div>
                         </div>
                         <div class="flex-1 space-y-1.5 text-xs">
@@ -218,12 +294,12 @@ function valuation() {
                                 <div>
                                     <template x-for="(score,cat) in healthScore.category_scores" :key="cat">
                                         <div class="flex items-center justify-between">
-                                            <span x-text="cat" class="text-slate-400"></span>
+                                            <span x-text="cat" class="text-slate-500 dark:text-slate-400"></span>
                                             <div class="flex items-center gap-1.5">
-                                                <div class="w-20 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                                <div class="w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                                                     <div class="h-full rounded-full" :class="score>=(healthScore.category_max[cat]*0.7)?'bg-emerald-500':score>=(healthScore.category_max[cat]*0.4)?'bg-blue-500':'bg-red-500'" :style="'width:'+(score/healthScore.category_max[cat]*100)+'%'"></div>
                                                 </div>
-                                                <span class="font-mono font-medium text-slate-300" x-text="score+'/'+healthScore.category_max[cat]"></span>
+                                                <span class="font-mono font-medium text-slate-700 dark:text-slate-300" x-text="score+'/'+healthScore.category_max[cat]"></span>
                                             </div>
                                         </div>
                                     </template>
@@ -232,7 +308,7 @@ function valuation() {
                         </div>
                     </div>
                     <template x-if="healthScore&&healthScore.flags&&healthScore.flags.length>0">
-                        <div class="mt-3 pt-3 border-t border-slate-700/50">
+                        <div class="mt-3 pt-3 border-t border-slate-200/50 dark:border-slate-700/50">
                             <template x-for="flag in healthScore.flags" :key="flag">
                                 <span class="inline-block px-2 py-0.5 bg-red-900/20 text-red-400 rounded-md text-[10px] font-medium mr-1 mb-1" x-text="flag"></span>
                             </template>
@@ -242,11 +318,11 @@ function valuation() {
 
                 <!-- DuPont -->
                 <div class="card p-6">
-                    <h3 class="font-semibold text-[#f8fafc] mb-3">DuPont Analysis</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc] mb-3">DuPont Analysis</h3>
                     <template x-if="dupont&&dupont.roe">
                         <div class="space-y-2 text-sm">
-                            <div class="flex justify-between"><span class="text-slate-400">ROE</span><span class="font-mono font-bold text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
-                            <div class="h-3 bg-slate-700 rounded-full overflow-hidden flex">
+                            <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">ROE</span><span class="font-mono font-bold text-slate-900 dark:text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
+                            <div class="h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden flex">
                                 <div class="h-full bg-blue-500" :style="'width:'+Math.min(dupont.net_margin*100,50)+'%'"></div>
                                 <div class="h-full bg-purple-500" :style="'width:'+Math.min(dupont.asset_turnover*100,30)+'%'"></div>
                                 <div class="h-full bg-amber-500" :style="'width:'+Math.min((dupont.equity_multiplier-1)*50,20)+'%'"></div>
@@ -257,14 +333,14 @@ function valuation() {
 
                 <!-- Altman Z-Score -->
                 <div class="card p-6">
-                    <h3 class="font-semibold text-[#f8fafc] mb-3">Altman Z-Score</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc] mb-3">Altman Z-Score</h3>
                     <template x-if="altman&&altman.z_score">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-3xl font-bold" :class="altman.z_score>2.99?'text-emerald-400':altman.z_score>1.81?'text-amber-400':'text-red-400'" x-text="altman.z_score.toFixed(2)"></span>
                                 <span class="px-3 py-1 rounded-full text-xs font-semibold text-white" :class="altman.z_score>2.99?'bg-emerald-500':altman.z_score>1.81?'bg-amber-500':'bg-red-500'" x-text="altman.zone"></span>
                             </div>
-                            <div class="relative w-full h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="relative w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                                 <div class="absolute inset-0 rounded-full" style="background:linear-gradient(to right,#f87171 0%,#f87171 30%,#f59e0b 30%,#f59e0b 50%,#34d399 50%,#34d399 100%)"></div>
                                 <div class="absolute top-0 -translate-x-1/2 w-2.5 h-2.5 bg-white border-2 border-slate-900 rounded-full shadow" :style="'left:'+Math.min(Math.max(altman.z_score/5*100,0),100)+'%'"></div>
                             </div>
@@ -278,7 +354,7 @@ function valuation() {
                 <!-- Piotroski -->
                 <div class="card p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-[#f8fafc]">Piotroski F-Score</h3>
+                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Piotroski F-Score</h3>
                         <template x-if="piotroski&&piotroski.score!==undefined">
                             <span class="px-3 py-1 rounded-full text-xs font-bold text-white" :class="piotroskiRatingColor(piotroski.rating)" x-text="piotroski.score+'/9 '+piotroski.rating"></span>
                         </template>
@@ -306,7 +382,7 @@ function valuation() {
                 <!-- Beneish M-Score -->
                 <div class="card p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-[#f8fafc]">Beneish M-Score</h3>
+                        <h3 class="font-semibold text-slate-900 dark:text-[#f8fafc]">Beneish M-Score</h3>
                         <template x-if="beneish&&beneish.m_score!==undefined">
                             <span class="px-3 py-1 rounded-full text-xs font-bold text-white" :class="beneish.manipulation_likely?'bg-red-500':'bg-emerald-500'" x-text="beneish.manipulation_likely?'Manipulation Likely':'Clean'"></span>
                         </template>
@@ -320,7 +396,7 @@ function valuation() {
                             <template x-if="beneish.components">
                                 <div class="space-y-1.5 text-xs">
                                     <template x-for="(val,key) in beneish.components" :key="key">
-                                        <div class="flex justify-between"><span class="text-slate-400" x-text="key"></span><span class="font-mono font-medium text-slate-300" x-text="val.toFixed(2)"></span></div>
+                                        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400" x-text="key"></span><span class="font-mono font-medium text-slate-700 dark:text-slate-300" x-text="val.toFixed(2)"></span></div>
                                     </template>
                                 </div>
                             </template>
@@ -339,14 +415,14 @@ function valuation() {
 
         <!-- MODEL VALUASI -->
         <div>
-            <h2 class="text-lg font-bold text-[#f8fafc] mb-4">Model Valuasi</h2>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Model Valuasi</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="card p-6">
                     <div class="flex items-center gap-2 mb-3">
                         <div class="w-8 h-8 bg-indigo-900/30 rounded-lg flex items-center justify-center"><span class="text-indigo-400 font-bold text-sm">DCF</span></div>
                         <span class="text-xs text-slate-500">Discounted Cash Flow</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-[#f8fafc]">Rp [[.Valuation.DCFValue | formatPrice]]</div>
+                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.DCFValue | formatPrice]]</div>
                     [[if gt .Valuation.CurrentPrice 0]]
                     <div class="mt-1.5">
                         [[if ge .Valuation.DCFValue .Valuation.CurrentPrice]]
@@ -363,7 +439,7 @@ function valuation() {
                         <div class="w-8 h-8 bg-amber-900/30 rounded-lg flex items-center justify-center"><span class="text-amber-400 font-bold text-sm">GR</span></div>
                         <span class="text-xs text-slate-500">Graham Number</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-[#f8fafc]">Rp [[.Valuation.GrahamValue | formatPrice]]</div>
+                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.GrahamValue | formatPrice]]</div>
                     <p class="mt-3 text-xs text-slate-500 leading-relaxed">Rumus Benjamin Graham: sqrt(22.5 x EPS x BVPS)</p>
                 </div>
                 <div class="card p-6">
@@ -371,7 +447,7 @@ function valuation() {
                         <div class="w-8 h-8 bg-emerald-900/30 rounded-lg flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">LY</span></div>
                         <span class="text-xs text-slate-500">Peter Lynch Fair Value</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-[#f8fafc]">Rp [[.Valuation.LynchValue | formatPrice]]</div>
+                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.LynchValue | formatPrice]]</div>
                     <p class="mt-3 text-xs text-slate-500 leading-relaxed">EPS x tingkat pertumbuhan proyeksi (12%)</p>
                 </div>
                 <div class="card p-6">
@@ -379,7 +455,7 @@ function valuation() {
                         <div class="w-8 h-8 bg-purple-900/30 rounded-lg flex items-center justify-center"><span class="text-purple-400 font-bold text-sm">PBV</span></div>
                         <span class="text-xs text-slate-500">PBV-Based</span>
                     </div>
-                    <div class="font-mono text-2xl font-bold text-[#f8fafc]">Rp [[.Valuation.PBVValue | formatPrice]]</div>
+                    <div class="font-mono text-2xl font-bold text-slate-900 dark:text-[#f8fafc]">Rp [[.Valuation.PBVValue | formatPrice]]</div>
                     <p class="mt-3 text-xs text-slate-500 leading-relaxed">Rata-rata PBV sektor x BVPS</p>
                 </div>
             </div>
@@ -387,32 +463,32 @@ function valuation() {
 
         <!-- PEER COMPARISON -->
         <div>
-            <h2 class="text-lg font-bold text-[#f8fafc] mb-4">Perbandingan dengan Industri</h2>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Perbandingan dengan Industri</h2>
             [[if .PeerComp]]
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b border-slate-700/50 bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Kode</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Nama</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">PER</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">PBV</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">ROE</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">DER</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px] hide-xs">NPM</th>
+                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Kode</th>
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Nama</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">PER</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">PBV</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">ROE</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">DER</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hide-xs">NPM</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-700/30">
+                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                             [[range .PeerComp.Peers]]
-                            <tr class="hover:bg-slate-700/30 transition-colors [[if eq .Code $.Stock.Code]]bg-blue-900/10[[end]]">
+                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors [[if eq .Code $.Stock.Code]]bg-blue-900/10[[end]]">
                                 <td class="px-5 py-3"><a href="/saham/[[.Code]]" class="font-bold text-blue-400 hover:underline font-mono">[[.Code]]</a></td>
-                                <td class="px-5 py-3 text-[#f8fafc] max-w-[140px] truncate">[[.Name]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-300">[[.PER]]x</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-300">[[.PBV]]x</td>
+                                <td class="px-5 py-3 text-slate-900 dark:text-[#f8fafc] max-w-[140px] truncate">[[.Name]]</td>
+                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.PER]]x</td>
+                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.PBV]]x</td>
                                 <td class="px-5 py-3 text-right font-mono [[if ge .ROE 15.0]]text-success[[else if ge .ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.ROE]]%</td>
                                 <td class="px-5 py-3 text-right font-mono [[if le .DER 1.0]]text-success[[else if le .DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.DER]]x</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-300 hide-xs">[[.NPM]]%</td>
+                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300 hide-xs">[[.NPM]]%</td>
                             </tr>
                             [[end]]
                         </tbody>
@@ -426,27 +502,27 @@ function valuation() {
 
         <!-- RIWAYAT DIVIDEN -->
         <div>
-            <h2 class="text-lg font-bold text-[#f8fafc] mb-4">Riwayat Dividen</h2>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Riwayat Dividen</h2>
             [[if .Dividends]]
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b border-slate-700/50 bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Ex-Date</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Payment</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Dividen</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Yield</th>
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px] hide-xs">Tipe</th>
+                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Ex-Date</th>
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Payment</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Dividen</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Yield</th>
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] hide-xs">Tipe</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-700/30">
+                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                             [[range .Dividends]]
-                            <tr class="hover:bg-slate-700/30 transition-colors">
-                                <td class="px-5 py-3 font-mono text-[#f8fafc]">[[.ExDate]]</td>
-                                <td class="px-5 py-3 font-mono text-slate-300">[[.PaymentDate]]</td>
+                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
+                                <td class="px-5 py-3 font-mono text-slate-900 dark:text-[#f8fafc]">[[.ExDate]]</td>
+                                <td class="px-5 py-3 font-mono text-slate-700 dark:text-slate-300">[[.PaymentDate]]</td>
                                 <td class="px-5 py-3 text-right font-mono font-semibold text-success">Rp [[.Dividend | formatPrice]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-300">[[.Yield]]%</td>
+                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.Yield]]%</td>
                                 <td class="px-5 py-3 hide-xs">[[if eq .Type "cash"]]<span class="px-2 py-0.5 bg-emerald-900/30 text-emerald-400 rounded-md text-[11px] font-medium">Tunai</span>[[else]]<span class="px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md text-[11px] font-medium">Saham</span>[[end]]</td>
                             </tr>
                             [[end]]
@@ -462,22 +538,22 @@ function valuation() {
         <!-- RINGKASAN KEUANGAN -->
         [[if .Fundamentals]]
         <div>
-            <h2 class="text-lg font-bold text-[#f8fafc] mb-4">Ringkasan Keuangan</h2>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-[#f8fafc] mb-4">Ringkasan Keuangan</h2>
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b border-slate-700/50 bg-[#1e293b]">
-                                <th class="text-left px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Periode</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Pendapatan</th>
-                                <th class="text-right px-5 py-3 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Laba Bersih</th>
+                            <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-[#1e293b]">
+                                <th class="text-left px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Periode</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Pendapatan</th>
+                                <th class="text-right px-5 py-3 font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">Laba Bersih</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-700/30">
+                        <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                             [[range .Fundamentals]]
-                            <tr class="hover:bg-slate-700/30 transition-colors">
-                                <td class="px-5 py-3 font-medium text-[#f8fafc]">[[.Period]]</td>
-                                <td class="px-5 py-3 text-right font-mono text-slate-300">[[.Revenue | formatPrice]]</td>
+                            <tr class="hover:bg-slate-100/30 dark:hover:bg-slate-700/30 transition-colors">
+                                <td class="px-5 py-3 font-medium text-slate-900 dark:text-[#f8fafc]">[[.Period]]</td>
+                                <td class="px-5 py-3 text-right font-mono text-slate-700 dark:text-slate-300">[[.Revenue | formatPrice]]</td>
                                 <td class="px-5 py-3 text-right font-mono [[if ge .NetIncome 0]]text-success[[else]]text-danger[[end]] font-medium">[[.NetIncome | formatPrice]]</td>
                             </tr>
                             [[end]]
@@ -499,5 +575,6 @@ function valuation() {
 {"@context":"https://schema.org","@type":"Corporation","name":"[[.Stock.Name]]","tickerSymbol":"[[.Stock.Code]]","description":"Valuasi saham [[.Stock.Code]] berdasarkan DCF, Graham Number, Peter Lynch, dan PBV-based."}
 </script>
 
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>

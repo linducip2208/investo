@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conditional Orders (OCO) · Investo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -38,10 +42,16 @@
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
         @media(max-width:640px){.card{padding:14px!important}td{font-size:11px;padding:8px}th{font-size:10px}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="h-full flex" x-data="ocoOrders()" x-init="init()">
 
-<aside class="sidebar w-64 shrink-0 bg-[#0f172a] border-r border-[#1e293b] flex flex-col h-full overflow-y-auto" :class="{ 'open fixed inset-y-0 left-0 z-50 shadow-2xl': sidebarOpen }">
+<aside class="sidebar w-64 shrink-0 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-[#1e293b] flex flex-col h-full overflow-y-auto" :class="{ 'open fixed inset-y-0 left-0 z-50 shadow-2xl': sidebarOpen }">
     <div class="p-5">
         <div class="flex items-center gap-2 mb-6">
             <span class="text-2xl">💹</span>
@@ -61,9 +71,9 @@
 </aside>
 
 <div class="flex-1 flex flex-col min-w-0" @click="sidebarOpen=false">
-    <header class="h-14 bg-[#0f172a] border-b border-[#1e293b] flex items-center justify-between px-5 shrink-0">
+    <header class="h-14 bg-white dark:bg-[#0f172a] border-b border-slate-200 dark:border-[#1e293b] flex items-center justify-between px-5 shrink-0">
         <div class="flex items-center gap-3">
-            <button @click.stop="sidebarOpen=!sidebarOpen" class="lg:hidden text-slate-400 hover:text-white p-1 btn-touch">
+            <button @click.stop="sidebarOpen=!sidebarOpen" class="lg:hidden text-slate-500 dark:text-slate-400 hover:text-white p-1 btn-touch">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <span class="font-semibold text-white text-base">🎯 Conditional Orders (OCO)</span>
@@ -82,23 +92,23 @@
             <p class="text-xs text-slate-500 mb-4">One Cancels Other — jika take profit tercapai, stop loss otomatis batal. Jika stop loss tercapai, take profit batal.</p>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Kode Saham</label>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Kode Saham</label>
                     <input type="text" x-model="form.code" placeholder="BBRI" class="input-field">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Quantity (lot)</label>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Quantity (lot)</label>
                     <input type="number" x-model="form.quantity" placeholder="100" class="input-field" step="100" min="100">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Entry Price</label>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Entry Price</label>
                     <input type="number" x-model="form.entry_price" placeholder="4000" class="input-field" step="1">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Stop Loss</label>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Stop Loss</label>
                     <input type="number" x-model="form.stop_loss" placeholder="3800" class="input-field" step="1">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Take Profit</label>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Take Profit</label>
                     <input type="number" x-model="form.take_profit" placeholder="4400" class="input-field" step="1">
                 </div>
                 <div class="flex items-end">
@@ -267,5 +277,6 @@ function ocoOrders() {
 }
 </script>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

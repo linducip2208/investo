@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark'); initData()" class="dark">
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark'); initData()">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Settings — Investo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
@@ -32,11 +39,17 @@
         .star-btn{font-size:18px;cursor:pointer;color:#475569;background:none;border:none;padding:2px}
         .star-btn.active{color:#eab308}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
-<body class="bg-[#0b1120] text-slate-200 flex">
+<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex">
 
-<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
         <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
         <span class="font-bold text-white">Investo</span>
     </div>
@@ -45,12 +58,12 @@
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
         <a href="/ai/agents" class="nav-link">🧠 Agents</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link active">🔑 AI Settings</a>
         <a href="/ai/usage" class="nav-link">📊 AI Usage</a>
@@ -64,7 +77,7 @@
             <h1 class="text-xl font-bold text-white">AI Provider Settings</h1>
             <a href="/ai/usage" class="btn btn-outline btn-sm">📊 View Usage</a>
         </div>
-        <p class="text-sm text-slate-400 mb-6">BYOK — masukkan API key dari provider Anda sendiri. Data key dienkripsi AES-256.</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">BYOK — masukkan API key dari provider Anda sendiri. Data key dienkripsi AES-256.</p>
 
         <div class="space-y-4">
 
@@ -80,20 +93,20 @@
                     </div>
                     <div class="space-y-3">
                         <div>
-                            <label class="text-xs text-slate-400 block mb-1">API Key (Primary)</label>
+                            <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">API Key (Primary)</label>
                             <input type="password" :id="p.name+'_key_0'" class="input-field" :placeholder="p.has_key ? 'Key sudah disimpan (kosongkan = tidak diubah)' : p.placeholder" @input="updateProviderField(p.name, 'key', $event.target.value)" autocomplete="new-password">
                             <div class="text-[11px] text-slate-500 mt-1" x-show="p.has_key && p.masked_key" x-text="'Tersimpan: ' + p.masked_key"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-2" x-show="p.name !== 'ollama'">
-                            <div><label class="text-xs text-slate-400 block mb-1">Key 2</label><input type="password" :id="p.name+'_key_1'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 2, $event.target.value)"></div>
-                            <div><label class="text-xs text-slate-400 block mb-1">Key 3</label><input type="password" :id="p.name+'_key_2'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 3, $event.target.value)"></div>
+                            <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Key 2</label><input type="password" :id="p.name+'_key_1'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 2, $event.target.value)"></div>
+                            <div><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Key 3</label><input type="password" :id="p.name+'_key_2'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 3, $event.target.value)"></div>
                         </div>
                         <div class="flex gap-3">
-                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Model</label><input :id="p.name+'_model'" class="input-field" :value="p.model" @input="updateProviderField(p.name, 'model', $event.target.value)"></div>
-                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Base URL</label><input :id="p.name+'_url'" class="input-field" :value="p.base_url" @input="updateProviderField(p.name, 'url', $event.target.value)"></div>
+                            <div class="flex-1"><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Model</label><input :id="p.name+'_model'" class="input-field" :value="p.model" @input="updateProviderField(p.name, 'model', $event.target.value)"></div>
+                            <div class="flex-1"><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Base URL</label><input :id="p.name+'_url'" class="input-field" :value="p.base_url" @input="updateProviderField(p.name, 'url', $event.target.value)"></div>
                         </div>
                         <div class="flex gap-3">
-                            <div class="flex-1"><label class="text-xs text-slate-400 block mb-1">Monthly Budget ($)</label><input :id="p.name+'_budget'" class="input-field" type="number" step="0.01" :placeholder="'e.g. 50.00'" @input="updateProviderField(p.name, 'budget', $event.target.value)"></div>
+                            <div class="flex-1"><label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Monthly Budget ($)</label><input :id="p.name+'_budget'" class="input-field" type="number" step="0.01" :placeholder="'e.g. 50.00'" @input="updateProviderField(p.name, 'budget', $event.target.value)"></div>
                         </div>
                     </div>
                     <div class="flex gap-2 mt-3">
@@ -108,26 +121,26 @@
 
         <div class="card p-5 mt-6">
             <h3 class="font-semibold text-white mb-3">⚙️ Advanced Settings</h3>
-            <p class="text-xs text-slate-400 mb-4">Model deep/quick, suhu sampling, ronde debat multi-agent, dan auto-eksekusi simulasi.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Model deep/quick, suhu sampling, ronde debat multi-agent, dan auto-eksekusi simulasi.</p>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">Temperature (0.0 - 1.0)</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Temperature (0.0 - 1.0)</label>
                     <input class="input-field" type="number" step="0.1" min="0" max="1" x-model="advanced.temperature" placeholder="0.7">
                 </div>
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">Debate Rounds (1 - 3)</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Debate Rounds (1 - 3)</label>
                     <input class="input-field" type="number" step="1" min="1" max="3" x-model="advanced.debate_rounds" placeholder="1">
                 </div>
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">Deep Model (reasoning)</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Deep Model (reasoning)</label>
                     <input class="input-field" x-model="advanced.deep_model" placeholder="cth: gpt-4o / deepseek-reasoner">
                 </div>
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">Quick Model (ringan)</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Quick Model (ringan)</label>
                     <input class="input-field" x-model="advanced.quick_model" placeholder="cth: gpt-4o-mini / deepseek-chat">
                 </div>
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">Auto-Execute (Simulasi)</label>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Auto-Execute (Simulasi)</label>
                     <select class="input-field" x-model="advanced.auto_execute">
                         <option value="0">Off</option>
                         <option value="1">On — auto paper-trade saat agent BUY/SELL</option>
@@ -141,13 +154,13 @@
 
         <div class="card p-5 mt-6">
             <h3 class="font-semibold text-white mb-3">⭐ Rate Recent AI Responses</h3>
-            <p class="text-xs text-slate-400 mb-3">Beri rating untuk meningkatkan kualitas respons AI.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Beri rating untuk meningkatkan kualitas respons AI.</p>
             <div class="space-y-2" x-show="recentResponses.length > 0">
                 <template x-for="r in recentResponses" :key="r.id">
-                    <div class="flex items-center justify-between bg-[#0f172a] rounded-xl px-4 py-3 border border-slate-700">
+                    <div class="flex items-center justify-between bg-white dark:bg-[#0f172a] rounded-xl px-4 py-3 border border-slate-200 dark:border-slate-700">
                         <div class="flex-1">
                             <div class="text-sm text-white" x-text="r.provider + ' · ' + r.feature"></div>
-                            <div class="text-xs text-slate-400" x-text="r.created_at"></div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" x-text="r.created_at"></div>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex gap-0.5">
@@ -318,5 +331,6 @@ function aiSettings() {
 }
 </script>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

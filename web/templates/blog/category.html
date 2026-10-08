@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kategori: [[.Category.Name]] &mdash; Blog Investo</title>
     <meta name="description" content="[[.Category.Description]]">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -21,10 +25,16 @@
         .reveal.visible{opacity:1;transform:translateY(0)}
         @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-700/50">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <a href="/" class="flex items-center gap-2.5">
@@ -34,13 +44,13 @@
                 <span class="font-bold text-xl text-white">Investo</span>
             </a>
             <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
                 <a href="/blog" class="text-blue-400 font-semibold">Blog</a>
-                <a href="/docs" class="text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
-                <a href="/faq" class="text-slate-300 hover:text-blue-400 transition-colors">FAQ</a>
+                <a href="/docs" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
+                <a href="/faq" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">FAQ</a>
                 <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
             </div>
-            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -61,14 +71,14 @@
                     <span class="text-3xl">[[.Category.Emoji]]</span>
                     <h1 class="text-3xl lg:text-4xl font-bold text-white">Kategori: [[.Category.Name]]</h1>
                 </div>
-                <p class="text-slate-400 text-base">[[.Category.Description]]</p>
+                <p class="text-slate-500 dark:text-slate-400 text-base">[[.Category.Description]]</p>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
                 [[range .Posts]]
                 <article class="card-lift card overflow-hidden reveal">
                     <a href="/blog/[[.Slug]]" class="block">
-                        <div class="aspect-video bg-slate-800 flex items-center justify-center overflow-hidden">
+                        <div class="aspect-video bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
                             [[if .FeaturedImage]]
                             <img src="[[.FeaturedImage]]" alt="[[.Title]]" class="w-full h-full object-cover">
                             [[else]]
@@ -86,7 +96,7 @@
                         <a href="/blog/[[.Slug]]" class="block group">
                             <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors leading-snug mb-2">[[.Title]]</h3>
                         </a>
-                        <p class="text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">[[.Excerpt]]</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">[[.Excerpt]]</p>
                         <div class="flex items-center gap-3 text-xs text-slate-500">
                             <span>[[.AuthorName]]</span>
                             <span>&middot;</span>
@@ -100,7 +110,7 @@
             [[if not .Posts]]
             <div class="text-center py-20 reveal">
                 <div class="text-5xl mb-4">📭</div>
-                <h3 class="text-xl font-bold text-slate-300 mb-2">Belum ada artikel</h3>
+                <h3 class="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Belum ada artikel</h3>
                 <p class="text-slate-500">Kategori ini belum memiliki artikel.</p>
             </div>
             [[end]]
@@ -108,13 +118,13 @@
             [[if .HasPages]]
             <div class="flex items-center justify-center gap-2 mt-12 reveal">
                 [[if .HasPrev]]
-                <a href="?page=[[.PrevPage]]" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-all">&laquo; Sebelumnya</a>
+                <a href="?page=[[.PrevPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium transition-all">&laquo; Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
-                <a href="?page=[[.]]" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium [[if . | eq $.CurrentPage]]bg-blue-600 text-white[[else]]border border-slate-700 text-slate-300 hover:bg-slate-800[[end]] transition-all">[[.]]</a>
+                <a href="?page=[[.]]" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium [[if . | eq $.CurrentPage]]bg-blue-600 text-white[[else]]border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-800[[end]] transition-all">[[.]]</a>
                 [[end]]
                 [[if .HasNext]]
-                <a href="?page=[[.NextPage]]" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-all">Selanjutnya &raquo;</a>
+                <a href="?page=[[.NextPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium transition-all">Selanjutnya &raquo;</a>
                 [[end]]
             </div>
             [[end]]
@@ -129,7 +139,7 @@
                         <li>
                             <a href="/blog/category/[[.Slug]]" class="flex items-center justify-between text-sm [[if .Slug | eq $.Category.Slug]]font-semibold text-blue-400[[else]]text-slate-300 hover:text-blue-400[[end]] transition-colors py-1">
                                 <span>[[.Name]]</span>
-                                <span class="text-xs text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">[[.PostCount]]</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full">[[.PostCount]]</span>
                             </a>
                         </li>
                         [[end]]
@@ -146,7 +156,7 @@
     </div>
 </div>
 
-<footer class="border-t border-slate-800 py-10">
+<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
             <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
@@ -168,5 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 });
 </script>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

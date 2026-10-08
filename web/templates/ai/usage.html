@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')" class="dark">
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark')">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Usage Dashboard — Investo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
     <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
         body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
@@ -31,11 +38,17 @@
         .btn-outline{background:transparent;color:#e2e8f0;border:1px solid #475569}
         .btn-outline:hover{background:#1e293b}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
-<body class="bg-[#0b1120] text-slate-200 flex" x-data="usageDashboard()" x-init="loadData()">
+<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex" x-data="usageDashboard()" x-init="loadData()">
 
-<aside class="w-56 bg-[#0b1120] border-r border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-700/50">
+<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
         <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
         <span class="font-bold text-white">Investo</span>
     </div>
@@ -44,12 +57,12 @@
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
         <a href="/ai/agents" class="nav-link">🧠 Agents</a>
-        <div class="border-t border-slate-700/50 my-2"></div>
+        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
         <a href="/ai/usage" class="nav-link active">📊 AI Usage</a>
@@ -62,10 +75,10 @@
         <div class="flex items-center justify-between mb-6">
             <div>
                 <h1 class="text-xl font-bold text-white">AI Usage Dashboard</h1>
-                <p class="text-sm text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
             </div>
             <div class="flex gap-2">
-                <select x-model="days" @change="loadData()" class="bg-[#0f172a] border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm">
+                <select x-model="days" @change="loadData()" class="bg-white dark:bg-[#0f172a] border border-slate-600 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 text-sm">
                     <option value="7">7 hari</option>
                     <option value="14">14 hari</option>
                     <option value="30" selected>30 hari</option>
@@ -113,12 +126,12 @@
             <h3 class="text-sm font-semibold text-white mb-3">Provider Health</h3>
             <div class="grid grid-cols-4 gap-4" x-show="keyHealth">
                 <template x-for="(info, name) in keyHealth" :key="name">
-                    <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700">
+                    <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
                         <div class="flex items-center justify-between mb-2">
                             <span class="font-semibold text-sm text-white" x-text="name"></span>
                             <span class="w-2 h-2 rounded-full" :class="info.status === 'healthy' ? 'bg-green-400' : 'bg-red-400'"></span>
                         </div>
-                        <div class="text-xs text-slate-400 space-y-1">
+                        <div class="text-xs text-slate-500 dark:text-slate-400 space-y-1">
                             <div x-text="info.status"></div>
                             <div>Latency: <span x-text="(info.latency||0).toFixed(0)"></span>ms</div>
                             <div>Budget OK: <span x-text="info.budget_ok ? 'Yes' : 'No'"></span></div>
@@ -149,10 +162,10 @@
                     <tbody>
                         <template x-for="log in recentLogs" :key="log.id">
                             <tr>
-                                <td class="text-xs text-slate-400" x-text="log.created_at"></td>
+                                <td class="text-xs text-slate-500 dark:text-slate-400" x-text="log.created_at"></td>
                                 <td><span class="badge badge-blue" x-text="log.provider"></span></td>
                                 <td class="text-xs" x-text="log.feature"></td>
-                                <td class="text-xs text-slate-400" x-text="log.model || '-'"></td>
+                                <td class="text-xs text-slate-500 dark:text-slate-400" x-text="log.model || '-'"></td>
                                 <td x-text="log.tokens_in"></td>
                                 <td x-text="log.tokens_out"></td>
                                 <td x-text="'$'+parseFloat(log.cost).toFixed(6)"></td>
@@ -299,5 +312,6 @@ function usageDashboard() {
 }
 </script>
 
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

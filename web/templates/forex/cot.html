@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" class="dark h-full">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COT Data (Commitment of Traders) · Investo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
+    <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -23,6 +27,12 @@
         .text-success{color:#34d399}.text-danger{color:#f87171}
         .sentiment-badge{padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
         @media(max-width:1024px){.sidebar{display:none}.sidebar.open{display:flex}}
+    </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
 <body class="h-full flex" x-data="cotPage()">
@@ -83,15 +93,31 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#0b1120] border-r border-slate-800 flex flex-col max-md:hidden" id="sidebar">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-800">
+    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col max-md:hidden" id="sidebar">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
             <span class="font-bold text-lg text-white">Investo</span>
         </div>
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <a href="/dashboard" class="sidebar-link"><span class="icon">&#x1F4CA;</span> Dashboard</a>
-            <a href="/saham" class="sidebar-link"><span class="icon">&#x1F4C8;</span> Saham IDX</a>
-            <a href="/forex" class="sidebar-link active"><span class="icon">&#x1F4B1;</span> Forex</a>
+            <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Dashboard</a>
+            <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 17l6 -6l4 4l8 -8" />
+  <path d="M14 7l7 0l0 7" />
+</svg></span> Saham IDX</a>
+            <a href="/forex" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3" />
+  <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3" />
+</svg></span> Forex</a>
             <div class="pl-8 space-y-0.5">
                 <a href="/forex/swap-calc" class="sidebar-link !pl-6">Swap Calc</a>
                 <a href="/forex/margin-calc" class="sidebar-link !pl-6">Margin Calc</a>
@@ -99,28 +125,58 @@
                 <a href="/forex/volume-profile" class="sidebar-link !pl-6">Volume Profile</a>
                 <a href="/forex/cot" class="sidebar-link !pl-6 text-blue-400 bg-blue-900/20">COT Data</a>
             </div>
-            <a href="/screener" class="sidebar-link"><span class="icon">&#x1F50D;</span> Screener</a>
-            <a href="/market/heatmap" class="sidebar-link"><span class="icon">&#x1F5FA;</span> Heatmap</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/screener" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span> Screener</a>
+            <a href="/market/heatmap" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+  <path d="M9 4v13" />
+  <path d="M15 7v13" />
+</svg></span> Heatmap</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
-            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon">&#x1F4BC;</span> Portofolio</a>
-            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon">&#x2B50;</span> Watchlist</a>
-            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon">&#x1F514;</span> Alert</a>
-            <div class="border-t border-slate-800 my-2"></div>
+            <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+  <path d="M12 12l0 .01" />
+  <path d="M3 13a20 20 0 0 0 18 0" />
+</svg></span> Portofolio</a>
+            <a href="/dashboard/watchlists" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg></span> Watchlist</a>
+            <a href="/dashboard/alerts" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg></span> Alert</a>
+            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
             <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Risk</p>
-            <a href="/risk/wash-sale" class="sidebar-link"><span class="icon">&#x26A0;</span> Wash Sale</a>
+            <a href="/risk/wash-sale" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 9v4" />
+  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+  <path d="M12 16h.01" />
+</svg></span> Wash Sale</a>
             <a href="/risk/beta-weighted" class="sidebar-link"><span class="icon">&#x0392;</span> Beta Weighted</a>
-            <a href="/risk/hedge-finder" class="sidebar-link"><span class="icon">&#x1F6E1;</span> Hedge Finder</a>
+            <a href="/risk/hedge-finder" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg></span> Hedge Finder</a>
         </nav>
     </aside>
 
     <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block"><input type="text" placeholder="Cari saham, forex..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"></div>
+        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-1 max-w-md hidden sm:block"><input type="text" placeholder="Cari saham, forex..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"></div>
             <div class="flex items-center gap-2 ml-auto">
                 <div class="text-xs text-slate-500 font-mono" x-text="clock"></div>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-700">
+                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
                     <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
                 </div>
@@ -131,7 +187,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h1 class="text-xl lg:text-2xl font-bold text-white">COT Data — Commitment of Traders</h1>
-                    <p class="text-sm text-slate-400 mt-0.5">Posisi trader institusional di pasar futures forex</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Posisi trader institusional di pasar futures forex</p>
                 </div>
             </div>
 
@@ -156,19 +212,19 @@
                     <div class="card p-5 space-y-3">
                         <div class="widget-title">Ringkasan Posisi</div>
                         <div class="grid grid-cols-2 gap-2">
-                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-2.5">
                                 <span class="text-[10px] text-slate-500">Long</span>
                                 <span class="font-mono text-base font-bold text-emerald-400 block" x-text="fmt(report.long_positions)"></span>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-2.5">
                                 <span class="text-[10px] text-slate-500">Short</span>
                                 <span class="font-mono text-base font-bold text-red-400 block" x-text="fmt(report.short_positions)"></span>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-2.5">
                                 <span class="text-[10px] text-slate-500">Net Positions</span>
                                 <span class="font-mono text-base font-bold block" :class="report.net_positions >= 0 ? 'text-emerald-400' : 'text-red-400'" x-text="fmt(report.net_positions)"></span>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-2.5">
+                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-2.5">
                                 <span class="text-[10px] text-slate-500">Open Interest</span>
                                 <span class="font-mono text-base font-bold text-blue-400 block" x-text="fmt(report.open_interest)"></span>
                             </div>
@@ -187,7 +243,7 @@
 
                     <div class="card p-5">
                         <div class="widget-title">Cara Membaca COT</div>
-                        <ul class="text-xs text-slate-400 space-y-1.5">
+                        <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
                             <li><b class="text-white">COT Index 80+</b> = posisi long ekstrem, risiko reversal bearish</li>
                             <li><b class="text-white">COT Index 20-</b> = posisi short ekstrem, risiko reversal bullish</li>
                             <li>Net position positif = spekulator bullish</li>
@@ -203,5 +259,6 @@
         </main>
     </div>
     <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +7,30 @@
     <meta name="description" content="[[.Portfolio.Name]] - Portfolio investasi dibagikan melalui Investo.">
     <meta property="og:title" content="[[.Portfolio.Name]] - Portfolio di Investo">
     <meta property="og:description" content="Lihat portfolio investasi [[.Portfolio.Name]] di Investo.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/vendor/tabler.css">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/fintech.css">
+    <script data-investo-assets>
+    (function(){try{var p=localStorage.getItem('investo-theme')||'light';
+    var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if(d)document.documentElement.classList.add('dark');}catch(e){}})();
+    </script>
+    <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid rgba(51,65,85,.5);border-radius:14px}
         .gradient-blue{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
     </style>
+<style data-investo-compat>
+    body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+    .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+    .text-success{color:var(--ui-success)!important}.text-danger{color:var(--ui-danger)!important}
+    .widget-title{color:var(--ui-muted)!important}
+    </style>
 </head>
 <body class="min-h-screen antialiased">
-    <nav class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-800">
+    <nav class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2.5 shrink-0">
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
@@ -30,7 +40,7 @@
                 [[if .User]]
                 <a href="/dashboard" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Dashboard</a>
                 [[else]]
-                <a href="/login" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-colors">Masuk</a>
+                <a href="/login" class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-white rounded-lg transition-colors">Masuk</a>
                 <a href="/register" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-900/30 transition-all">Daftar</a>
                 [[end]]
             </div>
@@ -44,12 +54,12 @@
             </div>
             <div>
                 <h1 class="text-2xl sm:text-3xl font-bold text-white">[[.Portfolio.Name]]</h1>
-                <p class="text-sm text-slate-400 mt-0.5">Portofolio dibagikan via Investo</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Portofolio dibagikan via Investo</p>
             </div>
         </div>
 
         [[if .Portfolio.Description]]
-        <div class="card p-5 mb-6"><p class="text-slate-400 text-sm">[[.Portfolio.Description]]</p></div>
+        <div class="card p-5 mb-6"><p class="text-slate-500 dark:text-slate-400 text-sm">[[.Portfolio.Description]]</p></div>
         [[end]]
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -61,21 +71,21 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
-                        <tr class="border-b border-slate-700/50 bg-slate-800/30">
-                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kode</th>
-                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
-                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Jumlah</th>
-                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Harga Rata</th>
-                            [[if .Holdings]][[range .Holdings]][[if .Notes]]<th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">Catatan</th>[[end]][[end]][[end]]
+                        <tr class="border-b border-slate-200/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
+                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kode</th>
+                            <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Nama</th>
+                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jumlah</th>
+                            <th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Harga Rata</th>
+                            [[if .Holdings]][[range .Holdings]][[if .Notes]]<th class="text-right px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Catatan</th>[[end]][[end]][[end]]
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-700/30">
+                    <tbody class="divide-y divide-slate-200/30 dark:divide-slate-700/30">
                         [[range .Holdings]]
-                        <tr class="hover:bg-slate-700/20 transition-colors">
+                        <tr class="hover:bg-slate-100/20 dark:hover:bg-slate-700/20 transition-colors">
                             <td class="px-4 py-3.5"><span class="font-bold text-white">[[.Code]]</span></td>
-                            <td class="px-4 py-3.5 text-slate-400 hidden sm:table-cell max-w-[150px] truncate">[[.Name]]</td>
+                            <td class="px-4 py-3.5 text-slate-500 dark:text-slate-400 hidden sm:table-cell max-w-[150px] truncate">[[.Name]]</td>
                             <td class="px-4 py-3.5 text-right font-mono text-white">[[.Quantity]]</td>
-                            <td class="px-4 py-3.5 text-right font-mono text-slate-400">[[.AvgPriceFormatted]]</td>
+                            <td class="px-4 py-3.5 text-right font-mono text-slate-500 dark:text-slate-400">[[.AvgPriceFormatted]]</td>
                             [[if .Notes]]<td class="px-4 py-3.5 text-right text-slate-500 text-xs hidden md:table-cell">[[.Notes]]</td>[[end]]
                         </tr>
                         [[end]]
@@ -98,8 +108,9 @@
         </div>
     </main>
 
-    <footer class="border-t border-slate-800 mt-12">
+    <footer class="border-t border-slate-200 dark:border-slate-800 mt-12">
         <div class="max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-500">Portofolio ini dibagikan melalui <a href="/" class="text-blue-400 hover:underline">Investo</a>. Data bersumber dari IDX.</div>
     </footer>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div></body>
+<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+</body>
 </html>
