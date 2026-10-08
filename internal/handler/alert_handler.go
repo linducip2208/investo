@@ -2,7 +2,9 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -20,6 +22,7 @@ type AlertHandler struct {
 	TelegramSvc    *service.TelegramService
 	StockPriceRepo *repository.StockPriceRepository
 	StockRepo      *repository.StockRepository
+	SettingRepo    *repository.SettingRepository
 	Templates      *template.Template
 }
 
@@ -206,7 +209,8 @@ func (h *AlertHandler) TestAlert(w http.ResponseWriter, r *http.Request) {
 
 	triggered, msg, err := h.AlertEngine.EvaluateAlert(alert)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("alert evaluate id=%d user=%d: %v", alert.ID, user.ID, err)
+		http.Error(w, "Terjadi kesalahan internal", http.StatusInternalServerError)
 		return
 	}
 
@@ -244,6 +248,9 @@ func (h *AlertHandler) TelegramConnect(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.TelegramSvc.SetChatID(user.ID, req.ChatID)
+	if h.SettingRepo != nil {
+		_ = h.SettingRepo.Set(fmt.Sprintf("tg_chat_%d", user.ID), req.ChatID)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{

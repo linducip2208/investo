@@ -34,6 +34,18 @@ func (r *PortfolioRepository) FindByID(id int64) (*model.Portfolio, error) {
 	return &portfolio, nil
 }
 
+// FindByIDAndUserID loads a portfolio only when it belongs to the given user.
+// It lets handlers enforce ownership in a single query (404 on mismatch)
+// instead of loading by bare ID and comparing afterwards.
+func (r *PortfolioRepository) FindByIDAndUserID(id, userID int64) (*model.Portfolio, error) {
+	var portfolio model.Portfolio
+	query := `SELECT * FROM portfolios WHERE id = ? AND user_id = ?`
+	if err := r.DB.Get(&portfolio, query, id, userID); err != nil {
+		return nil, fmt.Errorf("PortfolioRepository.FindByIDAndUserID: %w", err)
+	}
+	return &portfolio, nil
+}
+
 func (r *PortfolioRepository) FindByUserID(userID int64) ([]model.Portfolio, error) {
 	var portfolios []model.Portfolio
 	query := `SELECT * FROM portfolios WHERE user_id = ? ORDER BY is_default DESC, created_at DESC`

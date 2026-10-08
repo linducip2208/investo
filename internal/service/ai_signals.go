@@ -54,6 +54,17 @@ type AISignalService struct {
 	DecisionRepo         *repository.AgentDecisionRepository
 }
 
+// signalDisclaimer is appended to every user-facing signal/confidence text so
+// outputs are never mistaken for investment advice.
+const signalDisclaimer = "\n\nDisclaimer: Bukan rekomendasi investasi. Keputusan investasi sepenuhnya menjadi tanggung jawab pengguna."
+
+func withSignalDisclaimer(text string) string {
+	if strings.Contains(text, "Bukan rekomendasi investasi") {
+		return text
+	}
+	return text + signalDisclaimer
+}
+
 func NewAISignalService(
 	ai *AIService,
 	stockRepo *repository.StockRepository,
@@ -141,7 +152,7 @@ Berikan confidence score 0-100 dan 3-5 poin explainability dalam JSON:
 		Signal:          signal,
 		ConfidenceScore: math.Round(score*10) / 10,
 		Explainability:  explain,
-		Analysis:        analysis,
+		Analysis:        withSignalDisclaimer(analysis),
 	}, nil
 }
 
@@ -251,7 +262,7 @@ func (s *AISignalService) DetectMarketRegime() (*RegimeResult, error) {
 			Regime:             "tidak_diketahui",
 			Confidence:         0,
 			RecommendedStrategy: "hold",
-			Description:        "Data pasar tidak tersedia untuk analisis regime.",
+			Description:        withSignalDisclaimer("Data pasar tidak tersedia untuk analisis regime."),
 		}, nil
 	}
 
@@ -285,7 +296,7 @@ func (s *AISignalService) DetectMarketRegime() (*RegimeResult, error) {
 			Regime:             "tidak_diketahui",
 			Confidence:         0,
 			RecommendedStrategy: "hold",
-			Description:        "Data harga tidak mencukupi untuk analisis regime.",
+			Description:        withSignalDisclaimer("Data harga tidak mencukupi untuk analisis regime."),
 		}, nil
 	}
 
@@ -344,7 +355,7 @@ Buat deskripsi market regime dalam 2-3 kalimat bahasa Indonesia yang informatif.
 		Regime:             regime,
 		Confidence:         math.Round(confidence*10) / 10,
 		RecommendedStrategy: strategy,
-		Description:        description,
+		Description:        withSignalDisclaimer(description),
 	}, nil
 }
 
@@ -420,7 +431,7 @@ func (s *AISignalService) FindOptimalEntry(code string) (*EntryAnalysis, error) 
 		EntryZoneLow:  math.Round(entryLow),
 		EntryZoneHigh: math.Round(entryHigh),
 		SupportLevels: validSupports,
-		Rationale:     rationale,
+		Rationale:     withSignalDisclaimer(rationale),
 	}, nil
 }
 
@@ -431,7 +442,7 @@ func (s *AISignalService) InterpretInsiderTransaction(code string) (string, erro
 	}
 	_, _ = s.StockPriceRepo.GetLatestPrice(stock.ID)
 
-	fallback := fmt.Sprintf("Data transaksi insider untuk saham %s (%s) belum tersedia di sistem. Biasanya, insider buying dalam jumlah besar menandakan keyakinan manajemen terhadap prospek perusahaan. Sebaliknya, insider selling signifikan bisa menjadi sinyal peringatan, meskipun bisa juga karena alasan pribadi (diversifikasi, kebutuhan likuiditas).", stock.Code, stock.Name)
+	fallback := withSignalDisclaimer(fmt.Sprintf("Data transaksi insider untuk saham %s (%s) belum tersedia di sistem. Biasanya, insider buying dalam jumlah besar menandakan keyakinan manajemen terhadap prospek perusahaan. Sebaliknya, insider selling signifikan bisa menjadi sinyal peringatan, meskipun bisa juga karena alasan pribadi (diversifikasi, kebutuhan likuiditas).", stock.Code, stock.Name))
 
 	if !s.AI.IsConfigured() {
 		return fallback, nil
@@ -450,7 +461,7 @@ Bersikap objektif, jangan memberikan rekomendasi beli/jual.`, stock.Code, stock.
 	if err != nil {
 		return fallback, nil
 	}
-	return response, nil
+	return withSignalDisclaimer(response), nil
 }
 
 func (s *AISignalService) generateExplainability(code, signal string, fund *model.StockFundamental, price float64) []string {

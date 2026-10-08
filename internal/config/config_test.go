@@ -31,8 +31,23 @@ func TestValidateAcceptsStrongProductionConfig(t *testing.T) {
 		DBPass:        "database-password",
 		JWTSecret:     "0de8973cc640f73b5dcfd37085caa564",
 		SessionSecret: "5738ae09e4992c75cdf5d411421d8498",
+		EncryptionKey: "9f2c4a7d1e5b83f60a6d9c2e4b7f1a53",
 	}
 	if err := cfg.Validate(); err != nil {
 		t.Fatalf("valid production config rejected: %v", err)
+	}
+}
+
+func TestValidateRejectsMissingEncryptionKey(t *testing.T) {
+	t.Parallel()
+	cfg := &Config{
+		AppEnv:        "production",
+		AppURL:        "https://investo.example.com",
+		DBPass:        "database-password",
+		JWTSecret:     "0de8973cc640f73b5dcfd37085caa564",
+		SessionSecret: "5738ae09e4992c75cdf5d411421d8498",
+	}
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("production config without ENCRYPTION_KEY must be rejected")
 	}
 }

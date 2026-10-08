@@ -10,19 +10,23 @@ import (
 	"time"
 
 	"investo/internal/model"
+	"investo/internal/repository"
 
 	"github.com/jmoiron/sqlx"
 )
 
 type EmailService struct {
-	DB       *sqlx.DB
-	AppName  string
-	AppURL   string
-	SMTPHost string
-	SMTPPort string
-	SMTPUser string
-	SMTPPass string
+	DB        *sqlx.DB
+	AppName   string
+	AppURL    string
+	SMTPHost  string
+	SMTPPort  string
+	SMTPUser  string
+	SMTPPass  string
 	FromEmail string
+	// ResetRepo persists password-reset tokens. When nil (backward compat),
+	// reset tokens fall back to the legacy email_verifications table.
+	ResetRepo *repository.PasswordResetRepository
 }
 
 func NewEmailService(db *sqlx.DB, appName, appURL string) *EmailService {
@@ -34,17 +38,25 @@ func NewEmailService(db *sqlx.DB, appName, appURL string) *EmailService {
 	}
 }
 
-func (s *EmailService) generateToken() string {
+func (s *EmailService) generateToken() (string, error) {
 	b := make([]byte, 32)
-	rand.Read(b)
-	return hex.EncodeToString(b)
+	if _, err := rand.Read(b); err != nil {
+		return "", fmt.Errorf("EmailService.generateToken rand: %w", err)
+	}
+	return hex.EncodeToString(b), nil
 }
 
-func (s *EmailService) createToken(userID int64, tokenType string) (*model.EmailVerification, error) {
-	token := s.generateToken()
+func (s *EmailService) createToken(userID int64, tokenType string, raw string) (*model.EmailVerification, error) {
+	if raw == "" {
+		var err error
+		raw, err = s.generateToken()
+		if err != nil {
+			return nil, err
+		}
+	}
 	ev := &model.EmailVerification{
 		UserID:    userID,
-		Token:     token,
+		Token:     HashToken(raw),
 		Type:      tokenType,
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 	}
@@ -52,13 +64,69 @@ func (s *EmailService) createToken(userID int64, tokenType string) (*model.Email
 	if _, err := s.DB.Exec(query, ev.UserID, ev.Token, ev.Type, ev.ExpiresAt); err != nil {
 		return nil, fmt.Errorf("EmailService.createToken: %w", err)
 	}
+	// Only the hash is stored; hand the raw token back so callers can embed
+	// it in the emailed link.
+	ev.Token = raw
 	return ev, nil
+}
+
+// IssuePasswordReset creates a password-reset token and returns the raw
+// value for the emailed link. Only HashToken(raw) is persisted.
+func (s *EmailService) IssuePasswordReset(userID int64) (string, error) {
+	raw, err := RandomToken(32)
+	if err != nil {
+		return "", err
+	}
+	if s.ResetRepo != nil {
+		if err := s.ResetRepo.Create(userID, HashToken(raw), time.Now().Add(24*time.Hour)); err != nil {
+			return "", fmt.Errorf("EmailService.IssuePasswordReset: %w", err)
+		}
+		return raw, nil
+	}
+	if _, err := s.createToken(userID, "reset", raw); err != nil {
+		return "", err
+	}
+	return raw, nil
+}
+
+// VerifyPasswordReset checks a reset token and returns the user ID. The
+// token is NOT consumed; call ConsumePasswordReset after the password has
+// been changed successfully.
+func (s *EmailService) VerifyPasswordReset(token string) (int64, error) {
+	if strings.TrimSpace(token) == "" {
+		return 0, fmt.Errorf("token tidak valid atau sudah kadaluarsa")
+	}
+	if s.ResetRepo != nil {
+		pr, err := s.ResetRepo.FindValid(HashToken(token))
+		if err != nil || pr == nil {
+			return 0, fmt.Errorf("token tidak valid atau sudah kadaluarsa")
+		}
+		return pr.UserID, nil
+	}
+	return s.VerifyToken(token, "reset")
+}
+
+// ConsumePasswordReset marks a reset token as used. Legacy
+// email_verifications tokens are already marked used at verify time, so
+// this is a no-op for them.
+func (s *EmailService) ConsumePasswordReset(token string) error {
+	if s.ResetRepo == nil {
+		return nil
+	}
+	pr, err := s.ResetRepo.FindValid(HashToken(token))
+	if err != nil || pr == nil {
+		return fmt.Errorf("token tidak valid atau sudah kadaluarsa")
+	}
+	if err := s.ResetRepo.MarkUsed(pr.ID); err != nil {
+		return fmt.Errorf("EmailService.ConsumePasswordReset: %w", err)
+	}
+	return nil
 }
 
 func (s *EmailService) VerifyToken(token string, tokenType string) (int64, error) {
 	var ev model.EmailVerification
 	query := `SELECT * FROM email_verifications WHERE token = ? AND type = ? AND used = FALSE AND expires_at > NOW()`
-	if err := s.DB.Get(&ev, query, token, tokenType); err != nil {
+	if err := s.DB.Get(&ev, query, HashToken(token), tokenType); err != nil {
 		return 0, fmt.Errorf("token tidak valid atau sudah kadaluarsa")
 	}
 	if _, err := s.DB.Exec("UPDATE email_verifications SET used = TRUE WHERE id = ?", ev.ID); err != nil {
@@ -68,7 +136,7 @@ func (s *EmailService) VerifyToken(token string, tokenType string) (int64, error
 }
 
 func (s *EmailService) SendVerificationEmail(email string, userID int64) error {
-	ev, err := s.createToken(userID, "verify")
+	ev, err := s.createToken(userID, "verify", "")
 	if err != nil {
 		return err
 	}
@@ -84,11 +152,11 @@ func (s *EmailService) SendVerificationEmail(email string, userID int64) error {
 }
 
 func (s *EmailService) SendPasswordReset(email string, userID int64) error {
-	ev, err := s.createToken(userID, "reset")
+	raw, err := s.IssuePasswordReset(userID)
 	if err != nil {
 		return err
 	}
-	resetLink := fmt.Sprintf("%s/reset-password?token=%s", s.AppURL, ev.Token)
+	resetLink := fmt.Sprintf("%s/reset-password?token=%s", s.AppURL, raw)
 	html := s.buildHTML("Reset Password", fmt.Sprintf(`
 		<h2>Reset Password</h2>
 		<p>Anda meminta reset password untuk akun %s Anda. Klik tombol di bawah untuk membuat password baru:</p>
@@ -128,11 +196,11 @@ func (s *EmailService) SendSignalAlert(email, signal string) error {
 }
 
 func (s *EmailService) SendForgotPassword(email string, userID int64) error {
-	ev, err := s.createToken(userID, "reset")
+	raw, err := s.IssuePasswordReset(userID)
 	if err != nil {
 		return err
 	}
-	resetLink := fmt.Sprintf("%s/reset-password?token=%s", s.AppURL, ev.Token)
+	resetLink := fmt.Sprintf("%s/reset-password?token=%s", s.AppURL, raw)
 	html := s.buildHTML("Reset Password", fmt.Sprintf(`
 		<h2>Reset Password</h2>
 		<p>Anda meminta reset password. Klik tombol di bawah:</p>

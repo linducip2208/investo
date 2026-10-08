@@ -21,6 +21,9 @@ type Config struct {
 	AppEnv           string
 	JWTSecret        string
 	SessionSecret    string
+	EncryptionKey    string
+	RedisAddr        string
+	RedisPassword    string
 	TelegramBotToken string
 }
 
@@ -49,6 +52,9 @@ func Load() *Config {
 		AppEnv:           getEnv("APP_ENV", "development"),
 		JWTSecret:        getEnv("JWT_SECRET", "investo-jwt-secret-key"),
 		SessionSecret:    getEnv("SESSION_SECRET", "investo-session-secret-key"),
+		EncryptionKey:    getEnv("ENCRYPTION_KEY", ""),
+		RedisAddr:        getEnv("REDIS_ADDR", ""),
+		RedisPassword:    getEnv("REDIS_PASSWORD", ""),
 		TelegramBotToken: getEnv("TELEGRAM_BOT_TOKEN", ""),
 	}
 }
@@ -72,6 +78,9 @@ func (c *Config) Validate() error {
 	}
 	if c.JWTSecret == c.SessionSecret {
 		problems = append(problems, "JWT_SECRET and SESSION_SECRET must be different")
+	}
+	if !isStrongSecret(c.EncryptionKey) {
+		problems = append(problems, "ENCRYPTION_KEY must be set to 32 random bytes (raw or base64); it protects TOTP secrets and stored provider keys")
 	}
 
 	appURL, err := url.ParseRequestURI(strings.TrimSpace(c.AppURL))

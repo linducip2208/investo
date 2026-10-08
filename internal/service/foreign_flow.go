@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"sort"
 	"time"
 
@@ -19,6 +20,7 @@ type FlowData struct {
 	TotalValue    int64   `json:"total_value"`
 	FlowDirection string  `json:"flow_direction"`
 	Date          string  `json:"date"`
+	IsDemo        bool    `json:"is_demo,omitempty"`
 }
 
 type ForeignFlowService struct {
@@ -36,8 +38,13 @@ func (s *ForeignFlowService) GetTopForeignFlow(limit int) ([]FlowData, error) {
 		ORDER BY ABS(ff.foreign_buy_val - ff.foreign_sell_val) DESC
 		LIMIT ?`
 
+	if s == nil || s.DB == nil {
+		log.Printf("ForeignFlowService.GetTopForeignFlow: no DB wired, using illustrative demo fallback (is_demo=true)")
+		return s.getDemoFlowData(limit), nil
+	}
 	rows, err := s.DB.Queryx(query, limit)
 	if err != nil {
+		log.Printf("ForeignFlowService.GetTopForeignFlow: query failed (%v), using illustrative demo fallback (is_demo=true)", err)
 		return s.getDemoFlowData(limit), nil
 	}
 	defer rows.Close()
@@ -62,6 +69,7 @@ func (s *ForeignFlowService) GetTopForeignFlow(limit int) ([]FlowData, error) {
 	}
 
 	if len(flows) == 0 {
+		log.Printf("ForeignFlowService.GetTopForeignFlow: empty result, using illustrative demo fallback (is_demo=true)")
 		return s.getDemoFlowData(limit), nil
 	}
 	return flows, nil
@@ -73,6 +81,9 @@ func (s *ForeignFlowService) GetStockFlow(code string) (*FlowData, error) {
 
 	var f FlowData
 	var date time.Time
+	if s == nil || s.DB == nil {
+		return nil, fmt.Errorf("no flow data for %s", code)
+	}
 	err := s.DB.QueryRowx(query, code).Scan(&f.StockCode, &f.ForeignBuy, &f.ForeignSell, &date)
 	if err != nil {
 		return nil, fmt.Errorf("no flow data for %s", code)
@@ -110,6 +121,10 @@ func (s *ForeignFlowService) getDemoFlowData(limit int) []FlowData {
 	sort.Slice(demo, func(i, j int) bool {
 		return abs64(demo[i].ForeignNet) > abs64(demo[j].ForeignNet)
 	})
+
+	for i := range demo {
+		demo[i].IsDemo = true
+	}
 
 	if limit > 0 && limit < len(demo) {
 		return demo[:limit]

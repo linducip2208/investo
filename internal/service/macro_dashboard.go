@@ -1,5 +1,7 @@
 package service
 
+import "time"
+
 type MacroIndicator struct {
 	Name           string   `json:"name"`
 	Value          string   `json:"value"`
@@ -7,6 +9,9 @@ type MacroIndicator struct {
 	Change         string   `json:"change"`
 	Impact         string   `json:"impact"`
 	AffectedSectors []string `json:"affected_sectors"`
+	IsIllustrative bool     `json:"is_illustrative"`
+	Source         string   `json:"source,omitempty"`
+	AsOf           string   `json:"as_of,omitempty"`
 }
 
 type MacroDashboardService struct{}
@@ -81,6 +86,13 @@ func (s *MacroDashboardService) GetMacroSnapshot() ([]MacroIndicator, error) {
 			Impact:  "positive",
 			AffectedSectors: []string{"Consumer Goods", "Retail", "Property", "Automotive"},
 		},
+	}
+	// Tanpa feed makro live, seluruh snapshot adalah contoh ilustratif.
+	asOf := time.Now().Format("2006-01-02")
+	for i := range indicators {
+		indicators[i].IsIllustrative = true
+		indicators[i].Source = "ilustratif — contoh, bukan data BI/BPS real-time"
+		indicators[i].AsOf = asOf
 	}
 	return indicators, nil
 }

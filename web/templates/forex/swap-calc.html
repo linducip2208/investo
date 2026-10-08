@@ -173,6 +173,9 @@
                             <span x-show="result.interest_differential > 0" class="text-emerald-400 ml-1">(positif untuk LONG)</span>
                             <span x-show="result.interest_differential < 0" class="text-red-400 ml-1">(negatif untuk LONG)</span>
                         </div>
+                        <div x-show="result.rates_source" class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-3">
+                            <p class="text-[11px] text-amber-300">⚠️ <b>Data ilustratif</b> — <span x-text="result.rates_source"></span></p>
+                        </div>
                     </div>
                     <div x-show="result && result.error" class="bg-red-900/20 border border-red-900/40 rounded-xl p-3 text-sm text-red-400" x-text="result.error"></div>
                 </div>

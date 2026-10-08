@@ -16,6 +16,9 @@ type InsiderTransaction struct {
 	Value           float64 `json:"value"`
 	Date            string `json:"date"`
 	Significance    string `json:"significance"`
+	IsIllustrative  bool   `json:"is_illustrative"`
+	Source          string `json:"source,omitempty"`
+	AsOf            string `json:"as_of,omitempty"`
 }
 
 type InsiderService struct{}
@@ -101,6 +104,13 @@ func (s *InsiderService) GetRecentTransactions(limit int) []InsiderTransaction {
 		tj, _ := time.Parse("02 Jan 2006", demo[j].Date)
 		return ti.After(tj)
 	})
+
+	asOf := time.Now().Format("2006-01-02")
+	for i := range demo {
+		demo[i].IsIllustrative = true
+		demo[i].Source = "ilustratif — contoh, bukan data keterbukaan BEI/IDX real-time"
+		demo[i].AsOf = asOf
+	}
 
 	if limit > 0 && limit < len(demo) {
 		return demo[:limit]

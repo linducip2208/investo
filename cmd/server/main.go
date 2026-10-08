@@ -15,8 +15,10 @@ import (
 	"path/filepath"
 	"reflect"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -24,6 +26,7 @@ import (
 	chimw "github.com/go-chi/chi/v5/middleware"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
+	"github.com/redis/go-redis/v9"
 
 	"investo/internal/config"
 	"investo/internal/database"
@@ -37,6 +40,15 @@ import (
 	"investo/internal/service/scraper"
 	"investo/internal/service/seo"
 	"investo/web"
+)
+
+// Scheduler skip-if-running guards (non-blocking: a tick is skipped when the
+// previous run of the same job is still in flight).
+var (
+	fetchRunning atomic.Bool
+	newsRunning  atomic.Bool
+	alertRunning atomic.Bool
+	backupRunning atomic.Bool
 )
 
 func main() {
@@ -59,6 +71,8 @@ func main() {
 		log.Println("Migrations completed")
 	}
 
+	enforceProdSeedGuard(db, cfg)
+
 	stockRepo := &repository.StockRepository{DB: db}
 	stockPriceRepo := &repository.StockPriceRepository{DB: db}
 	stockFundamentalRepo := &repository.StockFundamentalRepository{DB: db}
@@ -66,15 +80,19 @@ func main() {
 	// Auto-seed if no stocks exist — run in background so server starts immediately
 	allStocks, _ := stockRepo.ListActive()
 	if len(allStocks) == 0 {
-		log.Println("[AutoSeed] No stocks found — seeding in background...")
-		go func() {
-			defer func() {
-				if r := recover(); r != nil {
-					log.Printf("[AutoSeed] PANIC: %v", r)
-				}
+		if cfg.AppEnv == "production" && os.Getenv("INVESTO_ALLOW_DEMO_SEED") != "1" && os.Getenv("ALLOW_DEMO_SEED") != "1" {
+			log.Println("[AutoSeed] Skipped in production (no stocks found; set INVESTO_ALLOW_DEMO_SEED=1 to permit seeding)")
+		} else {
+			log.Println("[AutoSeed] No stocks found — seeding in background...")
+			go func() {
+				defer func() {
+					if r := recover(); r != nil {
+						log.Printf("[AutoSeed] PANIC: %v", r)
+					}
+				}()
+				autoSeed(db)
 			}()
-			autoSeed(db)
-		}()
+		}
 	}
 
 	wsHub := NewWSHub()
@@ -99,9 +117,16 @@ func main() {
 	agentMandateRepo := &repository.AgentMandateRepository{DB: db}
 	approvalRepo := &repository.ApprovalRepository{DB: db}
 	paperTradingRepo := &repository.PaperTradingRepository{DB: db}
+	passwordResetRepo := repository.NewPasswordResetRepository(db)
+	sessionRepo := repository.NewSessionRepository(db)
+	auditLogRepo := repository.NewAuditLogRepository(db)
+	paymentRepo := repository.NewPaymentRepository(db)
+	_ = auditLogRepo
+	_ = paymentRepo
 
-	authService := &service.AuthService{UserRepo: userRepo}
+	authService := &service.AuthService{UserRepo: userRepo, SessionRepo: sessionRepo, PasswordResetRepo: passwordResetRepo}
 	emailService := service.NewEmailService(db, cfg.AppName, cfg.AppURL)
+	emailService.ResetRepo = passwordResetRepo
 	totpService := service.NewTOTPService(db, cfg.AppName)
 	chatService := service.NewChatService(db)
 	pdfExportService := service.NewPDFExportService(cfg.AppName)
@@ -187,8 +212,8 @@ func main() {
 		AppURL:     cfg.AppURL,
 	}
 
-	sessionHash := sha256.Sum256([]byte(cfg.SessionSecret))
-	sessionStore := sessions.NewCookieStore(sessionHash[:], sessionHash[:16])
+	sessionAuthKey, sessionEncKey := deriveSessionKeys(cfg.SessionSecret)
+	sessionStore := sessions.NewCookieStore(sessionAuthKey, sessionEncKey)
 	sessionStore.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
@@ -200,6 +225,7 @@ func main() {
 	authMiddleware := &mw.AuthMiddleware{
 		SessionStore: sessionStore,
 		UserRepo:     userRepo,
+		SessionRepo:  sessionRepo,
 	}
 
 	tpl, err := parseTemplates(cfg.AppURL)
@@ -222,6 +248,8 @@ func main() {
 		PSEOService:       pseoService,
 		Templates:         tpl,
 		NotifService:      notifService,
+		DB:                db,
+		AppEnv:            cfg.AppEnv,
 	}
 	authHandler := &handler.AuthHandler{
 		AuthService:  authService,
@@ -383,6 +411,8 @@ func main() {
 	service.EnsureCustomIndicatorTable(db)
 
 	telegramService := service.NewTelegramService(cfg.TelegramBotToken)
+	initOptionalRedis()
+	loadTelegramChats(db, telegramService)
 
 	alertHandler := &handler.AlertHandler{
 		AlertRepo:      alertRepo,
@@ -390,10 +420,13 @@ func main() {
 		TelegramSvc:    telegramService,
 		StockPriceRepo: stockPriceRepo,
 		StockRepo:      stockRepo,
+		SettingRepo:    settingRepo,
 		Templates:      tpl,
 	}
 	adminHandler := &handler.AdminHandler{
 		UserRepo:             userRepo,
+		SessionRepo:          sessionRepo,
+		AuditLogRepo:         auditLogRepo,
 		StockRepo:            stockRepo,
 		NewsRepo:             newsRepo,
 		BlogRepo:             blogRepo,
@@ -553,6 +586,7 @@ func main() {
 		ForexAnalytics:       forexAnalytics,
 		AuthService:          authService,
 		JWTService:           jwtService,
+		TOTPService:          totpService,
 		SettingRepo:          settingRepo,
 	}
 
@@ -582,7 +616,7 @@ func main() {
 	maScreenerSvc := service.NewMAScreenerService()
 	earningsQualitySvc := service.NewEarningsQualityService(stockFundamentalRepo)
 	managementQualitySvc := service.NewManagementQualityService(stockFundamentalRepo, stockRepo)
-	moatSvc := service.NewMoatService()
+	moatSvc := service.NewMoatServiceWithFundamentals(stockRepo, stockFundamentalRepo)
 
 	macroHandler := &handler.MacroHandler{
 		MacroDashboardSvc:    macroDashboardSvc,
@@ -609,9 +643,9 @@ func main() {
 	socialBuzzSvc := &service.SocialBuzzService{}
 	economicProxySvc := &service.EconomicProxyService{}
 	jobPostingSvc := &service.JobPostingService{}
-	backtesterSvc := &service.ThesisBacktesterService{}
+	backtesterSvc := service.NewThesisBacktesterService(stockRepo, stockPriceRepo, stockFundamentalRepo)
 	eventStudySvc := &service.EventStudyService{}
-	seasonalitySvc := &service.SeasonalityService{}
+	seasonalitySvc := service.NewSeasonalityService(stockRepo, stockPriceRepo)
 
 	alternativeHandler := &handler.AlternativeHandler{
 		GoogleTrends:  googleTrendsSvc,
@@ -901,8 +935,13 @@ func main() {
 	r := chi.NewRouter()
 
 	apiRateLimiter := mw.NewRateLimiter(60, 1*time.Minute)
+	// Strict limiter for auth endpoints: 10 req/min/IP. The limiter resolves
+	// the client IP RealIP-aware (X-Real-IP, then first X-Forwarded-For,
+	// then RemoteAddr; chimw.RealIP also rewrites RemoteAddr first in chain).
+	authRateLimiter := mw.NewRateLimiter(10, 1*time.Minute)
 
 	r.Use(chimw.RealIP)
+	r.Use(mw.RequestID)
 	r.Use(mw.StackRecoverer)
 	r.Use(mw.Logger)
 	r.Use(mw.CORS)
@@ -942,9 +981,9 @@ func main() {
 
 	r.Get("/verify-email", authHandler.VerifyEmail)
 	r.Get("/forgot-password", authHandler.ForgotPasswordPage)
-	r.Post("/forgot-password", authHandler.ForgotPassword)
+	r.With(authRateLimiter.Limit).Post("/forgot-password", authHandler.ForgotPassword)
 	r.Get("/reset-password", authHandler.ResetPasswordPage)
-	r.Post("/reset-password", authHandler.ResetPassword)
+	r.With(authRateLimiter.Limit).Post("/reset-password", authHandler.ResetPassword)
 	r.Get("/api/auth/google/callback", authHandler.GoogleOAuthCallback)
 	r.Get("/api/auth/google", authHandler.GoogleOAuthStart)
 
@@ -1041,6 +1080,7 @@ func main() {
 	r.Get("/market/signal-generator", marketHandler.SignalGeneratorPage)
 	r.Get("/pricing", botHandler.PricingPage)
 	r.Get("/health", pageHandler.Health)
+	r.Get("/ready", pageHandler.Ready)
 	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		data, err := fs.ReadFile(web.Static, "static/favicon.svg")
 		if err != nil {
@@ -1058,9 +1098,11 @@ func main() {
 		r.Use(authMiddleware.RequireGuest)
 
 		r.Get("/login", authHandler.LoginPage)
-		r.Post("/login", authHandler.Login)
+		r.With(authRateLimiter.Limit).Post("/login", authHandler.Login)
 		r.Get("/register", authHandler.RegisterPage)
-		r.Post("/register", authHandler.Register)
+		r.With(authRateLimiter.Limit).Post("/register", authHandler.Register)
+		r.Get("/2fa", authHandler.TwoFactorPage)
+		r.With(authRateLimiter.Limit).Post("/2fa", authHandler.TwoFactorVerify)
 	})
 
 	r.Group(func(r chi.Router) {
@@ -1479,7 +1521,7 @@ func main() {
 	})
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/auth/login", apiV1Handler.Login)
+		r.With(authRateLimiter.Limit).Post("/auth/login", apiV1Handler.Login)
 
 		r.Group(func(r chi.Router) {
 			r.Use(mw.JWTAuth(jwtService))
@@ -1517,7 +1559,7 @@ func main() {
 
 	staticFS, _ := fs.Sub(web.Static, "static")
 	fileServer := http.FileServer(http.FS(staticFS))
-	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
+	r.Handle("/static/*", http.StripPrefix("/static/", cacheControlStatic(fileServer)))
 
 	r.NotFound(pageHandler.NotFound)
 
@@ -1554,7 +1596,7 @@ func main() {
 	fmt.Printf("  ╚══════════════════════════════════════════════════════╝\n")
 	fmt.Println()
 
-	go startScheduler(db, stockPriceRepo, forexRepo, wsHub, indexNowSvc, alertChecker)
+	go startScheduler(db, stockPriceRepo, forexRepo, wsHub, indexNowSvc, alertChecker, notifRepo, telegramService, settingRepo)
 
 	log.Printf("Starting HTTP server on %s", addr)
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -1791,14 +1833,27 @@ func autoSeed(db *sqlx.DB) {
 	log.Println("[AutoSeed] Complete")
 }
 
-func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub, indexNowSvc *seo.IndexNowService, alertChecker *service.AlertChecker) {
+func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, forexRepo *repository.ForexRepository, wsHub *WSHub, indexNowSvc *seo.IndexNowService, alertChecker *service.AlertChecker, notifRepo *repository.NotificationRepository, telegramSvc *service.TelegramService, settingRepo *repository.SettingRepository) {
 	jakarta, _ := time.LoadLocation("Asia/Jakarta")
 	if jakarta == nil {
 		jakarta = time.FixedZone("WIB", 7*3600)
 	}
 
-	runFetch := func(context string) {
-		log.Printf("[Scheduler] Starting %s data fetch...", context)
+	runFetch := func(runName string) {
+		if !fetchRunning.CompareAndSwap(false, true) {
+			log.Printf("[Scheduler] Skip %s fetch: previous run still in flight", runName)
+			return
+		}
+		defer fetchRunning.Store(false)
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("[Scheduler] PANIC in fetch %s: %v", runName, r)
+			}
+		}()
+		ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
+		defer cancel()
+		_ = ctx
+		log.Printf("[Scheduler] Starting %s data fetch...", runName)
 		yahoo := &scraper.YahooScraper{}
 		end := time.Now().In(jakarta)
 		start := end.AddDate(0, 0, -3)
@@ -1857,10 +1912,22 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 		}
 		wg.Wait()
 		log.Printf("[Scheduler] Stock prices: %d/%d stocks updated (errors: %d)", fetched, len(stocks), errors)
+		if ctx.Err() != nil {
+			log.Printf("[Scheduler] Fetch %s aborted: %v", runName, ctx.Err())
+			return
+		}
 
 		pairs, _ := forexRepo.FindAllPairs()
 		ratesFetched := 0
 		for _, pair := range pairs {
+			select {
+			case <-ctx.Done():
+				log.Printf("[Scheduler] Fetch %s forex loop aborted: %v", runName, ctx.Err())
+			default:
+			}
+			if ctx.Err() != nil {
+				break
+			}
 			open, high, low, close, err := yahoo.FetchForexRate(pair.BaseCurrency, pair.QuoteCurrency)
 			if err != nil {
 				continue
@@ -1876,6 +1943,16 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 	}
 
 	fetchNews := func() {
+		if !newsRunning.CompareAndSwap(false, true) {
+			log.Printf("[Scheduler] Skip news fetch: previous run still in flight")
+			return
+		}
+		defer newsRunning.Store(false)
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("[Scheduler] PANIC in news fetch: %v", r)
+			}
+		}()
 		log.Printf("[Scheduler] Fetching market news...")
 		newsScraper := &scraper.NewsScraper{}
 		newsRepo := &repository.NewsRepository{DB: db}
@@ -1960,20 +2037,20 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 		select {
 		case <-priceTicker.C:
 			now := time.Now().In(jakarta)
-			hour := now.Hour()
-			if hour >= 9 && hour < 16 {
-				func() {
-					defer func() {
-						if r := recover(); r != nil {
-							log.Printf("[Scheduler] PANIC in price fetch: %v", r)
-						}
-					}()
-					runFetch("5min-update")
-					if alertChecker != nil {
-						runAlertCheck(alertChecker)
+			if !marketHoursOpen(now) {
+				continue
+			}
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						log.Printf("[Scheduler] PANIC in price fetch: %v", r)
 					}
 				}()
-			}
+				runFetch("5min-update")
+				if alertChecker != nil {
+					runAlertCheck(alertChecker, notifRepo, telegramSvc, settingRepo)
+				}
+			}()
 		case <-newsTicker.C:
 			func() {
 				defer func() {
@@ -1985,6 +2062,11 @@ func startScheduler(db *sqlx.DB, priceRepo *repository.StockPriceRepository, for
 			}()
 		case <-backupTicker.C:
 			func() {
+				if !backupRunning.CompareAndSwap(false, true) {
+					log.Printf("[Scheduler] Skip backup: previous run still in flight")
+					return
+				}
+				defer backupRunning.Store(false)
 				defer func() {
 					if r := recover(); r != nil {
 						log.Printf("[Scheduler] PANIC in backup: %v", r)
@@ -2039,8 +2121,42 @@ func runIndexNow(db *sqlx.DB, svc *seo.IndexNowService) {
 }
 
 // runAlertCheck evaluates active price alerts and marks triggered ones.
-func runAlertCheck(checker *service.AlertChecker) {
-	hits, err := checker.CheckAlerts()
+// For each newly triggered alert it inserts an in-app notification row and
+// attempts a Telegram send when a chat mapping exists. Telegram chat mappings
+// live in-memory in TelegramService with a settings-table mirror
+// (tg_chat_{userID}); see loadTelegramChats/persistTelegramChat.
+func runAlertCheck(checker *service.AlertChecker, notifRepo *repository.NotificationRepository, telegramSvc *service.TelegramService, settingRepo *repository.SettingRepository) {
+	if !alertRunning.CompareAndSwap(false, true) {
+		log.Printf("[AlertChecker] Skip check: previous run still in flight")
+		return
+	}
+	defer alertRunning.Store(false)
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("[AlertChecker] PANIC: %v", r)
+		}
+	}()
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	done := make(chan struct{})
+	var hits []service.AlertHit
+	var err error
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				err = fmt.Errorf("panic: %v", r)
+			}
+			close(done)
+		}()
+		hits, err = checker.CheckAlerts()
+	}()
+	select {
+	case <-done:
+	case <-ctx.Done():
+		log.Printf("[AlertChecker] check timed out after 2m")
+		return
+	}
 	if err != nil {
 		log.Printf("[AlertChecker] check error: %v", err)
 		return
@@ -2059,6 +2175,45 @@ func runAlertCheck(checker *service.AlertChecker) {
 			continue
 		}
 		log.Printf("[AlertChecker] ALERT triggered: %s %s @ %.2f (count=%d)", h.StockCode, a.Condition, h.CurrentPrice, a.TriggerCount)
+		select {
+		case <-ctx.Done():
+			log.Printf("[AlertChecker] notification fan-out aborted: %v", ctx.Err())
+			return
+		default:
+		}
+		if notifRepo != nil {
+			title := fmt.Sprintf("Alert %s tersentuh", h.StockCode)
+			if h.StockCode == "" {
+				title = "Alert harga tersentuh"
+			}
+			msg := fmt.Sprintf("%s %s @ %.2f", h.StockCode, a.Condition, h.CurrentPrice)
+			if h.Description != "" {
+				msg = h.Description
+			}
+			n := &model.Notification{
+				UserID:  a.UserID,
+				Type:    "alert",
+				Title:   title,
+				Message: msg,
+				Link:    "/dashboard/alerts",
+			}
+			if _, nerr := notifRepo.Create(n); nerr != nil {
+				log.Printf("[AlertChecker] notification insert error (user %d): %v", a.UserID, nerr)
+			}
+		}
+		if telegramSvc != nil {
+			tmsg := telegramSvc.FormatAlertMessage(service.AlertResult{
+				Alert:        a,
+				StockCode:    h.StockCode,
+				Message:      h.Description,
+				CurrentPrice: h.CurrentPrice,
+			})
+			if serr := telegramSvc.SendAlert(a.UserID, tmsg); serr != nil {
+				log.Printf("[AlertChecker] telegram send error (user %d): %v", a.UserID, serr)
+			} else if settingRepo != nil {
+				persistTelegramChat(settingRepo, telegramSvc, a.UserID)
+			}
+		}
 	}
 }
 
@@ -2138,4 +2293,128 @@ func pruneOldBackups(dir string, keep int) {
 	for i := keep; i < len(files); i++ {
 		_ = os.Remove(filepath.Join(dir, files[i].Name()))
 	}
+}
+
+// deriveSessionKeys derives distinct auth (HMAC) and encryption keys from the
+// session secret via SHA256 domain separation. No helper exists in service,
+// so this stays local to main (owned file).
+func deriveSessionKeys(secret string) (authKey, encKey []byte) {
+	authSum := sha256.Sum256([]byte("investo-session-auth-v1:" + secret))
+	encSum := sha256.Sum256([]byte("investo-session-enc-v1:" + secret))
+	authKey = append([]byte(nil), authSum[:]...)
+	encKey = append([]byte(nil), encSum[:]...)
+	return authKey, encKey
+}
+
+// enforceProdSeedGuard fail-closes in production when demo seed rows exist.
+func enforceProdSeedGuard(db *sqlx.DB, cfg *config.Config) {
+	if cfg == nil || cfg.AppEnv != "production" {
+		return
+	}
+	if os.Getenv("INVESTO_ALLOW_DEMO_SEED") == "1" || os.Getenv("ALLOW_DEMO_SEED") == "1" {
+		log.Println("[SeedGuard] INVESTO_ALLOW_DEMO_SEED=1: demo seed rows permitted")
+		return
+	}
+	var count int
+	if err := db.Get(&count, "SELECT COUNT(*) FROM users WHERE email IN ('admin@investo.test','demo@investo.test')"); err != nil {
+		log.Printf("[SeedGuard] demo seed check query failed (continuing): %v", err)
+		return
+	}
+	if count > 0 {
+		log.Fatalf("[SeedGuard] FAIL-CLOSED: %d demo seed user(s) (admin@investo.test/demo@investo.test) present in production database. Delete those rows or set INVESTO_ALLOW_DEMO_SEED=1 to override.", count)
+	}
+}
+
+// clientIP is provided by the middleware package (mw.ClientIP, RealIP-aware:
+// X-Real-IP, then first X-Forwarded-For, then RemoteAddr) owned by the auth
+// agent — main uses the rate limiter's built-in resolution and does not
+// duplicate it here.
+
+// initOptionalRedis pings Redis when INVESTO_REDIS_ADDR is set. Redis is an
+// optional dependency: any failure only logs and the server continues without it.
+func initOptionalRedis() {
+	addr := strings.TrimSpace(os.Getenv("INVESTO_REDIS_ADDR"))
+	if addr == "" {
+		addr = strings.TrimSpace(os.Getenv("REDIS_ADDR"))
+	}
+	if addr == "" {
+		return
+	}
+	client := redis.NewClient(&redis.Options{Addr: addr, DialTimeout: 3 * time.Second})
+	defer client.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	if err := client.Ping(ctx).Err(); err != nil {
+		log.Printf("[Redis] optional dependency unreachable at %s: %v (continuing without Redis)", addr, err)
+		return
+	}
+	log.Printf("[Redis] connected at %s (optional)", addr)
+}
+
+// loadTelegramChats restores in-memory Telegram chat mappings from the
+// settings-table mirror (keys tg_chat_{userID}).
+func loadTelegramChats(db *sqlx.DB, telegramSvc *service.TelegramService) {
+	if telegramSvc == nil || db == nil {
+		return
+	}
+	type kv struct {
+		Key   string `db:"key"`
+		Value string `db:"value"`
+	}
+	var rows []kv
+	if err := db.Select(&rows, "SELECT `key`, `value` FROM settings WHERE `key` LIKE 'tg\\_chat\\_%'"); err != nil {
+		log.Printf("[Telegram] chat mapping preload skipped: %v", err)
+		return
+	}
+	loaded := 0
+	for _, row := range rows {
+		idStr := strings.TrimPrefix(row.Key, "tg_chat_")
+		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil || row.Value == "" {
+			continue
+		}
+		telegramSvc.SetChatID(id, row.Value)
+		loaded++
+	}
+	if loaded > 0 {
+		log.Printf("[Telegram] restored %d chat mapping(s) from settings", loaded)
+	}
+}
+
+// persistTelegramChat mirrors an in-memory chat mapping into settings so it
+// survives restarts. Best-effort only.
+func persistTelegramChat(settingRepo *repository.SettingRepository, telegramSvc *service.TelegramService, userID int64) {
+	if settingRepo == nil || telegramSvc == nil {
+		return
+	}
+	chatID, ok := telegramSvc.GetChatID(userID)
+	if !ok || chatID == "" {
+		return
+	}
+	if err := settingRepo.Set(fmt.Sprintf("tg_chat_%d", userID), chatID); err != nil {
+		log.Printf("[Telegram] persist chat mapping for user %d: %v", userID, err)
+	}
+}
+
+// marketHoursOpen gates periodic price fetches to Mon-Fri 09:00-16:00 Asia/Jakarta.
+func marketHoursOpen(now time.Time) bool {
+	wd := now.Weekday()
+	if wd == time.Saturday || wd == time.Sunday {
+		return false
+	}
+	hour := now.Hour()
+	return hour >= 9 && hour < 16
+}
+
+// cacheControlStatic adds Cache-Control to the embedded FileServer: immutable
+// 1y when a ?v= cache-buster is present, otherwise 1h.
+func cacheControlStatic(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("v") != "" {
+			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+		} else {
+			w.Header().Set("Cache-Control", "public, max-age=3600")
+		}
+		next.ServeHTTP(w, r)
+	})
 }

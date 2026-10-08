@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"time"
@@ -18,9 +19,14 @@ import (
 	"investo/internal/service"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jmoiron/sqlx"
 )
 
 var startTime = time.Now()
+
+// AppVersion is the application version reported by /health and /ready.
+// Override at build time with: -ldflags "-X investo/internal/handler.AppVersion=x.y.z"
+var AppVersion = "1.0.0"
 
 type PageHandler struct {
 	StockRepo      *repository.StockRepository
@@ -34,6 +40,31 @@ type PageHandler struct {
 	PSEOService    *pseo.Service
 	Templates      *template.Template
 	NotifService   *service.NotificationService
+	DB             *sqlx.DB
+	AppEnv         string
+}
+
+func (h *PageHandler) appEnv() string {
+	if h.AppEnv != "" {
+		return h.AppEnv
+	}
+	if v := os.Getenv("INVESTO_APP_ENV"); v != "" {
+		return v
+	}
+	if v := os.Getenv("APP_ENV"); v != "" {
+		return v
+	}
+	return "development"
+}
+
+func (h *PageHandler) db() *sqlx.DB {
+	if h.DB != nil {
+		return h.DB
+	}
+	if h.StockRepo != nil {
+		return h.StockRepo.DB
+	}
+	return nil
 }
 
 func (h *PageHandler) Home(w http.ResponseWriter, r *http.Request) {
@@ -231,15 +262,28 @@ func (h *PageHandler) Robots(w http.ResponseWriter, r *http.Request) {
 
 func (h *PageHandler) Health(w http.ResponseWriter, r *http.Request) {
 	// Simple status
-	stocks, _ := h.StockRepo.ListActive()
+	stocks, err := h.StockRepo.ListActive()
+	dbReachable := err == nil
+	if err != nil {
+		stocks = nil
+	}
+	env := h.appEnv()
 	now := time.Now().In(time.FixedZone("WIB", 7*3600))
+	statusText := "ONLINE"
+	serverStatus := "healthy"
+	dbStatus := "connected"
+	if !dbReachable {
+		statusText = "OFFLINE"
+		serverStatus = "degraded"
+		dbStatus = "unreachable"
+	}
 
 	// JSON if explicitly requested, otherwise HTML
 	wantJSON := r.URL.Query().Get("format") == "json" || r.Header.Get("Accept") == "application/json"
 	if !wantJSON {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		fmt.Fprintf(w, `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Investo — System Status</title><style>body{font-family:'Inter',system-ui,sans-serif;background:#0b1120;color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px;max-width:500px;width:90%%;text-align:center}h1{font-size:2rem;margin:0 0 8px}.status{display:inline-block;width:12px;height:12px;border-radius:50%%;background:#10b981;margin-right:8px;animation:pulse 2s infinite}@keyframes pulse{0%%,100%%{opacity:1}50%%{opacity:.5}}.metric{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #334155;font-size:14px}.label{color:#94a3b8}.value{color:#f8fafc;font-weight:600;font-family:'JetBrains Mono',monospace}.footer{margin-top:24px;font-size:12px;color:#475569}a{color:#3b82f6}</style></head><body><div class="card"><h1><span class="status"></span>Investo</h1><p style="color:#94a3b8;margin:0 0 24px">Sistem berjalan normal</p><div class="metric"><span class="label">Status</span><span class="value" style="color:#10b981">ONLINE</span></div><div class="metric"><span class="label">Uptime</span><span class="value">%s</span></div><div class="metric"><span class="label">Saham IDX</span><span class="value">%d emiten</span></div><div class="metric"><span class="label">Waktu Server</span><span class="value">%s WIB</span></div><div class="metric"><span class="label">Environment</span><span class="value">%s</span></div><div class="footer">Investo — Stock & Forex Intelligence Platform<br>%s</div></div></body></html>`,
-			now.Format("15:04:05"), len(stocks), now.Format("02 Jan 2006 15:04:05"), "production", now.Format("2006"))
+		fmt.Fprintf(w, `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Investo — System Status</title><style>body{font-family:'Inter',system-ui,sans-serif;background:#0b1120;color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px;max-width:500px;width:90%%;text-align:center}h1{font-size:2rem;margin:0 0 8px}.status{display:inline-block;width:12px;height:12px;border-radius:50%%;background:#10b981;margin-right:8px;animation:pulse 2s infinite}@keyframes pulse{0%%,100%%{opacity:1}50%%{opacity:.5}}.metric{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #334155;font-size:14px}.label{color:#94a3b8}.value{color:#f8fafc;font-weight:600;font-family:'JetBrains Mono',monospace}.footer{margin-top:24px;font-size:12px;color:#475569}a{color:#3b82f6}</style></head><body><div class="card"><h1><span class="status"></span>Investo</h1><p style="color:#94a3b8;margin:0 0 24px">Sistem berjalan normal</p><div class="metric"><span class="label">Status</span><span class="value" style="color:#10b981">%s</span></div><div class="metric"><span class="label">Uptime</span><span class="value">%s</span></div><div class="metric"><span class="label">Saham IDX</span><span class="value">%d emiten</span></div><div class="metric"><span class="label">Waktu Server</span><span class="value">%s WIB</span></div><div class="metric"><span class="label">Environment</span><span class="value">%s</span></div><div class="metric"><span class="label">Database</span><span class="value">%s</span></div><div class="footer">Investo — Stock & Forex Intelligence Platform<br>%s</div></div></body></html>`,
+			statusText, now.Format("15:04:05"), len(stocks), now.Format("02 Jan 2006 15:04:05"), env, dbStatus, now.Format("2006"))
 		return
 	}
 
@@ -248,20 +292,21 @@ func (h *PageHandler) Health(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"app": map[string]interface{}{
 			"name":    "Investo",
-			"version": "1.0.0",
-			"env":     "production",
+			"version": AppVersion,
+			"env":     env,
 		},
 		"server": map[string]interface{}{
-			"status":  "healthy",
+			"status":  serverStatus,
 			"uptime":  time.Since(startTime).String(),
 			"time":    now.Format(time.RFC3339),
 			"wib":     now.Format("15:04:05 WIB"),
 			"date":    now.Format("Monday, 02 January 2006"),
 		},
 		"database": map[string]interface{}{
-			"driver":  "MySQL 8.4",
-			"status":  "connected",
-			"stocks":  len(stocks),
+			"driver":    "MySQL 8.4",
+			"status":    dbStatus,
+			"reachable": dbReachable,
+			"stocks":    len(stocks),
 		},
 		"features": map[string]interface{}{
 			"ai_providers":   []string{"DeepSeek", "OpenAI", "Claude"},
@@ -276,6 +321,44 @@ func (h *PageHandler) Health(w http.ResponseWriter, r *http.Request) {
 			"websocket":  "/ws",
 			"health":     "/health",
 		},
+	})
+}
+
+// Ready reports readiness for load-balancer checks: DB ping must succeed and
+// the latest applied migration must be readable. 200 when ready, 503 otherwise.
+func (h *PageHandler) Ready(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	db := h.db()
+	if db == nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"status": "not_ready",
+			"error":  "no database handle",
+		})
+		return
+	}
+	if err := db.Ping(); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"status": "not_ready",
+			"error":  "database unreachable",
+		})
+		return
+	}
+	var migration string
+	if err := db.Get(&migration, "SELECT filename FROM migrations ORDER BY filename DESC LIMIT 1"); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"status": "not_ready",
+			"error":  "migrations unreadable",
+		})
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":    "ready",
+		"migration": migration,
+		"version":   AppVersion,
+		"env":       h.appEnv(),
 	})
 }
 

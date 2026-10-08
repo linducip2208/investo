@@ -186,14 +186,32 @@ func (h *StockHandler) Detail(w http.ResponseWriter, r *http.Request) {
 	var fundSummary FundSummary
 	if fundamental != nil {
 		marketCap := float64(stock.SharesOutstanding) * latestPrice
-		low52 := latestPrice * 0.7
-		high52 := latestPrice * 1.3
-		if len(latestPrices) > 0 {
-			minP := latestPrices[0].Low
-			maxP := latestPrices[0].High
-			for _, p := range latestPrices {
-				if p.Low < minP { minP = p.Low }
-				if p.High > maxP { maxP = p.High }
+		// 52W high/low dari riwayat aktual (s.d. 365 baris terakhir), bukan
+		// faktor 0.7x/1.3x. HistoryDays (days_of_history) sudah diekspos ke
+		// template agar UI bisa melabeli "sejak listing" bila < 365 hari.
+		low52, high52 := latestPrice, latestPrice
+		if hist52, err := h.StockPriceRepo.FindLatest(stock.ID, 365); err == nil && len(hist52) > 0 {
+			minP, maxP := hist52[0].Close, hist52[0].Close
+			if hist52[0].Low > 0 {
+				minP = hist52[0].Low
+			}
+			if hist52[0].High > 0 {
+				maxP = hist52[0].High
+			}
+			for _, p := range hist52[1:] {
+				lo, hi := p.Close, p.Close
+				if p.Low > 0 {
+					lo = p.Low
+				}
+				if p.High > 0 {
+					hi = p.High
+				}
+				if lo < minP {
+					minP = lo
+				}
+				if hi > maxP {
+					maxP = hi
+				}
 			}
 			low52 = minP
 			high52 = maxP

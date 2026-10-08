@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -340,10 +341,15 @@ func (h *PortfolioHandler) PerformanceJSON(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	perf, err := h.PortfolioAnalytics.CalcPerformance(id)
 	if err != nil {
+		log.Printf("portfolio performance id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -359,10 +365,15 @@ func (h *PortfolioHandler) FrontierJSON(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	frontier, err := h.PortfolioAnalytics.CalcEfficientFrontier(id)
 	if err != nil {
+		log.Printf("portfolio frontier id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -378,10 +389,15 @@ func (h *PortfolioHandler) AttributionJSON(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	att, err := h.PortfolioAnalytics.CalcAttribution(id)
 	if err != nil {
+		log.Printf("portfolio attribution id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -420,6 +436,10 @@ func (h *PortfolioHandler) MonteCarloJSON(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	if err := r.ParseForm(); err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
@@ -438,8 +458,9 @@ func (h *PortfolioHandler) MonteCarloJSON(w http.ResponseWriter, r *http.Request
 
 	result, err := h.PortfolioAnalytics.RunMonteCarlo(id, simulations, years)
 	if err != nil {
+		log.Printf("portfolio montecarlo id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -457,6 +478,10 @@ func (h *PortfolioHandler) StressTestJSON(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	scenario := r.URL.Query().Get("scenario")
 	if scenario == "" {
 		scenario = "2008_crash"
@@ -464,8 +489,9 @@ func (h *PortfolioHandler) StressTestJSON(w http.ResponseWriter, r *http.Request
 
 	result, err := h.PortfolioAnalytics.RunStressTest(id, scenario)
 	if err != nil {
+		log.Printf("portfolio stresstest id=%d scenario=%s: %v", id, scenario, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -483,10 +509,15 @@ func (h *PortfolioHandler) TaxLossJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	result, err := h.PortfolioAnalytics.FindTaxLossOpportunities(id)
 	if err != nil {
+		log.Printf("portfolio taxloss id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -535,8 +566,9 @@ func (h *PortfolioHandler) DRIPJSON(w http.ResponseWriter, r *http.Request) {
 
 	result, err := dripService.Calculate(stock.ID, investment, years, reinvest)
 	if err != nil {
+		log.Printf("portfolio drip code=%s: %v", code, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -676,8 +708,9 @@ func (h *PortfolioHandler) ProjectionJSON(w http.ResponseWriter, r *http.Request
 
 	result, err := h.PortfolioAnalytics.ProjectStock(stock.ID, growthRate, discountRate, years)
 	if err != nil {
+		log.Printf("portfolio projection code=%s: %v", code, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -726,10 +759,15 @@ func (h *PortfolioHandler) RiskJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.PortfolioRepo, id) == nil {
+		return
+	}
+
 	risk, err := h.RiskAnalyzer.AnalyzePortfolio(id)
 	if err != nil {
+		log.Printf("portfolio risk id=%d: %v", id, err)
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -860,4 +898,36 @@ func (h *PortfolioHandler) JournalDelete(w http.ResponseWriter, r *http.Request)
 	}
 
 	http.Redirect(w, r, "/dashboard/journal", http.StatusSeeOther)
+}
+
+// loadOwnedPortfolio enforces portfolio ownership for the JSON endpoints in
+// this package. It writes a 401 JSON response when there is no session user
+// and a 404 JSON response ("portfolio not found", same shape as the Trade
+// handler) when the portfolio does not exist or belongs to another user.
+// It returns nil when a response was already written.
+func loadOwnedPortfolio(w http.ResponseWriter, r *http.Request, repo *repository.PortfolioRepository, portfolioID int64) *model.Portfolio {
+	user := middleware.GetUser(r)
+	if user == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
+		return nil
+	}
+	if repo == nil {
+		log.Printf("loadOwnedPortfolio id=%d: portfolio repo is nil", portfolioID)
+		portfolioNotFoundJSON(w)
+		return nil
+	}
+	portfolio, err := repo.FindByIDAndUserID(portfolioID, user.ID)
+	if err != nil {
+		portfolioNotFoundJSON(w)
+		return nil
+	}
+	return portfolio
+}
+
+func portfolioNotFoundJSON(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusNotFound)
+	json.NewEncoder(w).Encode(map[string]string{"error": "portfolio not found"})
 }

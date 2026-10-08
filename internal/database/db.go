@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"log"
 	"sort"
 	"strings"
 	"time"
@@ -107,6 +108,7 @@ func RunMigrations(db *sqlx.DB) error {
 		if _, err := conn.ExecContext(ctx, "INSERT INTO migrations (filename) VALUES (?)", f); err != nil {
 			return fmt.Errorf("record migration %s: %w", f, err)
 		}
+		log.Printf("[Migrations] applied %s", f)
 	}
 
 	return nil

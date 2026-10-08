@@ -31,6 +31,15 @@ func (t *TelegramService) SetChatID(userID int64, chatID string) {
 	t.ChatIDs[userID] = chatID
 }
 
+// GetChatID exposes the in-memory mapping so setup-time writes can be
+// mirrored to persistent storage (settings table) by the caller.
+func (t *TelegramService) GetChatID(userID int64) (string, bool) {
+	t.mu.RLock()
+	defer t.mu.RUnlock()
+	chatID, ok := t.ChatIDs[userID]
+	return chatID, ok
+}
+
 func (t *TelegramService) SendAlert(userID int64, message string) error {
 	t.mu.RLock()
 	chatID, ok := t.ChatIDs[userID]

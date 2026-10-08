@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"runtime/debug"
 	"strings"
 	"time"
@@ -31,7 +32,16 @@ func Logger(next http.Handler) http.Handler {
 
 func CORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		// In production the allowed origin is pinned to INVESTO_APP_URL: echo
+		// the request Origin only when its host (and scheme, when configured)
+		// matches. Without INVESTO_APP_URL keep "*" for local development.
+		// Credentials are never allowed.
+		if appURL := strings.TrimSpace(os.Getenv("INVESTO_APP_URL")); appURL == "" {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+		} else if origin := r.Header.Get("Origin"); origin != "" && isAllowedOrigin(origin, appURL) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+		}
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		w.Header().Set("Access-Control-Max-Age", "86400")
@@ -43,6 +53,30 @@ func CORS(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+// isAllowedOrigin reports whether the request Origin matches the configured
+// app URL host. The scheme must also match when the app URL carries one.
+func isAllowedOrigin(origin, appURL string) bool {
+	o, err := url.Parse(origin)
+	if err != nil || o.Host == "" {
+		return false
+	}
+	a, err := url.Parse(appURL)
+	if err != nil {
+		return false
+	}
+	appHost := a.Host
+	if appHost == "" {
+		appHost = a.Path
+	}
+	if appHost == "" || !strings.EqualFold(o.Host, appHost) {
+		return false
+	}
+	if a.Scheme != "" && o.Scheme != "" && !strings.EqualFold(o.Scheme, a.Scheme) {
+		return false
+	}
+	return true
 }
 
 // CSRFOrigin rejects cross-origin browser mutations that rely on the session

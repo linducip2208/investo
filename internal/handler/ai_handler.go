@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -77,6 +78,45 @@ func (h *AIHandler) SocialPage(w http.ResponseWriter, r *http.Request) {
 	h.Templates.ExecuteTemplate(w, "ai/social.html", data)
 }
 
+// ownedPortfolio verifies session auth + portfolio ownership for the AI JSON
+// endpoints while preserving each endpoint's writeJSONSimple response shape
+// (withSuccess selects {"success":false,"error":...} vs {"error":...}).
+// It returns nil when a denial response was already written.
+func (h *AIHandler) ownedPortfolio(w http.ResponseWriter, r *http.Request, portfolioID int64, withSuccess bool) *model.Portfolio {
+	deny := func(msg string) *model.Portfolio {
+		if withSuccess {
+			writeJSONSimple(w, map[string]interface{}{"success": false, "error": msg})
+		} else {
+			writeJSONSimple(w, map[string]string{"error": msg})
+		}
+		return nil
+	}
+	user := middleware.GetUser(r)
+	if user == nil {
+		return deny("unauthorized")
+	}
+	if h.PortfolioRepo == nil {
+		log.Printf("ai portfolio id=%d: portfolio repo is nil", portfolioID)
+		return deny("portfolio not found")
+	}
+	portfolio, err := h.PortfolioRepo.FindByIDAndUserID(portfolioID, user.ID)
+	if err != nil {
+		return deny("portfolio not found")
+	}
+	return portfolio
+}
+
+// maskAPIKey hides a secret for display, revealing at most the last 4 chars.
+func maskAPIKey(key string) string {
+	if key == "" {
+		return ""
+	}
+	if len(key) <= 4 {
+		return "••••"
+	}
+	return "••••" + key[len(key)-4:]
+}
+
 // ── AI Tools JSON APIs ──
 
 func (h *AIHandler) GenerateReportJSON(w http.ResponseWriter, r *http.Request) {
@@ -87,9 +127,14 @@ func (h *AIHandler) GenerateReportJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if h.ownedPortfolio(w, r, portfolioID, false) == nil {
+		return
+	}
+
 	html, err := h.AITools.GenerateReport(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]string{"error": err.Error()})
+		log.Printf("ai generate report portfolio=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -221,12 +266,17 @@ func (h *AIHandler) AISettingsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	providers := h.AIService.LoadProviderConfigs()
+	maskedProviders := make(map[string]service.AIProvider, len(providers))
+	for name, p := range providers {
+		p.APIKey = maskAPIKey(p.APIKey)
+		maskedProviders[name] = p
+	}
 
 	data := map[string]interface{}{
 		"Title":      "Pengaturan AI - Investo",
 		"User":       user,
 		"ActivePage": "pengaturan-ai",
-		"Providers":  providers,
+		"Providers":  maskedProviders,
 	}
 	h.Templates.ExecuteTemplate(w, "settings/ai.html", data)
 }
@@ -235,6 +285,10 @@ func (h *AIHandler) SaveAISettings(w http.ResponseWriter, r *http.Request) {
 	user := middleware.GetUser(r)
 	if user == nil {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	if user.Role != "admin" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "forbidden"})
 		return
 	}
 
@@ -266,6 +320,27 @@ func (h *AIHandler) SaveAISettings(w http.ResponseWriter, r *http.Request) {
 
 func (h *AIHandler) AIProvidersJSON(w http.ResponseWriter, r *http.Request) {
 	providers := h.AIService.ListProviders()
+	masked := map[string]string{}
+	if h.AIService != nil {
+		for name, cfg := range h.AIService.LoadProviderConfigs() {
+			masked[name] = maskAPIKey(cfg.APIKey)
+		}
+	}
+	out := make([]map[string]interface{}, 0, len(providers))
+	for _, p := range providers {
+		out = append(out, map[string]interface{}{
+			"name":         p.Name,
+			"display_name": p.DisplayName,
+			"icon":         p.Icon,
+			"placeholder":  p.Placeholder,
+			"format":       p.Format,
+			"base_url":     p.BaseURL,
+			"has_key":      p.HasKey,
+			"masked_key":   masked[p.Name],
+			"model":        p.Model,
+			"is_active":    p.IsActive,
+		})
+	}
 	advanced := map[string]string{}
 	if h.SettingRepo != nil {
 		for _, k := range []string{"temperature", "deep_model", "quick_model", "debate_rounds", "auto_execute"} {
@@ -274,13 +349,17 @@ func (h *AIHandler) AIProvidersJSON(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	writeJSONSimple(w, map[string]interface{}{"providers": providers, "advanced": advanced})
+	writeJSONSimple(w, map[string]interface{}{"providers": out, "advanced": advanced})
 }
 
 func (h *AIHandler) SaveAdvancedSettings(w http.ResponseWriter, r *http.Request) {
 	user := middleware.GetUser(r)
 	if user == nil {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	if user.Role != "admin" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "forbidden"})
 		return
 	}
 
@@ -392,8 +471,13 @@ func (h *AIHandler) DeleteMandate(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid request"})
 		return
 	}
+	mandate, err := h.MandateRepo.FindByID(req.ID)
+	if err != nil || mandate.UserID != user.ID {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "mandate not found"})
+		return
+	}
 	if err := h.MandateRepo.Delete(req.ID); err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "failed to delete mandate"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true})
@@ -415,7 +499,7 @@ func (h *AIHandler) RunMandate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mandate, err := h.MandateRepo.FindByID(req.ID)
-	if err != nil {
+	if err != nil || mandate.UserID != user.ID {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "mandate not found"})
 		return
 	}
@@ -704,9 +788,14 @@ func (h *AIHandler) PortfolioAdviceJSON(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	if h.ownedPortfolio(w, r, portfolioID, false) == nil {
+		return
+	}
+
 	advice, err := h.Personalized.GeneratePortfolioAdvice(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]string{"error": err.Error()})
+		log.Printf("ai portfolio advice id=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -842,9 +931,14 @@ func (h *AIHandler) EventImpactJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.PortfolioID != 0 && h.ownedPortfolio(w, r, req.PortfolioID, true) == nil {
+		return
+	}
+
 	analysis, err := h.AIAnalysis.AnalyzeEventImpact(req.Event, req.PortfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai event impact portfolio=%d: %v", req.PortfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "analysis": analysis})
@@ -898,9 +992,14 @@ func (h *AIHandler) ScenarioSimulationJSON(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	if req.PortfolioID != 0 && h.ownedPortfolio(w, r, req.PortfolioID, true) == nil {
+		return
+	}
+
 	result, err := h.AIInteractive.SimulateScenario(req.Scenario, req.PortfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai scenario portfolio=%d: %v", req.PortfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "result": result})
@@ -1155,9 +1254,13 @@ func (h *AIHandler) TaxOptimizerJSON(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid portfolio ID"})
 		return
 	}
+	if h.ownedPortfolio(w, r, portfolioID, true) == nil {
+		return
+	}
 	result, err := taxSvc.OptimizeTax(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai tax optimizer portfolio=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "result": result})
@@ -1206,9 +1309,13 @@ func (h *AIHandler) HaikuJSON(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid portfolio ID"})
 		return
 	}
+	if h.ownedPortfolio(w, r, portfolioID, true) == nil {
+		return
+	}
 	haiku, err := comicSvc.GenerateHaiku(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai haiku portfolio=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "haiku": haiku})
@@ -1282,9 +1389,13 @@ func (h *AIHandler) ComplianceJSON(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid portfolio ID"})
 		return
 	}
+	if h.ownedPortfolio(w, r, portfolioID, true) == nil {
+		return
+	}
 	report, err := complianceSvc.CheckCompliance(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai compliance portfolio=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "report": report})
@@ -1319,9 +1430,13 @@ func (h *AIHandler) ClientReportJSON(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "invalid portfolio ID"})
 		return
 	}
+	if h.ownedPortfolio(w, r, portfolioID, true) == nil {
+		return
+	}
 	html, data, err := clientReportSvc.GenerateClientReport(portfolioID)
 	if err != nil {
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": err.Error()})
+		log.Printf("ai client report portfolio=%d: %v", portfolioID, err)
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Terjadi kesalahan internal"})
 		return
 	}
 	writeJSONSimple(w, map[string]interface{}{"success": true, "html": html, "data": data})
@@ -1781,6 +1896,10 @@ func (h *AIHandler) SaveDataSource(w http.ResponseWriter, r *http.Request) {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
 		return
 	}
+	if user.Role != "admin" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "forbidden"})
+		return
+	}
 
 	var req struct {
 		Source      string `json:"source"`
@@ -1847,28 +1966,20 @@ func (h *AIHandler) TestDataSource(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	switch req.Source {
-	case "invezgo":
-		if req.APIKey == "" {
-			writeJSONSimple(w, map[string]interface{}{"success": false, "error": "API key required"})
-			return
-		}
-		writeJSONSimple(w, map[string]interface{}{"success": true, "response": "Invezgo connection test: OK (simulated)"})
-	case "oanda":
-		if req.APIKey == "" || req.AccountID == "" {
-			writeJSONSimple(w, map[string]interface{}{"success": false, "error": "API key and Account ID required"})
-			return
-		}
-		writeJSONSimple(w, map[string]interface{}{"success": true, "response": "OANDA connection test: OK (simulated)"})
-	case "wa":
-		if req.AccessToken == "" || req.PhoneID == "" {
-			writeJSONSimple(w, map[string]interface{}{"success": false, "error": "Access Token and Phone ID required"})
-			return
-		}
-		writeJSONSimple(w, map[string]interface{}{"success": true, "response": "WA Business API connection test: OK (simulated)"})
-	default:
-		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unknown source"})
+	fields := map[string]string{
+		"api_key":      req.APIKey,
+		"base_url":     req.BaseURL,
+		"account_id":   req.AccountID,
+		"access_token": req.AccessToken,
+		"phone_id":     req.PhoneID,
 	}
+
+	ok, message := service.TestDataSourceConnection(r.Context(), req.Source, fields)
+	if !ok {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "ok": false, "error": message, "message": message, "response": message})
+		return
+	}
+	writeJSONSimple(w, map[string]interface{}{"success": true, "ok": true, "message": message, "response": message})
 }
 
 func (h *AIHandler) ComplianceCheckJSON(w http.ResponseWriter, r *http.Request) {
@@ -2117,6 +2228,10 @@ func (h *AIHandler) SaveAISettingsEnhanced(w http.ResponseWriter, r *http.Reques
 	user := middleware.GetUser(r)
 	if user == nil {
 		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "unauthorized"})
+		return
+	}
+	if user.Role != "admin" {
+		writeJSONSimple(w, map[string]interface{}{"success": false, "error": "forbidden"})
 		return
 	}
 

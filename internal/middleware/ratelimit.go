@@ -1,7 +1,11 @@
 package middleware
 
 import (
+	"fmt"
+	"net"
 	"net/http"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -28,6 +32,29 @@ func NewRateLimiter(limit int, window time.Duration) *RateLimiter {
 	return rl
 }
 
+// NewAuthRateLimiter returns the stricter limiter for authentication and
+// password-reset endpoints: 10 requests/minute per client IP.
+func NewAuthRateLimiter() *RateLimiter {
+	return NewRateLimiter(10, time.Minute)
+}
+
+// ClientIP returns the originating client IP, preferring the headers set by
+// reverse proxies (nginx sets X-Real-IP) before falling back to RemoteAddr.
+func ClientIP(r *http.Request) string {
+	if ip := strings.TrimSpace(r.Header.Get("X-Real-IP")); ip != "" {
+		return ip
+	}
+	if fwd := r.Header.Get("X-Forwarded-For"); fwd != "" {
+		if first := strings.TrimSpace(strings.Split(fwd, ",")[0]); first != "" {
+			return first
+		}
+	}
+	if host, _, err := net.SplitHostPort(r.RemoteAddr); err == nil && host != "" {
+		return host
+	}
+	return r.RemoteAddr
+}
+
 func (rl *RateLimiter) cleanup() {
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
@@ -45,7 +72,7 @@ func (rl *RateLimiter) cleanup() {
 
 func (rl *RateLimiter) Limit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ip := r.RemoteAddr
+		ip := ClientIP(r)
 
 		rl.mu.Lock()
 		v, exists := rl.visitors[ip]
@@ -72,11 +99,11 @@ func (rl *RateLimiter) Limit(next http.Handler) http.Handler {
 		if v.count > rl.limit {
 			rl.mu.Unlock()
 			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("Retry-After", "60")
-			w.Header().Set("X-RateLimit-Limit", "60")
+			w.Header().Set("Retry-After", strconv.Itoa(int(rl.window.Seconds())))
+			w.Header().Set("X-RateLimit-Limit", strconv.Itoa(rl.limit))
 			w.Header().Set("X-RateLimit-Remaining", "0")
 			w.WriteHeader(http.StatusTooManyRequests)
-			w.Write([]byte(`{"error":"Too Many Requests","message":"rate limit exceeded, try again in 60 seconds"}`))
+			w.Write([]byte(fmt.Sprintf(`{"error":"Too Many Requests","message":"rate limit exceeded, try again in %d seconds"}`, int(rl.window.Seconds()))))
 			return
 		}
 

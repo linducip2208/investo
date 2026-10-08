@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"math"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -33,6 +34,7 @@ type APIv1Handler struct {
 	ForexAnalytics       *service.ForexAnalytics
 	AuthService          *service.AuthService
 	JWTService           *service.JWTService
+	TOTPService          *service.TOTPService
 	SettingRepo          *repository.SettingRepository
 }
 
@@ -79,31 +81,30 @@ type StockListItem struct {
 
 func sortStockListItems(results []StockListItem, sortBy, sortOrder string) {
 	asc := strings.ToLower(sortOrder) != "desc"
-	for i := 0; i < len(results); i++ {
-		for j := i + 1; j < len(results); j++ {
-			var less bool
-			switch strings.ToLower(sortBy) {
-			case "price":
-				less = results[i].Price < results[j].Price
-			case "change", "change_percent":
-				less = results[i].ChangePercent < results[j].ChangePercent
-			case "market_cap":
-				less = results[i].MarketCap < results[j].MarketCap
-			default:
-				less = results[i].Code < results[j].Code
+	sort.Slice(results, func(i, j int) bool {
+		switch strings.ToLower(sortBy) {
+		case "price":
+			if asc {
+				return results[i].Price < results[j].Price
 			}
-			swap := false
-			if asc && less {
-				swap = true
+			return results[i].Price > results[j].Price
+		case "change", "change_percent":
+			if asc {
+				return results[i].ChangePercent < results[j].ChangePercent
 			}
-			if !asc && !less {
-				swap = true
+			return results[i].ChangePercent > results[j].ChangePercent
+		case "market_cap":
+			if asc {
+				return results[i].MarketCap < results[j].MarketCap
 			}
-			if swap {
-				results[i], results[j] = results[j], results[i]
+			return results[i].MarketCap > results[j].MarketCap
+		default:
+			if asc {
+				return results[i].Code < results[j].Code
 			}
+			return results[i].Code > results[j].Code
 		}
-	}
+	})
 }
 
 func (h *APIv1Handler) ListStocks(w http.ResponseWriter, r *http.Request) {
@@ -900,6 +901,7 @@ func (h *APIv1Handler) Search(w http.ResponseWriter, r *http.Request) {
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	TOTPCode string `json:"totp_code"`
 }
 
 func (h *APIv1Handler) Login(w http.ResponseWriter, r *http.Request) {
@@ -918,6 +920,25 @@ func (h *APIv1Handler) Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		writeJSONError(w, http.StatusUnauthorized, "invalid credentials")
 		return
+	}
+
+	if h.TOTPService != nil {
+		enabled, err := h.TOTPService.Is2FAEnabled(user.ID)
+		if err != nil {
+			writeJSONError(w, http.StatusInternalServerError, "failed to verify 2fa status")
+			return
+		}
+		if enabled {
+			if req.TOTPCode == "" {
+				writeJSONError(w, http.StatusForbidden, "2fa_required")
+				return
+			}
+			valid, err := h.TOTPService.VerifyTOTP(user.ID, req.TOTPCode)
+			if err != nil || !valid {
+				writeJSONError(w, http.StatusUnauthorized, "invalid 2fa code")
+				return
+			}
+		}
 	}
 
 	token, err := h.JWTService.GenerateToken(user.ID, user.Email)

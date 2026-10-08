@@ -138,6 +138,13 @@
 
             <template x-if="result">
                 <div class="space-y-6">
+                    <template x-if="result.is_illustrative">
+                        <div class="card p-4 border-amber-500/30 bg-amber-900/10">
+                            <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif / estimasi</span> — contoh, bukan hasil backtest real-time. <span class="text-slate-400" x-text="result.source || ''"></span></p>
+                        </div>
+                    </template>
+                    <p class="text-xs text-slate-500" x-show="result.period" x-text="'Periode: ' + result.period + (result.data_points ? ' · ' + result.data_points + ' observasi bulanan' : '') + (result.source && !result.is_illustrative ? ' · Sumber: ' + result.source : '')"></p>
+                    <p class="text-xs text-slate-500" x-show="result.benchmark_note" x-text="result.benchmark_note"></p>
                     <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                         <div class="card p-4 text-center">
                             <p class="text-slate-500 text-xs">Strategy Return</p>

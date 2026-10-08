@@ -63,6 +63,24 @@ func (s *JWTService) ValidateToken(tokenStr string) (*Claims, error) {
 
 	headerEnc, payloadEnc, sigEnc := parts[0], parts[1], parts[2]
 
+	// Enforce the expected signing algorithm before verifying the signature,
+	// so tokens declaring "none" or an asymmetric algorithm are rejected
+	// instead of being evaluated against the HMAC secret.
+	headerBytes, err := base64.RawURLEncoding.DecodeString(headerEnc)
+	if err != nil {
+		return nil, fmt.Errorf("invalid header encoding")
+	}
+	var header struct {
+		Alg string `json:"alg"`
+		Typ string `json:"typ"`
+	}
+	if err := json.Unmarshal(headerBytes, &header); err != nil {
+		return nil, fmt.Errorf("invalid header json")
+	}
+	if header.Alg != "HS256" {
+		return nil, fmt.Errorf("unexpected signing algorithm")
+	}
+
 	sigBytes, err := base64.RawURLEncoding.DecodeString(sigEnc)
 	if err != nil {
 		return nil, fmt.Errorf("invalid signature encoding")

@@ -3,19 +3,35 @@ package handler
 import (
 	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 
 	"investo/internal/middleware"
+	"investo/internal/repository"
 	"investo/internal/service"
 
 	"github.com/go-chi/chi/v5"
 )
 
 type RiskToolsHandler struct {
-	Templates          *template.Template
-	WashSaleService    *service.WashSaleService
+	Templates           *template.Template
+	WashSaleService     *service.WashSaleService
 	BetaWeightedService *service.BetaWeightedService
+	PortfolioRepo       *repository.PortfolioRepository
+}
+
+// ownedPortfolioRepo prefers the explicitly wired PortfolioRepo and falls back
+// to the repository held by BetaWeightedService so ownership can always be
+// verified without changing handler construction.
+func (h *RiskToolsHandler) ownedPortfolioRepo() *repository.PortfolioRepository {
+	if h.PortfolioRepo != nil {
+		return h.PortfolioRepo
+	}
+	if h.BetaWeightedService != nil {
+		return h.BetaWeightedService.PortfolioRepo
+	}
+	return nil
 }
 
 func (h *RiskToolsHandler) WashSalePage(w http.ResponseWriter, r *http.Request) {
@@ -42,20 +58,20 @@ func (h *RiskToolsHandler) WashSalePage(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *RiskToolsHandler) WashSaleJSON(w http.ResponseWriter, r *http.Request) {
-	userIDStr := chi.URLParam(r, "id")
-	userID, err := strconv.ParseInt(userIDStr, 10, 64)
-	if err != nil {
+	user := middleware.GetUser(r)
+	if user == nil {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"error": "invalid user id"})
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
 		return
 	}
 
-	washSales, err := h.WashSaleService.DetectWashSales(userID)
+	washSales, err := h.WashSaleService.DetectWashSales(user.ID)
 	if err != nil {
+		log.Printf("washsale user=%d: %v", user.ID, err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -90,11 +106,16 @@ func (h *RiskToolsHandler) BetaJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.ownedPortfolioRepo(), portfolioID) == nil {
+		return
+	}
+
 	result, err := h.BetaWeightedService.CalcBetaWeighted(portfolioID)
 	if err != nil {
+		log.Printf("beta portfolio=%d: %v", portfolioID, err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 
@@ -125,11 +146,16 @@ func (h *RiskToolsHandler) HedgeJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if loadOwnedPortfolio(w, r, h.ownedPortfolioRepo(), portfolioID) == nil {
+		return
+	}
+
 	suggestions, err := h.BetaWeightedService.FindHedge(portfolioID)
 	if err != nil {
+		log.Printf("hedge portfolio=%d: %v", portfolioID, err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Terjadi kesalahan internal"})
 		return
 	}
 

@@ -31,8 +31,13 @@ func (s *TOTPService) GenerateSecret(userID int64) (string, string, error) {
 
 	secret := strings.TrimRight(base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(secretBytes), "=")
 
+	encrypted, err := EncryptString(secret)
+	if err != nil {
+		return "", "", fmt.Errorf("TOTPService.GenerateSecret encrypt: %w", err)
+	}
+
 	query := `UPDATE users SET twofa_secret = ? WHERE id = ?`
-	if _, err := s.DB.Exec(query, secret, userID); err != nil {
+	if _, err := s.DB.Exec(query, encrypted, userID); err != nil {
 		return "", "", fmt.Errorf("TOTPService.GenerateSecret update: %w", err)
 	}
 
@@ -49,12 +54,17 @@ func (s *TOTPService) GenerateSecret(userID int64) (string, string, error) {
 }
 
 func (s *TOTPService) VerifyTOTP(userID int64, code string) (bool, error) {
-	var secret string
-	if err := s.DB.Get(&secret, "SELECT twofa_secret FROM users WHERE id = ?", userID); err != nil {
+	var stored string
+	if err := s.DB.Get(&stored, "SELECT twofa_secret FROM users WHERE id = ?", userID); err != nil {
 		return false, fmt.Errorf("TOTPService.VerifyTOTP: %w", err)
 	}
-	if secret == "" {
+	if stored == "" {
 		return false, fmt.Errorf("2FA belum di-setup untuk akun ini")
+	}
+
+	secret, err := decryptStoredSecret(stored)
+	if err != nil {
+		return false, fmt.Errorf("TOTPService.VerifyTOTP decrypt: %w", err)
 	}
 
 	secretBytes, err := base32.StdEncoding.WithPadding(base32.NoPadding).DecodeString(strings.ToUpper(secret))
@@ -111,4 +121,27 @@ func (s *TOTPService) totpAt(secret []byte, timestamp int64) string {
 	code := binary % 1000000
 
 	return fmt.Sprintf("%06d", code)
+}
+
+// decryptStoredSecret returns the plaintext TOTP secret. Secrets created
+// before encryption was introduced were stored as bare base32 and are
+// returned as-is for backward compatibility.
+func decryptStoredSecret(stored string) (string, error) {
+	if isBareBase32Secret(stored) {
+		return stored, nil
+	}
+	return DecryptString(stored)
+}
+
+func isBareBase32Secret(s string) bool {
+	if s == "" {
+		return false
+	}
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		if !(c >= 'A' && c <= 'Z') && !(c >= '2' && c <= '7') {
+			return false
+		}
+	}
+	return true
 }

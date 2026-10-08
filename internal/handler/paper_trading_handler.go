@@ -2,10 +2,13 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"html"
 	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"investo/internal/middleware"
 	"investo/internal/model"
@@ -210,10 +213,15 @@ func (h *PaymentHandler) CreateTransaction(w http.ResponseWriter, r *http.Reques
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	resp := map[string]interface{}{
 		"transaction_id": txID,
 		"redirect_url":   "/api/invoice/" + txID,
-	})
+	}
+	if token, payURL := h.Service.GetSnapDetails(txID); token != "" || payURL != "" {
+		resp["snap_token"] = token
+		resp["payment_url"] = payURL
+	}
+	json.NewEncoder(w).Encode(resp)
 }
 
 func (h *PaymentHandler) Callback(w http.ResponseWriter, r *http.Request) {
@@ -226,8 +234,12 @@ func (h *PaymentHandler) Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.Service.HandleCallback(payload); err != nil {
+		status := http.StatusBadRequest
+		if errors.Is(err, service.ErrInvalidSignature) || errors.Is(err, service.ErrPaymentNotConfigured) {
+			status = http.StatusForbidden
+		}
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(status)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 		return
 	}
@@ -244,7 +256,7 @@ func (h *PaymentHandler) Invoice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	txID := chi.URLParam(r, "txID")
-	inv, err := h.Service.GenerateInvoice(user.ID, txID)
+	inv, err := h.Service.GenerateInvoice(user.ID, txID, user.Role == "admin")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("Invoice not found"))
@@ -252,17 +264,52 @@ func (h *PaymentHandler) Invoice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Disposition", `inline; filename="`+sanitizeInvoiceFilename(txID)+`"`)
 	w.Write([]byte(renderInvoiceHTML(inv)))
+}
+
+func sanitizeInvoiceFilename(name string) string {
+	var b strings.Builder
+	for _, r := range name {
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9', r == '-', r == '_', r == '.':
+			b.WriteRune(r)
+		default:
+			b.WriteRune('_')
+		}
+	}
+	sanitized := b.String()
+	if len(sanitized) > 100 {
+		sanitized = sanitized[:100]
+	}
+	sanitized = strings.Trim(sanitized, "._")
+	if sanitized == "" {
+		sanitized = "invoice"
+	}
+	return sanitized + ".html"
+}
+
+func sanitizeStatusClass(status string) string {
+	var b strings.Builder
+	for _, r := range strings.ToLower(status) {
+		if r >= 'a' && r <= 'z' {
+			b.WriteRune(r)
+		}
+	}
+	if b.Len() == 0 {
+		return "pending"
+	}
+	return b.String()
 }
 
 func renderInvoiceHTML(inv *model.Invoice) string {
 	itemsHTML := ""
 	for _, item := range inv.Items {
 		itemsHTML += fmt.Sprintf(`<tr><td style="padding:12px;border-bottom:1px solid #334155">%s</td><td style="padding:12px;border-bottom:1px solid #334155;text-align:center">%d</td><td style="padding:12px;border-bottom:1px solid #334155;text-align:right;font-family:'JetBrains Mono',monospace">Rp %s</td></tr>`,
-			item.Description, item.Qty, formatNum(item.Amount))
+			html.EscapeString(item.Description), item.Qty, formatNum(item.Amount))
 	}
 	return fmt.Sprintf(`<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Invoice %s - Investo</title><style>body{font-family:'Inter',system-ui,sans-serif;background:#0b1120;color:#e2e8f0;display:flex;justify-content:center;padding:40px 20px;margin:0}*{margin:0;box-sizing:border-box}.inv{max-width:700px;width:100%%;background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px}.head{display:flex;justify-content:space-between;margin-bottom:32px}.head h1{font-size:24px;color:#fff}.head .meta{text-align:right;color:#94a3b8;font-size:13px}.table{width:100%%;border-collapse:collapse;margin:24px 0}.table th{text-align:left;padding:12px;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #334155}.total{text-align:right;padding:12px;font-weight:700;font-size:16px;color:#fff}.status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}.status-pending{background:#713f12;color:#fbbf24}.status-active{background:#064e3b;color:#34d399}.footer{margin-top:32px;text-align:center;color:#475569;font-size:12px}@media print{body{background:#fff;color:#000}.inv{background:#fff;border:1px solid #ccc}}</style></head><body><div class="inv"><div class="head"><div><h1>INVOICE</h1><p style="color:#94a3b8;font-size:14px">%s</p></div><div class="meta"><p>%s</p><p>Status: <span class="status status-%s">%s</span></p></div></div><div style="margin-bottom:24px"><p style="color:#94a3b8;font-size:12px">Kepada:</p><p style="color:#fff;font-weight:600">%s</p><p style="color:#94a3b8;font-size:13px">%s</p></div><table class="table"><thead><tr><th>Deskripsi</th><th style="text-align:center">Qty</th><th style="text-align:right">Jumlah</th></tr></thead><tbody>%s</tbody><tfoot><tr><td colspan="2" style="text-align:right;padding:12px;font-weight:600">Total</td><td class="total">Rp %s</td></tr></tfoot></table><div class="footer"><p>Terima kasih telah menggunakan Investo.</p><p>Investo - Platform Analisa Saham & Forex Indonesia</p></div></div></body></html>`,
-		inv.Number, inv.Number, inv.Date, inv.Status, inv.Status, inv.CustomerName, inv.CustomerEmail, itemsHTML, formatNum(inv.Total))
+		html.EscapeString(inv.Number), html.EscapeString(inv.Number), html.EscapeString(inv.Date), sanitizeStatusClass(inv.Status), html.EscapeString(inv.Status), html.EscapeString(inv.CustomerName), html.EscapeString(inv.CustomerEmail), itemsHTML, formatNum(inv.Total))
 }
 
 func formatNum(v float64) string {
@@ -307,6 +354,13 @@ func (h *PaymentHandler) UpgradeSubscription(w http.ResponseWriter, r *http.Requ
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
+		return
+	}
+
+	if user.Role != "admin" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(map[string]string{"error": "forbidden: admin only"})
 		return
 	}
 

@@ -1,5 +1,7 @@
 package service
 
+import "time"
+
 type TrendCorrelation struct {
 	Keyword       string  `json:"keyword"`
 	Correlation   float64 `json:"correlation"`
@@ -8,6 +10,9 @@ type TrendCorrelation struct {
 	Description   string  `json:"description"`
 	InterestData  []TrendPoint `json:"interest_data"`
 	IHSGData      []TrendPoint `json:"ihsg_data"`
+	IsIllustrative bool `json:"is_illustrative"`
+	Source        string `json:"source,omitempty"`
+	AsOf          string `json:"as_of,omitempty"`
 }
 
 type TrendPoint struct {
@@ -18,7 +23,7 @@ type TrendPoint struct {
 type GoogleTrendsService struct{}
 
 func (s *GoogleTrendsService) GetTrendCorrelations() ([]TrendCorrelation, error) {
-	return []TrendCorrelation{
+	out := []TrendCorrelation{
 		{
 			Keyword:      "beli saham",
 			Correlation:  0.72,
@@ -95,5 +100,12 @@ func (s *GoogleTrendsService) GetTrendCorrelations() ([]TrendCorrelation, error)
 				{Date: "Oct", Value: 7250}, {Date: "Nov", Value: 7300}, {Date: "Dec", Value: 7280},
 			},
 		},
-	}, nil
+	}
+	asOf := time.Now().Format("2006-01-02")
+	for i := range out {
+		out[i].IsIllustrative = true
+		out[i].Source = "ilustratif — contoh, bukan data Google Trends real-time"
+		out[i].AsOf = asOf
+	}
+	return out, nil
 }

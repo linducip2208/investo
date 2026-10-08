@@ -115,6 +115,9 @@ function macroDashboard() {
             <div>
                 <h1 class="text-xl lg:text-2xl font-bold text-white">Macro Factor Dashboard</h1>
                 <p class="text-sm text-slate-400 mt-0.5">Key economic indicators affecting Indonesian capital markets. BI Rate, inflation, GDP, currency, and more.</p>
+                <div class="card p-4 mt-3 border-amber-500/30 bg-amber-900/10">
+                    <p class="text-xs text-amber-300">⚠️ <span class="font-semibold">Data ilustratif</span> — contoh, bukan data BI/BPS real-time.</p>
+                </div>
             </div>
         </div>
 
@@ -143,6 +146,10 @@ function macroDashboard() {
                             <template x-for="sector in indicator.affected_sectors" :key="sector">
                                 <span class="tag" :class="tagColor(indicator.impact)" x-text="sector"></span>
                             </template>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between">
+                            <span x-show="indicator.is_illustrative" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-500/30">Data ilustratif</span>
+                            <span class="text-[10px] text-slate-500" x-show="indicator.as_of" x-text="'per ' + indicator.as_of"></span>
                         </div>
                     </div>
                 </template>

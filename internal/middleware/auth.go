@@ -7,6 +7,7 @@ import (
 
 	"investo/internal/model"
 	"investo/internal/repository"
+	"investo/internal/service"
 
 	"github.com/gorilla/sessions"
 )
@@ -18,6 +19,10 @@ const UserContextKey contextKey = "user"
 type AuthMiddleware struct {
 	SessionStore sessions.Store
 	UserRepo     *repository.UserRepository
+	// SessionRepo validates the server-side session row. When nil the
+	// middleware falls back to the legacy cookie-only check (backward
+	// compat for wiring that has not been updated yet).
+	SessionRepo *repository.SessionRepository
 }
 
 func (m *AuthMiddleware) RequireAuth(next http.Handler) http.Handler {
@@ -71,15 +76,42 @@ func (m *AuthMiddleware) sessionUser(r *http.Request) (*model.User, *sessions.Se
 	if !ok || userID == nil {
 		return nil, session, nil
 	}
-	id, ok := userID.(int64)
+	id, ok := sessionIDToInt64(userID)
 	if !ok {
 		return nil, session, nil
+	}
+	if m.SessionRepo != nil {
+		// Cookies issued before server-side sessions was wired carry no
+		// token; keep accepting them so rollout does not log everyone out.
+		if raw, _ := session.Values["session_token"].(string); raw != "" {
+			tokenHash := service.HashToken(raw)
+			rec, err := m.SessionRepo.FindValid(tokenHash)
+			if err != nil || rec == nil || rec.UserID != id {
+				return nil, session, nil
+			}
+			_ = m.SessionRepo.Touch(tokenHash)
+		}
 	}
 	user, err := m.UserRepo.FindByID(id)
 	if err != nil {
 		return nil, session, err
 	}
 	return user, session, nil
+}
+
+func sessionIDToInt64(v interface{}) (int64, bool) {
+	switch id := v.(type) {
+	case int64:
+		return id, id != 0
+	case int:
+		return int64(id), id != 0
+	case int32:
+		return int64(id), id != 0
+	case float64:
+		return int64(id), id != 0
+	default:
+		return 0, false
+	}
 }
 
 func isPublicAPIRequest(r *http.Request) bool {

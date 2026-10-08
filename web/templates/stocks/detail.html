@@ -577,6 +577,7 @@ function stockDetail() {
                     <div class="bg-slate-700/30 rounded-xl p-4">
                         <span class="text-xs text-slate-400">52W Range</span>
                         <span class="block mt-1 font-mono text-sm font-semibold text-[#f8fafc]">[[.Fundamentals.Low52WFormatted]] &mdash; [[.Fundamentals.High52WFormatted]]</span>
+                        [[if lt .HistoryDays 365]]<span class="block mt-1 text-[10px] text-slate-500">dari [[.HistoryDays]] hari riwayat (sejak listing)</span>[[end]]
                     </div>
                 </div>
             </div>

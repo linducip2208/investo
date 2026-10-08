@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 type COTReport struct {
@@ -19,6 +20,8 @@ type COTReport struct {
 	Sentiment       string  `json:"sentiment"`
 	LastUpdated     string  `json:"last_updated"`
 	IsIllustrative  bool    `json:"is_illustrative"`
+	Source          string  `json:"source,omitempty"`
+	AsOf            string  `json:"as_of,omitempty"`
 	HistoricalPositions []COTWeek `json:"historical_positions,omitempty"`
 }
 
@@ -168,6 +171,9 @@ func (s *COTDataService) GetCOTData(pair string) (*COTReport, error) {
 	}
 
 	report.IsIllustrative = true
+	report.Source = "ilustratif — contoh, bukan data real-time (COT real membutuhkan API berbayar CFTC/ICE)"
+	report.AsOf = time.Now().Format("2006-01-02")
+	report.LastUpdated = report.AsOf
 
 	if hist, ok := historicalCOT[pair]; ok {
 		report.HistoricalPositions = hist
@@ -178,6 +184,7 @@ func (s *COTDataService) GetCOTData(pair string) (*COTReport, error) {
 
 func (s *COTDataService) GetAllCOTData() []COTReport {
 	var reports []COTReport
+	asOf := time.Now().Format("2006-01-02")
 	for _, r := range sampleCOTData {
 		total := r.LongPositions + r.ShortPositions
 		if total > 0 {
@@ -185,6 +192,9 @@ func (s *COTDataService) GetAllCOTData() []COTReport {
 			r.ShortPct = float64(r.ShortPositions) / float64(total) * 100
 		}
 		r.IsIllustrative = true
+		r.Source = "ilustratif — contoh, bukan data real-time (COT real membutuhkan API berbayar CFTC/ICE)"
+		r.AsOf = asOf
+		r.LastUpdated = asOf
 		reports = append(reports, r)
 	}
 	return reports

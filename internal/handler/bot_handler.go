@@ -141,7 +141,7 @@ func (h *BotHandler) TestBot(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.BotCenterService.ForwardSignal(testSignal, *bot); err != nil {
 		log.Printf("[bot-center] test bot %d failed: %v", req.BotID, err)
-		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "test failed: " + err.Error()}, nil)
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "Terjadi kesalahan internal"}, nil)
 		return
 	}
 

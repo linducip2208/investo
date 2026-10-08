@@ -2,12 +2,16 @@ package service
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"investo/internal/model"
@@ -98,8 +102,32 @@ func (s *WebhookService) Send(payloadJSON string) error {
 	return s.send("", []byte(payloadJSON), "")
 }
 
-func (s *WebhookService) send(url string, body []byte, secret string) error {
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(body))
+func (s *WebhookService) send(targetURL string, body []byte, secret string) error {
+	if strings.TrimSpace(targetURL) == "" {
+		return fmt.Errorf("webhook URL is empty")
+	}
+	if err := ValidateOutboundURL(targetURL); err != nil {
+		return err
+	}
+	parsed, err := url.Parse(strings.TrimSpace(targetURL))
+	if err != nil || parsed.Hostname() == "" {
+		return fmt.Errorf("webhook: invalid URL")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := ResolveAndCheckHost(ctx, parsed.Hostname()); err != nil {
+		return err
+	}
+
+	client := NewOutboundClient(10 * time.Second)
+	client.HTTP.CheckRedirect = func(_ *http.Request, via []*http.Request) error {
+		if len(via) > 2 {
+			return fmt.Errorf("webhook: too many redirects")
+		}
+		return nil
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, targetURL, bytes.NewReader(body))
 	if err != nil {
 		return fmt.Errorf("webhook send create request: %w", err)
 	}
@@ -112,11 +140,12 @@ func (s *WebhookService) send(url string, body []byte, secret string) error {
 		req.Header.Set("X-Investo-Signature", sig)
 	}
 
-	resp, err := s.HTTPClient.Do(req)
+	resp, err := client.HTTP.Do(req)
 	if err != nil {
 		return fmt.Errorf("webhook send request: %w", err)
 	}
 	defer resp.Body.Close()
+	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 1<<20))
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return fmt.Errorf("webhook returned status %d", resp.StatusCode)
@@ -127,7 +156,7 @@ func (s *WebhookService) send(url string, body []byte, secret string) error {
 
 func (s *WebhookService) VerifySignature(body []byte, signature, secret string) bool {
 	if secret == "" || signature == "" {
-		return true
+		return false
 	}
 
 	expected := s.computeSignature(body, secret)

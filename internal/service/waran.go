@@ -17,6 +17,9 @@ type WaranData struct {
 	BreakEven         float64 `json:"break_even"`
 	Status            string  `json:"status"`
 	DaysToExpiry      int     `json:"days_to_expiry"`
+	IsIllustrative  bool    `json:"is_illustrative"`
+	Source          string  `json:"source,omitempty"`
+	AsOf            string  `json:"as_of,omitempty"`
 }
 
 type WaranService struct{}
@@ -54,6 +57,7 @@ func (w *WaranService) GetAllWaran() []WaranData {
 	}
 
 	var result []WaranData
+	asOf := now.Format("2006-01-02")
 	for _, wr := range warans {
 		expiry, _ := time.Parse("2006-01-02", wr.expiryDate)
 		daysToExpiry := int(expiry.Sub(now).Hours() / 24)
@@ -76,6 +80,9 @@ func (w *WaranService) GetAllWaran() []WaranData {
 		if wr.stockPrice > wr.exercisePrice {
 			status = "In the Money"
 		}
+		if !expiry.IsZero() && expiry.Before(now) {
+			status = "Expired"
+		}
 
 		result = append(result, WaranData{
 			StockCode:         wr.stockCode,
@@ -89,6 +96,9 @@ func (w *WaranService) GetAllWaran() []WaranData {
 			BreakEven:         breakEven,
 			Status:            status,
 			DaysToExpiry:      daysToExpiry,
+			IsIllustrative:  true,
+			Source:          "ilustratif — contoh, bukan data real-time",
+			AsOf:            asOf,
 		})
 	}
 

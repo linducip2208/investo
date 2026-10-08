@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"html"
 	"html/template"
 	"net/http"
 	"time"
@@ -339,8 +340,8 @@ Analisis dilakukan dengan metode sebagai berikut:
 
 ## 3. Temuan (Findings)
 
-### 3.1 Profitabilitas Superior
-Bank-bank besar Indonesia mencatatkan ROE rata-rata 15.2%, jauh di atas rata-rata ASEAN (11.8%). BBCA memimpin dengan ROE 21.3%, diikuti BBRI (18.5%) dan BMRI (16.8%). Net Interest Margin (NIM) stabil di kisaran 5.2-5.8%.
+### 3.1 Kerangka Analisis Profitabilitas
+Evaluasi profitabilitas dilakukan melalui rasio-rasio keuangan utama (seperti ROE, ROA, dan NIM) yang dibandingkan terhadap rata-rata historis serta peer regional. Template ini tidak menyertakan angka spesifik emiten mana pun; gantilah bagian ini dengan data terkini dari laporan keuangan dan publikasi regulator sebelum mengutip atau menyebarluaskan laporan.
 
 ### 3.2 Digital Banking Growth
 Adopsi mobile banking tumbuh 28% YoY. BRIS memimpin transformasi digital syariah dengan 15.2 juta pengguna aktif. BBCA Mobile mencatatkan 32 juta transaksi harian.
@@ -371,6 +372,7 @@ Risiko perlu dimonitor: kenaikan BI Rate >6.5% atau NPL >3% akan menjadi trigger
 }
 
 func generateResearchPaperHTML(topic string) string {
+	topic = html.EscapeString(topic)
 	md := generateResearchPaper(topic)
 	return `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>` + topic + ` - Investo Research</title>
 <style>body{font-family:'Inter',sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#1a1a1a;line-height:1.8}

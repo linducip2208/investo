@@ -72,6 +72,17 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Enforce 2FA: users with TOTP enabled must complete the challenge
+	// before a full session is established.
+	if h.requires2FA(user.ID) {
+		if err := h.startPending2FA(w, r, user.ID); err != nil {
+			http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, "/2fa", http.StatusSeeOther)
+		return
+	}
+
 	returnTo, err := h.establishSession(w, r, user.ID)
 	if err != nil {
 		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
@@ -147,9 +158,18 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	session, _ := h.SessionStore.Get(r, "investo-session")
-	session.Values["user_id"] = nil
-	session.Options.MaxAge = -1
-	session.Save(r, w)
+	if session != nil {
+		if repo := h.sessionRepo(); repo != nil {
+			if raw, _ := session.Values["session_token"].(string); raw != "" {
+				_ = repo.Revoke(service.HashToken(raw))
+			}
+		}
+		session.Values["user_id"] = nil
+		session.Values["session_token"] = nil
+		session.Values["pending_2fa_user_id"] = nil
+		session.Options.MaxAge = -1
+		session.Save(r, w)
+	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -307,20 +327,34 @@ func (h *AuthHandler) ResetPassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if password != confirm {
-		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": "Password tidak cocok"}
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": "Password tidak cocok"}
 		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
 		return
 	}
 
-	userID, err := h.EmailService.VerifyToken(token, "reset")
+	if len(password) < 8 {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": "Password minimal 8 karakter"}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	userID, err := h.EmailService.VerifyPasswordReset(token)
 	if err != nil {
 		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": err.Error()}
 		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
 		return
 	}
 
-	if err := h.AuthService.UpdateProfile(userID, "", "", "", password); err != nil {
-		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": "Gagal mengupdate password"}
+	// Consume the token before changing the password so it cannot be
+	// replayed; a SetPassword failure then just requires a fresh request.
+	if err := h.EmailService.ConsumePasswordReset(token); err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Error": err.Error()}
+		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
+		return
+	}
+
+	if err := h.AuthService.SetPassword(userID, password); err != nil {
+		data := map[string]interface{}{"Title": "Reset Password - Investo", "Token": token, "Error": err.Error()}
 		h.Templates.ExecuteTemplate(w, "auth/reset-password.html", data)
 		return
 	}
@@ -434,7 +468,7 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 
 	user, _ := h.AuthService.UserRepo.FindByEmail(googleUser.Email)
 	if user == nil {
-		user, err = h.AuthService.Register(googleUser.Name, googleUser.Email, "")
+		user, err = h.AuthService.RegisterOAuth(googleUser.Name, googleUser.Email)
 		if err != nil {
 			log.Printf("[Google OAuth] register error: %v", err)
 			http.Redirect(w, r, "/login?error=google_register", http.StatusSeeOther)
@@ -444,6 +478,16 @@ func (h *AuthHandler) GoogleOAuthCallback(w http.ResponseWriter, r *http.Request
 
 	if _, err := h.DB.Exec("UPDATE users SET google_id = ? WHERE id = ?", googleUser.ID, user.ID); err != nil {
 		log.Printf("[Google OAuth] update google_id error: %v", err)
+	}
+
+	// OAuth sign-in must also satisfy 2FA when the user enabled it.
+	if h.requires2FA(user.ID) {
+		if err := h.startPending2FA(w, r, user.ID); err != nil {
+			http.Redirect(w, r, "/login?error=session", http.StatusSeeOther)
+			return
+		}
+		http.Redirect(w, r, "/2fa", http.StatusSeeOther)
+		return
 	}
 
 	if _, err := h.establishSession(w, r, user.ID); err != nil {
@@ -501,14 +545,164 @@ func (h *AuthHandler) establishSession(w http.ResponseWriter, r *http.Request, u
 	}
 	// Replace all pre-auth values. Cookie-backed sessions have no server-side ID;
 	// a fresh nonce guarantees the authenticated cookie is newly encoded.
-	previous.Values = map[interface{}]interface{}{
+	values := map[interface{}]interface{}{
 		"user_id":       userID,
 		"session_nonce": nonce,
 	}
+	if repo := h.sessionRepo(); repo != nil {
+		raw, err := service.RandomToken(32)
+		if err != nil {
+			return "", err
+		}
+		if err := repo.Create(userID, service.HashToken(raw), r.UserAgent(), middleware.ClientIP(r)); err != nil {
+			return "", err
+		}
+		values["session_token"] = raw
+	}
+	previous.Values = values
 	if err := previous.Save(r, w); err != nil {
 		return "", err
 	}
 	return returnTo, nil
+}
+
+// sessionRepo returns the server-side session repository when one is wired
+// (nil-safe for backward compatibility).
+func (h *AuthHandler) sessionRepo() *repository.SessionRepository {
+	if h.AuthService == nil {
+		return nil
+	}
+	return h.AuthService.SessionRepo
+}
+
+// requires2FA reports whether a user has TOTP login enforcement enabled.
+// Failures resolve to false and are logged; the password check itself has
+// already succeeded at this point.
+func (h *AuthHandler) requires2FA(userID int64) bool {
+	if h.TOTPService == nil {
+		return false
+	}
+	enabled, err := h.TOTPService.Is2FAEnabled(userID)
+	if err != nil {
+		log.Printf("requires2FA user %d: %v", userID, err)
+		return false
+	}
+	return enabled
+}
+
+// startPending2FA parks the user ID in the cookie session (without granting
+// authentication) so TwoFactorVerify can finish the login. Any pre-auth
+// return_to hint is preserved for establishSession.
+func (h *AuthHandler) startPending2FA(w http.ResponseWriter, r *http.Request, userID int64) error {
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		return err
+	}
+	returnTo, _ := session.Values["return_to"].(string)
+	session.Values = map[interface{}]interface{}{
+		"pending_2fa_user_id": userID,
+	}
+	if safeReturnTo(returnTo) {
+		session.Values["return_to"] = returnTo
+	}
+	return session.Save(r, w)
+}
+
+func pending2FAUserID(session *sessions.Session) (int64, bool) {
+	if session == nil {
+		return 0, false
+	}
+	switch v := session.Values["pending_2fa_user_id"].(type) {
+	case int64:
+		return v, v != 0
+	case int:
+		return int64(v), v != 0
+	case int32:
+		return int64(v), v != 0
+	case float64:
+		return int64(v), v != 0
+	default:
+		return 0, false
+	}
+}
+
+// TwoFactorPage renders the login-time 2FA challenge for users who passed
+// the password step but have TOTP enabled.
+func (h *AuthHandler) TwoFactorPage(w http.ResponseWriter, r *http.Request) {
+	session, _ := h.SessionStore.Get(r, "investo-session")
+	if _, ok := pending2FAUserID(session); !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, twoFactorHTML(""))
+}
+
+// TwoFactorVerify checks the TOTP code and only then establishes the full
+// authenticated session (including the server-side session row).
+func (h *AuthHandler) TwoFactorVerify(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		return
+	}
+	code := strings.TrimSpace(r.FormValue("code"))
+	session, err := h.SessionStore.Get(r, "investo-session")
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+	userID, ok := pending2FAUserID(session)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if h.TOTPService == nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+	valid, err := h.TOTPService.VerifyTOTP(userID, code)
+	if err != nil || !valid {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Fprint(w, twoFactorHTML("Kode verifikasi salah atau kedaluwarsa. Coba lagi."))
+		return
+	}
+
+	returnTo, err := h.establishSession(w, r, userID)
+	if err != nil {
+		http.Error(w, "Gagal membuat sesi", http.StatusInternalServerError)
+		return
+	}
+
+	if returnTo != "" && returnTo != "/login" && returnTo != "/register" {
+		http.Redirect(w, r, returnTo, http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	}
+}
+
+func twoFactorHTML(errMsg string) string {
+	alert := ""
+	if errMsg != "" {
+		alert = `<div style="background:#7f1d1d;border:1px solid #ef4444;color:#fecaca;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px">` + template.HTMLEscapeString(errMsg) + `</div>`
+	}
+	return `<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Verifikasi 2FA - Investo</title></head>
+<body style="margin:0;padding:0;background:#0b1120;font-family:system-ui,sans-serif;color:#e2e8f0">
+<div style="max-width:400px;margin:80px auto;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:32px">
+<div style="font-size:22px;font-weight:800;margin-bottom:8px">Verifikasi 2 Langkah</div>
+<div style="font-size:13px;color:#94a3b8;margin-bottom:20px">Masukkan kode 6 digit dari aplikasi authenticator Anda.</div>
+` + alert + `
+<form method="POST" action="/2fa" autocomplete="off">
+<input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autofocus placeholder="123456"
+style="width:100%;box-sizing:border-box;background:#0f172a;border:1px solid #334155;color:#fff;border-radius:8px;padding:12px;font-size:20px;letter-spacing:8px;text-align:center" />
+<button type="submit" style="width:100%;margin-top:16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer">Verifikasi</button>
+</form>
+<div style="margin-top:16px;text-align:center;font-size:12px"><a href="/login" style="color:#60a5fa">Kembali ke halaman masuk</a></div>
+</div>
+</body>
+</html>`
 }
 
 func randomToken(size int) (string, error) {

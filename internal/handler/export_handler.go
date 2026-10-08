@@ -2,11 +2,14 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
+	"investo/internal/middleware"
 	"investo/internal/model"
 	"investo/internal/repository"
 	"investo/internal/service"
@@ -100,9 +103,8 @@ func (h *ExportHandler) ExportPortfolioCSV(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	portfolio, err := h.PortfolioRepo.FindByID(id)
-	if err != nil {
-		writeJSONError(w, http.StatusNotFound, "portfolio not found")
+	portfolio := h.ownedPortfolioExport(w, r, id)
+	if portfolio == nil {
 		return
 	}
 
@@ -132,7 +134,7 @@ func (h *ExportHandler) ExportPortfolioCSV(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	filename := "investo_portfolio_" + portfolio.Name + "_" + time.Now().Format("20060102") + ".csv"
+	filename := "investo_portfolio_" + sanitizeFilename(portfolio.Name) + "_" + time.Now().Format("20060102") + ".csv"
 	w.Header().Set("Content-Type", "text/csv; charset=utf-8")
 	w.Header().Set("Content-Disposition", "attachment; filename=\""+filename+"\"")
 	w.Header().Set("Content-Transfer-Encoding", "binary")
@@ -286,9 +288,8 @@ func (h *ExportHandler) PortfolioReport(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	portfolio, err := h.PortfolioRepo.FindByID(id)
-	if err != nil {
-		writeJSONError(w, http.StatusNotFound, "portfolio not found")
+	portfolio := h.ownedPortfolioExport(w, r, id)
+	if portfolio == nil {
 		return
 	}
 
@@ -366,7 +367,8 @@ func (h *ExportHandler) WebhookTest(w http.ResponseWriter, r *http.Request) {
 
 	err := h.WebhookService.SendAlertWebhook(config, alert, stock, 0)
 	if err != nil {
-		writeJSONError(w, http.StatusInternalServerError, "webhook test failed: "+err.Error())
+		log.Printf("webhook test url=%s: %v", payload.URL, err)
+		writeJSONError(w, http.StatusInternalServerError, "webhook test failed")
 		return
 	}
 
@@ -404,7 +406,7 @@ func (h *ExportHandler) ExportStockPDF(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Header().Set("Content-Disposition", "inline; filename=\""+stock.Code+"_report.html\"")
+	w.Header().Set("Content-Disposition", "inline; filename=\""+sanitizeFilename(stock.Code)+"_report.html\"")
 	w.Write(pdfData)
 }
 
@@ -416,9 +418,8 @@ func (h *ExportHandler) ExportPortfolioPDF(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	portfolio, err := h.PortfolioRepo.FindByID(id)
-	if err != nil {
-		writeJSONError(w, http.StatusNotFound, "portfolio not found")
+	portfolio := h.ownedPortfolioExport(w, r, id)
+	if portfolio == nil {
 		return
 	}
 
@@ -449,6 +450,53 @@ func (h *ExportHandler) ExportPortfolioPDF(w http.ResponseWriter, r *http.Reques
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Header().Set("Content-Disposition", "inline; filename=\"portfolio_"+portfolio.Name+"_report.html\"")
+	w.Header().Set("Content-Disposition", "inline; filename=\"portfolio_"+sanitizeFilename(portfolio.Name)+"_report.html\"")
 	w.Write(pdfData)
+}
+
+// ownedPortfolioExport enforces session auth + portfolio ownership for the
+// export endpoints, keeping the existing writeJSONError response shapes
+// (401 unauthorized, 404 portfolio not found). Returns nil when a response
+// was already written.
+func (h *ExportHandler) ownedPortfolioExport(w http.ResponseWriter, r *http.Request, portfolioID int64) *model.Portfolio {
+	user := middleware.GetUser(r)
+	if user == nil {
+		writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+		return nil
+	}
+	if h.PortfolioRepo == nil {
+		log.Printf("export portfolio id=%d: portfolio repo is nil", portfolioID)
+		writeJSONError(w, http.StatusNotFound, "portfolio not found")
+		return nil
+	}
+	portfolio, err := h.PortfolioRepo.FindByIDAndUserID(portfolioID, user.ID)
+	if err != nil {
+		writeJSONError(w, http.StatusNotFound, "portfolio not found")
+		return nil
+	}
+	return portfolio
+}
+
+// sanitizeFilename strips path separators, quotes, CR/LF and non-printable
+// ASCII from a value interpolated into a Content-Disposition filename, and
+// caps the result at 80 characters to bound header size.
+func sanitizeFilename(name string) string {
+	var b strings.Builder
+	for _, c := range name {
+		if c == '/' || c == '\\' || c == '"' || c == '\'' || c == '\r' || c == '\n' {
+			continue
+		}
+		if c < 32 || c > 126 {
+			continue
+		}
+		b.WriteRune(c)
+	}
+	s := strings.TrimSpace(b.String())
+	if len(s) > 80 {
+		s = s[:80]
+	}
+	if s == "" || s == "." || s == ".." {
+		s = "portfolio"
+	}
+	return s
 }

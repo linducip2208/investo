@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
 	"investo/internal/middleware"
 	"investo/internal/model"
 	"investo/internal/repository"
@@ -22,6 +23,8 @@ import (
 
 type AdminHandler struct {
 	UserRepo              *repository.UserRepository
+	SessionRepo           *repository.SessionRepository
+	AuditLogRepo          *repository.AuditLogRepository
 	StockRepo             *repository.StockRepository
 	NewsRepo              *repository.NewsRepository
 	BlogRepo              *repository.BlogRepository
@@ -35,6 +38,18 @@ type AdminHandler struct {
 	DataMerger            *service.DataMerger
 	AnalyticsService      *service.AdminAnalyticsService
 	FeatureFlagService    *service.FeatureFlagService
+}
+
+func (h *AdminHandler) writeAudit(r *http.Request, action, entity, entityID string) {
+	if h.AuditLogRepo == nil {
+		return
+	}
+	var actorID *int64
+	if admin := middleware.GetUser(r); admin != nil {
+		id := admin.ID
+		actorID = &id
+	}
+	_ = h.AuditLogRepo.Write(actorID, action, entity, entityID, "", middleware.ClientIP(r))
 }
 
 func (h *AdminHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
@@ -135,13 +150,23 @@ func (h *AdminHandler) UsersUpdate(w http.ResponseWriter, r *http.Request) {
 	user.Role = r.FormValue("role")
 
 	if newPassword := r.FormValue("password"); newPassword != "" {
-		user.Password = newPassword
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+		if err != nil {
+			http.Error(w, "Gagal mengenkripsi password", http.StatusInternalServerError)
+			return
+		}
+		user.Password = string(hashedPassword)
 	}
 
 	if err := h.UserRepo.Update(user); err != nil {
 		http.Error(w, "Gagal mengupdate user", http.StatusInternalServerError)
 		return
 	}
+
+	if r.FormValue("password") != "" && h.SessionRepo != nil {
+		_ = h.SessionRepo.RevokeAllForUser(id)
+	}
+	h.writeAudit(r, "admin.user.update", "user", idStr)
 
 	http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
 }
@@ -159,6 +184,8 @@ func (h *AdminHandler) UsersDelete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Gagal menghapus user", http.StatusInternalServerError)
 		return
 	}
+
+	h.writeAudit(r, "admin.user.delete", "user", r.FormValue("user_id"))
 
 	http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
 }

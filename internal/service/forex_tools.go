@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// centralBankRates adalah snapshot ilustratif suku bunga acuan — bukan feed
+// real-time. Perbarui manual mengikuti pengumuman bank sentral, atau
+// sambungkan ke feed suku bunga live bila tersedia.
 var centralBankRates = map[string]float64{
 	"USD": 5.50,
 	"EUR": 3.75,
@@ -30,6 +33,7 @@ type SwapResult struct {
 	DailySwap         float64 `json:"daily_swap"`
 	AnnualSwap        float64 `json:"annual_swap"`
 	InterestDiff      float64 `json:"interest_differential"`
+	RatesSource       string  `json:"rates_source,omitempty"`
 }
 
 type MarginResult struct {
@@ -90,6 +94,7 @@ func (t *ForexTools) CalcSwap(baseCurrency, quoteCurrency string, positionSize f
 		DailySwap:    math.Round(dailySwap*100) / 100,
 		AnnualSwap:   math.Round(dailySwap*365*100) / 100,
 		InterestDiff: math.Round(interestDiff*100) / 100,
+		RatesSource:  "suku bunga ilustratif (snapshot internal) — verifikasi ke pengumuman bank sentral",
 	}, nil
 }
 
@@ -102,6 +107,7 @@ type SwapPairRate struct {
 	DailyShort   float64 `json:"daily_short"`
 	AnnualShort  float64 `json:"annual_short"`
 	Spread       float64 `json:"spread"`
+	RatesSource  string  `json:"rates_source,omitempty"`
 }
 
 func (t *ForexTools) GetAllSwapRates(standardLot float64) []SwapPairRate {
@@ -127,16 +133,17 @@ func (t *ForexTools) GetAllSwapRates(standardLot float64) []SwapPairRate {
 			dailyLong := (standardLot * spread / 100) / 365
 			dailyShort := (standardLot * -spread / 100) / 365
 
-			rates = append(rates, SwapPairRate{
-				Pair:        key,
-				BaseRate:    baseRate,
-				QuoteRate:   quoteRate,
-				DailyLong:   math.Round(dailyLong*100) / 100,
-				AnnualLong:  math.Round(dailyLong*365*100) / 100,
-				DailyShort:  math.Round(dailyShort*100) / 100,
-				AnnualShort: math.Round(dailyShort*365*100) / 100,
-				Spread:      math.Round(spread*100) / 100,
-			})
+		rates = append(rates, SwapPairRate{
+			Pair:        key,
+			BaseRate:    baseRate,
+			QuoteRate:   quoteRate,
+			DailyLong:   math.Round(dailyLong*100) / 100,
+			AnnualLong:  math.Round(dailyLong*365*100) / 100,
+			DailyShort:  math.Round(dailyShort*100) / 100,
+			AnnualShort: math.Round(dailyShort*365*100) / 100,
+			Spread:      math.Round(spread*100) / 100,
+			RatesSource: "suku bunga ilustratif (snapshot internal) — verifikasi ke pengumuman bank sentral",
+		})
 		}
 	}
 	return rates

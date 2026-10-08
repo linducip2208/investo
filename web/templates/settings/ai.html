@@ -81,7 +81,8 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-slate-400 block mb-1">API Key (Primary)</label>
-                            <input type="password" :id="p.name+'_key_0'" class="input-field" :placeholder="p.has_key ? 'Key sudah disimpan (kosongkan = tidak diubah)' : p.placeholder" @input="updateProviderField(p.name, 'key', $event.target.value)">
+                            <input type="password" :id="p.name+'_key_0'" class="input-field" :placeholder="p.has_key ? 'Key sudah disimpan (kosongkan = tidak diubah)' : p.placeholder" @input="updateProviderField(p.name, 'key', $event.target.value)" autocomplete="new-password">
+                            <div class="text-[11px] text-slate-500 mt-1" x-show="p.has_key && p.masked_key" x-text="'Tersimpan: ' + p.masked_key"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-2" x-show="p.name !== 'ollama'">
                             <div><label class="text-xs text-slate-400 block mb-1">Key 2</label><input type="password" :id="p.name+'_key_1'" class="input-field" placeholder="Optional backup key" @input="updateMultiKey(p.name, 2, $event.target.value)"></div>
@@ -206,6 +207,7 @@ function aiSettings() {
                         model: p.model,
                         base_url: p.base_url,
                         has_key: p.has_key,
+                        masked_key: p.masked_key || '',
                         key: ''
                     }));
                     var active = pd.providers.find(p => p.is_active);

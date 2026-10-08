@@ -1,6 +1,11 @@
 package service
 
-import "investo/internal/repository"
+import (
+	"fmt"
+	"time"
+
+	"investo/internal/repository"
+)
 
 type ManagementScore struct {
 	Code           string              `json:"code"`
@@ -9,6 +14,9 @@ type ManagementScore struct {
 	TrackRecord    *TrackRecordScore   `json:"track_record"`
 	CapitalAlloc   *CapitalAllocScore  `json:"capital_allocation"`
 	Interpretation string              `json:"interpretation"`
+	Source         string              `json:"source,omitempty"`
+	AsOf           string              `json:"as_of,omitempty"`
+	IsIllustrative bool                `json:"is_illustrative,omitempty"`
 }
 
 type TrackRecordScore struct {
@@ -41,28 +49,46 @@ func (s *ManagementQualityService) AssessManagement(code string) (*ManagementSco
 		return s.sampleScore(code), nil
 	}
 
-	trScore := 72.0
-	caScore := 68.0
-
-	if fund.ROE > 15 {
+	caScore := 45.0
+	switch {
+	case fund.ROE > 20 && fund.DER < 1:
+		caScore = 85.0
+	case fund.ROE > 15:
 		caScore = 78.0
-	} else if fund.ROE > 10 {
-		caScore = 65.0
+	case fund.ROE > 10:
+		caScore = 68.0
+	case fund.ROE > 5:
+		caScore = 58.0
+	}
+
+	trScore := 60.0
+	if fund.ROE > 15 {
+		trScore = 75.0
+	} else if fund.ROE > 8 {
+		trScore = 68.0
+	}
+
+	roeTrend := s.roeTrend(code, fund.ROE)
+
+	buyback := "riwayat buyback tidak tersedia di feed lokal"
+	dividend := "tidak ada dividen tercatat pada periode terakhir"
+	if fund.DividendYield > 0 {
+		dividend = fmt.Sprintf("dividend yield %.2f%% pada periode terakhir (konsistensi historis tidak tersedia di feed lokal)", fund.DividendYield)
 	}
 
 	tr := &TrackRecordScore{
 		Score:     trScore,
-		Tenure:    "8 tahun (stabil)",
-		StockPerf: "+45% (3Y, vs IHSG +22%)",
-		Detail:    "Manajemen memiliki track record panjang dengan kinerja saham di atas IHSG. Rotasi direksi minimal, menandakan stabilitas governance.",
+		Tenure:    "masa jabatan direksi tidak tersedia di feed lokal",
+		StockPerf: "kinerja harga tidak tersedia — hubungkan price history",
+		Detail:    fmt.Sprintf("Skor track record %.0f diturunkan dari ROE %.1f%% periode %s. Data tenure & kinerja harga aktual belum tersedia.", trScore, fund.ROE, fund.Period),
 	}
 
 	ca := &CapitalAllocScore{
 		Score:              caScore,
-		ROETrend:           "Stabil di 15-18%",
-		BuybackHistory:     "3x buyback dalam 5 tahun",
-		DividendConsistency: "8 tahun berturut-turut naik",
-		Detail:             "Alokasi modal prudent: investasi capex untuk pertumbuhan, buyback saat undervalued, dan dividen konsisten untuk shareholder return.",
+		ROETrend:           roeTrend,
+		BuybackHistory:     buyback,
+		DividendConsistency: dividend,
+		Detail:             fmt.Sprintf("Skor alokasi modal %.0f diturunkan dari ROE %.1f%% & DER %.2fx periode %s. Buyback & konsistensi dividen belum terverifikasi dari feed lokal.", caScore, fund.ROE, fund.DER, fund.Period),
 	}
 
 	total := (tr.Score*0.4 + ca.Score*0.6)
@@ -84,31 +110,59 @@ func (s *ManagementQualityService) AssessManagement(code string) (*ManagementSco
 		TrackRecord:    tr,
 		CapitalAlloc:   ca,
 		Interpretation: s.interpretRating(rating, code),
+		Source:         "fundamental internal (stock_fundamentals); klaim tanpa data ditandai tidak tersedia",
+		AsOf:           fund.Period,
 	}, nil
+}
+
+// roeTrend describes the ROE trajectory from up to 5 recent fundamental rows.
+func (s *ManagementQualityService) roeTrend(code string, currentROE float64) string {
+	if s == nil || s.StockRepo == nil || s.StockFundamentalRepo == nil {
+		return fmt.Sprintf("ROE %.1f%% (tren historis tidak tersedia)", currentROE)
+	}
+	stock, err := s.StockRepo.FindByCode(code)
+	if err != nil || stock == nil {
+		return fmt.Sprintf("ROE %.1f%% (tren historis tidak tersedia)", currentROE)
+	}
+	rows, err := s.StockFundamentalRepo.FindByStockID(stock.ID, 5)
+	if err != nil || len(rows) < 2 {
+		return fmt.Sprintf("ROE %.1f%% (hanya 1 periode tersedia)", currentROE)
+	}
+	first, last := rows[len(rows)-1].ROE, rows[0].ROE
+	direction := "stabil"
+	if last-first > 2 {
+		direction = "membaik"
+	} else if first-last > 2 {
+		direction = "melemah"
+	}
+	return fmt.Sprintf("%s: ROE %.1f%% → %.1f%% (%d periode)", direction, first, last, len(rows))
 }
 
 func (s *ManagementQualityService) sampleScore(code string) *ManagementScore {
 	tr := &TrackRecordScore{
-		Score:     72,
-		Tenure:    "8 tahun (stabil)",
-		StockPerf: "+45% (3Y)",
-		Detail:    "Track record manajemen cukup baik dengan kinerja saham di atas benchmark.",
+		Score:     60,
+		Tenure:    "tidak tersedia — data fundamental belum ada",
+		StockPerf: "tidak tersedia — data fundamental belum ada",
+		Detail:    "Estimasi netral, bukan hasil analisis.",
 	}
 	ca := &CapitalAllocScore{
-		Score:               68,
-		ROETrend:            "Stabil di 15%",
-		BuybackHistory:      "3x dalam 5 tahun",
-		DividendConsistency: "8 tahun naik berturut-turut",
-		Detail:              "Alokasi modal menunjukkan prudence dan fokus pada shareholder value.",
+		Score:               60,
+		ROETrend:            "tidak tersedia — data fundamental belum ada",
+		BuybackHistory:      "tidak tersedia — data fundamental belum ada",
+		DividendConsistency: "tidak tersedia — data fundamental belum ada",
+		Detail:              "Estimasi netral, bukan hasil analisis.",
 	}
 
 	return &ManagementScore{
 		Code:           code,
-		Score:          69.6,
-		Rating:         "Good",
+		Score:          60,
+		Rating:         "Fair",
 		TrackRecord:    tr,
 		CapitalAlloc:   ca,
-		Interpretation: s.interpretRating("Good", code),
+		Interpretation: s.interpretRating("Fair", code),
+		Source:         "estimasi ilustratif — data fundamental tidak tersedia",
+		AsOf:           time.Now().Format("2006-01-02"),
+		IsIllustrative: true,
 	}
 }
 

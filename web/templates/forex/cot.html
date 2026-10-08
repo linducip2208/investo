@@ -178,7 +178,11 @@
                             <span class="font-mono text-2xl font-bold text-blue-300" x-text="report.cot_index ? report.cot_index.toFixed(0) : '--'"></span>
                             <span class="block text-xs font-semibold mt-0.5" :class="report.sentiment" x-text="report.sentiment || ''"></span>
                         </div>
-                        <div class="text-[10px] text-slate-600">Last updated: <span x-text="report.last_updated || ''"></span></div>
+                        <div class="text-[10px] text-slate-600">Last updated: <span x-text="report.last_updated || ''"></span><span x-show="report.as_of" x-text="' · per ' + report.as_of"></span></div>
+                        <div x-show="report && report.is_illustrative" class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-3 text-center">
+                            <p class="text-[11px] text-amber-300">⚠️ <b>Data ilustratif</b> — contoh, bukan data real-time</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5" x-text="report.source || ''"></p>
+                        </div>
                     </div>
 
                     <div class="card p-5">
