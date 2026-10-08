@@ -29,61 +29,61 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center px-4">
+<body class="min-vh-100 d-flex align-items-center justify-content-center px-2">
 
 <div class="text-center max-w-lg" x-data="{ searchQuery: '', searchStock() { if (this.searchQuery.trim()) { window.location = '/saham?search=' + encodeURIComponent(this.searchQuery.trim()) } } }">
-    <div class="text-9xl font-extrabold text-blue-500 mb-4 select-none animate-float">404</div>
+    <div class="display-1 fw-bolder text-primary mb-2 user-select-none animate-float">404</div>
 
-    <h1 class="text-2xl lg:text-3xl font-bold text-white mb-3">Halaman Tidak Ditemukan</h1>
+    <h1 class="fs-1 fs-1 fw-bold text-white mb-2">Halaman Tidak Ditemukan</h1>
 
-    <p class="text-slate-500 dark:text-slate-400 text-base mb-6">
+    <p class="text-muted dark:text-slate-400 fs-base mb-2">
         Maaf, halaman yang Anda cari tidak tersedia. Mungkin sudah dipindahkan, dihapus, atau URL yang dimasukkan kurang tepat.
     </p>
 
-    <div class="mb-8">
-        <form @submit.prevent="searchStock()" class="relative max-w-sm mx-auto">
-            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" x-model="searchQuery" placeholder="Cari saham... (contoh: BBCA, TLKM)" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500">
+    <div class="mb-2">
+        <form @submit.prevent="searchStock()" class="position-relative max-w-sm mx-auto">
+            <svg class="position-absolute left-3.5 top-50 translate-middle-y w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" x-model="searchQuery" placeholder="Cari saham... (contoh: BBCA, TLKM)" class="w-100 pl-11 pe-2 py-2 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 fs-sm text-white     ">
         </form>
     </div>
 
-    <div class="bg-white dark:bg-[#1e293b] border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-6 mb-8">
-        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">Mungkin Anda mencari:</p>
-        <div class="flex flex-wrap items-center justify-center gap-2">
-            <a href="/saham/BBCA" class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all">BBCA</a>
-            <a href="/saham/TLKM" class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all">TLKM</a>
-            <a href="/saham/ASII" class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all">ASII</a>
-            <a href="/saham/BBRI" class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all">BBRI</a>
-            <a href="/saham/UNVR" class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all">UNVR</a>
+    <div class="bg-white dark:bg-[#1e293b] border border dark:border-slate-700/50 rounded-4 p-2 mb-2">
+        <p class="fs-sm fw-medium text-muted dark:text-slate-400 mb-2">Mungkin Anda mencari:</p>
+        <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+            <a href="/saham/BBCA" class="px-2 py-1 fs-xs fw-medium bg-white dark:bg-slate-800 border border dark:border-slate-700 text-body dark:text-slate-300 rounded-2   ">BBCA</a>
+            <a href="/saham/TLKM" class="px-2 py-1 fs-xs fw-medium bg-white dark:bg-slate-800 border border dark:border-slate-700 text-body dark:text-slate-300 rounded-2   ">TLKM</a>
+            <a href="/saham/ASII" class="px-2 py-1 fs-xs fw-medium bg-white dark:bg-slate-800 border border dark:border-slate-700 text-body dark:text-slate-300 rounded-2   ">ASII</a>
+            <a href="/saham/BBRI" class="px-2 py-1 fs-xs fw-medium bg-white dark:bg-slate-800 border border dark:border-slate-700 text-body dark:text-slate-300 rounded-2   ">BBRI</a>
+            <a href="/saham/UNVR" class="px-2 py-1 fs-xs fw-medium bg-white dark:bg-slate-800 border border dark:border-slate-700 text-body dark:text-slate-300 rounded-2   ">UNVR</a>
         </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center mb-10">
-        <a href="/" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all">
+    <div class="d-flex flex-column flex-sm-row align-items-center gap-4 justify-content-center mb-2">
+        <a href="/" class="w-100 w-auto d-inline-flex align-items-center justify-content-center gap-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue   text-white fw-bold px-2 py-2 rounded-3 shadow-lg    ">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             Kembali ke Beranda
         </a>
-        <a href="/sitemap.xml" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-slate-600 text-slate-700 dark:text-slate-300 hover:border-blue-500 font-semibold px-8 py-3.5 rounded-xl transition-all">
+        <a href="/sitemap.xml" class="w-100 w-auto d-inline-flex align-items-center justify-content-center gap-2 border border text-body dark:text-slate-300  fw-semibold px-2 py-2 rounded-3 ">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             Lihat Sitemap
         </a>
     </div>
 
-    <p class="text-sm text-slate-500">Atau coba halaman berikut:</p>
-    <div class="flex flex-wrap items-center justify-center gap-3 mt-3 text-sm">
-        <a href="/" class="text-blue-400 hover:underline font-medium">Beranda</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/saham" class="text-blue-400 hover:underline font-medium">Daftar Saham</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/forex" class="text-blue-400 hover:underline font-medium">Forex</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/docs" class="text-blue-400 hover:underline font-medium">Dokumentasi</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/blog" class="text-blue-400 hover:underline font-medium">Blog</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/faq" class="text-blue-400 hover:underline font-medium">FAQ</a>
-        <span class="text-slate-600">&middot;</span>
-        <a href="/kontak" class="text-blue-400 hover:underline font-medium">Kontak</a>
+    <p class="fs-sm text-muted">Atau coba halaman berikut:</p>
+    <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mt-2 fs-sm">
+        <a href="/" class="text-primary  fw-medium">Beranda</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/saham" class="text-primary  fw-medium">Daftar Saham</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/forex" class="text-primary  fw-medium">Forex</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/docs" class="text-primary  fw-medium">Dokumentasi</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/blog" class="text-primary  fw-medium">Blog</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/faq" class="text-primary  fw-medium">FAQ</a>
+        <span class="text-muted">&middot;</span>
+        <a href="/kontak" class="text-primary  fw-medium">Kontak</a>
     </div>
 </div>
 

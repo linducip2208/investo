@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,14 +47,14 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="reportGen()">
+<body class="h-100 d-flex" x-data="reportGen()">
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -79,8 +79,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Tools</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">AI Tools</p>
             <a href="/ai/search" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6" />
@@ -98,8 +98,8 @@
   <path d="M9 13l6 0" />
   <path d="M9 17l6 0" />
 </svg></span> Report Gen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -117,7 +117,7 @@
   <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
 </svg></span> Alert</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -133,88 +133,88 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
+    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex items-center gap-3">
-                <span class="text-2xl sparkle">🤖</span>
-                <h1 class="text-lg font-bold text-white">AI Report Generator</h1>
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="d-flex align-items-center gap-3">
+                <span class="fs-1 sparkle">🤖</span>
+                <h1 class="fs-3 fw-bold text-white">AI Report Generator</h1>
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div class="lg:col-span-1 space-y-4">
-                    <div class="card p-5">
-                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Pilih Portofolio</label>
-                        <select x-model="portfolioId" @change="loadPortfolios()" class="mb-4">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
+            <div class="row row-cols-1 row-cols-lg-3 gap-5">
+                <div class="col vstack gap-3">
+                    <div class="card p-2">
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Pilih Portofolio</label>
+                        <select x-model="portfolioId" @change="loadPortfolios()" class="mb-2">
                             <option value="">-- Pilih portofolio --</option>
                             <template x-for="p in portfolios" :key="p.id">
                                 <option :value="p.id" x-text="p.name"></option>
                             </template>
                         </select>
                         <button @click="generateReport()" :disabled="!portfolioId || loading"
-                                class="btn btn-primary w-full justify-center"
+                                class="btn btn-primary w-100 justify-content-center"
                                 :class="{'opacity-50 cursor-not-allowed': !portfolioId || loading}">
                             <span x-show="!loading">🚀 Generate Report</span>
-                            <span x-show="loading" class="flex items-center gap-2">
-                                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                            <span x-show="loading" class="d-flex align-items-center gap-2">
+                                <svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
                                 Generating...
                             </span>
                         </button>
                     </div>
 
-                    <div class="card p-5">
-                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Tentang Fitur</div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <div class="card p-2">
+                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Tentang Fitur</div>
+                        <p class="fs-sm text-muted dark:text-slate-400 lh-lg">
                             AI Report Generator menganalisa portofolio Anda dan menghasilkan laporan lengkap mencakup:
                         </p>
-                        <ul class="mt-2 space-y-1.5 text-sm text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="text-blue-400">📊</span> Ringkasan performa</li>
-                            <li class="flex items-center gap-2"><span class="text-blue-400">🤖</span> Analisa naratif AI</li>
-                            <li class="flex items-center gap-2"><span class="text-blue-400">📋</span> Breakdown top holdings</li>
-                            <li class="flex items-center gap-2"><span class="text-blue-400">⚠️</span> Risk assessment</li>
-                            <li class="flex items-center gap-2"><span class="text-blue-400">🔮</span> Outlook & rekomendasi</li>
+                        <ul class="mt-2 vstack gap-1 fs-sm text-muted dark:text-slate-400">
+                            <li class="d-flex align-items-center gap-2"><span class="text-primary">📊</span> Ringkasan performa</li>
+                            <li class="d-flex align-items-center gap-2"><span class="text-primary">🤖</span> Analisa naratif AI</li>
+                            <li class="d-flex align-items-center gap-2"><span class="text-primary">📋</span> Breakdown top holdings</li>
+                            <li class="d-flex align-items-center gap-2"><span class="text-primary">⚠️</span> Risk assessment</li>
+                            <li class="d-flex align-items-center gap-2"><span class="text-primary">🔮</span> Outlook & rekomendasi</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="lg:col-span-2">
-                    <div class="card p-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Preview Laporan</span>
-                            <div class="flex gap-2" x-show="reportHtml">
-                                <button @click="printReport()" class="btn btn-secondary text-xs py-1.5 px-3">🖨️ Print PDF</button>
-                                <button @click="downloadReport()" class="btn btn-success text-xs py-1.5 px-3">📥 Download</button>
+                <div class="col-lg-8">
+                    <div class="card p-2">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Preview Laporan</span>
+                            <div class="d-flex gap-2" x-show="reportHtml">
+                                <button @click="printReport()" class="btn btn-secondary fs-xs py-1 px-2">🖨️ Print PDF</button>
+                                <button @click="downloadReport()" class="btn btn-success fs-xs py-1 px-2">📥 Download</button>
                             </div>
                         </div>
 
-                        <div x-show="!reportHtml && !loading" class="flex flex-col items-center justify-center py-16 text-center">
-                            <span class="text-5xl mb-4">📄</span>
-                            <p class="text-slate-500 text-sm">Pilih portofolio dan klik "Generate Report"</p>
-                            <p class="text-slate-600 text-xs mt-1">Laporan akan ditampilkan di sini dalam format siap cetak</p>
+                        <div x-show="!reportHtml && !loading" class="d-flex flex-column align-items-center justify-content-center py-2 text-center">
+                            <span class="display-5 mb-2">📄</span>
+                            <p class="text-muted fs-sm">Pilih portofolio dan klik "Generate Report"</p>
+                            <p class="text-muted fs-xs mt-1">Laporan akan ditampilkan di sini dalam format siap cetak</p>
                         </div>
 
-                        <div x-show="loading" class="space-y-3 py-4">
-                            <div class="skeleton h-6 w-2/3"></div>
-                            <div class="skeleton h-4 w-1/2"></div>
-                            <div class="grid grid-cols-4 gap-3 mt-4">
+                        <div x-show="loading" class="vstack gap-2 py-2">
+                            <div class="skeleton h-6 w-2"></div>
+                            <div class="skeleton h-4 w-1"></div>
+                            <div class="row row-cols-4 gap-3 mt-2">
                                 <div class="skeleton h-20"></div><div class="skeleton h-20"></div><div class="skeleton h-20"></div><div class="skeleton h-20"></div>
                             </div>
-                            <div class="skeleton h-32 mt-3"></div>
-                            <div class="skeleton h-48 mt-3"></div>
+                            <div class="skeleton h-32 mt-2"></div>
+                            <div class="skeleton h-48 mt-2"></div>
                         </div>
 
                         <div x-show="reportHtml" class="report-preview overflow-hidden">
-                            <iframe :srcdoc="reportHtml" class="w-full border-0" style="min-height:600px" id="report-iframe"></iframe>
+                            <iframe :srcdoc="reportHtml" class="w-100 border-0" style="min-height:600px" id="report-iframe"></iframe>
                         </div>
 
-                        <div x-show="error" class="bg-red-900/20 border border-red-800 rounded-xl p-4 text-sm text-red-400">
+                        <div x-show="error" class="bg-danger bg-opacity-25 border border-danger rounded-3 p-2 fs-sm text-danger">
                             <span x-text="error"></span>
                         </div>
                     </div>
@@ -274,6 +274,6 @@
             }
         }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

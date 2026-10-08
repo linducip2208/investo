@@ -24,6 +24,7 @@ data/
 
 # Local build caches / temp
 .tmp/
+tmpcheck/
 coverage.out
 coverage.html
 *.cover

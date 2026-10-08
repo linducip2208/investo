@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,13 +51,13 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false }">
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false }">
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/saham" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 17l6 -6l4 4l8 -8" />
@@ -75,8 +75,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Komunitas</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Komunitas</p>
             <a href="/ideas" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
@@ -93,7 +93,7 @@
   <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
 </svg></span> Leaderboard</a>
             [[if .User]]
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -103,108 +103,108 @@
 </svg></span> Dashboard</a>
             [[end]]
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             [[if .User]]
-            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div><span class="text-sm font-medium text-white truncate">[[.User.Name]]</span></div>
+            <div class="d-flex align-items-center gap-2"><div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div><span class="fs-sm fw-medium text-white text-truncate">[[.User.Name]]</span></div>
             [[else]]
-            <a href="/login" class="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl transition-all">Masuk / Daftar</a>
+            <a href="/login" class="d-block w-100 text-center px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 ">Masuk / Daftar</a>
             [[end]]
         </div>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1"></div>
+    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill"></div>
             [[if not .User]]
-            <a href="/login" class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-white rounded-lg transition-colors">Masuk</a>
-            <a href="/register" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl transition-all">Daftar</a>
+            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300  rounded-2 ">Masuk</a>
+            <a href="/register" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 ">Daftar</a>
             [[else]]
-            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div><span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span></div>
+            <div class="d-flex align-items-center gap-2"><div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div><span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span></div>
             [[end]]
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
             <div class="max-w-3xl mx-auto">
-                <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
-                    <a href="/ideas" class="hover:text-blue-400 transition-colors">Ide Investasi</a>
+                <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+                    <a href="/ideas" class=" ">Ide Investasi</a>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    <span class="text-white font-medium truncate">[[.Idea.Title]]</span>
+                    <span class="text-white fw-medium text-truncate">[[.Idea.Title]]</span>
                 </nav>
 
-                <article class="card p-6 sm:p-8">
-                    <div class="flex items-start gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shrink-0">[[slice .Idea.AuthorName 0 1]]</div>
-                        <div class="flex-1 min-w-0">
-                            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">[[.Idea.Title]]</h1>
-                            <div class="flex flex-wrap items-center gap-3 text-sm">
-                                <span class="font-medium text-slate-700 dark:text-slate-300">[[.Idea.AuthorName]]</span>
-                                <span class="text-slate-500">[[.TimeAgo]]</span>
+                <article class="card p-2 p-sm-5">
+                    <div class="d-flex align-items-start gap-4 mb-2">
+                        <div class="w-12 h-12 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-sm fw-bold flex-shrink-0">[[slice .Idea.AuthorName 0 1]]</div>
+                        <div class="flex-fill min-w-0">
+                            <h1 class="fs-1 fs-1 fw-bold text-white mb-2">[[.Idea.Title]]</h1>
+                            <div class="d-flex flex-wrap align-items-center gap-3 fs-sm">
+                                <span class="fw-medium text-body dark:text-slate-300">[[.Idea.AuthorName]]</span>
+                                <span class="text-muted">[[.TimeAgo]]</span>
                                 [[if .Idea.StockCode]]
-                                <a href="/saham/[[.Idea.StockCode]]" class="px-2.5 py-0.5 rounded-md bg-blue-900/30 text-blue-300 text-xs font-semibold hover:bg-blue-900/50 transition-colors">[[.Idea.StockCode]]</a>
+                                <a href="/saham/[[.Idea.StockCode]]" class="px-2 py-0 rounded-2 bg-primary bg-opacity-25 text-primary fs-xs fw-semibold  ">[[.Idea.StockCode]]</a>
                                 [[end]]
                             </div>
                         </div>
                         [[if and .User (eq .User.ID .Idea.UserID)]]
                         <form method="POST" action="/ideas/[[.Idea.ID]]/delete" onsubmit="return confirm('Hapus ide ini?')">
-                            <button type="submit" class="p-2 text-slate-500 hover:text-danger transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                            <button type="submit" class="p-2 text-muted  "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                         </form>
                         [[end]]
                     </div>
 
                     [[if .Idea.ChartImage]]
-                    <div class="mb-6 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700"><img src="[[.Idea.ChartImage]]" alt="Chart [[.Idea.StockCode]]" class="w-full object-cover" onerror="this.parentElement.style.display='none'"></div>
+                    <div class="mb-2 rounded-3 overflow-hidden border border dark:border-slate-700"><img src="[[.Idea.ChartImage]]" alt="Chart [[.Idea.StockCode]]" class="w-100 object-cover" onerror="this.parentElement.style.display='none'"></div>
                     [[end]]
 
-                    <div class="prose-content text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap mb-8">[[.Idea.Content]]</div>
+                    <div class="prose-content text-body dark:text-slate-300 fs-sm fs-base lh-lg text-prewrap mb-2">[[.Idea.Content]]</div>
 
-                    <div class="flex items-center gap-4 pt-4 border-t border-slate-200/50 dark:border-slate-700/50">
-                        <button id="like-btn" onclick="toggleLike()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border border-slate-600 hover:bg-white dark:hover:bg-slate-800 transition-colors [[if .IsLiked]]text-danger[[else]]text-slate-400[[end]]">
+                    <div class="d-flex align-items-center gap-4 pt-2 border-top border dark:border-slate-700/50">
+                        <button id="like-btn" onclick="toggleLike()" class="d-inline-flex align-items-center gap-2 px-2 py-2 rounded-3 fs-sm fw-semibold border border  dark:hover:bg-slate-800  [[if .IsLiked]]text-danger[[else]]text-slate-400[[end]]">
                             <svg class="w-5 h-5" fill="[[if .IsLiked]]currentColor[[else]]none[[end]]" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             <span id="like-count">[[.Idea.LikesCount]]</span> Suka
                         </button>
-                        <span class="text-sm text-slate-500"><svg class="w-5 h-5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>[[.Idea.CommentsCount]] Komentar</span>
+                        <span class="fs-sm text-muted"><svg class="w-5 h-5 d-inline mt-n1 me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>[[.Idea.CommentsCount]] Komentar</span>
                     </div>
                 </article>
 
-                <section class="mt-8">
-                    <h2 class="text-lg font-bold text-white mb-5">Komentar ([[len .Comments]])</h2>
+                <section class="mt-2">
+                    <h2 class="fs-3 fw-bold text-white mb-2">Komentar ([[len .Comments]])</h2>
                     [[if .User]]
-                    <form method="POST" action="/ideas/[[.Idea.ID]]/comment" class="card p-4 mb-4">
-                        <textarea name="content" rows="2" required placeholder="Tulis komentar Anda..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-3"></textarea>
-                        <div class="flex justify-end"><button type="submit" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg transition-all">Kirim</button></div>
+                    <form method="POST" action="/ideas/[[.Idea.ID]]/comment" class="card p-2 mb-2">
+                        <textarea name="content" rows="2" required placeholder="Tulis komentar Anda..." class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     resize-none mb-2"></textarea>
+                        <div class="d-flex justify-content-end"><button type="submit" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-2 ">Kirim</button></div>
                     </form>
                     [[else]]
-                    <div class="card p-4 mb-4 text-sm text-amber-300 bg-amber-900/10 border border-amber-800/50"><a href="/login" class="font-semibold underline">Masuk</a> untuk menambahkan komentar.</div>
+                    <div class="card p-2 mb-2 fs-sm text-warning bg-warning bg-opacity-10 border border-warning"><a href="/login" class="fw-semibold text-decoration-underline">Masuk</a> untuk menambahkan komentar.</div>
                     [[end]]
 
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         [[range .Comments]]
-                        <div class="card p-4">
-                            <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">[[slice .AuthorName 0 1]]</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between gap-2 mb-1"><span class="font-semibold text-sm text-white">[[.AuthorName]]</span><span class="text-xs text-slate-500 shrink-0">[[.TimeAgo]]</span></div>
-                                    <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">[[.Content]]</p>
+                        <div class="card p-2">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="w-8 h-8 rounded-pill bg-body dark:bg-slate-700 d-flex align-items-center justify-content-center fs-xs fw-bold text-muted dark:text-slate-400 flex-shrink-0">[[slice .AuthorName 0 1]]</div>
+                                <div class="flex-fill min-w-0">
+                                    <div class="d-flex align-items-center justify-content-between gap-2 mb-1"><span class="fw-semibold fs-sm text-white">[[.AuthorName]]</span><span class="fs-xs text-muted flex-shrink-0">[[.TimeAgo]]</span></div>
+                                    <p class="fs-sm text-body dark:text-slate-300 lh-lg">[[.Content]]</p>
                                     [[if and .User (eq .User.ID .UserID)]]
-                                    <form method="POST" action="/ideas/[[$.Idea.ID]]/comments/[[.ID]]/delete" class="mt-2 inline" onsubmit="return confirm('Hapus komentar?')"><button type="submit" class="text-xs text-slate-500 hover:text-danger transition-colors">Hapus</button></form>
+                                    <form method="POST" action="/ideas/[[$.Idea.ID]]/comments/[[.ID]]/delete" class="mt-2 d-inline" onsubmit="return confirm('Hapus komentar?')"><button type="submit" class="fs-xs text-muted  ">Hapus</button></form>
                                     [[end]]
                                 </div>
                             </div>
                         </div>
                         [[end]]
                         [[if not .Comments]]
-                        <div class="text-center py-8 text-slate-500 text-sm">Belum ada komentar.</div>
+                        <div class="text-center py-2 text-muted fs-sm">Belum ada komentar.</div>
                         [[end]]
                     </div>
                 </section>
 
-                <div class="mt-8 text-center">
-                    <a href="/ideas" class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:underline"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Kembali ke semua ide</a>
+                <div class="mt-2 text-center">
+                    <a href="/ideas" class="d-inline-flex align-items-center gap-1 fs-sm fw-medium text-primary "><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Kembali ke semua ide</a>
                 </div>
             </div>
         </main>
     </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

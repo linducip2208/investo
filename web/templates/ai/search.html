@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,14 +44,14 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="aiSearch()">
+<body class="h-100 d-flex" x-data="aiSearch()">
     <!-- SIDEBAR -->
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -76,8 +76,8 @@
   <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" />
 </svg></span> Screener</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">AI Tools</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">AI Tools</p>
             <a href="/ai/search" class="sidebar-link active"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6" />
@@ -95,8 +95,8 @@
   <path d="M9 13l6 0" />
   <path d="M9 17l6 0" />
 </svg></span> Report Gen</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -114,7 +114,7 @@
   <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
 </svg></span> Alert</a>
         </nav>
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-2 border-top border dark:border-slate-800">
             <a href="/pengaturan" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
@@ -130,43 +130,43 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex items-center gap-3">
-                <span class="text-2xl sparkle">🔮</span>
-                <h1 class="text-lg font-bold text-white">AI Smart Search</h1>
+    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="d-flex align-items-center gap-3">
+                <span class="fs-1 sparkle">🔮</span>
+                <h1 class="fs-3 fw-bold text-white">AI Smart Search</h1>
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <!-- Search Hero -->
-            <div class="card p-6 lg:p-8 text-center">
-                <span class="text-5xl mb-4 block sparkle">🔮</span>
-                <h2 class="text-xl lg:text-2xl font-bold text-white mb-2">Cari Saham dengan Bahasa Alami</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-lg mx-auto">Gunakan AI untuk mencari saham berdasarkan deskripsi, sektor, karakteristik, atau kriteria apapun dalam bahasa Indonesia.</p>
-                <div class="max-w-xl mx-auto relative">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-lg sparkle">✨</span>
+            <div class="card p-2 p-lg-5 text-center">
+                <span class="display-5 mb-2 d-block sparkle">🔮</span>
+                <h2 class="fs-2 fs-1 fw-bold text-white mb-2">Cari Saham dengan Bahasa Alami</h2>
+                <p class="text-muted dark:text-slate-400 fs-sm mb-2 max-w-lg mx-auto">Gunakan AI untuk mencari saham berdasarkan deskripsi, sektor, karakteristik, atau kriteria apapun dalam bahasa Indonesia.</p>
+                <div class="max-w-xl mx-auto position-relative">
+                    <span class="position-absolute left-4 top-50 translate-middle-y fs-3 sparkle">✨</span>
                     <input type="text" x-model="query" @keydown.enter="search()"
                            placeholder="Contoh: saham bank dengan dividen tinggi..."
-                           class="pl-12 pr-4 py-3.5 text-base">
+                           class="ps-2 pe-2 py-2 fs-base">
                     <button @click="search()" :disabled="!query || loading"
-                            class="btn btn-primary absolute right-2 top-1/2 -translate-y-1/2 py-2 px-4"
+                            class="btn btn-primary position-absolute end-2 top-50 translate-middle-y py-2 px-2"
                             :class="{'opacity-50 cursor-not-allowed': !query || loading}">
                         <span x-show="!loading">🔍 Cari</span>
-                        <span x-show="loading" class="flex items-center gap-1">
-                            <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                        <span x-show="loading" class="d-flex align-items-center gap-1">
+                            <svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
                         </span>
                     </button>
                 </div>
             </div>
 
             <!-- Example Queries -->
-            <div class="flex flex-wrap gap-2" x-show="!results.length && !loading">
+            <div class="d-flex flex-wrap gap-2" x-show="!results.length && !loading">
                 <button class="example-chip" @click="tryQuery('Saham perbankan dengan dividen tinggi')">🏦 Saham perbankan dengan dividen tinggi</button>
                 <button class="example-chip" @click="tryQuery('Saham teknologi yang sedang turun')">💻 Saham teknologi yang sedang turun</button>
                 <button class="example-chip" @click="tryQuery('Saham BUMN dengan PER rendah')">🏛️ Saham BUMN dengan PER rendah</button>
@@ -176,37 +176,37 @@
             </div>
 
             <!-- Loading -->
-            <div x-show="loading" class="space-y-3">
-                <div class="skeleton h-24 rounded-xl"></div>
-                <div class="skeleton h-24 rounded-xl"></div>
-                <div class="skeleton h-24 rounded-xl"></div>
+            <div x-show="loading" class="vstack gap-2">
+                <div class="skeleton h-24 rounded-3"></div>
+                <div class="skeleton h-24 rounded-3"></div>
+                <div class="skeleton h-24 rounded-3"></div>
             </div>
 
             <!-- Results -->
             <div x-show="results.length > 0">
-                <div class="flex items-center justify-between mb-4">
-                    <p class="text-sm text-slate-500 dark:text-slate-400"><span x-text="count"></span> hasil untuk "<span class="text-white font-medium" x-text="query"></span>"</p>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <p class="fs-sm text-muted dark:text-slate-400"><span x-text="count"></span> hasil untuk "<span class="text-white fw-medium" x-text="query"></span>"</p>
                 </div>
-                <div class="space-y-3">
+                <div class="vstack gap-2">
                     <template x-for="(r, i) in results" :key="i">
-                        <a :href="'/saham/' + r.code" class="result-card block">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-3 mb-1">
-                                        <span class="font-bold text-white font-mono text-sm" x-text="r.code"></span>
-                                        <span class="text-slate-500 dark:text-slate-400 text-sm" x-text="r.name"></span>
+                        <a :href="'/saham/' + r.code" class="result-card d-block">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div class="flex-fill">
+                                    <div class="d-flex align-items-center gap-3 mb-1">
+                                        <span class="fw-bold text-white font-monospace fs-sm" x-text="r.code"></span>
+                                        <span class="text-muted dark:text-slate-400 fs-sm" x-text="r.name"></span>
                                         <span x-show="r.change_pct !== 0"
-                                              :class="r.change_pct >= 0 ? 'text-success bg-emerald-900/20' : 'text-danger bg-red-900/20'"
-                                              class="text-xs px-1.5 py-0.5 rounded font-mono"
+                                              :class="r.change_pct >= 0 ? 'text-success bg-success-lt' : 'text-danger bg-danger-lt'"
+                                              class="fs-xs px-1 py-0 rounded font-monospace"
                                               x-text="(r.change_pct >= 0 ? '+' : '') + (r.change_pct||0).toFixed(1) + '%'"></span>
                                     </div>
-                                    <p class="text-xs text-slate-500" x-text="r.match_reason"></p>
+                                    <p class="fs-xs text-muted" x-text="r.match_reason"></p>
                                 </div>
-                                <div class="text-right ml-4">
-                                    <div class="font-mono text-white font-semibold text-sm" x-text="'Rp ' + Math.round(r.price||0).toLocaleString('id-ID')"></div>
-                                    <div class="flex gap-3 mt-1 text-[10px] text-slate-500">
-                                        <span x-show="r.per > 0">PER <span class="text-slate-700 dark:text-slate-300 font-mono" x-text="(r.per||0).toFixed(1) + 'x'"></span></span>
-                                        <span x-show="r.dividend_yield > 0">Div <span class="text-slate-700 dark:text-slate-300 font-mono" x-text="(r.dividend_yield||0).toFixed(2) + '%'"></span></span>
+                                <div class="text-end ms-2">
+                                    <div class="font-monospace text-white fw-semibold fs-sm" x-text="'Rp ' + Math.round(r.price||0).toLocaleString('id-ID')"></div>
+                                    <div class="d-flex gap-3 mt-1 fs-6 text-muted">
+                                        <span x-show="r.per > 0">PER <span class="text-body dark:text-slate-300 font-monospace" x-text="(r.per||0).toFixed(1) + 'x'"></span></span>
+                                        <span x-show="r.dividend_yield > 0">Div <span class="text-body dark:text-slate-300 font-monospace" x-text="(r.dividend_yield||0).toFixed(2) + '%'"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -216,10 +216,10 @@
             </div>
 
             <!-- No Results -->
-            <div x-show="!loading && searched && !results.length" class="card p-12 text-center">
-                <span class="text-4xl block mb-3">🔍</span>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Tidak ada hasil untuk "<span class="text-white" x-text="query"></span>"</p>
-                <p class="text-slate-600 text-xs mt-1">Coba query lain atau gunakan kata kunci yang berbeda</p>
+            <div x-show="!loading && searched && !results.length" class="card p-2 text-center">
+                <span class="display-6 d-block mb-2">🔍</span>
+                <p class="text-muted dark:text-slate-400 fs-sm">Tidak ada hasil untuk "<span class="text-white" x-text="query"></span>"</p>
+                <p class="text-muted fs-xs mt-1">Coba query lain atau gunakan kata kunci yang berbeda</p>
             </div>
         </main>
     </div>
@@ -258,6 +258,6 @@
             }
         }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

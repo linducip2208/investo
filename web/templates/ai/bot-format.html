@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,124 +36,124 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false, result: null, platform: 'slack', command: '/analyze', code: 'BBCA', copied: false, loading: false }">
-    <aside x-data :class="{'open': sidebarOpen}" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-[#1e293b] z-40 flex flex-col overflow-y-auto max-md:hidden">
-        <div class="p-5 border-b border-slate-200 dark:border-[#1e293b]"><a href="/dashboard" class="flex items-center gap-3 text-white no-underline"><span class="text-2xl">💹</span><span class="font-display font-bold text-lg">Investo</span></a></div>
-        <div class="p-4 space-y-1 flex-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">AI Tools</div>
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false, result: null, platform: 'slack', command: '/analyze', code: 'BBCA', copied: false, loading: false }">
+    <aside x-data :class="{'open': sidebarOpen}" class="sidebar position-fixed start-0 top-0 h-100 w-64 bg-white dark:bg-[#0f172a] border-end border dark:border-[#1e293b] z-2 d-flex flex-column overflow-y-auto d-none d-md-block">
+        <div class="p-2 border-bottom border dark:border-[#1e293b]"><a href="/dashboard" class="d-flex align-items-center gap-3 text-white text-decoration-none"><span class="fs-1">💹</span><span class=" fw-bold fs-3">Investo</span></a></div>
+        <div class="p-2 vstack gap-1 flex-fill">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">AI Tools</div>
             <a href="/ai/webhooks" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Webhooks</a>
             <a href="/ai/bot-format" class="sidebar-link active"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>Bot Format</a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Menu Utama</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Menu Utama</div>
             <a href="/dashboard" class="sidebar-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
         </div>
-        <div class="p-4 border-t border-slate-200 dark:border-[#1e293b]"><div class="flex items-center gap-3"><span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">[[slice .User.Name 0 1]]</span><div><div class="text-sm font-medium text-white">[[.User.Name]]</div><form action="/logout" method="POST" class="mt-1"><button class="text-xs text-slate-500 hover:text-red-400 transition-colors">Keluar</button></form></div></div></div>
+        <div class="p-2 border-top border dark:border-[#1e293b]"><div class="d-flex align-items-center gap-3"><span class="w-8 h-8 bg-primary text-white rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold">[[slice .User.Name 0 1]]</span><div><div class="fs-sm fw-medium text-white">[[.User.Name]]</div><form action="/logout" method="POST" class="mt-1"><button class="fs-xs text-muted  ">Keluar</button></form></div></div></div>
     </aside>
 
-    <div class="flex-1 ml-64 max-lg:ml-0 flex flex-col min-h-full">
-        <header class="sticky top-0 z-30 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1e293b]">
-            <div class="flex items-center justify-between px-6 py-3">
-                <div class="flex items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-[#1e293b] transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-                    <h1 class="text-lg font-semibold text-white">Slack/Discord Bot Format</h1>
+    <div class="flex-fill app-offset-wide d-flex flex-column min-h-full">
+        <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
+            <div class="d-flex align-items-center justify-content-between px-2 py-2">
+                <div class="d-flex align-items-center gap-3">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <h1 class="fs-3 fw-semibold text-white">Slack/Discord Bot Format</h1>
                 </div>
-                <a href="/dashboard" class="px-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-white hover:bg-white dark:hover:bg-[#1e293b] rounded-lg transition-colors">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
             </div>
         </header>
 
-        <main class="flex-1 p-6">
-            <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
-            <div class="max-w-4xl mx-auto space-y-6">
-                <div class="card p-8">
-                    <h2 class="text-xl font-bold text-white mb-6">Generate Bot Message</h2>
+        <main class="flex-fill p-2">
+            <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('d-none d-md-block');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 "></div>
+            <div class="max-w-4xl mx-auto vstack gap-4">
+                <div class="card p-2">
+                    <h2 class="fs-2 fw-bold text-white mb-2">Generate Bot Message</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="row row-cols-1 row-cols-md-3 gap-4 mb-2">
                         <div>
-                            <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">Platform</label>
-                            <select x-model="platform" class="w-full bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#334155] rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                            <label class="d-block fs-sm text-muted dark:text-slate-400 mb-2">Platform</label>
+                            <select x-model="platform" class="w-100 bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 px-2 py-2 text-white  ">
                                 <option value="slack">Slack</option>
                                 <option value="discord">Discord</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">Command</label>
-                            <select x-model="command" class="w-full bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#334155] rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                            <label class="d-block fs-sm text-muted dark:text-slate-400 mb-2">Command</label>
+                            <select x-model="command" class="w-100 bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 px-2 py-2 text-white  ">
                                 <option value="/analyze">/analyze</option>
                                 <option value="/signal">/signal</option>
                                 <option value="/portfolio">/portfolio</option>
                             </select>
                         </div>
                         <div x-show="command === '/analyze'">
-                            <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">Kode Saham</label>
-                            <input x-model="code" type="text" placeholder="BBCA" class="w-full bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#334155] rounded-xl px-4 py-2.5 text-white font-mono uppercase focus:outline-none focus:border-blue-500" maxlength="4">
+                            <label class="d-block fs-sm text-muted dark:text-slate-400 mb-2">Kode Saham</label>
+                            <input x-model="code" type="text" placeholder="BBCA" class="w-100 bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 px-2 py-2 text-white font-monospace text-uppercase  " maxlength="4">
                         </div>
                     </div>
 
                     <button @click="generateMessage()" :disabled="loading"
-                            class="w-full py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                            class="w-100 py-2 bg-primary text-white fw-medium rounded-3  disabled:opacity-50 ">
                         <span x-text="loading ? 'Generating...' : 'Generate Message'">Generate Message</span>
                     </button>
                 </div>
 
                 <template x-if="result">
-                    <div class="card p-8">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm font-semibold text-white" x-text="result.platform === 'discord' ? 'Discord' : 'Slack'"></span>
-                                <span class="bg-blue-900/40 text-blue-400 text-xs px-2 py-0.5 rounded-full font-mono" x-text="result.command"></span>
+                    <div class="card p-2">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fs-sm fw-semibold text-white" x-text="result.platform === 'discord' ? 'Discord' : 'Slack'"></span>
+                                <span class="bg-primary bg-opacity-50 text-primary fs-xs px-2 py-0 rounded-pill font-monospace" x-text="result.command"></span>
                             </div>
                             <button @click="copyToClipboard()"
-                                    class="flex items-center gap-2 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-white border border-slate-200 dark:border-[#334155] rounded-lg transition-colors">
+                                    class="d-flex align-items-center gap-2 px-2 py-2 fs-sm text-muted dark:text-slate-400  border border dark:border-[#334155] rounded-2 ">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                                 <span x-text="copied ? 'Tersalin!' : 'Copy'">Copy</span>
                             </button>
                         </div>
 
-                        <div class="chat-bubble bg-white dark:bg-[#0f172a] text-slate-700 dark:text-slate-300" x-text="result.raw_format || result.message"></div>
+                        <div class="chat-bubble bg-white dark:bg-[#0f172a] text-body dark:text-slate-300" x-text="result.raw_format || result.message"></div>
                     </div>
                 </template>
 
-                <div class="card p-6">
-                    <h3 class="text-sm font-semibold text-white mb-3">Perintah yang Tersedia</h3>
-                    <div class="space-y-2">
-                        <div class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e293b] rounded-lg p-3 flex items-center justify-between cursor-pointer hover:border-blue-500 transition-colors"
+                <div class="card p-2">
+                    <h3 class="fs-sm fw-semibold text-white mb-2">Perintah yang Tersedia</h3>
+                    <div class="vstack gap-2">
+                        <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-2 p-2 d-flex align-items-center justify-content-between cursor-pointer  "
                              @click="command='/analyze';code='BBCA'">
                             <div>
-                                <span class="font-mono text-blue-400 font-semibold text-sm">/analyze BBCA</span>
-                                <p class="text-xs text-slate-500 mt-1">Analisis saham dalam format chat</p>
+                                <span class="font-monospace text-primary fw-semibold fs-sm">/analyze BBCA</span>
+                                <p class="fs-xs text-muted mt-1">Analisis saham dalam format chat</p>
                             </div>
-                            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e293b] rounded-lg p-3 flex items-center justify-between cursor-pointer hover:border-blue-500 transition-colors"
+                        <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-2 p-2 d-flex align-items-center justify-content-between cursor-pointer  "
                              @click="command='/signal'">
                             <div>
-                                <span class="font-mono text-blue-400 font-semibold text-sm">/signal</span>
-                                <p class="text-xs text-slate-500 mt-1">Ringkasan sinyal trading terbaru</p>
+                                <span class="font-monospace text-primary fw-semibold fs-sm">/signal</span>
+                                <p class="fs-xs text-muted mt-1">Ringkasan sinyal trading terbaru</p>
                             </div>
-                            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </div>
-                        <div class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e293b] rounded-lg p-3 flex items-center justify-between cursor-pointer hover:border-blue-500 transition-colors"
+                        <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-2 p-2 d-flex align-items-center justify-content-between cursor-pointer  "
                              @click="command='/portfolio'">
                             <div>
-                                <span class="font-mono text-blue-400 font-semibold text-sm">/portfolio</span>
-                                <p class="text-xs text-slate-500 mt-1">Ringkasan performa portofolio</p>
+                                <span class="font-monospace text-primary fw-semibold fs-sm">/portfolio</span>
+                                <p class="fs-xs text-muted mt-1">Ringkasan performa portofolio</p>
                             </div>
-                            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </div>
                     </div>
                 </div>
 
-                <div class="card p-6">
-                    <h3 class="text-sm font-semibold text-white mb-3">Webhook URL</h3>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="https://hooks.slack.com/services/..." class="flex-1 bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#334155] rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500">
-                        <button class="px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">Simpan</button>
+                <div class="card p-2">
+                    <h3 class="fs-sm fw-semibold text-white mb-2">Webhook URL</h3>
+                    <div class="d-flex gap-2">
+                        <input type="text" placeholder="https://hooks.slack.com/services/..." class="flex-fill bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-2 px-2 py-2 fs-sm text-white   ">
+                        <button class="px-2 py-2 bg-success text-white fs-sm fw-medium rounded-2  ">Simpan</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden fixed bottom-6 left-6 z-50 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none position-fixed bottom-6 left-6 z-3 w-12 h-12 bg-primary text-white rounded-pill shadow-lg d-flex align-items-center justify-content-center  ">
         <svg x-show="!sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         <svg x-show="sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
@@ -191,6 +191,6 @@ document.addEventListener('alpine:init', () => {
     };
 });
 </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

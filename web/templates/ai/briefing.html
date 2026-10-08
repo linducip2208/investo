@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,18 +44,18 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="{ sidebarOpen: false, regenerating: false }">
+<body class="h-100 d-flex" x-data="{ sidebarOpen: false, regenerating: false }">
     <aside x-data
            :class="{'open': sidebarOpen}"
-           class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-[#1e293b] z-40 flex flex-col overflow-y-auto max-md:hidden">
-        <div class="p-5 border-b border-slate-200 dark:border-[#1e293b]">
-            <a href="/dashboard" class="flex items-center gap-3 text-white no-underline">
-                <span class="text-2xl">💹</span>
-                <span class="font-display font-bold text-lg">Investo</span>
+           class="sidebar position-fixed start-0 top-0 h-100 w-64 bg-white dark:bg-[#0f172a] border-end border dark:border-[#1e293b] z-2 d-flex flex-column overflow-y-auto d-none d-md-block">
+        <div class="p-2 border-bottom border dark:border-[#1e293b]">
+            <a href="/dashboard" class="d-flex align-items-center gap-3 text-white text-decoration-none">
+                <span class="fs-1">💹</span>
+                <span class=" fw-bold fs-3">Investo</span>
             </a>
         </div>
-        <div class="p-4 space-y-1 flex-1">
-            <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">AI Tools</div>
+        <div class="p-2 vstack gap-1 flex-fill">
+            <div class="px-2 py-2 fs-xs fw-semibold text-muted text-uppercase ">AI Tools</div>
             <a href="/ai/briefing" class="sidebar-link active">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                 Market Briefing
@@ -64,7 +64,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 Risk Assessment
             </a>
-            <div class="px-3 pt-5 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Menu Utama</div>
+            <div class="px-2 pt-2 pb-2 fs-xs fw-semibold text-muted text-uppercase ">Menu Utama</div>
             <a href="/dashboard" class="sidebar-link">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Dashboard
@@ -74,51 +74,51 @@
                 Briefing
             </a>
         </div>
-        <div class="p-4 border-t border-slate-200 dark:border-[#1e293b]">
-            <div class="flex items-center gap-3">
-                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">[[slice .User.Name 0 1]]</span>
+        <div class="p-2 border-top border dark:border-[#1e293b]">
+            <div class="d-flex align-items-center gap-3">
+                <span class="w-8 h-8 bg-primary text-white rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold">[[slice .User.Name 0 1]]</span>
                 <div>
-                    <div class="text-sm font-medium text-white">[[.User.Name]]</div>
+                    <div class="fs-sm fw-medium text-white">[[.User.Name]]</div>
                     <form action="/logout" method="POST" class="mt-1">
-                        <button class="text-xs text-slate-500 hover:text-red-400 transition-colors">Keluar</button>
+                        <button class="fs-xs text-muted  ">Keluar</button>
                     </form>
                 </div>
             </div>
         </div>
     </aside>
 
-    <div class="flex-1 ml-64 max-lg:ml-0 flex flex-col min-h-full">
-        <header class="sticky top-0 z-30 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1e293b]">
-            <div class="flex items-center justify-between px-6 py-3">
-                <div class="flex items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white rounded-lg hover:bg-white dark:hover:bg-[#1e293b] transition-colors">
+    <div class="flex-fill app-offset-wide d-flex flex-column min-h-full">
+        <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
+            <div class="d-flex align-items-center justify-content-between px-2 py-2">
+                <div class="d-flex align-items-center gap-3">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] ">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <h1 class="text-lg font-semibold text-white">AI Market Briefing</h1>
-                    <span class="text-xs text-slate-500 bg-white dark:bg-[#1e293b] px-3 py-1 rounded-full">[[.Date]]</span>
+                    <h1 class="fs-3 fw-semibold text-white">AI Market Briefing</h1>
+                    <span class="fs-xs text-muted bg-white dark:bg-[#1e293b] px-2 py-1 rounded-pill">[[.Date]]</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <a href="/dashboard" class="px-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-white hover:bg-white dark:hover:bg-[#1e293b] rounded-lg transition-colors">Dashboard</a>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-6">
-            <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')" class="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"></div>
+        <main class="flex-fill p-2">
+            <div x-show="sidebarOpen" onclick="document.getElementById('sidebar').classList.add('d-none d-md-block');document.getElementById('sb-overlay').classList.add('hidden')" class="d-lg-none position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 "></div>
 
             <div class="max-w-4xl mx-auto">
-                <div class="card p-8 mb-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 gradient-blue rounded-xl flex items-center justify-center text-white text-xl">🤖</div>
+                <div class="card p-2 mb-2">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="w-10 h-10 gradient-blue rounded-3 d-flex align-items-center justify-content-center text-white fs-2">🤖</div>
                             <div>
-                                <h2 class="text-xl font-bold text-white">Market Briefing</h2>
-                                <p class="text-sm text-slate-500 dark:text-slate-400">[[.Date]]</p>
+                                <h2 class="fs-2 fw-bold text-white">Market Briefing</h2>
+                                <p class="fs-sm text-muted dark:text-slate-400">[[.Date]]</p>
                             </div>
                         </div>
                         <button @click="regenerating=true;location.reload()"
                                 :disabled="regenerating"
-                                class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                                class="d-flex align-items-center gap-2 px-2 py-2 bg-primary text-white fs-sm fw-medium rounded-2  disabled:opacity-50 ">
                             <svg class="w-4 h-4" :class="{'animate-spin': regenerating}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                             <span x-text="regenerating ? 'Generating...' : 'Regenerate'">Regenerate</span>
                         </button>
@@ -129,21 +129,21 @@
                     </div>
                 </div>
 
-                <div class="card p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-sm text-slate-500 dark:text-slate-400">Konten dihasilkan oleh AI. Selalu lakukan riset mandiri sebelum mengambil keputusan investasi.</span>
+                <div class="card p-2">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span class="fs-sm text-muted dark:text-slate-400">Konten dihasilkan oleh AI. Selalu lakukan riset mandiri sebelum mengambil keputusan investasi.</span>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')"
-            class="lg:hidden fixed bottom-6 left-6 z-50 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')"
+            class="d-lg-none position-fixed bottom-6 left-6 z-3 w-12 h-12 bg-primary text-white rounded-pill shadow-lg d-flex align-items-center justify-content-center  ">
         <svg x-show="!sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         <svg x-show="sidebarOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

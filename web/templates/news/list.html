@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
 <script>
   var dm = localStorage.getItem('investo-dark-mode');
@@ -35,56 +35,56 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-white text-slate-800 font-sans antialiased dark:bg-slate-950 dark:text-slate-200">
+<body class="bg-white text-body  antialiased dark:bg-slate-950 dark:text-slate-200">
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5">
-                <span class="text-2xl">🏦</span>
-                <span class="font-display font-bold text-xl text-brand-600 dark:text-brand-400">Investo</span>
+<nav x-data="{ open: false }" class="position-sticky top-0 z-3 bg-white bg-opacity-75 dark:bg-slate-950/85  border-bottom border dark:border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2">
+                <span class="fs-1">🏦</span>
+                <span class=" fw-bold fs-2 text-primary dark:text-brand-400">Investo</span>
             </a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Beranda</a>
-                <a href="/docs" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Docs</a>
-                <a href="/blog" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Blog</a>
-                <a href="/berita" class="font-semibold text-brand-600 dark:text-brand-400">Berita</a>
-                <a href="/faq" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">FAQ</a>
-                <a href="/login" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-all">Masuk</a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Beranda</a>
+                <a href="/docs" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Docs</a>
+                <a href="/blog" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Blog</a>
+                <a href="/berita" class="fw-semibold text-primary dark:text-brand-400">Berita</a>
+                <a href="/faq" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">FAQ</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-muted dark:text-slate-300  dark:hover:bg-slate-800">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
     </div>
-    <div x-show="open" class="lg:hidden border-t border-slate-200/60 dark:border-slate-800/60 bg-white/95 dark:bg-slate-950/95" style="display:none;">
-        <div class="px-4 py-4 space-y-2">
-            <a href="/" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 rounded-xl">Beranda</a>
-            <a href="/docs" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 rounded-xl">Docs</a>
-            <a href="/blog" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 rounded-xl">Blog</a>
-            <a href="/berita" class="block px-4 py-2.5 text-sm font-semibold text-brand-600 dark:text-brand-400 rounded-xl">Berita</a>
-            <a href="/faq" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 rounded-xl">FAQ</a>
-            <a href="/login" class="block text-center text-sm font-semibold text-white bg-brand-600 px-4 py-2.5 rounded-xl">Masuk</a>
+    <div x-show="open" class="d-lg-none border-top border dark:border-slate-800/60 bg-white bg-opacity-100 dark:bg-slate-950/95" style="display:none;">
+        <div class="px-2 py-2 vstack gap-2">
+            <a href="/" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Beranda</a>
+            <a href="/docs" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Docs</a>
+            <a href="/blog" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Blog</a>
+            <a href="/berita" class="d-block px-2 py-2 fs-sm fw-semibold text-primary dark:text-brand-400 rounded-3">Berita</a>
+            <a href="/faq" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">FAQ</a>
+            <a href="/login" class="d-block text-center fs-sm fw-semibold text-white bg-primary px-2 py-2 rounded-3">Masuk</a>
         </div>
     </div>
 </nav>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-    <div class="grid lg:grid-cols-3 gap-10 lg:gap-12">
+<div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 py-2 py-lg-5">
+    <div class="row row-cols-lg-3 gap-6 gap-lg-6">
 
-        <div class="lg:col-span-2">
-            <div class="mb-8 reveal">
-                <h1 class="font-display text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-3">Berita Pasar Modal</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">Update terkini seputar saham, forex, ekonomi, dan corporate action dari pasar modal Indonesia.</p>
+        <div class="col-lg-8">
+            <div class="mb-2 reveal">
+                <h1 class=" fs-1 display-6 fw-bold text-body dark:text-white mb-2">Berita Pasar Modal</h1>
+                <p class="text-muted dark:text-slate-400 fs-3">Update terkini seputar saham, forex, ekonomi, dan corporate action dari pasar modal Indonesia.</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 mb-8 reveal">
-                <div class="relative flex-1">
-                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" placeholder="Cari berita..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+            <div class="d-flex flex-column flex-sm-row gap-4 mb-2 reveal">
+                <div class="position-relative flex-fill">
+                    <svg class="position-absolute left-3.5 top-50 translate-middle-y w-4 h-4 text-muted dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Cari berita..." class="w-100 ps-2 pe-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-900 fs-sm     ">
                 </div>
-                <select class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-600 dark:text-slate-300 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
+                <select class="px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-900 fs-sm text-muted dark:text-slate-300    cursor-pointer">
                     <option value="">Semua Sumber</option>
                     [[range .Sources]]
                     <option value="[[.Slug]]">[[.Name]]</option>
@@ -92,23 +92,23 @@
                 </select>
             </div>
 
-            <div class="space-y-5">
+            <div class="vstack gap-3">
                 [[range .News]]
-                <div class="card-lift bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 lg:p-6 reveal">
-                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full">[[.Source]]</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">[[.PublishedAt]]</span>
+                <div class="card-lift bg-white dark:bg-slate-900 border border dark:border-slate-800 rounded-4 p-2 p-lg-4 reveal">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between gap-2 mb-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="fs-xs fw-semibold px-2 py-1 bg-body dark:bg-slate-800 text-muted dark:text-slate-300 rounded-pill">[[.Source]]</span>
+                            <span class="fs-xs text-muted dark:text-slate-400">[[.PublishedAt]]</span>
                         </div>
                     </div>
-                    <a href="/berita/[[.Slug]]" class="block group">
-                        <h3 class="font-display text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-snug mb-2">[[.Title]]</h3>
+                    <a href="/berita/[[.Slug]]" class="d-block ">
+                        <h3 class=" fs-3 fw-bold text-body dark:text-white  dark:group-hover:text-brand-400  lh-sm mb-2">[[.Title]]</h3>
                     </a>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-3">[[.Excerpt]]</p>
+                    <p class="text-muted dark:text-slate-400 fs-sm lh-lg mb-2">[[.Excerpt]]</p>
                     [[if .RelatedStocks]]
-                    <div class="flex flex-wrap gap-1.5">
+                    <div class="d-flex flex-wrap gap-1">
                         [[range .RelatedStocks]]
-                        <a href="/saham/[[.Code]]" class="text-xs font-mono font-medium px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">[[.Code]]</a>
+                        <a href="/saham/[[.Code]]" class="fs-xs font-monospace fw-medium px-2 py-0 bg-primary dark:bg-info-lt text-primary dark:text-blue-400 rounded  dark:hover:bg-blue-900/40 ">[[.Code]]</a>
                         [[end]]
                     </div>
                     [[end]]
@@ -117,61 +117,61 @@
             </div>
 
             [[if not .News]]
-            <div class="text-center py-20 reveal">
-                <div class="text-5xl mb-4">📰</div>
-                <h3 class="font-display text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Belum ada berita</h3>
-                <p class="text-slate-500 dark:text-slate-400">Berita pasar modal akan muncul di sini.</p>
+            <div class="text-center py-2 reveal">
+                <div class="display-5 mb-2">📰</div>
+                <h3 class=" fs-2 fw-bold text-body dark:text-slate-300 mb-2">Belum ada berita</h3>
+                <p class="text-muted dark:text-slate-400">Berita pasar modal akan muncul di sini.</p>
             </div>
             [[end]]
 
             [[if .HasPages]]
-            <div class="flex items-center justify-center gap-2 mt-10 reveal">
+            <div class="d-flex align-items-center justify-content-center gap-2 mt-2 reveal">
                 [[if .HasPrev]]
-                <a href="?page=[[.PrevPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium transition-all">&laquo; Sebelumnya</a>
+                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">&laquo; Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
-                <a href="?page=[[.]]" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium [[if . | eq $.CurrentPage]]bg-brand-600 text-white[[else]]border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800[[end]] transition-all">[[.]]</a>
+                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-brand-600 text-white[[else]]border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800[[end]] ">[[.]]</a>
                 [[end]]
                 [[if .HasNext]]
-                <a href="?page=[[.NextPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium transition-all">Selanjutnya &raquo;</a>
+                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">Selanjutnya &raquo;</a>
                 [[end]]
             </div>
             [[end]]
         </div>
 
-        <aside class="lg:col-span-1">
-            <div class="lg:sticky lg:top-24 space-y-8">
-                <div class="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 reveal">
-                    <h4 class="font-display text-lg font-bold text-slate-900 dark:text-white mb-4">Sumber Berita</h4>
-                    <ul class="space-y-2">
+        <aside class="col">
+            <div class="position-sticky top-24 vstack gap-5">
+                <div class="bg-body dark:bg-slate-900 border border dark:border-slate-800 rounded-4 p-2 reveal">
+                    <h4 class=" fs-3 fw-bold text-body dark:text-white mb-2">Sumber Berita</h4>
+                    <ul class="vstack gap-2">
                         [[range .Sources]]
                         <li>
-                            <a href="/berita?source=[[.Slug]]" class="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors py-1">
+                            <a href="/berita?source=[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm text-muted dark:text-slate-300  dark:hover:text-brand-400  py-1">
                                 <span>[[.Name]]</span>
-                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">[[.NewsCount]]</span>
+                                <span class="fs-xs text-muted dark:text-slate-400 bg-body dark:bg-slate-800 px-2 py-0 rounded-pill">[[.NewsCount]]</span>
                             </a>
                         </li>
                         [[end]]
                     </ul>
                 </div>
 
-                <div class="bg-gradient-to-br from-brand-600 to-brand-800 rounded-2xl p-6 text-white reveal">
-                    <h4 class="font-display text-lg font-bold mb-2">Beli Aplikasi Saham</h4>
-                    <p class="text-blue-100 text-sm leading-relaxed mb-4">Source code lengkap dengan fitur berita aggregator, sentiment analysis, dan integrasi multi-sumber.</p>
-                    <a href="/beli-aplikasi-saham" class="block text-center bg-white text-brand-700 font-semibold text-sm py-2.5 rounded-xl hover:bg-blue-50 transition-all">Lihat Detail &raquo;</a>
+                <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 text-white reveal">
+                    <h4 class=" fs-3 fw-bold mb-2">Beli Aplikasi Saham</h4>
+                    <p class="text-primary fs-sm lh-lg mb-2">Source code lengkap dengan fitur berita aggregator, sentiment analysis, dan integrasi multi-sumber.</p>
+                    <a href="/beli-aplikasi-saham" class="d-block text-center bg-white text-primary fw-semibold fs-sm py-2 rounded-3  ">Lihat Detail &raquo;</a>
                 </div>
             </div>
         </aside>
     </div>
 </div>
 
-<footer class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 py-10 border-t border-slate-200 dark:border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="flex items-center justify-center gap-2 mb-4">
-            <span class="text-xl">🏦</span>
-            <span class="font-display font-bold text-lg text-white">Investo</span>
+<footer class="bg-body dark:bg-slate-900 text-body dark:text-slate-300 py-2 border-top border dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <span class="fs-2">🏦</span>
+            <span class=" fw-bold fs-3 text-white">Investo</span>
         </div>
-        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go.</p>
+        <p class="text-muted fs-sm">&copy; 2026 Investo. Powered by Go.</p>
     </div>
 </footer>
 

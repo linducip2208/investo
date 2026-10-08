@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,78 +34,78 @@
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5">
-                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-sm">I</span>
+<nav x-data="{ open: false }" class="position-sticky top-0 z-3 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2">
+                <div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center">
+                    <span class="text-white fw-bold fs-sm">I</span>
                 </div>
-                <span class="font-bold text-xl text-white">Investo</span>
+                <span class="fw-bold fs-2 text-white">Investo</span>
             </a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/docs" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
-                <a href="/blog" class="text-blue-400 font-semibold">Blog</a>
-                <a href="/faq" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">FAQ</a>
-                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-body dark:text-slate-300  ">Beranda</a>
+                <a href="/docs" class="text-body dark:text-slate-300  ">Docs</a>
+                <a href="/blog" class="text-primary fw-semibold">Blog</a>
+                <a href="/faq" class="text-body dark:text-slate-300  ">FAQ</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-body dark:text-slate-300  dark:hover:bg-slate-800">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
     </div>
-    <div x-show="open" class="lg:hidden border-t border-slate-200/50 dark:border-slate-700/50 bg-[#f4f6fb]/95 dark:bg-[#0b1120]/95" style="display:none;">
-        <div class="px-4 py-4 space-y-2">
-            <a href="/" class="block px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 rounded-xl hover:bg-white dark:hover:bg-slate-800">Beranda</a>
-            <a href="/docs" class="block px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 rounded-xl hover:bg-white dark:hover:bg-slate-800">Docs</a>
-            <a href="/blog" class="block px-4 py-2.5 text-sm font-semibold text-blue-400 rounded-xl hover:bg-white dark:hover:bg-slate-800">Blog</a>
-            <a href="/faq" class="block px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 rounded-xl hover:bg-white dark:hover:bg-slate-800">FAQ</a>
-            <a href="/login" class="block text-center text-sm font-semibold text-white bg-blue-600 px-4 py-2.5 rounded-xl">Masuk</a>
+    <div x-show="open" class="d-lg-none border-top border dark:border-slate-700/50 bg-body bg-opacity-100 dark:bg-[#0b1120]/95" style="display:none;">
+        <div class="px-2 py-2 vstack gap-2">
+            <a href="/" class="d-block px-2 py-2 fs-sm text-body dark:text-slate-300 rounded-3  dark:hover:bg-slate-800">Beranda</a>
+            <a href="/docs" class="d-block px-2 py-2 fs-sm text-body dark:text-slate-300 rounded-3  dark:hover:bg-slate-800">Docs</a>
+            <a href="/blog" class="d-block px-2 py-2 fs-sm fw-semibold text-primary rounded-3  dark:hover:bg-slate-800">Blog</a>
+            <a href="/faq" class="d-block px-2 py-2 fs-sm text-body dark:text-slate-300 rounded-3  dark:hover:bg-slate-800">FAQ</a>
+            <a href="/login" class="d-block text-center fs-sm fw-semibold text-white bg-primary px-2 py-2 rounded-3">Masuk</a>
         </div>
     </div>
 </nav>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-    <div class="grid lg:grid-cols-3 gap-10 lg:gap-12">
-        <div class="lg:col-span-2">
-            <div class="mb-10 reveal">
-                <h1 class="text-3xl lg:text-4xl font-bold text-white mb-3">Blog Investo</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-base">Artikel, tutorial, dan insight seputar investasi saham, forex, dan analisa pasar modal.</p>
+<div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 py-2 py-lg-5">
+    <div class="row row-cols-lg-3 gap-6 gap-lg-6">
+        <div class="col-lg-8">
+            <div class="mb-2 reveal">
+                <h1 class="fs-1 display-6 fw-bold text-white mb-2">Blog Investo</h1>
+                <p class="text-muted dark:text-slate-400 fs-base">Artikel, tutorial, dan insight seputar investasi saham, forex, dan analisa pasar modal.</p>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-10 reveal" x-data="{ active: 'semua' }">
-                <button @click="active = 'semua'" :class="active === 'semua' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-700'" class="px-4 py-2 rounded-full text-sm font-medium transition-all">Semua</button>
+            <div class="d-flex flex-wrap gap-2 mb-2 reveal" x-data="{ active: 'semua' }">
+                <button @click="active = 'semua'" :class="active === 'semua' ? 'bg-primary text-white' : 'bg-body text-body dark:text-slate-300 " class="px-2 py-2 rounded-pill fs-sm fw-medium ">Semua</button>
                 [[range .Categories]]
-                <button @click="active = '[[.Slug]]'" :class="active === '[[.Slug]]' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-700'" class="px-4 py-2 rounded-full text-sm font-medium transition-all">[[.Name]]</button>
+                <button @click="active = '[[.Slug]]'" :class="active === '[[.Slug]]' ? 'bg-primary text-white' : 'bg-body text-body dark:text-slate-300 " class="px-2 py-2 rounded-pill fs-sm fw-medium ">[[.Name]]</button>
                 [[end]]
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
+            <div class="row row-cols-sm-2 gap-6 gap-lg-5">
                 [[range .Posts]]
                 <article class="card-lift card overflow-hidden reveal">
-                    <a href="/blog/[[.Slug]]" class="block">
-                        <div class="aspect-video bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                    <a href="/blog/[[.Slug]]" class="d-block">
+                        <div class="aspect-video bg-white dark:bg-slate-800 d-flex align-items-center justify-content-center overflow-hidden">
                             [[if .FeaturedImage]]
-                            <img src="[[.FeaturedImage]]" alt="[[.Title]]" class="w-full h-full object-cover">
+                            <img src="[[.FeaturedImage]]" alt="[[.Title]]" class="w-100 h-100 object-cover">
                             [[else]]
-                            <div class="w-full h-full bg-gradient-to-br from-blue-900/20 to-blue-950/10 flex items-center justify-center">
-                                <span class="text-4xl opacity-25">📝</span>
+                            <div class="w-100 h-100 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center">
+                                <span class="display-6 opacity-25">📝</span>
                             </div>
                             [[end]]
                         </div>
                     </a>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-xs font-semibold px-2.5 py-1 bg-blue-900/30 text-blue-300 rounded-full">[[.CategoryName]]</span>
-                            <span class="text-xs text-slate-500">[[.ReadTime]] menit baca</span>
+                    <div class="p-2">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="fs-xs fw-semibold px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-pill">[[.CategoryName]]</span>
+                            <span class="fs-xs text-muted">[[.ReadTime]] menit baca</span>
                         </div>
-                        <a href="/blog/[[.Slug]]" class="block group">
-                            <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors leading-snug mb-2">[[.Title]]</h3>
+                        <a href="/blog/[[.Slug]]" class="d-block ">
+                            <h3 class="fs-3 fw-bold text-white   lh-sm mb-2">[[.Title]]</h3>
                         </a>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">[[.Excerpt]]</p>
-                        <div class="flex items-center gap-3 text-xs text-slate-500">
+                        <p class="text-muted dark:text-slate-400 fs-sm lh-lg line-clamp-2 mb-2">[[.Excerpt]]</p>
+                        <div class="d-flex align-items-center gap-3 fs-xs text-muted">
                             <span>[[.AuthorName]]</span>
                             <span>&middot;</span>
                             <span>[[.PublishedAt]]</span>
@@ -116,77 +116,77 @@
             </div>
 
             [[if not .Posts]]
-            <div class="text-center py-20 reveal">
-                <div class="text-5xl mb-4">📭</div>
-                <h3 class="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Belum ada artikel</h3>
-                <p class="text-slate-500">Blog post akan muncul di sini setelah dipublikasikan.</p>
+            <div class="text-center py-2 reveal">
+                <div class="display-5 mb-2">📭</div>
+                <h3 class="fs-2 fw-bold text-body dark:text-slate-300 mb-2">Belum ada artikel</h3>
+                <p class="text-muted">Blog post akan muncul di sini setelah dipublikasikan.</p>
             </div>
             [[end]]
 
             [[if .HasPages]]
-            <div class="flex items-center justify-center gap-2 mt-12 reveal">
+            <div class="d-flex align-items-center justify-content-center gap-2 mt-2 reveal">
                 [[if .HasPrev]]
-                <a href="?page=[[.PrevPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium transition-all">&laquo; Sebelumnya</a>
+                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">&laquo; Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
-                <a href="?page=[[.]]" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium [[if . | eq $.CurrentPage]]bg-blue-600 text-white[[else]]border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-800[[end]] transition-all">[[.]]</a>
+                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-primary text-white[[else]]border border dark:border-slate-700 text-body dark:text-slate-300 hover:bg-slate-800[[end]] ">[[.]]</a>
                 [[end]]
                 [[if .HasNext]]
-                <a href="?page=[[.NextPage]]" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium transition-all">Selanjutnya &raquo;</a>
+                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">Selanjutnya &raquo;</a>
                 [[end]]
             </div>
             [[end]]
         </div>
 
-        <aside class="lg:col-span-1">
-            <div class="lg:sticky lg:top-24 space-y-8">
-                <div class="card p-6 reveal">
-                    <h4 class="text-lg font-bold text-white mb-4">Kategori</h4>
-                    <ul class="space-y-2">
+        <aside class="col">
+            <div class="position-sticky top-24 vstack gap-5">
+                <div class="card p-2 reveal">
+                    <h4 class="fs-3 fw-bold text-white mb-2">Kategori</h4>
+                    <ul class="vstack gap-2">
                         [[range .Categories]]
                         <li>
-                            <a href="/blog/category/[[.Slug]]" class="flex items-center justify-between text-sm text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors py-1">
+                            <a href="/blog/category/[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm text-body dark:text-slate-300   py-1">
                                 <span>[[.Name]]</span>
-                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full">[[.PostCount]]</span>
+                                <span class="fs-xs text-muted dark:text-slate-400 bg-white dark:bg-slate-800 px-2 py-0 rounded-pill">[[.PostCount]]</span>
                             </a>
                         </li>
                         [[end]]
                     </ul>
                 </div>
 
-                <div class="card p-6 reveal">
-                    <h4 class="text-lg font-bold text-white mb-4">Terbaru</h4>
-                    <ul class="space-y-4">
+                <div class="card p-2 reveal">
+                    <h4 class="fs-3 fw-bold text-white mb-2">Terbaru</h4>
+                    <ul class="vstack gap-3">
                         [[range .RecentPosts]]
                         <li>
-                            <a href="/blog/[[.Slug]]" class="group">
-                                <h5 class="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-blue-400 transition-colors leading-snug">[[.Title]]</h5>
-                                <span class="text-xs text-slate-500 mt-1 block">[[.PublishedAt]]</span>
+                            <a href="/blog/[[.Slug]]" class="">
+                                <h5 class="fs-sm fw-semibold text-body dark:text-slate-200   lh-sm">[[.Title]]</h5>
+                                <span class="fs-xs text-muted mt-1 d-block">[[.PublishedAt]]</span>
                             </a>
                         </li>
                         [[end]]
                     </ul>
                 </div>
 
-                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 text-white reveal">
-                    <h4 class="text-lg font-bold mb-2">Beli Aplikasi Saham</h4>
-                    <p class="text-blue-100 text-sm leading-relaxed mb-4">Dapatkan source code lengkap aplikasi saham & forex dengan fitur professional. Whitelabel ready, bisa dijual kembali.</p>
-                    <a href="/beli-aplikasi-saham" class="block text-center bg-white text-blue-700 font-semibold text-sm py-2.5 rounded-xl hover:bg-blue-50 transition-all">Lihat Detail &raquo;</a>
+                <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 text-white reveal">
+                    <h4 class="fs-3 fw-bold mb-2">Beli Aplikasi Saham</h4>
+                    <p class="text-primary fs-sm lh-lg mb-2">Dapatkan source code lengkap aplikasi saham & forex dengan fitur professional. Whitelabel ready, bisa dijual kembali.</p>
+                    <a href="/beli-aplikasi-saham" class="d-block text-center bg-white text-primary fw-semibold fs-sm py-2 rounded-3  ">Lihat Detail &raquo;</a>
                 </div>
             </div>
         </aside>
     </div>
 </div>
 
-<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="flex items-center justify-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span class="text-white font-bold text-sm">I</span>
+<footer class="border-top border dark:border-slate-800 py-2">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center">
+                <span class="text-white fw-bold fs-sm">I</span>
             </div>
-            <span class="font-bold text-lg text-white">Investo</span>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go.</p>
+        <p class="text-muted fs-sm">&copy; 2026 Investo. Powered by Go.</p>
     </div>
 </footer>
 

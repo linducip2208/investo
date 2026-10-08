@@ -45,40 +45,40 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex" x-data="usageDashboard()" x-init="loadData()">
+<body class="bg-body dark:bg-[#0b1120] text-body dark:text-slate-200 d-flex" x-data="usageDashboard()" x-init="loadData()">
 
-<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
-        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
-        <span class="font-bold text-white">Investo</span>
+<aside class="w-56 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-700/50 d-flex flex-column min-vh-100 flex-shrink-0">
+    <div class="d-flex align-items-center gap-2 px-2 h-14 border-bottom border dark:border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded d-flex align-items-center justify-content-center text-white fw-bold fs-xs">I</span>
+        <span class="fw-bold text-white">Investo</span>
     </div>
-    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+    <nav class="flex-fill p-2 vstack gap-0 overflow-y-auto">
         <a href="/dashboard" class="nav-link">📊 Dashboard</a>
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
+        <div class="border-top border dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
         <a href="/ai/agents" class="nav-link">🧠 Agents</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
+        <div class="border-top border dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
         <a href="/ai/usage" class="nav-link active">📊 AI Usage</a>
-        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+        <a href="/logout" class="nav-link text-danger ">🚪 Keluar</a>
     </nav>
 </aside>
 
-<div class="flex-1 min-w-0">
-    <div class="max-w-6xl mx-auto px-6 py-6">
-        <div class="flex items-center justify-between mb-6">
+<div class="flex-fill min-w-0">
+    <div class="max-w-6xl mx-auto px-2 py-2">
+        <div class="d-flex align-items-center justify-content-between mb-2">
             <div>
-                <h1 class="text-xl font-bold text-white">AI Usage Dashboard</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
+                <h1 class="fs-2 fw-bold text-white">AI Usage Dashboard</h1>
+                <p class="fs-sm text-muted dark:text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
             </div>
-            <div class="flex gap-2">
-                <select x-model="days" @change="loadData()" class="bg-white dark:bg-[#0f172a] border border-slate-600 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 text-sm">
+            <div class="d-flex gap-2">
+                <select x-model="days" @change="loadData()" class="bg-white dark:bg-[#0f172a] border border text-body dark:text-slate-200 rounded-2 px-2 py-2 fs-sm">
                     <option value="7">7 hari</option>
                     <option value="14">14 hari</option>
                     <option value="30" selected>30 hari</option>
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-4 mb-6">
+        <div class="row row-cols-4 gap-4 mb-2">
             <div class="stat-card">
                 <div class="stat-value" x-text="formatNumber(stats.total_tokens)">0</div>
                 <div class="stat-label">Total Tokens</div>
@@ -107,31 +107,31 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-6 mb-6">
-            <div class="card p-4">
-                <h3 class="text-sm font-semibold text-white mb-3">Token Usage per Day</h3>
+        <div class="row row-cols-3 gap-6 mb-2">
+            <div class="card p-2">
+                <h3 class="fs-sm fw-semibold text-white mb-2">Token Usage per Day</h3>
                 <canvas id="tokenChart" height="200"></canvas>
             </div>
-            <div class="card p-4">
-                <h3 class="text-sm font-semibold text-white mb-3">Cost per Provider</h3>
+            <div class="card p-2">
+                <h3 class="fs-sm fw-semibold text-white mb-2">Cost per Provider</h3>
                 <canvas id="costChart" height="200"></canvas>
             </div>
-            <div class="card p-4">
-                <h3 class="text-sm font-semibold text-white mb-3">Latency Trend</h3>
+            <div class="card p-2">
+                <h3 class="fs-sm fw-semibold text-white mb-2">Latency Trend</h3>
                 <canvas id="latencyChart" height="200"></canvas>
             </div>
         </div>
 
-        <div class="card p-4 mb-6">
-            <h3 class="text-sm font-semibold text-white mb-3">Provider Health</h3>
-            <div class="grid grid-cols-4 gap-4" x-show="keyHealth">
+        <div class="card p-2 mb-2">
+            <h3 class="fs-sm fw-semibold text-white mb-2">Provider Health</h3>
+            <div class="row row-cols-4 gap-4" x-show="keyHealth">
                 <template x-for="(info, name) in keyHealth" :key="name">
-                    <div class="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="font-semibold text-sm text-white" x-text="name"></span>
-                            <span class="w-2 h-2 rounded-full" :class="info.status === 'healthy' ? 'bg-green-400' : 'bg-red-400'"></span>
+                    <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border-slate-700">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="fw-semibold fs-sm text-white" x-text="name"></span>
+                            <span class="w-2 h-2 rounded-pill" :class="info.status === 'healthy' ? 'bg-green-400' : 'bg-red-400'"></span>
                         </div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                        <div class="fs-xs text-muted dark:text-slate-400 vstack gap-1">
                             <div x-text="info.status"></div>
                             <div>Latency: <span x-text="(info.latency||0).toFixed(0)"></span>ms</div>
                             <div>Budget OK: <span x-text="info.budget_ok ? 'Yes' : 'No'"></span></div>
@@ -141,8 +141,8 @@
             </div>
         </div>
 
-        <div class="card p-4">
-            <h3 class="text-sm font-semibold text-white mb-3">Recent AI Calls</h3>
+        <div class="card p-2">
+            <h3 class="fs-sm fw-semibold text-white mb-2">Recent AI Calls</h3>
             <div class="overflow-x-auto">
                 <table>
                     <thead>
@@ -162,23 +162,23 @@
                     <tbody>
                         <template x-for="log in recentLogs" :key="log.id">
                             <tr>
-                                <td class="text-xs text-slate-500 dark:text-slate-400" x-text="log.created_at"></td>
-                                <td><span class="badge badge-blue" x-text="log.provider"></span></td>
-                                <td class="text-xs" x-text="log.feature"></td>
-                                <td class="text-xs text-slate-500 dark:text-slate-400" x-text="log.model || '-'"></td>
+                                <td class="fs-xs text-muted dark:text-slate-400" x-text="log.created_at"></td>
+                                <td><span class="badge bg-info-lt" x-text="log.provider"></span></td>
+                                <td class="fs-xs" x-text="log.feature"></td>
+                                <td class="fs-xs text-muted dark:text-slate-400" x-text="log.model || '-'"></td>
                                 <td x-text="log.tokens_in"></td>
                                 <td x-text="log.tokens_out"></td>
                                 <td x-text="'$'+parseFloat(log.cost).toFixed(6)"></td>
                                 <td x-text="log.latency_ms+'ms'"></td>
                                 <td><span class="badge" :class="log.success ? 'badge-green' : 'badge-red'" x-text="log.success ? 'OK' : 'FAIL'"></span></td>
                                 <td>
-                                    <span x-show="log.rating > 0" x-text="'⭐'.repeat(log.rating)" class="text-yellow-400 text-xs"></span>
-                                    <span x-show="!log.rating" class="text-slate-600 text-xs">-</span>
+                                    <span x-show="log.rating > 0" x-text="'⭐'.repeat(log.rating)" class="text-warning fs-xs"></span>
+                                    <span x-show="!log.rating" class="text-muted fs-xs">-</span>
                                 </td>
                             </tr>
                         </template>
                         <tr x-show="recentLogs.length === 0">
-                            <td colspan="10" class="text-center text-slate-500 py-8">No AI calls recorded yet.</td>
+                            <td colspan="10" class="text-center text-muted py-2">No AI calls recorded yet.</td>
                         </tr>
                     </tbody>
                 </table>

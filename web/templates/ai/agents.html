@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,150 +71,150 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="agentSystem()">
-    <aside class="sidebar fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-surface-border flex flex-col" class="max-md:hidden">
+<body class="h-100 d-flex" x-data="agentSystem()">
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-2 w-64 bg-surface border-end border d-flex flex-column" class="d-none d-md-block">
         [[template "components/sidebar.html" .]]
     </aside>
-    <div class="sidebar-overlay fixed inset-0 bg-black/50 z-30 hidden"  onclick="document.getElementById('sidebar').classList.add('max-md:hidden');document.getElementById('sb-overlay').classList.add('hidden')"></div>
+    <div class="sidebar-overlay position-fixed top-0 bottom-0 start-0 end-0 bg-black bg-opacity-50 z-2 d-none"  onclick="document.getElementById('sidebar').classList.add('d-none d-md-block');document.getElementById('sb-overlay').classList.add('hidden')"></div>
 
-    <div class="main-content flex-1 ml-0 lg:ml-64 flex flex-col min-h-screen">
-        <header class="topbar sticky top-0 z-20 bg-surface/90 backdrop-blur-xl border-b border-surface-border px-4 lg:px-6 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 rounded-lg hover:bg-surface-hover text-slate-500 dark:text-slate-400">
+    <div class="main-content flex-fill app-offset-wide d-flex flex-column min-vh-100">
+        <header class="topbar position-sticky top-0 z-1 bg-surface bg-opacity-100  border-bottom border px-2 px-lg-4 py-2 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 rounded-2  text-muted dark:text-slate-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div>
-                    <h1 class="text-lg font-bold text-white">Multi-Agent Trading System</h1>
-                    <p class="text-xs text-slate-500">9 AI Agents + Consensus + Signals + Forecast</p>
+                    <h1 class="fs-3 fw-bold text-white">Multi-Agent Trading System</h1>
+                    <p class="fs-xs text-muted">9 AI Agents + Consensus + Signals + Forecast</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button @click="printPage()" class="px-3 py-1.5 rounded-lg bg-surface-light border border-surface-border text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-white transition">
+            <div class="d-flex align-items-center gap-2">
+                <button @click="printPage()" class="px-2 py-1 rounded-2 bg-body border border fs-xs fw-medium text-body dark:text-slate-300  ">
                     Export
                 </button>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6">
-            <div class="max-w-7xl mx-auto space-y-6" id="printable">
+        <main class="flex-fill p-2 p-lg-4">
+            <div class="max-w-7xl mx-auto vstack gap-4" id="printable">
 
-                <div class="card p-5">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div class="flex-1 w-full sm:w-auto">
-                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Stock Code</label>
-                            <div class="flex gap-2">
+                <div class="card p-2">
+                    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-4">
+                        <div class="flex-fill w-100 w-auto">
+                            <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-1 text-uppercase ">Stock Code</label>
+                            <div class="d-flex gap-2">
                                 <input type="text" x-model="ticker" @keyup.enter="runAnalysis()" placeholder="e.g. BBCA" maxlength="4"
-                                    class="flex-1 bg-surface border border-surface-border rounded-lg px-4 py-2.5 text-white font-mono text-sm uppercase placeholder:text-slate-600 focus:outline-none focus:border-brand-500 transition"
+                                    class="flex-fill bg-surface border border rounded-2 px-2 py-2 text-white font-monospace fs-sm text-uppercase    "
                                     :disabled="loading">
                                 <button @click="runAnalysis()" :disabled="loading || !ticker"
-                                    class="px-6 py-2.5 bg-gradient-to-r from-brand-600 to-brand-700 text-white rounded-lg font-semibold text-sm hover:from-brand-500 hover:to-brand-600 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-lg shadow-brand-900/30 flex items-center gap-2 whitespace-nowrap">
+                                    class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white rounded-2 fw-semibold fs-sm   disabled:opacity-40 disabled:cursor-not-allowed  shadow-lg shadow-lg d-flex align-items-center gap-2 text-nowrap">
                                     <span x-show="!loading">Run Analysis</span>
-                                    <span x-show="loading" class="flex items-center gap-2">
-                                        <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                                    <span x-show="loading" class="d-flex align-items-center gap-2">
+                                        <svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                                         Analyzing...
                                     </span>
                                 </button>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1.5">Kode saham + Persona + Consensus + Signals</p>
+                            <p class="fs-xs text-muted mt-1">Kode saham + Persona + Consensus + Signals</p>
                         </div>
-                        <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
-                            <span x-show="result" class="text-slate-500 dark:text-slate-400">Last:</span>
-                            <span x-text="result?.date || ''" class="text-slate-700 dark:text-slate-300 font-mono"></span>
+                        <div class="d-flex align-items-center gap-2 fs-xs text-muted flex-shrink-0">
+                            <span x-show="result" class="text-muted dark:text-slate-400">Last:</span>
+                            <span x-text="result?.date || ''" class="text-body dark:text-slate-300 font-monospace"></span>
                         </div>
                     </div>
 
                     <!-- Persona Selector & Stream Toggle -->
-                    <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-surface-border pt-4">
-                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mr-2">Persona:</span>
-                        <button class="persona-btn" :class="{ active: persona === 'buffett' }" @click="setPersona('buffett')">
-                            <span class="text-lg">&#x1F4B0;</span> Buffett
+                    <div class="mt-2 d-flex flex-wrap align-items-center gap-2 border-top border pt-2">
+                        <span class="fs-xs fw-semibold text-muted text-uppercase  me-2">Persona:</span>
+                        <button class="persona-btn" :class="{  persona === 'buffett' }" @click="setPersona('buffett')">
+                            <span class="fs-3">&#x1F4B0;</span> Buffett
                         </button>
-                        <button class="persona-btn" :class="{ active: persona === 'soros' }" @click="setPersona('soros')">
-                            <span class="text-lg">&#x1F30D;</span> Soros
+                        <button class="persona-btn" :class="{  persona === 'soros' }" @click="setPersona('soros')">
+                            <span class="fs-3">&#x1F30D;</span> Soros
                         </button>
-                        <button class="persona-btn" :class="{ active: persona === 'tudor_jones' }" @click="setPersona('tudor_jones')">
-                            <span class="text-lg">&#x1F6E1;</span> Tudor Jones
+                        <button class="persona-btn" :class="{  persona === 'tudor_jones' }" @click="setPersona('tudor_jones')">
+                            <span class="fs-3">&#x1F6E1;</span> Tudor Jones
                         </button>
-                        <button class="persona-btn" :class="{ active: persona === 'cathie_wood' }" @click="setPersona('cathie_wood')">
-                            <span class="text-lg">&#x1F680;</span> Cathie Wood
+                        <button class="persona-btn" :class="{  persona === 'cathie_wood' }" @click="setPersona('cathie_wood')">
+                            <span class="fs-3">&#x1F680;</span> Cathie Wood
                         </button>
-                        <span class="mx-2 text-slate-700">|</span>
-                        <button class="persona-btn" :class="{ active: streamLive }" @click="toggleStream()">
-                            <span class="text-lg" x-show="!streamLive">&#x25B6;</span>
-                            <span class="text-lg pulse" x-show="streamLive">&#x23F9;</span>
+                        <span class="mx-2 text-body">|</span>
+                        <button class="persona-btn" :class="{  streamLive }" @click="toggleStream()">
+                            <span class="fs-3" x-show="!streamLive">&#x25B6;</span>
+                            <span class="fs-3 pulse" x-show="streamLive">&#x23F9;</span>
                             Stream Live
                         </button>
                         <button class="persona-btn" @click="fetchConsensus()">
-                            <span class="text-lg">&#x1F5F3;</span> Consensus
+                            <span class="fs-3">&#x1F5F3;</span> Consensus
                         </button>
                         <button class="persona-btn" @click="fetchBacktest()">
-                            <span class="text-lg">&#x1F4CA;</span> Backtest
+                            <span class="fs-3">&#x1F4CA;</span> Backtest
                         </button>
                         <button class="persona-btn" @click="fetchMarketRegime()">
-                            <span class="text-lg">&#x1F321;</span> Market Regime
+                            <span class="fs-3">&#x1F321;</span> Market Regime
                         </button>
                     </div>
                 </div>
 
                 <!-- Mandates (Fund-as-Entity) -->
-                <div class="card p-5" x-data x-init="loadMandates()">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="card p-2" x-data x-init="loadMandates()">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
                         <div>
-                            <div class="text-sm font-bold text-white">&#x1F3E6; Trading Mandates</div>
-                            <div class="text-xs text-slate-500">Simpan strategi fund (persona + risiko + ticker) & jalankan ulang</div>
+                            <div class="fs-sm fw-bold text-white">&#x1F3E6; Trading Mandates</div>
+                            <div class="fs-xs text-muted">Simpan strategi fund (persona + risiko + ticker) & jalankan ulang</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    <div class="row row-cols-1 row-cols-md-3 gap-3 mb-2">
                         <input type="text" x-model="newMandate.name" placeholder="Nama fund (cth: Value Fund)"
-                            class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-brand-500">
-                        <select x-model="newMandate.persona_style" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                            class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white   ">
+                        <select x-model="newMandate.persona_style" class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white ">
                             <option value="buffett">Persona: Buffett</option>
                             <option value="soros">Persona: Soros</option>
                             <option value="tudor_jones">Persona: Tudor Jones</option>
                             <option value="cathie_wood">Persona: Cathie Wood</option>
                         </select>
                         <input type="text" x-model="newMandate.tickersText" placeholder="Ticker (koma): BBCA,BBRI,TLKM"
-                            class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white font-mono uppercase placeholder:text-slate-600 focus:outline-none focus:border-brand-500">
+                            class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white font-monospace text-uppercase   ">
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                    <div class="row row-cols-2 row-cols-md-3 gap-3 mb-2">
                         <div>
-                            <label class="text-xs text-slate-500 block mb-1">Ronde Debat</label>
-                            <select x-model.number="newMandate.debate_rounds" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                            <label class="fs-xs text-muted d-block mb-1">Ronde Debat</label>
+                            <select x-model.number="newMandate.debate_rounds" class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white w-100">
                                 <option :value="1">1</option><option :value="2">2</option><option :value="3">3</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-xs text-slate-500 block mb-1">Profil Risiko</label>
-                            <select x-model="newMandate.risk_profile" class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                            <label class="fs-xs text-muted d-block mb-1">Profil Risiko</label>
+                            <select x-model="newMandate.risk_profile" class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white w-100">
                                 <option value="conservative">Konservatif</option>
                                 <option value="moderate">Moderat</option>
                                 <option value="aggressive">Agresif</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-xs text-slate-500 block mb-1">Max Posisi (%)</label>
+                            <label class="fs-xs text-muted d-block mb-1">Max Posisi (%)</label>
                             <input type="number" x-model.number="newMandate.max_position" min="1" max="30"
-                                class="bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-white w-full">
+                                class="bg-surface border border rounded-2 px-2 py-2 fs-sm text-white w-100">
                         </div>
                     </div>
-                    <button @click="saveMandate()" class="px-4 py-2 bg-gradient-to-r from-brand-600 to-brand-700 text-white rounded-lg text-sm font-semibold hover:from-brand-500 hover:to-brand-600 transition">
+                    <button @click="saveMandate()" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white rounded-2 fs-sm fw-semibold   ">
                         + Simpan Mandate
                     </button>
 
-                    <div x-show="mandates.length" class="mt-4 space-y-2">
-                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Mandate Tersimpan</div>
+                    <div x-show="mandates.length" class="mt-2 vstack gap-2">
+                        <div class="fs-xs fw-semibold text-muted text-uppercase  mb-2">Mandate Tersimpan</div>
                         <template x-for="m in mandates" :key="m.id">
-                            <div class="flex items-center justify-between bg-surface-light rounded-lg px-4 py-3 border border-surface-border">
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-semibold text-white" x-text="m.name"></div>
-                                    <div class="text-xs text-slate-500">
+                            <div class="d-flex align-items-center justify-content-between bg-body rounded-2 px-2 py-2 border border">
+                                <div class="flex-fill min-w-0">
+                                    <div class="fs-sm fw-semibold text-white" x-text="m.name"></div>
+                                    <div class="fs-xs text-muted">
                                         <span x-text="m.persona_style + ' · ' + m.risk_profile + ' · ' + m.debate_rounds + ' ronde · ' + m.max_position + '% max'"></span>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2 shrink-0">
-                                    <button @click="runMandate(m.id)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600/20 text-brand-400 border border-brand-500/30 hover:bg-brand-600/30 transition">Jalankan</button>
-                                    <button @click="deleteMandate(m.id)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-danger/10 text-danger border border-danger/30 hover:bg-danger/20 transition">Hapus</button>
+                                <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                                    <button @click="runMandate(m.id)" class="px-2 py-1 fs-xs fw-semibold rounded-2 bg-primary bg-opacity-25 text-primary border border-primary  ">Jalankan</button>
+                                    <button @click="deleteMandate(m.id)" class="px-2 py-1 fs-xs fw-semibold rounded-2 bg-danger bg-opacity-10 text-danger border border-danger  ">Hapus</button>
                                 </div>
                             </div>
                         </template>
@@ -222,71 +222,71 @@
                 </div>
 
                 <!-- Stream Live Log -->
-                <div x-show="streamLive" class="card p-4 fade-in">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Live Agent Stream</div>
-                        <span class="text-xs text-success pulse">&#x1F534; LIVE</span>
+                <div x-show="streamLive" class="card p-2 fade-in">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Live Agent Stream</div>
+                        <span class="fs-xs text-success pulse">&#x1F534; LIVE</span>
                     </div>
-                    <div class="stream-log text-xs text-slate-500 dark:text-slate-400" x-ref="streamLog">
+                    <div class="stream-log fs-xs text-muted dark:text-slate-400" x-ref="streamLog">
                         <template x-for="entry in streamEntries" :key="entry.id">
                             <div class="entry">
-                                <span class="text-slate-600 mr-2" x-text="entry.time"></span>
-                                <span class="text-brand-400 mr-2" x-text="entry.phase"></span>
+                                <span class="text-muted me-2" x-text="entry.time"></span>
+                                <span class="text-primary me-2" x-text="entry.phase"></span>
                                 <span x-text="entry.status"></span>
-                                <span x-show="entry.signal" class="signal-badge ml-2" :class="signalClass(entry.signal)" x-text="entry.signal"></span>
+                                <span x-show="entry.signal" class="signal-badge ms-2" :class="signalClass(entry.signal)" x-text="entry.signal"></span>
                             </div>
                         </template>
                     </div>
                 </div>
 
                 <!-- Market Regime Card -->
-                <div x-show="marketRegime" class="card p-4 fade-in border-brand-500/30">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">&#x1F321;</span>
+                <div x-show="marketRegime" class="card p-2 fade-in border-primary">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="fs-1">&#x1F321;</span>
                             <div>
-                                <div class="text-sm font-semibold text-white">Market Regime</div>
-                                <div class="text-xs text-slate-500 dark:text-slate-400" x-text="marketRegime.description"></div>
+                                <div class="fs-sm fw-semibold text-white">Market Regime</div>
+                                <div class="fs-xs text-muted dark:text-slate-400" x-text="marketRegime.description"></div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="px-3 py-1 rounded-lg text-xs font-bold uppercase"
-                                :class="{'bg-success/15 text-success border border-success/30': marketRegime.regime === 'trending', 'bg-warning/15 text-warning border border-warning/30': marketRegime.regime === 'ranging', 'bg-danger/15 text-danger border border-danger/30': marketRegime.regime === 'volatile'}"
+                        <div class="text-end">
+                            <span class="px-2 py-1 rounded-2 fs-xs fw-bold text-uppercase"
+                                :class="{'bg-success/15 text-success border border-success': marketRegime.regime === 'trending', 'bg-warning/15 text-warning border border-warning': marketRegime.regime === 'ranging', 'bg-danger/15 text-danger border border-danger': marketRegime.regime === 'volatile'}"
                                 x-text="marketRegime.regime"></span>
-                            <div class="text-xs text-slate-500 mt-1">
-                                Strategy: <span class="text-white font-semibold" x-text="marketRegime.recommended_strategy"></span>
+                            <div class="fs-xs text-muted mt-1">
+                                Strategy: <span class="text-white fw-semibold" x-text="marketRegime.recommended_strategy"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Consensus Result -->
-                <div x-show="consensus" class="card p-4 fade-in">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Agent Voting Consensus</div>
-                        <span class="text-xs text-slate-500" x-text="'Confidence: ' + Math.round(consensus.confidence) + '%'"></span>
+                <div x-show="consensus" class="card p-2 fade-in">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Agent Voting Consensus</div>
+                        <span class="fs-xs text-muted" x-text="'Confidence: ' + Math.round(consensus.confidence) + '%'"></span>
                     </div>
-                    <div class="space-y-3">
+                    <div class="vstack gap-2">
                         <div class="consensus-bar">
                             <div class="buy-bar" :style="'width:' + buyPct + '%'" :title="buyPct + '% Buy'"></div>
                             <div class="hold-bar" :style="'width:' + holdPct + '%'" :title="holdPct + '% Hold'"></div>
                             <div class="sell-bar" :style="'width:' + sellPct + '%'" :title="sellPct + '% Sell'"></div>
                         </div>
-                        <div class="flex justify-between text-xs">
+                        <div class="d-flex justify-content-between fs-xs">
                             <span class="text-success">Buy: <b x-text="consensus.buy_votes"></b></span>
                             <span class="text-warning">Hold: <b x-text="consensus.hold_votes"></b></span>
                             <span class="text-danger">Sell: <b x-text="consensus.sell_votes"></b></span>
                         </div>
                         <div class="text-center pt-2">
-                            <span class="signal-badge text-sm px-4 py-1" :class="signalClassShort(consensus.consensus)" x-text="consensus.consensus"></span>
+                            <span class="signal-badge fs-sm px-2 py-1" :class="signalClassShort(consensus.consensus)" x-text="consensus.consensus"></span>
                         </div>
-                        <div x-show="consensus.vote_details?.length" class="space-y-1 pt-2 border-t border-surface-border">
-                            <div class="text-xs font-semibold text-slate-500 mb-1">Vote Details:</div>
+                        <div x-show="consensus.vote_details?.length" class="vstack gap-1 pt-2 border-top border">
+                            <div class="fs-xs fw-semibold text-muted mb-1">Vote Details:</div>
                             <template x-for="v in consensus.vote_details" :key="v.agent">
-                                <div class="flex items-center justify-between text-xs py-1">
-                                    <span class="text-slate-500 dark:text-slate-400" x-text="v.agent"></span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-slate-500 text-2xs" x-text="v.reason"></span>
+                                <div class="d-flex align-items-center justify-content-between fs-xs py-1">
+                                    <span class="text-muted dark:text-slate-400" x-text="v.agent"></span>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="text-muted fs-6" x-text="v.reason"></span>
                                         <span class="signal-badge" :class="signalClass(v.vote)" x-text="v.vote"></span>
                                     </div>
                                 </div>
@@ -296,74 +296,74 @@
                 </div>
 
                 <!-- Backtest Result -->
-                <div x-show="backtest" class="card p-4 fade-in">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Signal Backtest</div>
-                        <span class="text-xs text-slate-500" x-text="'\u{1F4C5} ' + backtest.tested_days + ' hari'"></span>
+                <div x-show="backtest" class="card p-2 fade-in">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Signal Backtest</div>
+                        <span class="fs-xs text-muted" x-text="'\u{1F4C5} ' + backtest.tested_days + ' hari'"></span>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                        <div class="bg-surface-light rounded-lg p-3 text-center">
-                            <div class="text-xs text-slate-500 mb-1">Accuracy</div>
-                            <div class="text-xl font-bold font-mono" :class="backtest.accuracy >= 60 ? 'text-success' : 'text-warning'" x-text="backtest.accuracy + '%'"></div>
+                    <div class="row row-cols-2 row-cols-md-5 gap-3">
+                        <div class="bg-body rounded-2 p-2 text-center">
+                            <div class="fs-xs text-muted mb-1">Accuracy</div>
+                            <div class="fs-2 fw-bold font-monospace" :class="backtest.accuracy >= 60 ? 'text-success' : 'text-warning'" x-text="backtest.accuracy + '%'"></div>
                         </div>
-                        <div class="bg-surface-light rounded-lg p-3 text-center">
-                            <div class="text-xs text-slate-500 mb-1">Total Signals</div>
-                            <div class="text-xl font-bold text-white font-mono" x-text="backtest.total_signals"></div>
+                        <div class="bg-body rounded-2 p-2 text-center">
+                            <div class="fs-xs text-muted mb-1">Total Signals</div>
+                            <div class="fs-2 fw-bold text-white font-monospace" x-text="backtest.total_signals"></div>
                         </div>
-                        <div class="bg-surface-light rounded-lg p-3 text-center">
-                            <div class="text-xs text-slate-500 mb-1">Correct</div>
-                            <div class="text-xl font-bold text-success font-mono" x-text="backtest.correct_signals"></div>
+                        <div class="bg-body rounded-2 p-2 text-center">
+                            <div class="fs-xs text-muted mb-1">Correct</div>
+                            <div class="fs-2 fw-bold text-success font-monospace" x-text="backtest.correct_signals"></div>
                         </div>
-                        <div class="bg-surface-light rounded-lg p-3 text-center">
-                            <div class="text-xs text-slate-500 mb-1">Avg Return</div>
-                            <div class="text-xl font-bold font-mono" :class="backtest.avg_return >= 0 ? 'text-success' : 'text-danger'" x-text="backtest.avg_return + '%'"></div>
+                        <div class="bg-body rounded-2 p-2 text-center">
+                            <div class="fs-xs text-muted mb-1">Avg Return</div>
+                            <div class="fs-2 fw-bold font-monospace" :class="backtest.avg_return >= 0 ? 'text-success' : 'text-danger'" x-text="backtest.avg_return + '%'"></div>
                         </div>
-                        <div class="bg-surface-light rounded-lg p-3 text-center">
-                            <div class="text-xs text-slate-500 mb-1">Max Return</div>
-                            <div class="text-xl font-bold text-success font-mono" x-text="backtest.max_return + '%'"></div>
+                        <div class="bg-body rounded-2 p-2 text-center">
+                            <div class="fs-xs text-muted mb-1">Max Return</div>
+                            <div class="fs-2 fw-bold text-success font-monospace" x-text="backtest.max_return + '%'"></div>
                         </div>
                     </div>
                 </div>
 
-                <div x-show="loading" class="text-center py-20">
-                    <div class="animate-pulse space-y-4">
-                        <p class="text-lg text-slate-500 dark:text-slate-400 font-semibold">Running 9 AI Agents...</p>
-                        <p class="text-sm text-slate-500">Fundamental Technical Sentiment News Bullish Bearish Trader Risk Portfolio Manager</p>
-                        <div class="flex justify-center gap-2 pt-4">
+                <div x-show="loading" class="text-center py-2">
+                    <div class=" vstack gap-3">
+                        <p class="fs-3 text-muted dark:text-slate-400 fw-semibold">Running 9 AI Agents...</p>
+                        <p class="fs-sm text-muted">Fundamental Technical Sentiment News Bullish Bearish Trader Risk Portfolio Manager</p>
+                        <div class="d-flex justify-content-center gap-2 pt-2">
                             <template x-for="i in 9" :key="i">
-                                <div class="w-3 h-3 rounded-full bg-brand-600 animate-bounce" :style="'animation-delay:' + (i * 0.1) + 's'"></div>
+                                <div class="w-3 h-3 rounded-pill bg-primary " :style="'animation-delay:' + (i * 0.1) + 's'"></div>
                             </template>
                         </div>
                     </div>
                 </div>
 
-                <div x-show="error" class="card p-6 border-danger/30 bg-danger/5">
-                    <div class="flex items-start gap-3">
-                        <span class="text-xl">&#x26A0;</span>
+                <div x-show="error" class="card p-2 border-danger bg-danger bg-opacity-10">
+                    <div class="d-flex align-items-start gap-3">
+                        <span class="fs-2">&#x26A0;</span>
                         <div>
-                            <h3 class="font-semibold text-danger mb-1">Error</h3>
-                            <p class="text-sm text-slate-500 dark:text-slate-400" x-text="error"></p>
+                            <h3 class="fw-semibold text-danger mb-1">Error</h3>
+                            <p class="fs-sm text-muted dark:text-slate-400" x-text="error"></p>
                         </div>
                     </div>
                 </div>
 
-                <div x-show="result" x-transition class="space-y-6">
+                <div x-show="result" x-transition class="vstack gap-4">
                     <div class="phase-label">Phase 1: Analyst Team Reports</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 agent-grid">
+                    <div class="row row-cols-1 row-cols-md-2 gap-4 agent-grid">
                         <template x-for="report in phaseOneReports" :key="report.agent">
                             <div class="agent-card complete fade-in">
-                                <div class="flex items-center justify-between mb-3">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-lg" x-text="agentIcon(report.agent)"></span>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="fs-3" x-text="agentIcon(report.agent)"></span>
                                         <div>
-                                            <div class="text-sm font-semibold text-white" x-text="report.role"></div>
-                                            <div class="text-xs text-slate-500 font-mono" x-text="report.agent"></div>
+                                            <div class="fs-sm fw-semibold text-white" x-text="report.role"></div>
+                                            <div class="fs-xs text-muted font-monospace" x-text="report.agent"></div>
                                         </div>
                                     </div>
                                     <span class="signal-badge" :class="signalClass(report.signal)" x-text="report.signal"></span>
                                 </div>
-                                <div class="mb-3">
-                                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between fs-xs text-muted mb-1">
                                         <span>Confidence</span>
                                         <span x-text="Math.round(report.confidence) + '%'"></span>
                                     </div>
@@ -372,105 +372,105 @@
                                     </div>
                                 </div>
                                 <div x-show="report.key_points?.length" class="mb-2">
-                                    <ul class="space-y-1">
+                                    <ul class="vstack gap-1">
                                         <template x-for="kp in report.key_points" :key="kp">
-                                            <li class="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1.5">
-                                                <span class="text-brand-400 mt-0.5 shrink-0">&bull;</span>
+                                            <li class="fs-xs text-muted dark:text-slate-400 d-flex align-items-start gap-1">
+                                                <span class="text-primary mt-0 flex-shrink-0">&bull;</span>
                                                 <span x-text="kp"></span>
                                             </li>
                                         </template>
                                     </ul>
                                 </div>
-                                <div x-show="report.risk_flags?.length" class="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
+                                <div x-show="report.risk_flags?.length" class="pt-2 border-top border dark:border-slate-700/50">
                                     <template x-for="rf in report.risk_flags" :key="rf">
-                                        <span class="inline-block text-xs text-warning bg-warning/10 px-2 py-0.5 rounded mr-1 mb-1" x-text="rf"></span>
+                                        <span class="d-inline-block fs-xs text-warning bg-warning bg-opacity-10 px-2 py-0 rounded me-1 mb-1" x-text="rf"></span>
                                     </template>
                                 </div>
                                 <details class="mt-2" x-show="report.analysis">
-                                    <summary class="text-xs text-brand-400 cursor-pointer hover:text-brand-300">Full Analysis</summary>
-                                    <div class="analysis-content mt-2 text-xs" x-html="renderMarkdown(report.analysis)"></div>
+                                    <summary class="fs-xs text-primary cursor-pointer ">Full Analysis</summary>
+                                    <div class="analysis-content mt-2 fs-xs" x-html="renderMarkdown(report.analysis)"></div>
                                 </details>
                             </div>
                         </template>
                     </div>
 
                     <div x-show="debateReports.length" class="phase-label">Phase 2: Research Debate</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 debate-grid">
+                    <div class="row row-cols-1 row-cols-md-2 gap-4 debate-grid">
                         <template x-for="report in debateReports" :key="report.agent">
-                            <div class="card p-5 fade-in" :class="report.agent === 'bullish_researcher' ? 'border-l-4 border-l-success' : 'border-l-4 border-l-danger'">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-lg" x-show="report.agent === 'bullish_researcher'">&#x1F402;</span>
-                                    <span class="text-lg" x-show="report.agent === 'bearish_researcher'">&#x1F43B;</span>
+                            <div class="card p-2 fade-in" :class="report.agent === 'bullish_researcher' ? 'border-l-4 border-start border-success' : 'border-l-4 border-start border-danger'">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="fs-3" x-show="report.agent === 'bullish_researcher'">&#x1F402;</span>
+                                    <span class="fs-3" x-show="report.agent === 'bearish_researcher'">&#x1F43B;</span>
                                     <div>
-                                        <div class="text-sm font-semibold text-white" x-text="report.role"></div>
-                                        <div class="text-xs text-slate-500" x-text="report.signal + ' Confidence: ' + Math.round(report.confidence) + '%'"></div>
+                                        <div class="fs-sm fw-semibold text-white" x-text="report.role"></div>
+                                        <div class="fs-xs text-muted" x-text="report.signal + ' Confidence: ' + Math.round(report.confidence) + '%'"></div>
                                     </div>
                                 </div>
-                                <ul class="space-y-1.5 mb-3">
+                                <ul class="vstack gap-1 mb-2">
                                     <template x-for="kp in report.key_points" :key="kp">
-                                        <li class="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1.5">
-                                            <span class="mt-0.5 shrink-0" x-text="report.agent === 'bullish_researcher' ? '&#x1F7E2;' : '&#x1F534;'"></span>
+                                        <li class="fs-xs text-muted dark:text-slate-400 d-flex align-items-start gap-1">
+                                            <span class="mt-0 flex-shrink-0" x-text="report.agent === 'bullish_researcher' ? '&#x1F7E2;' : '&#x1F534;'"></span>
                                             <span x-text="kp"></span>
                                         </li>
                                     </template>
                                 </ul>
                                 <details>
-                                    <summary class="text-xs text-brand-400 cursor-pointer hover:text-brand-300">Detail</summary>
-                                    <div class="analysis-content mt-2 text-xs" x-html="renderMarkdown(report.analysis)"></div>
+                                    <summary class="fs-xs text-primary cursor-pointer ">Detail</summary>
+                                    <div class="analysis-content mt-2 fs-xs" x-html="renderMarkdown(report.analysis)"></div>
                                 </details>
                             </div>
                         </template>
                     </div>
 
                     <div x-show="traderReport" class="phase-label">Phase 3: Trader Decision</div>
-                    <div class="card p-5 fade-in" x-show="traderReport">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="text-2xl">&#x1F4C8;</span>
+                    <div class="card p-2 fade-in" x-show="traderReport">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <span class="fs-1">&#x1F4C8;</span>
                             <div>
-                                <div class="text-sm font-bold text-white" x-text="traderReport.role"></div>
-                                <div class="flex items-center gap-2 text-xs">
+                                <div class="fs-sm fw-bold text-white" x-text="traderReport.role"></div>
+                                <div class="d-flex align-items-center gap-2 fs-xs">
                                     <span class="signal-badge" :class="signalClass(traderReport.signal)" x-text="traderReport.signal"></span>
-                                    <span class="text-slate-500">Confidence: <b class="text-white" x-text="Math.round(traderReport.confidence) + '%'"></b></span>
+                                    <span class="text-muted">Confidence: <b class="text-white" x-text="Math.round(traderReport.confidence) + '%'"></b></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 price-cards">
-                            <div class="bg-surface-light rounded-lg p-3 text-center">
-                                <div class="text-xs text-slate-500 mb-1">Current</div>
-                                <div class="text-lg font-bold text-white font-mono" x-text="'Rp ' + formatPrice(result?.entry_price || 0)"></div>
+                        <div class="row row-cols-2 row-cols-md-4 gap-3 mb-2 price-cards">
+                            <div class="bg-body rounded-2 p-2 text-center">
+                                <div class="fs-xs text-muted mb-1">Current</div>
+                                <div class="fs-3 fw-bold text-white font-monospace" x-text="'Rp ' + formatPrice(result?.entry_price || 0)"></div>
                             </div>
-                            <div class="bg-success/5 rounded-lg p-3 text-center border border-success/20">
-                                <div class="text-xs text-slate-500 mb-1">Target</div>
-                                <div class="text-lg font-bold text-success font-mono" x-text="'Rp ' + formatPrice(result?.target_price || 0)"></div>
+                            <div class="bg-success bg-opacity-10 rounded-2 p-2 text-center border border-success">
+                                <div class="fs-xs text-muted mb-1">Target</div>
+                                <div class="fs-3 fw-bold text-success font-monospace" x-text="'Rp ' + formatPrice(result?.target_price || 0)"></div>
                             </div>
-                            <div class="bg-danger/5 rounded-lg p-3 text-center border border-danger/20">
-                                <div class="text-xs text-slate-500 mb-1">Stop Loss</div>
-                                <div class="text-lg font-bold text-danger font-mono" x-text="'Rp ' + formatPrice(result?.stop_loss || 0)"></div>
+                            <div class="bg-danger bg-opacity-10 rounded-2 p-2 text-center border border-danger">
+                                <div class="fs-xs text-muted mb-1">Stop Loss</div>
+                                <div class="fs-3 fw-bold text-danger font-monospace" x-text="'Rp ' + formatPrice(result?.stop_loss || 0)"></div>
                             </div>
-                            <div class="bg-surface-light rounded-lg p-3 text-center">
-                                <div class="text-xs text-slate-500 mb-1">Reward/Risk</div>
-                                <div class="text-lg font-bold text-warning font-mono" x-text="calcRR()"></div>
+                            <div class="bg-body rounded-2 p-2 text-center">
+                                <div class="fs-xs text-muted mb-1">Reward/Risk</div>
+                                <div class="fs-3 fw-bold text-warning font-monospace" x-text="calcRR()"></div>
                             </div>
                         </div>
                         <details>
-                            <summary class="text-xs text-brand-400 cursor-pointer hover:text-brand-300">Trader Analysis</summary>
-                            <div class="analysis-content mt-2 text-xs" x-html="renderMarkdown(traderReport.analysis)"></div>
+                            <summary class="fs-xs text-primary cursor-pointer ">Trader Analysis</summary>
+                            <div class="analysis-content mt-2 fs-xs" x-html="renderMarkdown(traderReport.analysis)"></div>
                         </details>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="row row-cols-1 row-cols-md-2 gap-4">
                         <div>
                             <div x-show="riskReport" class="phase-label">Phase 4: Risk Assessment</div>
-                            <div class="card p-5 fade-in" x-show="riskReport">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <span class="text-2xl">&#x1F6E1;</span>
+                            <div class="card p-2 fade-in" x-show="riskReport">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="fs-1">&#x1F6E1;</span>
                                     <div>
-                                        <div class="text-sm font-bold text-white" x-text="riskReport.role"></div>
-                                        <div class="text-xs text-slate-500">Risk Score: <b class="text-warning" x-text="Math.round(result?.risk_score || 50) + '/100'"></b></div>
+                                        <div class="fs-sm fw-bold text-white" x-text="riskReport.role"></div>
+                                        <div class="fs-xs text-muted">Risk Score: <b class="text-warning" x-text="Math.round(result?.risk_score || 50) + '/100'"></b></div>
                                     </div>
                                 </div>
-                                <div class="flex justify-center mb-4">
-                                    <div class="relative w-28 h-28">
+                                <div class="d-flex justify-content-center mb-2">
+                                    <div class="position-relative w-28 h-28">
                                         <svg viewBox="0 0 120 120" width="112" height="112">
                                             <circle cx="60" cy="60" r="52" fill="none" stroke="#1e293b" stroke-width="10"/>
                                             <circle cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round"
@@ -478,131 +478,131 @@
                                                 :stroke-dasharray="(result?.risk_score || 50) / 100 * 327"
                                                 stroke-dashoffset="0"/>
                                         </svg>
-                                        <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
                                             <div class="text-center">
-                                                <div class="text-2xl font-bold text-white font-mono" x-text="Math.round(result?.risk_score || 50)"></div>
-                                                <div class="text-xs text-slate-500">/ 100</div>
+                                                <div class="fs-1 fw-bold text-white font-monospace" x-text="Math.round(result?.risk_score || 50)"></div>
+                                                <div class="fs-xs text-muted">/ 100</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-surface-light rounded-lg p-3 mb-3">
-                                    <div class="flex justify-between text-xs">
-                                        <span class="text-slate-500 dark:text-slate-400">Position Limit</span>
-                                        <span class="text-white font-bold font-mono" x-text="Math.round(result?.position_pct || 10) + '%'"></span>
+                                <div class="bg-body rounded-2 p-2 mb-2">
+                                    <div class="d-flex justify-content-between fs-xs">
+                                        <span class="text-muted dark:text-slate-400">Position Limit</span>
+                                        <span class="text-white fw-bold font-monospace" x-text="Math.round(result?.position_pct || 10) + '%'"></span>
                                     </div>
                                 </div>
-                                <ul class="space-y-1">
+                                <ul class="vstack gap-1">
                                     <template x-for="rf in riskReport.risk_flags" :key="rf">
-                                        <li class="text-xs text-warning flex items-start gap-1.5">
-                                            <span class="mt-0.5">&#x26A0;</span>
+                                        <li class="fs-xs text-warning d-flex align-items-start gap-1">
+                                            <span class="mt-0">&#x26A0;</span>
                                             <span x-text="rf"></span>
                                         </li>
                                     </template>
                                 </ul>
-                                <details class="mt-3">
-                                    <summary class="text-xs text-brand-400 cursor-pointer hover:text-brand-300">Risk Detail</summary>
-                                    <div class="analysis-content mt-2 text-xs" x-html="renderMarkdown(riskReport.analysis)"></div>
+                                <details class="mt-2">
+                                    <summary class="fs-xs text-primary cursor-pointer ">Risk Detail</summary>
+                                    <div class="analysis-content mt-2 fs-xs" x-html="renderMarkdown(riskReport.analysis)"></div>
                                 </details>
                             </div>
                         </div>
                         <div>
                             <div x-show="pmReport" class="phase-label">Phase 5: Portfolio Manager</div>
-                            <div class="card p-5 fade-in border-brand-500/30 bg-gradient-to-br from-brand-900/20 to-surface" x-show="pmReport">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <span class="text-2xl">&#x1F3AF;</span>
+                            <div class="card p-2 fade-in border-primary bg-gradient bg-primary-lt " x-show="pmReport">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="fs-1">&#x1F3AF;</span>
                                     <div>
-                                        <div class="text-sm font-bold text-white" x-text="pmReport.role"></div>
-                                        <div class="text-xs text-slate-500">Final Decision Maker</div>
+                                        <div class="fs-sm fw-bold text-white" x-text="pmReport.role"></div>
+                                        <div class="fs-xs text-muted">Final Decision Maker</div>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3 mb-4 p-4 bg-surface-light rounded-lg border border-surface-border">
-                                    <span class="signal-badge text-sm px-4 py-1.5" :class="signalClass(result?.final_signal)" x-text="result?.final_signal"></span>
+                                <div class="d-flex align-items-center gap-3 mb-2 p-2 bg-body rounded-2 border border">
+                                    <span class="signal-badge fs-sm px-2 py-1" :class="signalClass(result?.final_signal)" x-text="result?.final_signal"></span>
                                     <div>
-                                        <div class="text-xs text-slate-500">Final Signal</div>
-                                        <div class="text-xs text-slate-500 dark:text-slate-400">Confidence: <b class="text-white" x-text="Math.round(pmReport.confidence) + '%'"></b></div>
+                                        <div class="fs-xs text-muted">Final Signal</div>
+                                        <div class="fs-xs text-muted dark:text-slate-400">Confidence: <b class="text-white" x-text="Math.round(pmReport.confidence) + '%'"></b></div>
                                     </div>
                                 </div>
-                                <div x-show="result?.past_reflections?.length" class="mb-4">
-                                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Past Reflections</div>
-                                    <div class="space-y-2 max-h-32 overflow-y-auto">
+                                <div x-show="result?.past_reflections?.length" class="mb-2">
+                                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 mb-2 text-uppercase ">Past Reflections</div>
+                                    <div class="vstack gap-2 max-h-32 overflow-y-auto">
                                         <template x-for="(ref, i) in result?.past_reflections" :key="i">
-                                            <div class="text-xs text-slate-500 bg-surface rounded-lg p-2 border border-surface-border italic" x-text="ref"></div>
+                                            <div class="fs-xs text-muted bg-surface rounded-2 p-2 border border fst-italic" x-text="ref"></div>
                                         </template>
                                     </div>
                                 </div>
-                                <div class="analysis-content text-xs" x-html="renderMarkdown(result?.rationale)"></div>
+                                <div class="analysis-content fs-xs" x-html="renderMarkdown(result?.rationale)"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Price Forecast Card -->
                     <div x-show="forecast" class="phase-label">AI Price Forecast</div>
-                    <div class="card p-5 fade-in" x-show="forecast">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="card p-2 fade-in" x-show="forecast">
+                        <div class="row row-cols-1 row-cols-md-2 gap-4">
                             <div>
-                                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">Range Forecast (<span x-text="forecast.forecast_days"></span> days)</div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div class="bg-success/5 rounded-lg p-3 border border-success/20">
-                                        <div class="text-xs text-slate-500">70% Low</div>
-                                        <div class="text-lg font-bold text-success font-mono" x-text="'Rp ' + formatPrice(forecast.low_70)"></div>
+                                <div class="fs-xs fw-semibold text-muted dark:text-slate-400 mb-2 text-uppercase ">Range Forecast (<span x-text="forecast.forecast_days"></span> days)</div>
+                                <div class="row row-cols-2 gap-3">
+                                    <div class="bg-success bg-opacity-10 rounded-2 p-2 border border-success">
+                                        <div class="fs-xs text-muted">70% Low</div>
+                                        <div class="fs-3 fw-bold text-success font-monospace" x-text="'Rp ' + formatPrice(forecast.low_70)"></div>
                                     </div>
-                                    <div class="bg-success/5 rounded-lg p-3 border border-success/20">
-                                        <div class="text-xs text-slate-500">70% High</div>
-                                        <div class="text-lg font-bold text-success font-mono" x-text="'Rp ' + formatPrice(forecast.high_70)"></div>
+                                    <div class="bg-success bg-opacity-10 rounded-2 p-2 border border-success">
+                                        <div class="fs-xs text-muted">70% High</div>
+                                        <div class="fs-3 fw-bold text-success font-monospace" x-text="'Rp ' + formatPrice(forecast.high_70)"></div>
                                     </div>
-                                    <div class="bg-warning/5 rounded-lg p-3 border border-warning/20">
-                                        <div class="text-xs text-slate-500">90% Low</div>
-                                        <div class="text-lg font-bold text-warning font-mono" x-text="'Rp ' + formatPrice(forecast.low_90)"></div>
+                                    <div class="bg-warning bg-opacity-10 rounded-2 p-2 border border-warning">
+                                        <div class="fs-xs text-muted">90% Low</div>
+                                        <div class="fs-3 fw-bold text-warning font-monospace" x-text="'Rp ' + formatPrice(forecast.low_90)"></div>
                                     </div>
-                                    <div class="bg-warning/5 rounded-lg p-3 border border-warning/20">
-                                        <div class="text-xs text-slate-500">90% High</div>
-                                        <div class="text-lg font-bold text-warning font-mono" x-text="'Rp ' + formatPrice(forecast.high_90)"></div>
+                                    <div class="bg-warning bg-opacity-10 rounded-2 p-2 border border-warning">
+                                        <div class="fs-xs text-muted">90% High</div>
+                                        <div class="fs-3 fw-bold text-warning font-monospace" x-text="'Rp ' + formatPrice(forecast.high_90)"></div>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-white mb-2">Direction: <span class="uppercase"
+                                <div class="fs-sm fw-semibold text-white mb-2">Direction: <span class="text-uppercase"
                                     :class="{'text-success': forecast.direction === 'bullish', 'text-danger': forecast.direction === 'bearish', 'text-warning': forecast.direction === 'sideways'}"
                                     x-text="forecast.direction"></span></div>
-                                <p class="text-xs text-slate-500 dark:text-slate-400" x-text="forecast.rationale"></p>
+                                <p class="fs-xs text-muted dark:text-slate-400" x-text="forecast.rationale"></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Decision History -->
                     <div class="phase-label">Decision History</div>
-                    <div class="card p-5 fade-in" x-show="history.length">
+                    <div class="card p-2 fade-in" x-show="history.length">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-xs">
+                            <table class="table table-vcenter table-hover w-100 fs-xs">
                                 <thead>
-                                    <tr class="text-slate-500 uppercase tracking-wider border-b border-surface-border">
-                                        <th class="text-left py-2 pr-4">Date</th>
-                                        <th class="text-left py-2 pr-4">Signal</th>
-                                        <th class="text-right py-2 pr-4">Entry</th>
-                                        <th class="text-right py-2 pr-4">Target</th>
-                                        <th class="text-right py-2 pr-4">Stop</th>
-                                        <th class="text-right py-2 pr-4">Risk</th>
-                                        <th class="text-right py-2 pr-4">Outcome</th>
-                                        <th class="text-right py-2">Return</th>
+                                    <tr class="text-muted text-uppercase  border-bottom border">
+                                        <th class="text-start py-2 pe-2">Date</th>
+                                        <th class="text-start py-2 pe-2">Signal</th>
+                                        <th class="text-end py-2 pe-2">Entry</th>
+                                        <th class="text-end py-2 pe-2">Target</th>
+                                        <th class="text-end py-2 pe-2">Stop</th>
+                                        <th class="text-end py-2 pe-2">Risk</th>
+                                        <th class="text-end py-2 pe-2">Outcome</th>
+                                        <th class="text-end py-2">Return</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <template x-for="h in history" :key="h.id">
-                                        <tr class="border-b border-surface-border/50 hover:bg-surface-light/50 transition">
-                                            <td class="py-2 pr-4 text-slate-700 dark:text-slate-300" x-text="h.decision_date?.substring(0,10)"></td>
-                                            <td class="py-2 pr-4">
+                                        <tr class="border-bottom border  ">
+                                            <td class="py-2 pe-2 text-body dark:text-slate-300" x-text="h.decision_date?.substring(0,10)"></td>
+                                            <td class="py-2 pe-2">
                                                 <span class="signal-badge" :class="signalClass(h.final_signal)" x-text="h.final_signal"></span>
                                             </td>
-                                            <td class="py-2 pr-4 text-right text-slate-500 dark:text-slate-400 font-mono" x-text="formatPrice(h.entry_price)"></td>
-                                            <td class="py-2 pr-4 text-right text-success font-mono" x-text="formatPrice(h.target_price)"></td>
-                                            <td class="py-2 pr-4 text-right text-danger font-mono" x-text="formatPrice(h.stop_loss)"></td>
-                                            <td class="py-2 pr-4 text-right text-warning font-mono" x-text="Math.round(h.risk_score)"></td>
-                                            <td class="py-2 pr-4 text-right">
-                                                <span x-text="h.outcome || '-'" class="text-slate-500 dark:text-slate-400"
+                                            <td class="py-2 pe-2 text-end text-muted dark:text-slate-400 font-monospace" x-text="formatPrice(h.entry_price)"></td>
+                                            <td class="py-2 pe-2 text-end text-success font-monospace" x-text="formatPrice(h.target_price)"></td>
+                                            <td class="py-2 pe-2 text-end text-danger font-monospace" x-text="formatPrice(h.stop_loss)"></td>
+                                            <td class="py-2 pe-2 text-end text-warning font-monospace" x-text="Math.round(h.risk_score)"></td>
+                                            <td class="py-2 pe-2 text-end">
+                                                <span x-text="h.outcome || '-'" class="text-muted dark:text-slate-400"
                                                     :class="{'text-success': h.outcome === 'profit', 'text-danger': h.outcome === 'loss', 'text-slate-400': !h.outcome}"></span>
                                             </td>
-                                            <td class="py-2 text-right font-mono" :class="h.realized_return >= 0 ? 'text-success' : 'text-danger'" x-text="h.realized_return ? (h.realized_return * 100).toFixed(2) + '%' : '-'"></td>
+                                            <td class="py-2 text-end font-monospace" :class="h.realized_return >= 0 ? 'text-success' : 'text-danger'" x-text="h.realized_return ? (h.realized_return * 100).toFixed(2) + '%' : '-'"></td>
                                         </tr>
                                     </template>
                                 </tbody>
@@ -610,8 +610,8 @@
                         </div>
                     </div>
 
-                    <div class="card p-5 text-center text-slate-500" x-show="!history.length && result">
-                        <p class="text-sm">No prior decisions for this stock yet.</p>
+                    <div class="card p-2 text-center text-muted" x-show="!history.length && result">
+                        <p class="fs-sm">No prior decisions for this stock yet.</p>
                     </div>
                 </div>
             </div>
@@ -999,6 +999,6 @@
             }
         }
     </script>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>
