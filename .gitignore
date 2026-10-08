@@ -1,19 +1,37 @@
-# Environment (secrets)
+# Environment (secrets) - keep .env.example tracked
 .env
+.env.*
+!.env.example
 
 # Node
 node_modules/
 npm-debug.log*
 
-# Data / runtime
-data/backup/
+# Go binaries & build output
+*.exe
+*.out
+*.test
+bin/
+dist/
+build/
+
+# Data / runtime (sqlite, uploads, backups)
+data/
+*.db
+*.sqlite
+*.sqlite-journal
 *.log
 
 # Local build caches / temp
 .tmp/
-build/
+coverage.out
+coverage.html
+*.cover
 
 # OS / editor
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
+*.swp
 *.exe~
