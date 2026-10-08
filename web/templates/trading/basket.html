@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basket Trading · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -67,7 +67,7 @@
 <div class="flex-fill d-flex flex-column min-w-0" @click="sidebarOpen=false">
     <header class="h-14 bg-white dark:bg-[#0f172a] border-bottom border dark:border-[#1e293b] d-flex align-items-center justify-content-between px-2 flex-shrink-0">
         <div class="d-flex align-items-center gap-3">
-            <button @click.stop="sidebarOpen=!sidebarOpen" class="d-lg-none text-muted dark:text-slate-400  p-1 btn-touch">
+            <button @click.stop="sidebarOpen=!sidebarOpen" class="d-lg-none text-muted dark:text-muted  p-1 btn-touch">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <span class="fw-semibold text-white fs-base">🧺 Basket Trading</span>
@@ -85,12 +85,12 @@
             <h2 class="fs-3 fw-bold text-white mb-2">📝 Buat Basket Baru</h2>
             <div class="vstack gap-2">
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-1">Nama Basket</label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted mb-1">Nama Basket</label>
                     <input type="text" x-model="basketName" placeholder="e.g. Big Banks Basket" class="input-field">
                 </div>
 
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-2">Saham dalam Basket</label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted mb-2">Saham dalam Basket</label>
                     <div class="vstack gap-2" id="stock-rows">
                         <template x-for="(item, idx) in stocks" :key="idx">
                             <div class="d-flex align-items-center gap-2">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="d-flex flex-wrap gap-1">
                             <template x-for="item in basket.items" :key="item.code">
-                                <span class="fs-xs bg-white dark:bg-[#1e293b] text-body dark:text-slate-300 px-2 py-1 rounded-2" x-text="item.type.toUpperCase() + ' ' + item.quantity + ' × ' + item.code"></span>
+                                <span class="fs-xs bg-white dark:bg-[#1e293b] text-body dark:text-body px-2 py-1 rounded-2" x-text="item.type.toUpperCase() + ' ' + item.quantity + ' × ' + item.code"></span>
                             </template>
                         </div>
                     </div>
@@ -146,15 +146,15 @@
             <h2 class="fs-3 fw-bold text-white mb-2">🧮 Estimasi Biaya</h2>
             <div class="row row-cols-3 gap-4">
                 <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
-                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Total Lot</div>
+                    <div class="fs-xs text-muted dark:text-muted mb-1">Total Lot</div>
                     <div class="fs-2 fw-bold text-primary" x-text="totalLots"></div>
                 </div>
                 <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
-                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Jumlah Saham</div>
+                    <div class="fs-xs text-muted dark:text-muted mb-1">Jumlah Saham</div>
                     <div class="fs-2 fw-bold text-primary" x-text="stockCount"></div>
                 </div>
                 <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 text-center">
-                    <div class="fs-xs text-muted dark:text-slate-400 mb-1">Estimasi (Rp)</div>
+                    <div class="fs-xs text-muted dark:text-muted mb-1">Estimasi (Rp)</div>
                     <div class="fs-2 fw-bold text-success" x-text="estimatedCost"></div>
                 </div>
             </div>

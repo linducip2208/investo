@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sector Health Index · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -75,7 +74,7 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill">
                 <h1 class="fs-3 fw-bold text-white">Sector Health Index</h1>
             </div>

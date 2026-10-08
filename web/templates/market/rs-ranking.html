@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="Relative Strength Ranking saham IDX. Bandingkan performa saham terhadap IHSG.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -233,7 +233,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
@@ -249,7 +249,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">&#x1F3AF; Relative Strength Ranking</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Saham dengan performa terkuat vs benchmark. Diurutkan berdasarkan RS Rating 0-100.</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Saham dengan performa terkuat vs benchmark. Diurutkan berdasarkan RS Rating 0-100.</p>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <button @click="fetchData()" class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">&#x1F504; Refresh</button>
@@ -285,13 +285,13 @@
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <span class="font-monospace fw-bold fs-sm text-primary" x-text="l.code"></span>
                             <span class="fs-xs fw-bold px-2 py-0 rounded-pill"
-                                  :class="idx===0?'bg-yellow-lt text-yellow-400':idx===1?'bg-slate-400/20 text-body':idx===2?'bg-amber-600/20 text-amber-400':'bg-secondary-lt text-slate-500'"
+                                  :class="idx===0?'bg-yellow-lt text-warning':idx===1?'bg-slate-400/20 text-body':idx===2?'bg-amber-600/20 text-warning':'bg-secondary-lt text-muted'"
                                   x-text="idx+1"></span>
                         </div>
-                        <div class="fs-xs text-muted dark:text-slate-400 text-truncate mb-2" x-text="l.name"></div>
-                        <div class="fs-3 fw-bold" :class="l.rs_rating>=60?'text-green-400':l.rs_rating>=40?'text-yellow-400':'text-red-400'" x-text="l.rs_rating"></div>
+                        <div class="fs-xs text-muted dark:text-muted text-truncate mb-2" x-text="l.name"></div>
+                        <div class="fs-3 fw-bold" :class="l.rs_rating>=60?'text-success':l.rs_rating>=40?'text-warning':'text-danger'" x-text="l.rs_rating"></div>
                         <div class="fs-6 text-muted text-uppercase ">RS Rating</div>
-                        <div class="mt-1 fs-xs font-monospace text-muted dark:text-slate-400" x-text="formatPrice(l.price)"></div>
+                        <div class="mt-1 fs-xs font-monospace text-muted dark:text-muted" x-text="formatPrice(l.price)"></div>
                     </a>
                     </template>
                 </div>
@@ -301,10 +301,10 @@
             <div class="d-flex flex-wrap align-items-center gap-2">
                 <span class="fs-xs text-muted text-uppercase  me-1">Sector:</span>
                 <button @click="filterSector='ALL';applyFilter()" class="bg-secondary-lt border"
-                        :class="filterSector==='ALL'?'bg-blue-600 text-white border-info':'bg-white text-muted dark:text-slate-400 border'">ALL</button>
+                        :class="filterSector==='ALL'?'bg-blue-600 text-white border-info':'bg-white text-muted dark:text-muted border'">ALL</button>
                 <template x-for="s in [...sectors].sort()" :key="s">
                 <button @click="filterSector=s;applyFilter()" class="bg-secondary-lt border"
-                        :class="filterSector===s?'bg-blue-600 text-white border-info':'bg-white text-muted dark:text-slate-400 border'"
+                        :class="filterSector===s?'bg-blue-600 text-white border-info':'bg-white text-muted dark:text-muted border'"
                         x-text="s"></button>
                 </template>
             </div>
@@ -337,14 +337,14 @@
                                         <div class="progress-bar flex-fill min-w-[80px]">
                                             <div class="progress-fill" :class="rsClass(r.rs_rating)" :style="'width:'+r.rs_rating+'%'"></div>
                                         </div>
-                                        <span class="font-monospace fs-sm fw-bold w-10 text-end" :class="r.rs_rating>=60?'text-green-400':r.rs_rating>=40?'text-yellow-400':'text-red-400'" x-text="r.rs_rating"></span>
+                                        <span class="font-monospace fs-sm fw-bold w-10 text-end" :class="r.rs_rating>=60?'text-success':r.rs_rating>=40?'text-warning':'text-danger'" x-text="r.rs_rating"></span>
                                     </div>
                                 </td>
                                 <td class="px-2 py-2 text-end font-monospace fs-sm text-white" x-text="formatPrice(r.price)"></td>
-                                <td class="px-2 py-2 text-end font-monospace fs-sm" :class="r.change_pct>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.change_pct)"></td>
-                                <td class="px-2 py-2 font-monospace fs-xs text-muted dark:text-slate-400 d-none d-md-table-cell" x-text="r.sector || '-'"></td>
-                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-sm-table-cell" :class="r.return_1mo>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.return_1mo)"></td>
-                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-sm-table-cell" :class="r.return_3mo>=0?'text-green-400':'text-red-400'" x-text="formatPct(r.return_3mo)"></td>
+                                <td class="px-2 py-2 text-end font-monospace fs-sm" :class="r.change_pct>=0?'text-success':'text-danger'" x-text="formatPct(r.change_pct)"></td>
+                                <td class="px-2 py-2 font-monospace fs-xs text-muted dark:text-muted d-none d-md-table-cell" x-text="r.sector || '-'"></td>
+                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-sm-table-cell" :class="r.return_1mo>=0?'text-success':'text-danger'" x-text="formatPct(r.return_1mo)"></td>
+                                <td class="px-2 py-2 text-end font-monospace fs-xs d-none d-sm-table-cell" :class="r.return_3mo>=0?'text-success':'text-danger'" x-text="formatPct(r.return_3mo)"></td>
                             </tr>
                             </template>
                         </tbody>
@@ -362,7 +362,7 @@
                 <template x-if="!loading && filtered.length === 0">
                 <div class="text-center py-2">
                     <div class="display-6 mb-2">&#x1F50D;</div>
-                    <p class="text-muted dark:text-slate-400 fw-medium">No results</p>
+                    <p class="text-muted dark:text-muted fw-medium">No results</p>
                     <p class="text-muted fs-sm mt-1">Coba ganti filter sektor</p>
                 </div>
                 </template>

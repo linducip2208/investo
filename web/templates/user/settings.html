@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]] — Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
         .card{background:#1e293b;border:1px solid #334155;border-radius:14px}
         .nav-link{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s}
         .nav-link:hover{background:#1e293b;color:#e2e8f0}
-        .nav-link.active{background:#1e3a8a;color:#93c5fd;font-weight:600}
+        .nav-link.active{background:var(--ui-primary-soft);color:var(--ui-primary);font-weight:600}
     </style>
 <style data-investo-compat>
     body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
@@ -28,104 +27,104 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-[#f4f6fb] dark:bg-[#0b1120] text-slate-800 dark:text-slate-200 flex">
+<body class="bg-body dark:bg-[#0b1120] text-body dark:text-slate-200 d-flex">
 
-<aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col min-h-screen shrink-0">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200/50 dark:border-slate-700/50">
-        <span class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</span>
-        <span class="font-bold text-white">Investo</span>
+<aside class="w-56 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-700/50 d-flex flex-column min-vh-100 flex-shrink-0">
+    <div class="d-flex align-items-center gap-2 px-2 h-14 border-bottom border dark:border-slate-700/50">
+        <span class="w-7 h-7 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded d-flex align-items-center justify-content-center text-white fw-bold fs-xs">I</span>
+        <span class="fw-bold text-white">Investo</span>
     </div>
-    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+    <nav class="flex-fill p-2 vstack gap-0 overflow-y-auto">
         <a href="/dashboard" class="nav-link">📊 Dashboard</a>
         <a href="/saham" class="nav-link">📈 Saham</a>
         <a href="/forex" class="nav-link">💱 Forex</a>
         <a href="/screener" class="nav-link">🔍 Screener</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
+        <div class="border-top border dark:border-slate-700/50 my-2"></div>
         <a href="/dashboard/portfolios" class="nav-link">💼 Portofolio</a>
         <a href="/dashboard/watchlists" class="nav-link">⭐ Watchlist</a>
         <a href="/dashboard/alerts" class="nav-link">🔔 Alert</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
+        <div class="border-top border dark:border-slate-700/50 my-2"></div>
         <a href="/ideas" class="nav-link">💡 Ideas</a>
         <a href="/market/recap" class="nav-link">📋 Recap</a>
         <a href="/ai/coach" class="nav-link">🤖 AI Coach</a>
-        <div class="border-t border-slate-200/50 dark:border-slate-700/50 my-2"></div>
+        <div class="border-top border dark:border-slate-700/50 my-2"></div>
         <a href="/pengaturan" class="nav-link active">⚙️ Pengaturan</a>
         <a href="/pengaturan/ai" class="nav-link">🔑 AI Settings</a>
         <a href="/pengaturan/data-sources" class="nav-link">📡 Data Sources</a>
-        <a href="/logout" class="nav-link text-red-400 hover:bg-red-900/20">🚪 Keluar</a>
+        <a href="/logout" class="nav-link text-danger ">🚪 Keluar</a>
     </nav>
 </aside>
 
-<div class="flex-1 min-w-0">
-    <div class="max-w-2xl mx-auto px-6 py-6">
-        <h1 class="text-xl font-bold text-white mb-4">Pengaturan</h1>
+<div class="flex-fill min-w-0">
+    <div class="max-w-2xl mx-auto px-2 py-2">
+        <h1 class="fs-2 fw-bold text-white mb-2">Pengaturan</h1>
 
         [[if .Success]]
-        <div class="mb-4 p-3 bg-emerald-900/20 border border-emerald-800/50 rounded-lg text-emerald-400 text-sm">[[.Success]]</div>
+        <div class="mb-2 p-2 bg-success bg-opacity-25 border border-success rounded-2 text-success fs-sm">[[.Success]]</div>
         [[end]]
 
-        <form method="POST" action="/pengaturan" class="space-y-4">
+        <form method="POST" action="/pengaturan" class="vstack gap-3">
 
-            <div class="card p-5">
-                <h2 class="font-semibold text-white mb-3">Tema Tampilan</h2>
-                <div class="grid grid-cols-5 gap-2">
-                    <label class="cursor-pointer rounded-lg border-2 border-blue-500 overflow-hidden">
-                        <input type="radio" name="theme" value="bloomberg-dark" class="hidden" checked>
-                        <div class="h-10 bg-white dark:bg-slate-800 flex items-end p-1"><div class="w-full h-5 rounded bg-slate-100 dark:bg-slate-700"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Bloomberg</div>
+            <div class="card p-2">
+                <h2 class="fw-semibold text-white mb-2">Tema Tampilan</h2>
+                <div class="row row-cols-5 gap-2">
+                    <label class="cursor-pointer rounded-2 border-2 border-primary overflow-hidden">
+                        <input type="radio" name="theme" value="bloomberg-dark" class="d-none" checked>
+                        <div class="h-10 bg-white dark:bg-slate-800 d-flex align-items-end p-1"><div class="w-100 h-5 rounded bg-body dark:bg-slate-700"></div></div>
+                        <div class="p-1 text-center fs-6 text-body dark:text-body">Bloomberg</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <input type="radio" name="theme" value="terminal-green" class="hidden">
-                        <div class="h-10 bg-black flex items-end p-1"><div class="w-full h-5 rounded bg-white dark:bg-[#111]"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Terminal</div>
+                    <label class="cursor-pointer rounded-2 border-2 border dark:border-slate-700 overflow-hidden">
+                        <input type="radio" name="theme" value="terminal-green" class="d-none">
+                        <div class="h-10 bg-black d-flex align-items-end p-1"><div class="w-100 h-5 rounded bg-white dark:bg-[#111]"></div></div>
+                        <div class="p-1 text-center fs-6 text-body dark:text-body">Terminal</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <input type="radio" name="theme" value="minimal-white" class="hidden">
-                        <div class="h-10 bg-white flex items-end p-1"><div class="w-full h-5 rounded bg-slate-50"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Minimal</div>
+                    <label class="cursor-pointer rounded-2 border-2 border dark:border-slate-700 overflow-hidden">
+                        <input type="radio" name="theme" value="minimal-white" class="d-none">
+                        <div class="h-10 bg-white d-flex align-items-end p-1"><div class="w-100 h-5 rounded bg-body"></div></div>
+                        <div class="p-1 text-center fs-6 text-body dark:text-body">Minimal</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <input type="radio" name="theme" value="midnight-blue" class="hidden">
-                        <div class="h-10 bg-white dark:bg-[#0f172a] flex items-end p-1"><div class="w-full h-5 rounded bg-[#1e3a8a]"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Midnight</div>
+                    <label class="cursor-pointer rounded-2 border-2 border dark:border-slate-700 overflow-hidden">
+                        <input type="radio" name="theme" value="midnight-blue" class="d-none">
+                        <div class="h-10 bg-white dark:bg-[#0f172a] d-flex align-items-end p-1"><div class="w-100 h-5 rounded bg-primary"></div></div>
+                        <div class="p-1 text-center fs-6 text-body dark:text-body">Midnight</div>
                     </label>
-                    <label class="cursor-pointer rounded-lg border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <input type="radio" name="theme" value="soft-grey" class="hidden">
-                        <div class="h-10 bg-slate-100 flex items-end p-1"><div class="w-full h-5 rounded bg-white"></div></div>
-                        <div class="p-1 text-center text-[10px] text-slate-700 dark:text-slate-300">Soft</div>
+                    <label class="cursor-pointer rounded-2 border-2 border dark:border-slate-700 overflow-hidden">
+                        <input type="radio" name="theme" value="soft-grey" class="d-none">
+                        <div class="h-10 bg-body d-flex align-items-end p-1"><div class="w-100 h-5 rounded bg-white"></div></div>
+                        <div class="p-1 text-center fs-6 text-body dark:text-body">Soft</div>
                     </label>
                 </div>
             </div>
 
-            <div class="card p-5">
-                <h2 class="font-semibold text-white mb-3">Notifikasi</h2>
-                <div class="space-y-3">
-                    <label class="flex items-center justify-between"><span class="text-sm">Email</span><input type="checkbox" name="notif_email" checked class="accent-blue-600"></label>
-                    <label class="flex items-center justify-between"><span class="text-sm">Telegram</span><input type="checkbox" name="notif_telegram" class="accent-blue-600"></label>
-                    <label class="flex items-center justify-between"><span class="text-sm">Web (in-app)</span><input type="checkbox" name="notif_web" checked class="accent-blue-600"></label>
+            <div class="card p-2">
+                <h2 class="fw-semibold text-white mb-2">Notifikasi</h2>
+                <div class="vstack gap-2">
+                    <label class="d-flex align-items-center justify-content-between"><span class="fs-sm">Email</span><input type="checkbox" name="notif_email" checked class=""></label>
+                    <label class="d-flex align-items-center justify-content-between"><span class="fs-sm">Telegram</span><input type="checkbox" name="notif_telegram" class=""></label>
+                    <label class="d-flex align-items-center justify-content-between"><span class="fs-sm">Web (in-app)</span><input type="checkbox" name="notif_web" checked class=""></label>
                 </div>
             </div>
 
-            <div class="card p-5">
-                <h2 class="font-semibold text-white mb-3">Timeframe Default</h2>
-                <div class="flex flex-wrap gap-2">
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1D" class="hidden">1H</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1W" class="hidden">1M</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1M" checked class="hidden">1B</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="3M" class="hidden">3B</label>
-                    <label class="px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-700 cursor-pointer has-[:checked]:bg-blue-900/20 has-[:checked]:border-blue-500"><input type="radio" name="timeframe" value="1Y" class="hidden">1T</label>
+            <div class="card p-2">
+                <h2 class="fw-semibold text-white mb-2">Timeframe Default</h2>
+                <div class="d-flex flex-wrap gap-2">
+                    <label class="px-2 py-1 rounded-2 fs-sm border border dark:border-slate-700 cursor-pointer pill-check"><input type="radio" name="timeframe" value="1D" class="d-none">1H</label>
+                    <label class="px-2 py-1 rounded-2 fs-sm border border dark:border-slate-700 cursor-pointer pill-check"><input type="radio" name="timeframe" value="1W" class="d-none">1M</label>
+                    <label class="px-2 py-1 rounded-2 fs-sm border border dark:border-slate-700 cursor-pointer pill-check"><input type="radio" name="timeframe" value="1M" checked class="d-none">1B</label>
+                    <label class="px-2 py-1 rounded-2 fs-sm border border dark:border-slate-700 cursor-pointer pill-check"><input type="radio" name="timeframe" value="3M" class="d-none">3B</label>
+                    <label class="px-2 py-1 rounded-2 fs-sm border border dark:border-slate-700 cursor-pointer pill-check"><input type="radio" name="timeframe" value="1Y" class="d-none">1T</label>
                 </div>
             </div>
 
-            <div class="card p-5">
-                <h2 class="font-semibold text-white mb-3">Bahasa</h2>
-                <select name="language" class="w-full sm:w-48 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-white text-sm">
+            <div class="card p-2">
+                <h2 class="fw-semibold text-white mb-2">Bahasa</h2>
+                <select name="language" class="w-100 w-48 px-2 py-2 rounded-2 border border dark:border-slate-700 bg-white dark:bg-slate-800 text-white fs-sm">
                     <option value="id" selected>Bahasa Indonesia</option>
                     <option value="en">English</option>
                 </select>
             </div>
 
-            <button type="submit" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all">
+            <button type="submit" class="px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3   ">
                 Simpan Pengaturan
             </button>
         </form>

@@ -6,7 +6,7 @@
     <title>Price Action Monitor · Investo</title>
     <meta name="description" content="Monitor price action real-time: new highs/lows, gap up/down, volume spike, support/resistance breaks, RSI extremes.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -276,12 +276,12 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -293,10 +293,10 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Price Action Monitor</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Monitor aktivitas harga real-time: new highs/lows, gap, volume spikes, breakouts. Auto-refresh setiap 30 detik.</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Monitor aktivitas harga real-time: new highs/lows, gap, volume spikes, breakouts. Auto-refresh setiap 30 detik.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-slate-400">
+                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-muted">
                         <span class="refresh-indicator"></span>
                         <span x-text="'Live · '+lastUpdate"></span>
                     </div>
@@ -328,7 +328,7 @@
             </div>
 
             <div class="d-flex flex-wrap align-items-center gap-2">
-                <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'bg-white text-muted dark:text-slate-400 border border dark:border ">All Events</button>
+                <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'bg-white text-muted dark:text-muted border border dark:border ">All Events</button>
                 <button @click="filter='new_high';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='new_high'?'bg-green-600 text-white':'bg-white text-success border border'">52W High</button>
                 <button @click="filter='new_low';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='new_low'?'bg-red-600 text-white':'bg-white text-danger border border'">52W Low</button>
                 <button @click="filter='gap_up';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='gap_up'?'bg-emerald-600 text-white':'bg-white text-success border border'">Gap Up</button>
@@ -371,7 +371,7 @@
                         <div>
                             <div class="font-monospace fs-3 fw-bold text-white" x-text="formatPrice(ev.price)"></div>
                             <template x-if="ev.change_pct !== undefined && ev.change_pct !== null">
-                            <div class="fs-xs font-monospace mt-0" :class="ev.change_pct >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(ev.change_pct >= 0 ? '+' : '') + (ev.change_pct || 0).toFixed(2) + '%'"></div>
+                            <div class="fs-xs font-monospace mt-0" :class="ev.change_pct >= 0 ? 'text-success' : 'text-danger'" x-text="(ev.change_pct >= 0 ? '+' : '') + (ev.change_pct || 0).toFixed(2) + '%'"></div>
                             </template>
                         </div>
                         <div class="fs-xs text-muted" x-text="ev.detail || ''"></div>
@@ -381,7 +381,7 @@
                     <div class="mt-2 pt-2 border-top border dark:border/50">
                         <div class="d-flex align-items-center justify-content-between fs-xs">
                             <span class="text-muted">Volume</span>
-                            <span class="font-monospace text-muted dark:text-slate-400" x-text="(ev.volume || 0).toLocaleString()"></span>
+                            <span class="font-monospace text-muted dark:text-muted" x-text="(ev.volume || 0).toLocaleString()"></span>
                         </div>
                     </div>
                     </template>
@@ -393,7 +393,7 @@
             <template x-if="!loading && filtered.length === 0">
             <div class="text-center py-2">
                 <div class="display-5 mb-2">&#x1F4AC;</div>
-                <p class="text-muted dark:text-slate-400 fs-3 fw-medium">No price action events detected</p>
+                <p class="text-muted dark:text-muted fs-3 fw-medium">No price action events detected</p>
                 <p class="text-muted fs-sm mt-1">Tidak ada anomali harga signifikan saat ini</p>
             </div>
             </template>

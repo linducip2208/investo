@@ -8,7 +8,7 @@
     <meta property="og:title" content="Valuasi [[.Stock.Code]] &mdash; [[.Stock.Name]]">
     <meta property="og:description" content="Target harga wajar [[.Stock.Code]] berdasarkan 4 model valuasi. Lihat rekomendasi beli/jual.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -16,22 +16,6 @@
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
-                    },
-                    colors: {
-                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -88,11 +72,11 @@ function valuation() {
         },
         healthBarColor(score) {
             if(score>=80) return 'bg-green'; if(score>=60) return 'bg-blue';
-            if(score>=40) return 'bg-amber-500'; return 'bg-red';
+            if(score>=40) return 'bg-warning'; return 'bg-red';
         },
         piotroskiRatingColor(rating) {
             if(rating==='Strong') return 'bg-green'; if(rating==='Good') return 'bg-blue';
-            if(rating==='Average') return 'bg-amber-500'; return 'bg-red';
+            if(rating==='Average') return 'bg-warning'; return 'bg-red';
         }
     };
 }
@@ -193,8 +177,8 @@ function valuation() {
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted">
             <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <a href="/saham/[[.Stock.Code]]" class=" ">[[.Stock.Code]]</a>
@@ -223,7 +207,7 @@ function valuation() {
                     <h1 class="fs-1 fs-1 fw-bold text-body dark:text-[#f8fafc] font-monospace">[[.Stock.Code]]</h1>
                     <span class="px-2 py-1 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-semibold">Valuasi</span>
                 </div>
-                <p class="mt-1 fs-3 text-muted dark:text-slate-400">[[.Stock.Name]]</p>
+                <p class="mt-1 fs-3 text-muted dark:text-muted">[[.Stock.Name]]</p>
             </div>
             <div class="text-end">
                 <span class="fs-xs text-muted">Harga Saat Ini</span>
@@ -236,10 +220,10 @@ function valuation() {
             <div class="bg-gradient bg-gradient-from-slate bg-gradient-to-slate rounded-4 p-2 p-sm-5 text-white border border dark:border/50">
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                     <div>
-                        <span class="fs-xs fw-medium text-muted dark:text-slate-400 text-uppercase ">Target Harga Rata-Rata</span>
+                        <span class="fs-xs fw-medium text-muted dark:text-muted text-uppercase ">Target Harga Rata-Rata</span>
                         <div class="mt-1 display-6 display-5 fw-bold">Rp [[.Valuation.AverageTarget | formatPrice]]</div>
                         <div class="mt-2 d-flex align-items-center gap-2">
-                            <span class="fs-sm text-muted dark:text-slate-400">Upside:</span>
+                            <span class="fs-sm text-muted dark:text-muted">Upside:</span>
                             [[if ge .Valuation.UpsidePercent 0.0]]
                             <span class="fs-3 fw-bold text-success">+[[.Valuation.UpsidePercent]]%</span>
                             [[else]]
@@ -294,7 +278,7 @@ function valuation() {
                                 <div>
                                     <template x-for="(score,cat) in healthScore.category_scores" :key="cat">
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <span x-text="cat" class="text-muted dark:text-slate-400"></span>
+                                            <span x-text="cat" class="text-muted dark:text-muted"></span>
                                             <div class="d-flex align-items-center gap-1">
                                                 <div class="w-20 h-1.5 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
                                                     <div class="h-100 rounded-pill" :class="score>=(healthScore.category_max[cat]*0.7)?'bg-green':score>=(healthScore.category_max[cat]*0.4)?'bg-blue':'bg-red'" :style="'width:'+(score/healthScore.category_max[cat]*100)+'%'"></div>
@@ -321,7 +305,7 @@ function valuation() {
                     <h3 class="fw-semibold text-body dark:text-[#f8fafc] mb-2">DuPont Analysis</h3>
                     <template x-if="dupont&&dupont.roe">
                         <div class="vstack gap-2 fs-sm">
-                            <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">ROE</span><span class="font-monospace fw-bold text-body dark:text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
+                            <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted">ROE</span><span class="font-monospace fw-bold text-body dark:text-[#f8fafc]" x-text="dupont.roe.toFixed(1)+'%'"></span></div>
                             <div class="h-3 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden d-flex">
                                 <div class="h-100 bg-primary" :style="'width:'+Math.min(dupont.net_margin*100,50)+'%'"></div>
                                 <div class="h-100 bg-primary" :style="'width:'+Math.min(dupont.asset_turnover*100,30)+'%'"></div>
@@ -337,8 +321,8 @@ function valuation() {
                     <template x-if="altman&&altman.z_score">
                         <div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="fs-1 fw-bold" :class="altman.z_score>2.99?'text-emerald-400':altman.z_score>1.81?'text-amber-400':'text-red-400'" x-text="altman.z_score.toFixed(2)"></span>
-                                <span class="px-2 py-1 rounded-pill fs-xs fw-semibold text-white" :class="altman.z_score>2.99?'bg-green':altman.z_score>1.81?'bg-amber-500':'bg-red'" x-text="altman.zone"></span>
+                                <span class="fs-1 fw-bold" :class="altman.z_score>2.99?'text-success':altman.z_score>1.81?'text-warning':'text-danger'" x-text="altman.z_score.toFixed(2)"></span>
+                                <span class="px-2 py-1 rounded-pill fs-xs fw-semibold text-white" :class="altman.z_score>2.99?'bg-green':altman.z_score>1.81?'bg-warning':'bg-red'" x-text="altman.zone"></span>
                             </div>
                             <div class="position-relative w-100 h-3 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
                                 <div class="position-absolute top-0 bottom-0 start-0 end-0 rounded-pill" style="background:linear-gradient(to right,#f87171 0%,#f87171 30%,#f59e0b 30%,#f59e0b 50%,#34d399 50%,#34d399 100%)"></div>
@@ -390,13 +374,13 @@ function valuation() {
                     <template x-if="beneish&&beneish.m_score!==undefined">
                         <div>
                             <div class="d-flex align-items-baseline gap-2 mb-2">
-                                <span class="fs-1 fw-bold" :class="beneish.manipulation_likely?'text-red-400':'text-emerald-400'" x-text="beneish.m_score.toFixed(2)"></span>
+                                <span class="fs-1 fw-bold" :class="beneish.manipulation_likely?'text-danger':'text-success'" x-text="beneish.m_score.toFixed(2)"></span>
                                 <span class="fs-xs text-muted" x-text="beneish.manipulation_likely?'(> -1.78)':'(&lt; -1.78)'"></span>
                             </div>
                             <template x-if="beneish.components">
                                 <div class="vstack gap-1 fs-xs">
                                     <template x-for="(val,key) in beneish.components" :key="key">
-                                        <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400" x-text="key"></span><span class="font-monospace fw-medium text-body dark:text-body" x-text="val.toFixed(2)"></span></div>
+                                        <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted" x-text="key"></span><span class="font-monospace fw-medium text-body dark:text-body" x-text="val.toFixed(2)"></span></div>
                                     </template>
                                 </div>
                             </template>
@@ -470,13 +454,13 @@ function valuation() {
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Kode</th>
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Nama</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">PER</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">PBV</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">ROE</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">DER</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-xs">NPM</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Kode</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Nama</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">PER</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">PBV</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">ROE</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">DER</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 hide-xs">NPM</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">
@@ -509,11 +493,11 @@ function valuation() {
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Ex-Date</th>
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Payment</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Dividen</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Yield</th>
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-xs">Tipe</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Ex-Date</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Payment</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Dividen</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Yield</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 hide-xs">Tipe</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">
@@ -544,9 +528,9 @@ function valuation() {
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Periode</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Pendapatan</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Laba Bersih</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Periode</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Pendapatan</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Laba Bersih</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">

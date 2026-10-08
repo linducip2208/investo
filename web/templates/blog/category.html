@@ -7,7 +7,7 @@
     <meta name="description" content="[[.Category.Description]]">
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -44,13 +44,13 @@
                 <span class="fw-bold fs-2 text-white">Investo</span>
             </a>
             <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
-                <a href="/" class="text-body dark:text-slate-300  ">Beranda</a>
+                <a href="/" class="text-body dark:text-body  ">Beranda</a>
                 <a href="/blog" class="text-primary fw-semibold">Blog</a>
-                <a href="/docs" class="text-body dark:text-slate-300  ">Docs</a>
-                <a href="/faq" class="text-body dark:text-slate-300  ">FAQ</a>
+                <a href="/docs" class="text-body dark:text-body  ">Docs</a>
+                <a href="/faq" class="text-body dark:text-body  ">FAQ</a>
                 <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-body dark:text-slate-300  dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-body dark:text-body  dark:hover:bg-white">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -71,7 +71,7 @@
                     <span class="fs-1">[[.Category.Emoji]]</span>
                     <h1 class="fs-1 display-6 fw-bold text-white">Kategori: [[.Category.Name]]</h1>
                 </div>
-                <p class="text-muted dark:text-slate-400 fs-base">[[.Category.Description]]</p>
+                <p class="text-muted dark:text-muted fs-base">[[.Category.Description]]</p>
             </div>
 
             <div class="row row-cols-sm-2 gap-6 gap-lg-5">
@@ -96,7 +96,7 @@
                         <a href="/blog/[[.Slug]]" class="d-block ">
                             <h3 class="fs-3 fw-bold text-white   lh-sm mb-2">[[.Title]]</h3>
                         </a>
-                        <p class="text-muted dark:text-slate-400 fs-sm lh-lg line-clamp-2 mb-2">[[.Excerpt]]</p>
+                        <p class="text-muted dark:text-muted fs-sm lh-lg line-clamp-2 mb-2">[[.Excerpt]]</p>
                         <div class="d-flex align-items-center gap-3 fs-xs text-muted">
                             <span>[[.AuthorName]]</span>
                             <span>&middot;</span>
@@ -110,7 +110,7 @@
             [[if not .Posts]]
             <div class="text-center py-2 reveal">
                 <div class="display-5 mb-2">📭</div>
-                <h3 class="fs-2 fw-bold text-body dark:text-slate-300 mb-2">Belum ada artikel</h3>
+                <h3 class="fs-2 fw-bold text-body dark:text-body mb-2">Belum ada artikel</h3>
                 <p class="text-muted">Kategori ini belum memiliki artikel.</p>
             </div>
             [[end]]
@@ -118,13 +118,13 @@
             [[if .HasPages]]
             <div class="d-flex align-items-center justify-content-center gap-2 mt-2 reveal">
                 [[if .HasPrev]]
-                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">&laquo; Sebelumnya</a>
+                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-body  dark:hover:bg-white fs-sm fw-medium ">&laquo; Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
-                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-primary text-white[[else]]border border dark:border-slate-700 text-body dark:text-slate-300 hover:bg-slate-800[[end]] ">[[.]]</a>
+                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-primary text-white[[else]]border border dark:border-slate-700 text-body dark:text-body hover:bg-white[[end]] ">[[.]]</a>
                 [[end]]
                 [[if .HasNext]]
-                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">Selanjutnya &raquo;</a>
+                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-body dark:text-body  dark:hover:bg-white fs-sm fw-medium ">Selanjutnya &raquo;</a>
                 [[end]]
             </div>
             [[end]]
@@ -137,9 +137,9 @@
                     <ul class="vstack gap-2">
                         [[range .AllCategories]]
                         <li>
-                            <a href="/blog/category/[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm [[if .Slug | eq $.Category.Slug]]font-semibold text-blue-400[[else]]text-slate-300 hover:text-blue-400[[end]]  py-1">
+                            <a href="/blog/category/[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm [[if .Slug | eq $.Category.Slug]]font-semibold text-info[[else]]text-body hover:text-info[[end]]  py-1">
                                 <span>[[.Name]]</span>
-                                <span class="fs-xs text-muted dark:text-slate-400 bg-white dark:bg-slate-800 px-2 py-0 rounded-pill">[[.PostCount]]</span>
+                                <span class="fs-xs text-muted dark:text-muted bg-white dark:bg-slate-800 px-2 py-0 rounded-pill">[[.PostCount]]</span>
                             </a>
                         </li>
                         [[end]]

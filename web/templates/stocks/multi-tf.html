@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Stock.Code]] · Multi-Timeframe · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/lightweight-charts.js"></script>
     <style>
@@ -127,10 +126,10 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-4">
                 <span class="font-monospace fs-3 fw-bold text-white">[[.Stock.Code]]</span>
-                <span class="fs-sm text-muted dark:text-slate-400">[[.Stock.Name]]</span>
+                <span class="fs-sm text-muted dark:text-muted">[[.Stock.Name]]</span>
                 <span class="font-monospace fs-3 fw-bold text-white">[[.LatestPrice.PriceFormatted]]</span>
             </div>
             [[template "components/market-clock.html" .]]
@@ -139,32 +138,32 @@
         <main class="flex-fill p-2 p-lg-4 overflow-y-auto vstack gap-3">
             <div class="row row-cols-1 row-cols-md-3 gap-4" style="min-height:65vh">
                 <div class="card p-2 d-flex flex-column">
-                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Daily</div>
+                    <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2 px-1">Daily</div>
                     <div id="daily-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
                 <div class="card p-2 d-flex flex-column">
-                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Weekly</div>
+                    <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2 px-1">Weekly</div>
                     <div id="weekly-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
                 <div class="card p-2 d-flex flex-column">
-                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2 px-1">Monthly</div>
+                    <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2 px-1">Monthly</div>
                     <div id="monthly-chart" class="flex-fill" style="min-height:250px"></div>
                 </div>
             </div>
             <div class="card p-2">
-                <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Edge Multi-Timeframe · Analisa Pola Harga</div>
+                <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Edge Multi-Timeframe · Analisa Pola Harga</div>
                 <div class="row row-cols-1 row-cols-md-3 gap-4 fs-sm">
                     <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
                         <div class="fs-xs text-primary fw-semibold mb-1">Daily</div>
-                        <p class="text-muted dark:text-slate-400">Gunakan timeframe daily untuk entry harian dan swing trading. Cari support/resistance harian.</p>
+                        <p class="text-muted dark:text-muted">Gunakan timeframe daily untuk entry harian dan swing trading. Cari support/resistance harian.</p>
                     </div>
                     <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
                         <div class="fs-xs text-primary fw-semibold mb-1">Weekly</div>
-                        <p class="text-muted dark:text-slate-400">Timeframe mingguan menunjukkan trend jangka menengah. Konfirmasi sinyal daily dengan struktur weekly.</p>
+                        <p class="text-muted dark:text-muted">Timeframe mingguan menunjukkan trend jangka menengah. Konfirmasi sinyal daily dengan struktur weekly.</p>
                     </div>
                     <div class="bg-white bg-opacity-50 dark:bg-white/40 rounded-3 p-2">
                         <div class="fs-xs text-success fw-semibold mb-1">Monthly</div>
-                        <p class="text-muted dark:text-slate-400">Timeframe bulanan untuk investasi jangka panjang. Identifikasi akumulasi/distribusi institusional.</p>
+                        <p class="text-muted dark:text-muted">Timeframe bulanan untuk investasi jangka panjang. Identifikasi akumulasi/distribusi institusional.</p>
                     </div>
                 </div>
             </div>

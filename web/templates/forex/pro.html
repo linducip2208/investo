@@ -6,7 +6,7 @@
     <title>Forex Pro Terminal · Investo</title>
     <meta name="description" content="Forex Pro Terminal: currency strength meter, live rates matrix, carry trade, correlation heatmap, arbitrage detection.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -15,27 +15,6 @@
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/lightweight-charts.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
-                    },
-                    colors: {
-                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
-                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
-                        card: { DEFAULT:'#1e293b',border:'#334155' },
-                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
-                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
-                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -210,27 +189,27 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <!-- SESSION INDICATORS -->
             <div class="d-none d-sm-flex align-items-center gap-2 fs-xs">
                 <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
-                     :class="session==='tokyo'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
-                    <span class="session-dot" :class="session==='tokyo'?'bg-green animate-pulse':'bg-slate-600'"></span> Tokyo
+                     :class="session==='tokyo'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-muted'">
+                    <span class="session-dot" :class="session==='tokyo'?'bg-green animate-pulse':'bg-secondary'"></span> Tokyo
                 </div>
                 <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
-                     :class="session==='london'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
-                    <span class="session-dot" :class="session==='london'?'bg-green animate-pulse':'bg-slate-600'"></span> London
+                     :class="session==='london'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-muted'">
+                    <span class="session-dot" :class="session==='london'?'bg-green animate-pulse':'bg-secondary'"></span> London
                 </div>
                 <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill  "
-                     :class="session==='ny'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-slate-500'">
-                    <span class="session-dot" :class="session==='ny'?'bg-green animate-pulse':'bg-slate-600'"></span> New York
+                     :class="session==='ny'?'bg-success-lt/30 text-success border border-emerald-800':'bg-white text-muted'">
+                    <span class="session-dot" :class="session==='ny'?'bg-green animate-pulse':'bg-secondary'"></span> New York
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -243,7 +222,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2 mb-1">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Forex Pro Terminal</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="clock"></p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0" x-text="clock"></p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="/forex" class="px-2 py-2 bg-body dark:bg-secondary-lt  text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">Daftar Pair</a>
@@ -276,7 +255,7 @@
                     <table class="table table-vcenter table-hover w-100 fs-xs font-monospace border-collapse">
                         <thead>
                             <tr>
-                                <th class="p-1 text-muted dark:text-slate-400 fw-medium"></th>
+                                <th class="p-1 text-muted dark:text-muted fw-medium"></th>
                                 [[range .Currencies]]<th class="p-1 text-center fw-bold text-body dark:text-body">[[.]]</th>[[end]]
                             </tr>
                         </thead>
@@ -285,7 +264,7 @@
                             <tr>
                                 <td class="p-1 fw-bold text-body dark:text-body">[[$row.Base]]</td>
                                 [[range $j, $rate := $row.Rates]]
-                                <td class="p-1 text-center rate-cell [[if eq $row.Base (index $.Currencies $j)]]bg-white text-slate-500[[else if gt $rate 0.0]]bg-info-lt/20 text-info[[end]]"
+                                <td class="p-1 text-center rate-cell [[if eq $row.Base (index $.Currencies $j)]]bg-white text-muted[[else if gt $rate 0.0]]bg-info-lt/20 text-info[[end]]"
                                     [[if gt $rate 0.0]]@click="openChart('[[$row.Base]]/[[index $.Currencies $j]]')" title="[[$row.Base]]/[[index $.Currencies $j]]"[[end]]>
                                     [[if eq $row.Base (index $.Currencies $j)]]1[[else if gt $rate 0.0]][[printf "%.4f" $rate]][[else]]--[[end]]
                                 </td>
@@ -304,11 +283,11 @@
                         <div class="d-flex align-items-center justify-content-between p-2 rounded-2 bg-body bg-opacity-25 dark:bg-secondary-lt/30">
                             <div>
                                 <div class="fs-xs fw-bold text-white">[[.Pair]]</div>
-                                <div class="fs-6 text-muted dark:text-slate-400">[[.Direction]]</div>
+                                <div class="fs-6 text-muted dark:text-muted">[[.Direction]]</div>
                             </div>
                             <div class="text-end">
                                 <div class="fs-xs font-monospace fw-bold [[if ge .Return 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Return 0.0]]+[[end]][[printf "%.2f" .Return]]%</div>
-                                <div class="fs-6 text-muted dark:text-slate-400">Spread [[printf "%.2f" .Spread]]%</div>
+                                <div class="fs-6 text-muted dark:text-muted">Spread [[printf "%.2f" .Spread]]%</div>
                             </div>
                         </div>
                         [[end]][[end]]
@@ -330,7 +309,7 @@
                             <span class="text-muted"> &#x2192; </span>
                             <span class="fw-bold text-body dark:text-slate-200">[[index .Path 2]]</span>
                         </div>
-                        <span class="fs-xs font-monospace fw-bold [[if ge .ProfitPercent 1.0]]text-success[[else]]text-slate-500[[end]]">[[printf "%.4f" .ProfitPercent]]%</span>
+                        <span class="fs-xs font-monospace fw-bold [[if ge .ProfitPercent 1.0]]text-success[[else]]text-muted[[end]]">[[printf "%.4f" .ProfitPercent]]%</span>
                     </div>
                     [[end]]
                 </div>
@@ -359,7 +338,7 @@
             <div class="d-flex align-items-center justify-content-between px-2 py-2 border-bottom border dark:border">
                 <h3 class="fw-bold fs-3 text-white" x-text="chartPair"></h3>
                 <button @click="closeChart()"
-                        class="p-2 rounded-2 text-muted dark:text-slate-400   dark:hover:bg-secondary-lt ">
+                        class="p-2 rounded-2 text-muted dark:text-muted   dark:hover:bg-secondary-lt ">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -413,7 +392,7 @@
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (!data || data.error) {
-                        container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-slate-400">No chart data available for ' + base + '/' + quote + '</div>';
+                        container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-muted">No chart data available for ' + base + '/' + quote + '</div>';
                         return;
                     }
                     if (!Array.isArray(data) || data.length === 0) return;
@@ -425,7 +404,7 @@
                     chart.timeScale().fitContent();
                 })
                 .catch(function() {
-                    container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-slate-400">Error loading chart</div>';
+                    container.innerHTML = '<div class="d-flex align-items-center justify-content-center h-100 text-muted dark:text-muted">Error loading chart</div>';
                 });
         }
     </script>

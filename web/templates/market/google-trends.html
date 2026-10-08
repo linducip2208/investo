@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
@@ -44,7 +43,7 @@
 <body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
@@ -53,7 +52,7 @@
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
-            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -88,7 +87,7 @@
         <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
                 <h1 class="fs-1 fw-bold text-white">🔍 Google Trends Correlation</h1>
-                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
+                <p class="text-muted dark:text-muted fs-sm mt-1">Korelasi antara volume pencarian Google dengan pergerakan pasar saham</p>
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
                     <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data Google Trends real-time.</p>
                 </div>
@@ -110,7 +109,7 @@
                             <span class="px-2 py-1 rounded-pill fs-xs fw-semibold bg-warning bg-opacity-50 text-warning border border-warning">Data ilustratif</span>
                             [[end]]
                         </div>
-                        <p class="text-muted dark:text-slate-400 fs-sm mt-2">[[$c.Description]]</p>
+                        <p class="text-muted dark:text-muted fs-sm mt-2">[[$c.Description]]</p>
                         <div class="d-flex align-items-center gap-4 mt-2">
                             <span class="fs-xs text-muted">Significance: <span class="fw-semibold [[if eq $c.Significance "high"]]text-success[[else if eq $c.Significance "medium"]]text-warning[[else]]text-danger[[end]]">[[$c.Significance | toUpper]]</span></span>
                             <span class="fs-xs text-muted">Direction: <span class="fw-semibold text-white">[[$c.Direction]]</span></span>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -174,7 +174,7 @@ function econCalendar() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
@@ -194,7 +194,7 @@ function econCalendar() {
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">Economic Calendar</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Jadwal rilis data ekonomi global. BI Rate, FOMC, GDP, CPI, NFP, dan lainnya.</p>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Jadwal rilis data ekonomi global. BI Rate, FOMC, GDP, CPI, NFP, dan lainnya.</p>
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
                     <p class="fs-xs text-warning">📅 <span class="fw-semibold">Jadwal tentatif</span> — tanggal perkiraan pola rilis rutin, dapat berubah. Bukan pengumuman resmi.</p>
                 </div>
@@ -206,13 +206,13 @@ function econCalendar() {
             <span class="fs-xs fw-semibold text-muted text-uppercase  me-2">Filter:</span>
             <div class="d-flex align-items-center gap-1">
                 <span class="fs-6 text-muted me-1">Importance:</span>
-                <button @click="setFilter('importance','high')" :class="filterImportance==='high'?'filter-btn active bg-danger bg-opacity-50 text-danger border border-danger/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                <button @click="setFilter('importance','high')" :class="filterImportance==='high'?'filter-btn active bg-danger bg-opacity-50 text-danger border border-danger/50':'filter-btn text-muted dark:text-muted border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
                     <span class="dot-high d-inline-block me-1"></span>High
                 </button>
-                <button @click="setFilter('importance','medium')" :class="filterImportance==='medium'?'filter-btn active bg-warning bg-opacity-50 text-warning border border-amber-700/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                <button @click="setFilter('importance','medium')" :class="filterImportance==='medium'?'filter-btn active bg-warning bg-opacity-50 text-warning border border-amber-700/50':'filter-btn text-muted dark:text-muted border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
                     <span class="dot-medium d-inline-block me-1"></span>Medium
                 </button>
-                <button @click="setFilter('importance','low')" :class="filterImportance==='low'?'filter-btn active bg-body dark:bg-secondary-lt text-body dark:text-body border border-slate-600':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
+                <button @click="setFilter('importance','low')" :class="filterImportance==='low'?'filter-btn active bg-body dark:bg-secondary-lt text-body dark:text-body border border':'filter-btn text-muted dark:text-muted border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium ">
                     <span class="dot-low d-inline-block me-1"></span>Low
                 </button>
             </div>
@@ -220,7 +220,7 @@ function econCalendar() {
             <div class="d-flex align-items-center gap-1">
                 <span class="fs-6 text-muted me-1">Currency:</span>
                 <template x-for="c in currencies" :key="c">
-                    <button @click="setFilter('currency',c)" :class="filterCurrency===c?'filter-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'filter-btn text-muted dark:text-slate-400 border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium " x-text="c"></button>
+                    <button @click="setFilter('currency',c)" :class="filterCurrency===c?'filter-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'filter-btn text-muted dark:text-muted border border'" class="px-2 py-1 rounded-2 fs-xs fw-medium " x-text="c"></button>
                 </template>
             </div>
             <div class="flex-fill"></div>
@@ -255,21 +255,21 @@ function econCalendar() {
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50 text-start">
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Date</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Time</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Currency</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Event</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  w-16">Imp.</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Previous</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Forecast</th>
-                                <th class="py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase  text-end">Actual</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Date</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Time</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Currency</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Event</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase  w-16">Imp.</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase  text-end">Previous</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase  text-end">Forecast</th>
+                                <th class="py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase  text-end">Actual</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">
                             <template x-for="(event, idx) in filteredEvents" :key="idx">
                                 <tr class=" dark:hover:bg-secondary-lt/20 " :class="{'bg-info-lt/10': event.date === new Date().toISOString().split('T')[0]}">
                                     <td class="py-2 px-2 font-monospace fs-xs" x-text="formatDate(event.date)"></td>
-                                    <td class="py-2 px-2 font-monospace fs-xs text-muted dark:text-slate-400" x-text="event.time"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-muted dark:text-muted" x-text="event.time"></td>
                                     <td class="py-2 px-2">
                                         <span class="d-inline-flex align-items-center px-2 py-0 rounded fs-xs fw-semibold bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body" x-text="event.currency"></span>
                                     </td>
@@ -282,7 +282,7 @@ function econCalendar() {
                                         <span x-show="event.importance==='medium'" class="dot-medium d-inline-block"></span>
                                         <span x-show="event.importance==='low'" class="dot-low d-inline-block"></span>
                                     </td>
-                                    <td class="py-2 px-2 font-monospace fs-xs text-end text-muted dark:text-slate-400" x-text="event.previous"></td>
+                                    <td class="py-2 px-2 font-monospace fs-xs text-end text-muted dark:text-muted" x-text="event.previous"></td>
                                     <td class="py-2 px-2 font-monospace fs-xs text-end text-body dark:text-body" x-text="event.forecast"></td>
                                     <td class="py-2 px-2 font-monospace fs-xs text-end">
                                         <span x-show="event.actual" x-text="event.actual" class="fw-semibold"></span>

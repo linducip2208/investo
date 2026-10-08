@@ -13,7 +13,7 @@
     <meta name="description" content="Berita terkini pasar modal Indonesia. Update saham, forex, ekonomi makro, dan corporate action terbaru.">
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -45,14 +45,14 @@
                 <span class=" fw-bold fs-2 text-primary dark:text-brand-400">Investo</span>
             </a>
             <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
-                <a href="/" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Beranda</a>
-                <a href="/docs" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Docs</a>
-                <a href="/blog" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Blog</a>
+                <a href="/" class="text-muted dark:text-body  dark:hover:text-brand-400 ">Beranda</a>
+                <a href="/docs" class="text-muted dark:text-body  dark:hover:text-brand-400 ">Docs</a>
+                <a href="/blog" class="text-muted dark:text-body  dark:hover:text-brand-400 ">Blog</a>
                 <a href="/berita" class="fw-semibold text-primary dark:text-brand-400">Berita</a>
-                <a href="/faq" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">FAQ</a>
+                <a href="/faq" class="text-muted dark:text-body  dark:hover:text-brand-400 ">FAQ</a>
                 <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-muted dark:text-slate-300  dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-muted dark:text-body  dark:hover:bg-white">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -60,11 +60,11 @@
     </div>
     <div x-show="open" class="d-lg-none border-top border dark:border-slate-800/60 bg-white bg-opacity-100 dark:bg-slate-950/95" style="display:none;">
         <div class="px-2 py-2 vstack gap-2">
-            <a href="/" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Beranda</a>
-            <a href="/docs" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Docs</a>
-            <a href="/blog" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">Blog</a>
+            <a href="/" class="d-block px-2 py-2 fs-sm text-muted dark:text-body rounded-3">Beranda</a>
+            <a href="/docs" class="d-block px-2 py-2 fs-sm text-muted dark:text-body rounded-3">Docs</a>
+            <a href="/blog" class="d-block px-2 py-2 fs-sm text-muted dark:text-body rounded-3">Blog</a>
             <a href="/berita" class="d-block px-2 py-2 fs-sm fw-semibold text-primary dark:text-brand-400 rounded-3">Berita</a>
-            <a href="/faq" class="d-block px-2 py-2 fs-sm text-muted dark:text-slate-300 rounded-3">FAQ</a>
+            <a href="/faq" class="d-block px-2 py-2 fs-sm text-muted dark:text-body rounded-3">FAQ</a>
             <a href="/login" class="d-block text-center fs-sm fw-semibold text-white bg-primary px-2 py-2 rounded-3">Masuk</a>
         </div>
     </div>
@@ -76,15 +76,15 @@
         <div class="col-lg-8">
             <div class="mb-2 reveal">
                 <h1 class=" fs-1 display-6 fw-bold text-body dark:text-white mb-2">Berita Pasar Modal</h1>
-                <p class="text-muted dark:text-slate-400 fs-3">Update terkini seputar saham, forex, ekonomi, dan corporate action dari pasar modal Indonesia.</p>
+                <p class="text-muted dark:text-muted fs-3">Update terkini seputar saham, forex, ekonomi, dan corporate action dari pasar modal Indonesia.</p>
             </div>
 
             <div class="d-flex flex-column flex-sm-row gap-4 mb-2 reveal">
                 <div class="position-relative flex-fill">
-                    <svg class="position-absolute left-3.5 top-50 translate-middle-y w-4 h-4 text-muted dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <svg class="position-absolute left-3.5 top-50 translate-middle-y w-4 h-4 text-muted dark:text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <input type="text" placeholder="Cari berita..." class="w-100 ps-2 pe-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-900 fs-sm     ">
                 </div>
-                <select class="px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-900 fs-sm text-muted dark:text-slate-300    cursor-pointer">
+                <select class="px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-900 fs-sm text-muted dark:text-body    cursor-pointer">
                     <option value="">Semua Sumber</option>
                     [[range .Sources]]
                     <option value="[[.Slug]]">[[.Name]]</option>
@@ -97,18 +97,18 @@
                 <div class="card-lift bg-white dark:bg-slate-900 border border dark:border-slate-800 rounded-4 p-2 p-lg-4 reveal">
                     <div class="d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between gap-2 mb-2">
                         <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <span class="fs-xs fw-semibold px-2 py-1 bg-body dark:bg-slate-800 text-muted dark:text-slate-300 rounded-pill">[[.Source]]</span>
-                            <span class="fs-xs text-muted dark:text-slate-400">[[.PublishedAt]]</span>
+                            <span class="fs-xs fw-semibold px-2 py-1 bg-body dark:bg-slate-800 text-muted dark:text-body rounded-pill">[[.Source]]</span>
+                            <span class="fs-xs text-muted dark:text-muted">[[.PublishedAt]]</span>
                         </div>
                     </div>
                     <a href="/berita/[[.Slug]]" class="d-block ">
                         <h3 class=" fs-3 fw-bold text-body dark:text-white  dark:group-hover:text-brand-400  lh-sm mb-2">[[.Title]]</h3>
                     </a>
-                    <p class="text-muted dark:text-slate-400 fs-sm lh-lg mb-2">[[.Excerpt]]</p>
+                    <p class="text-muted dark:text-muted fs-sm lh-lg mb-2">[[.Excerpt]]</p>
                     [[if .RelatedStocks]]
                     <div class="d-flex flex-wrap gap-1">
                         [[range .RelatedStocks]]
-                        <a href="/saham/[[.Code]]" class="fs-xs font-monospace fw-medium px-2 py-0 bg-primary dark:bg-info-lt text-primary dark:text-blue-400 rounded  dark:hover:bg-blue-900/40 ">[[.Code]]</a>
+                        <a href="/saham/[[.Code]]" class="fs-xs font-monospace fw-medium px-2 py-0 bg-primary dark:bg-info-lt text-primary dark:text-info rounded  dark:hover:bg-info-lt/40 ">[[.Code]]</a>
                         [[end]]
                     </div>
                     [[end]]
@@ -119,21 +119,21 @@
             [[if not .News]]
             <div class="text-center py-2 reveal">
                 <div class="display-5 mb-2">📰</div>
-                <h3 class=" fs-2 fw-bold text-body dark:text-slate-300 mb-2">Belum ada berita</h3>
-                <p class="text-muted dark:text-slate-400">Berita pasar modal akan muncul di sini.</p>
+                <h3 class=" fs-2 fw-bold text-body dark:text-body mb-2">Belum ada berita</h3>
+                <p class="text-muted dark:text-muted">Berita pasar modal akan muncul di sini.</p>
             </div>
             [[end]]
 
             [[if .HasPages]]
             <div class="d-flex align-items-center justify-content-center gap-2 mt-2 reveal">
                 [[if .HasPrev]]
-                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">&laquo; Sebelumnya</a>
+                <a href="?page=[[.PrevPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-body  dark:hover:bg-white fs-sm fw-medium ">&laquo; Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
-                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-brand-600 text-white[[else]]border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800[[end]] ">[[.]]</a>
+                <a href="?page=[[.]]" class="w-10 h-10 rounded-3 d-flex align-items-center justify-content-center fs-sm fw-medium [[if . | eq $.CurrentPage]]bg-brand-600 text-white[[else]]border border dark:border-slate-700 text-muted dark:text-body  dark:hover:bg-white[[end]] ">[[.]]</a>
                 [[end]]
                 [[if .HasNext]]
-                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-slate-300  dark:hover:bg-slate-800 fs-sm fw-medium ">Selanjutnya &raquo;</a>
+                <a href="?page=[[.NextPage]]" class="px-2 py-2 rounded-3 border border dark:border-slate-700 text-muted dark:text-body  dark:hover:bg-white fs-sm fw-medium ">Selanjutnya &raquo;</a>
                 [[end]]
             </div>
             [[end]]
@@ -146,9 +146,9 @@
                     <ul class="vstack gap-2">
                         [[range .Sources]]
                         <li>
-                            <a href="/berita?source=[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm text-muted dark:text-slate-300  dark:hover:text-brand-400  py-1">
+                            <a href="/berita?source=[[.Slug]]" class="d-flex align-items-center justify-content-between fs-sm text-muted dark:text-body  dark:hover:text-brand-400  py-1">
                                 <span>[[.Name]]</span>
-                                <span class="fs-xs text-muted dark:text-slate-400 bg-body dark:bg-slate-800 px-2 py-0 rounded-pill">[[.NewsCount]]</span>
+                                <span class="fs-xs text-muted dark:text-muted bg-body dark:bg-slate-800 px-2 py-0 rounded-pill">[[.NewsCount]]</span>
                             </a>
                         </li>
                         [[end]]
@@ -165,7 +165,7 @@
     </div>
 </div>
 
-<footer class="bg-body dark:bg-slate-900 text-body dark:text-slate-300 py-2 border-top border dark:border-slate-800">
+<footer class="bg-body dark:bg-slate-900 text-body dark:text-body py-2 border-top border dark:border-slate-800">
     <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
         <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
             <span class="fs-2">🏦</span>

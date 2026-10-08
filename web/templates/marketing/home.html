@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investo — Platform Analisa Saham & Forex Indonesia</title>
     <meta name="description" content="Platform all-in-one untuk investor ritel Indonesia. 125+ saham IDX, chart teknikal, AI signals, screener, portfolio tracker — gratis.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={theme:{extend:{fontFamily:{display:['Playfair Display','Georgia','serif'],sans:['Inter','system-ui','sans-serif']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
     <style>
         .gradient-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .glass{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
@@ -37,82 +36,82 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-[#0a0a1a] text-white font-sans">
+<body class="bg-dark text-white ">
 
 <!-- NAV -->
-<nav class="fixed top-0 w-full z-50 glass border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-16">
-        <a href="/" class="flex items-center gap-2.5 font-bold text-xl"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-sm">I</span>Investo</a>
-        <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
-            <a href="#features" class="hover:text-white transition-colors">Fitur</a>
-            <a href="#pricing" class="hover:text-white transition-colors">Harga</a>
-            <a href="/blog" class="hover:text-white transition-colors">Blog</a>
-            <a href="/docs" class="hover:text-white transition-colors">Docs</a>
+<nav class="position-fixed top-0 w-100 z-3 glass border-bottom border-white">
+    <div class="max-w-7xl mx-auto px-2 px-sm-5 d-flex align-items-center justify-content-between h-16">
+        <a href="/" class="d-flex align-items-center gap-2 fw-bold fs-2"><span class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-purple d-flex align-items-center justify-content-center fs-sm">I</span>Investo</a>
+        <div class="d-none d-md-flex align-items-center gap-5 fs-sm text-body">
+            <a href="#features" class=" ">Fitur</a>
+            <a href="#pricing" class=" ">Harga</a>
+            <a href="/blog" class=" ">Blog</a>
+            <a href="/docs" class=" ">Docs</a>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="/login" class="text-sm text-gray-300 hover:text-white transition-colors">Masuk</a>
-            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors">Daftar Gratis</a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/login" class="fs-sm text-body  ">Masuk</a>
+            <a href="/register" class="bg-primary  text-white px-2 py-2 rounded-2 fs-sm fw-semibold ">Daftar Gratis</a>
         </div>
     </div>
 </nav>
 
 <!-- HERO -->
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,.15),transparent_50%)]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,.1),transparent_50%)]"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl float-anim"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl float-anim" style="animation-delay:2s"></div>
-    <div class="relative max-w-4xl mx-auto px-4 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8">
-            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 125+ Saham IDX • 12 Pair Forex • AI-Powered
+<section class="position-relative min-vh-100 d-flex align-items-center justify-content-center overflow-hidden pt-2">
+    <div class="position-absolute top-0 bottom-0 start-0 end-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,.15),transparent_50%)]"></div>
+    <div class="position-absolute top-0 bottom-0 start-0 end-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,.1),transparent_50%)]"></div>
+    <div class="position-absolute top-25 start-25 w-96 h-96 bg-primary bg-opacity-10 rounded-pill blur-3xl float-anim"></div>
+    <div class="position-absolute bottom-25 end-25 w-72 h-72 bg-primary bg-opacity-10 rounded-pill blur-3xl float-anim" style="animation-delay:2s"></div>
+    <div class="position-relative max-w-4xl mx-auto px-2 text-center">
+        <div class="d-inline-flex align-items-center gap-2 px-2 py-2 rounded-pill bg-white bg-opacity-10 border border-white fs-sm text-body mb-2">
+            <span class="w-2 h-2 rounded-pill bg-success "></span> 125+ Saham IDX • 12 Pair Forex • AI-Powered
         </div>
-        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6">
+        <h1 class=" display-5 display-4 display-2 fw-bolder lh-1 mb-2">
             Analisa Saham & Forex<br><span class="gradient-text">Jadi Lebih Cerdas</span>
         </h1>
-        <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p class="fs-3 fs-2 text-muted max-w-2xl mx-auto mb-2 lh-lg">
             Platform all-in-one untuk investor Indonesia. Chart teknikal profesional, AI multi-agent signals, fundamental IDX, screener 30+ filter, dan portfolio tracker — dalam satu dashboard.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <div class="d-flex flex-column flex-sm-row gap-4 justify-content-center">
             <a href="/register" class="btn-primary pulse-glow">🚀 Mulai Gratis</a>
             <a href="/demo" class="btn-outline">📊 Lihat Demo</a>
         </div>
-        <div class="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto text-center">
-            <div><div class="text-3xl font-black font-display gradient-text">125+</div><div class="text-sm text-gray-500 mt-1">Saham IDX</div></div>
-            <div><div class="text-3xl font-black font-display gradient-text">70+</div><div class="text-sm text-gray-500 mt-1">Fitur Analisa</div></div>
-            <div><div class="text-3xl font-black font-display gradient-text">24/7</div><div class="text-sm text-gray-500 mt-1">Auto Update</div></div>
+        <div class="mt-2 row row-cols-3 gap-5 max-w-lg mx-auto text-center">
+            <div><div class="fs-1 fw-bolder  gradient-text">125+</div><div class="fs-sm text-muted mt-1">Saham IDX</div></div>
+            <div><div class="fs-1 fw-bolder  gradient-text">70+</div><div class="fs-sm text-muted mt-1">Fitur Analisa</div></div>
+            <div><div class="fs-1 fw-bolder  gradient-text">24/7</div><div class="fs-sm text-muted mt-1">Auto Update</div></div>
         </div>
         
         <!-- Dashboard Preview -->
-        <div class="mt-20 max-w-5xl mx-auto">
-            <div class="glass rounded-2xl overflow-hidden shadow-2xl">
-                <div class="flex items-center gap-2 px-4 py-3 bg-[#0f0f23] border-b border-white/5">
-                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    <span class="ml-4 text-xs text-gray-500 bg-white/5 rounded px-3 py-1 font-mono">📊 Dashboard · Investo</span>
+        <div class="mt-2 max-w-5xl mx-auto">
+            <div class="glass rounded-4 overflow-hidden shadow-lg">
+                <div class="d-flex align-items-center gap-2 px-2 py-2 bg-dark border-bottom border-white">
+                    <span class="w-3 h-3 rounded-pill bg-danger"></span>
+                    <span class="w-3 h-3 rounded-pill bg-warning"></span>
+                    <span class="w-3 h-3 rounded-pill bg-success"></span>
+                    <span class="ms-2 fs-xs text-muted bg-white bg-opacity-10 rounded px-2 py-1 font-monospace">📊 Dashboard · Investo</span>
                 </div>
-                <div class="p-5 grid grid-cols-4 gap-3 bg-gradient-to-br from-[#0a0a1a] to-[#0f0f28]">
-                    <div class="col-span-1 space-y-1.5">
-                        <div class="bg-blue-500/20 rounded-lg h-4 w-3/4"></div>
-                        <div class="bg-white/5 rounded-lg h-3 w-full"></div>
-                        <div class="bg-white/5 rounded-lg h-3 w-5/6"></div>
-                        <div class="bg-white/5 rounded-lg h-3 w-4/6"></div>
-                        <div class="bg-white/5 rounded-lg h-3 w-full mt-3"></div>
-                        <div class="bg-white/5 rounded-lg h-3 w-3/4"></div>
+                <div class="p-2 row row-cols-4 gap-3 bg-gradient bg-gradient-from-dark bg-gradient-to-dark">
+                    <div class="col vstack gap-1">
+                        <div class="bg-primary bg-opacity-25 rounded-2 h-4 w-75"></div>
+                        <div class="bg-white bg-opacity-10 rounded-2 h-3 w-100"></div>
+                        <div class="bg-white bg-opacity-10 rounded-2 h-3 w-5-6"></div>
+                        <div class="bg-white bg-opacity-10 rounded-2 h-3 w-66"></div>
+                        <div class="bg-white bg-opacity-10 rounded-2 h-3 w-100 mt-2"></div>
+                        <div class="bg-white bg-opacity-10 rounded-2 h-3 w-75"></div>
                     </div>
-                    <div class="col-span-3 grid grid-cols-4 gap-3">
-                        <div class="bg-gradient-to-br from-blue-900/30 to-transparent rounded-xl p-3 border border-blue-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
-                        <div class="bg-gradient-to-br from-cyan-900/30 to-transparent rounded-xl p-3 border border-cyan-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
-                        <div class="bg-gradient-to-br from-emerald-900/30 to-transparent rounded-xl p-3 border border-emerald-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
-                        <div class="bg-gradient-to-br from-violet-900/30 to-transparent rounded-xl p-3 border border-violet-500/20"><div class="bg-white/10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white/20 rounded h-5 w-20"></div></div>
-                        <div class="col-span-4 grid grid-cols-5 gap-3">
-                            <div class="col-span-3 bg-white/[0.02] rounded-xl p-3 border border-white/5">
-                                <div class="text-[10px] text-gray-500 mb-2">📈 IHSG · 1 Tahun</div>
-                                <svg viewBox="0 0 300 80" class="w-full h-16"><rect width="300" height="80" fill="none"/><polyline points="0,60 20,55 40,62 60,40 80,45 100,30 120,35 140,22 160,28 180,18 200,25 220,12 240,20 260,8 280,15 300,5" fill="none" stroke="url(#g1)" stroke-width="2"/><defs><linearGradient id="g1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+                    <div class="col-9 row row-cols-4 gap-3">
+                        <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent rounded-3 p-2 border border-primary"><div class="bg-white bg-opacity-10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white bg-opacity-25 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient bg-gradient-from-cyan bg-gradient-to-transparent rounded-3 p-2 border border-info"><div class="bg-white bg-opacity-10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white bg-opacity-25 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient bg-gradient-from-green bg-gradient-to-transparent rounded-3 p-2 border border-success"><div class="bg-white bg-opacity-10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white bg-opacity-25 rounded h-5 w-20"></div></div>
+                        <div class="bg-gradient bg-gradient-from-purple bg-gradient-to-transparent rounded-3 p-2 border border-primary"><div class="bg-white bg-opacity-10 rounded h-1.5 w-12 mb-2"></div><div class="bg-white bg-opacity-25 rounded h-5 w-20"></div></div>
+                        <div class="col-12 row row-cols-5 gap-3">
+                            <div class="col-7 bg-white rounded-3 p-2 border border-white">
+                                <div class="fs-6 text-muted mb-2">📈 IHSG · 1 Tahun</div>
+                                <svg viewBox="0 0 300 80" class="w-100 h-16"><rect width="300" height="80" fill="none"/><polyline points="0,60 20,55 40,62 60,40 80,45 100,30 120,35 140,22 160,28 180,18 200,25 220,12 240,20 260,8 280,15 300,5" fill="none" stroke="url(#g1)" stroke-width="2"/><defs><linearGradient id="g1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs></svg>
                             </div>
-                            <div class="col-span-2 space-y-2">
-                                <div class="bg-white/5 rounded-lg p-2"><div class="text-[9px] text-green-400">▲ BBCA +2.3%</div><div class="text-[9px] text-green-400">▲ BBRI +1.8%</div><div class="text-[9px] text-green-400">▲ TLKM +1.5%</div></div>
-                                <div class="bg-white/5 rounded-lg p-2"><div class="text-[9px] text-gray-500">📰 BBCA Cetak Laba Rp28T</div><div class="text-[9px] text-gray-500">📰 IHSG Menguat 0.8%</div></div>
+                            <div class="col-5 vstack gap-2">
+                                <div class="bg-white bg-opacity-10 rounded-2 p-2"><div class="fs-6 text-success">▲ BBCA +2.3%</div><div class="fs-6 text-success">▲ BBRI +1.8%</div><div class="fs-6 text-success">▲ TLKM +1.5%</div></div>
+                                <div class="bg-white bg-opacity-10 rounded-2 p-2"><div class="fs-6 text-muted">📰 BBCA Cetak Laba Rp28T</div><div class="fs-6 text-muted">📰 IHSG Menguat 0.8%</div></div>
                             </div>
                         </div>
                     </div>
@@ -123,81 +122,81 @@
 </section>
 
 <!-- FEATURES -->
-<section id="features" class="py-24 px-4">
+<section id="features" class="py-2 px-2">
     <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="font-display text-4xl font-bold mb-4">Semua yang Anda Butuhkan</h2>
-            <p class="text-gray-400 max-w-xl mx-auto">Dari analisa teknikal sampai AI signals — semua tools trading dalam satu platform.</p>
+        <div class="text-center mb-2">
+            <h2 class=" display-6 fw-bold mb-2">Semua yang Anda Butuhkan</h2>
+            <p class="text-muted max-w-xl mx-auto">Dari analisa teknikal sampai AI signals — semua tools trading dalam satu platform.</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="card"><div class="text-3xl mb-4">📈</div><h3 class="font-bold text-lg mb-2">Chart Teknikal Pro</h3><p class="text-gray-400 text-sm">Candlestick, 9+ indikator (Ichimoku, SAR, ADX, VWAP), drawing tools, multi-timeframe.</p></div>
-            <div class="card"><div class="text-3xl mb-4">🤖</div><h3 class="font-bold text-lg mb-2">AI Multi-Agent</h3><p class="text-gray-400 text-sm">9 agent analisa: Fundamental, Technical, Sentiment, Foreign Flow — plus debate system.</p></div>
-            <div class="card"><div class="text-3xl mb-4">🔍</div><h3 class="font-bold text-lg mb-2">Screener 30+ Filter</h3><p class="text-gray-400 text-sm">PER, PBV, ROE, DER, sector, market cap + Natural Language screener AI.</p></div>
-            <div class="card"><div class="text-3xl mb-4">💼</div><h3 class="font-bold text-lg mb-2">Portfolio Tracker</h3><p class="text-gray-400 text-sm">Multi-portfolio, gain/loss real-time, Monte Carlo, stress test, tax-loss harvesting.</p></div>
-            <div class="card"><div class="text-3xl mb-4">💱</div><h3 class="font-bold text-lg mb-2">Forex Pro Terminal</h3><p class="text-gray-400 text-sm">Strength meter, carry trade, arbitrage, correlation matrix, swap calculator.</p></div>
-            <div class="card"><div class="text-3xl mb-4">📡</div><h3 class="font-bold text-lg mb-2">Live Signals</h3><p class="text-gray-400 text-sm">AI-generated trading signals dengan confidence score, entry/exit, stop loss.</p></div>
+        <div class="row row-cols-md-2 row-cols-lg-3 gap-6">
+            <div class="card"><div class="fs-1 mb-2">📈</div><h3 class="fw-bold fs-3 mb-2">Chart Teknikal Pro</h3><p class="text-muted fs-sm">Candlestick, 9+ indikator (Ichimoku, SAR, ADX, VWAP), drawing tools, multi-timeframe.</p></div>
+            <div class="card"><div class="fs-1 mb-2">🤖</div><h3 class="fw-bold fs-3 mb-2">AI Multi-Agent</h3><p class="text-muted fs-sm">9 agent analisa: Fundamental, Technical, Sentiment, Foreign Flow — plus debate system.</p></div>
+            <div class="card"><div class="fs-1 mb-2">🔍</div><h3 class="fw-bold fs-3 mb-2">Screener 30+ Filter</h3><p class="text-muted fs-sm">PER, PBV, ROE, DER, sector, market cap + Natural Language screener AI.</p></div>
+            <div class="card"><div class="fs-1 mb-2">💼</div><h3 class="fw-bold fs-3 mb-2">Portfolio Tracker</h3><p class="text-muted fs-sm">Multi-portfolio, gain/loss real-time, Monte Carlo, stress test, tax-loss harvesting.</p></div>
+            <div class="card"><div class="fs-1 mb-2">💱</div><h3 class="fw-bold fs-3 mb-2">Forex Pro Terminal</h3><p class="text-muted fs-sm">Strength meter, carry trade, arbitrage, correlation matrix, swap calculator.</p></div>
+            <div class="card"><div class="fs-1 mb-2">📡</div><h3 class="fw-bold fs-3 mb-2">Live Signals</h3><p class="text-muted fs-sm">AI-generated trading signals dengan confidence score, entry/exit, stop loss.</p></div>
         </div>
     </div>
 </section>
 
 <!-- STATS -->
-<section class="py-20 bg-white/[0.02]">
-    <div class="max-w-4xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div><div class="stat-num">125+</div><div class="text-gray-500 mt-2 text-sm">Saham IDX</div></div>
-        <div><div class="stat-num">12</div><div class="text-gray-500 mt-2 text-sm">Pair Forex</div></div>
-        <div><div class="stat-num">9</div><div class="text-gray-500 mt-2 text-sm">AI Agents</div></div>
-        <div><div class="stat-num">30+</div><div class="text-gray-500 mt-2 text-sm">Filter Screener</div></div>
+<section class="py-2 bg-white">
+    <div class="max-w-4xl mx-auto px-2 row row-cols-2 row-cols-md-4 gap-5 text-center">
+        <div><div class="stat-num">125+</div><div class="text-muted mt-2 fs-sm">Saham IDX</div></div>
+        <div><div class="stat-num">12</div><div class="text-muted mt-2 fs-sm">Pair Forex</div></div>
+        <div><div class="stat-num">9</div><div class="text-muted mt-2 fs-sm">AI Agents</div></div>
+        <div><div class="stat-num">30+</div><div class="text-muted mt-2 fs-sm">Filter Screener</div></div>
     </div>
 </section>
 
 <!-- DEMO ACCOUNTS -->
-<section class="py-24 px-4">
+<section class="py-2 px-2">
     <div class="max-w-2xl mx-auto text-center">
-        <h2 class="font-display text-4xl font-bold mb-4">Coba Sekarang</h2>
-        <p class="text-gray-400 mb-8">Akun demo — semua fitur gratis.</p>
-        <div class="card text-left">
-            <table class="w-full text-sm">
-                <thead><tr class="text-gray-400 border-b border-gray-700"><th class="py-3 text-left">Role</th><th class="py-3 text-left">Email</th><th class="py-3 text-left">Password</th></tr></thead>
+        <h2 class=" display-6 fw-bold mb-2">Coba Sekarang</h2>
+        <p class="text-muted mb-2">Akun demo — semua fitur gratis.</p>
+        <div class="card text-start">
+            <table class="table table-vcenter table-hover w-100 fs-sm">
+                <thead><tr class="text-muted border-bottom border"><th class="py-2 text-start">Role</th><th class="py-2 text-start">Email</th><th class="py-2 text-start">Password</th></tr></thead>
                 <tbody>
-                    <tr class="border-b border-gray-800"><td class="py-3"><span class="px-2 py-0.5 bg-blue-900/30 text-blue-300 rounded text-xs font-semibold">Admin</span></td><td class="py-3 font-mono text-sm">admin@investo.test</td><td class="py-3 font-mono text-sm">password</td></tr>
-                    <tr><td class="py-3"><span class="px-2 py-0.5 bg-gray-700 text-gray-300 rounded text-xs font-semibold">User</span></td><td class="py-3 font-mono text-sm">demo@investo.test</td><td class="py-3 font-mono text-sm">password</td></tr>
+                    <tr class="border-bottom border"><td class="py-2"><span class="px-2 py-0 bg-primary bg-opacity-25 text-primary rounded fs-xs fw-semibold">Admin</span></td><td class="py-2 font-monospace fs-sm">admin@investo.test</td><td class="py-2 font-monospace fs-sm">password</td></tr>
+                    <tr><td class="py-2"><span class="px-2 py-0 bg-white text-body rounded fs-xs fw-semibold">User</span></td><td class="py-2 font-monospace fs-sm">demo@investo.test</td><td class="py-2 font-monospace fs-sm">password</td></tr>
                 </tbody>
             </table>
         </div>
-        <a href="/login" class="btn-primary mt-8 inline-block">🔑 Masuk Sekarang</a>
+        <a href="/login" class="btn-primary mt-2 d-inline-block">🔑 Masuk Sekarang</a>
     </div>
 </section>
 
 <!-- SCREENSHOTS -->
-<section class="py-24 px-4">
+<section class="py-2 px-2">
     <div class="max-w-6xl mx-auto text-center">
-        <h2 class="font-display text-4xl font-bold mb-4">Tampilan Dashboard</h2>
-        <p class="text-gray-400 mb-12">Interface profesional untuk analisa saham & forex.</p>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="glass rounded-2xl overflow-hidden">
-                <img src="/static/screens/dashboard.png" alt="Dashboard Investo" class="w-full" loading="lazy">
-                <div class="p-3 text-sm text-gray-400">📊 Dashboard Bloomberg-style</div>
+        <h2 class=" display-6 fw-bold mb-2">Tampilan Dashboard</h2>
+        <p class="text-muted mb-2">Interface profesional untuk analisa saham & forex.</p>
+        <div class="row row-cols-md-2 gap-6">
+            <div class="glass rounded-4 overflow-hidden">
+                <img src="/static/screens/dashboard.png" alt="Dashboard Investo" class="w-100" loading="lazy">
+                <div class="p-2 fs-sm text-muted">📊 Dashboard Bloomberg-style</div>
             </div>
-            <div class="glass rounded-2xl overflow-hidden">
-                <img src="/static/screens/saham.png" alt="Daftar Saham IDX" class="w-full" loading="lazy">
-                <div class="p-3 text-sm text-gray-400">📈 Daftar Saham IDX — 125+ emiten</div>
+            <div class="glass rounded-4 overflow-hidden">
+                <img src="/static/screens/saham.png" alt="Daftar Saham IDX" class="w-100" loading="lazy">
+                <div class="p-2 fs-sm text-muted">📈 Daftar Saham IDX — 125+ emiten</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- VIDEO DEMO -->
-<section class="py-24 px-4">
+<section class="py-2 px-2">
     <div class="max-w-4xl mx-auto text-center">
-        <h2 class="font-display text-4xl font-bold mb-4">Lihat Cara Kerjanya</h2>
-        <p class="text-gray-400 mb-8">Video singkat cara analisa saham dengan Investo.</p>
-        <div class="glass rounded-2xl overflow-hidden">
-            <div class="aspect-video bg-[#0a0a1a] flex items-center justify-center cursor-pointer hover:bg-[#0f0f23] transition-colors" onclick="this.innerHTML='<iframe class=\'w-full h-full\' src=\'https://www.youtube.com/embed/dQw4w9WgXcQ\' frameborder=\'0\' allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
+        <h2 class=" display-6 fw-bold mb-2">Lihat Cara Kerjanya</h2>
+        <p class="text-muted mb-2">Video singkat cara analisa saham dengan Investo.</p>
+        <div class="glass rounded-4 overflow-hidden">
+            <div class="aspect-video bg-dark d-flex align-items-center justify-content-center" role="img" aria-label="Pratinjau video produk">
                 <div class="text-center">
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                    <div class="w-20 h-20 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-purple d-flex align-items-center justify-content-center mx-auto mb-2  ">
+                        <svg class="w-8 h-8 text-white ms-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
                     </div>
-                    <p class="text-gray-400 text-sm">Tonton Demo (2:30)</p>
+                    <p class="text-muted fs-sm">Tonton Demo (2:30)</p>
                 </div>
             </div>
         </div>
@@ -205,53 +204,53 @@
 </section>
 
 <!-- PRICING -->
-<section id="pricing" class="py-24 px-4 bg-white/[0.02]">
+<section id="pricing" class="py-2 px-2 bg-white">
     <div class="max-w-5xl mx-auto text-center">
-        <h2 class="font-display text-4xl font-bold mb-4">Harga Sederhana</h2>
-        <p class="text-gray-400 mb-12">Mulai gratis. Upgrade sesuai kebutuhan.</p>
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="card text-left"><div class="text-sm text-gray-400 mb-2">Free</div><div class="text-3xl font-black mb-1">Rp 0</div><div class="text-sm text-gray-500 mb-6">/bulan</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Chart dasar + 5 indikator</li><li>✅ 1 Portfolio + 1 Watchlist</li><li>✅ 5 Alert harga</li><li>✅ Data delayed 15 menit</li><li class="text-gray-600">❌ AI Signals</li><li class="text-gray-600">❌ Screener advanced</li></ul><a href="/register" class="block text-center py-3 border border-gray-600 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors">Mulai Gratis</a></div>
-            <div class="card text-left border-blue-500/50 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-600 rounded-full text-xs font-bold">POPULER</div><div class="text-sm text-gray-400 mb-2 mt-2">Pro</div><div class="text-3xl font-black mb-1">Rp 99K</div><div class="text-sm text-gray-500 mb-6">/bulan</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Semua fitur Free</li><li>✅ AI Multi-Agent Signals</li><li>✅ Screener 30+ filter</li><li>✅ Unlimited Portfolio</li><li>✅ Export PDF & CSV</li><li>✅ Backtesting</li></ul><a href="/register" class="block text-center py-3 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg text-sm font-semibold hover:from-blue-500 hover:to-violet-500 transition-colors">Upgrade Pro</a></div>
-            <div class="card text-left"><div class="text-sm text-gray-400 mb-2">Whitelabel</div><div class="text-3xl font-black mb-1">Custom</div><div class="text-sm text-gray-500 mb-6">one-time</div><ul class="space-y-3 text-sm text-gray-300 mb-8"><li>✅ Semua fitur Pro</li><li>✅ Source code</li><li>✅ Custom domain</li><li>✅ API key</li><li>✅ Priority support</li><li>✅ Self-hosted</li></ul><a href="https://wa.me/6281234567890" class="block text-center py-3 border border-gray-600 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors">Hubungi Kami</a></div>
+        <h2 class=" display-6 fw-bold mb-2">Harga Sederhana</h2>
+        <p class="text-muted mb-2">Mulai gratis. Upgrade sesuai kebutuhan.</p>
+        <div class="row row-cols-md-3 gap-6">
+            <div class="card text-start"><div class="fs-sm text-muted mb-2">Free</div><div class="fs-1 fw-bolder mb-1">Rp 0</div><div class="fs-sm text-muted mb-2">/bulan</div><ul class="vstack gap-2 fs-sm text-body mb-2"><li>✅ Chart dasar + 5 indikator</li><li>✅ 1 Portfolio + 1 Watchlist</li><li>✅ 5 Alert harga</li><li>✅ Data delayed 15 menit</li><li class="text-muted">❌ AI Signals</li><li class="text-muted">❌ Screener advanced</li></ul><a href="/register" class="d-block text-center py-2 border border rounded-2 fs-sm fw-semibold  ">Mulai Gratis</a></div>
+            <div class="card text-start border-primary position-relative"><div class="position-absolute top-0 start-50 translate-middle-x px-2 py-1 bg-primary rounded-pill fs-xs fw-bold">POPULER</div><div class="fs-sm text-muted mb-2 mt-2">Pro</div><div class="fs-1 fw-bolder mb-1">Rp 99K</div><div class="fs-sm text-muted mb-2">/bulan</div><ul class="vstack gap-2 fs-sm text-body mb-2"><li>✅ Semua fitur Free</li><li>✅ AI Multi-Agent Signals</li><li>✅ Screener 30+ filter</li><li>✅ Unlimited Portfolio</li><li>✅ Export PDF & CSV</li><li>✅ Backtesting</li></ul><a href="/register" class="d-block text-center py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-purple rounded-2 fs-sm fw-semibold   ">Upgrade Pro</a></div>
+            <div class="card text-start"><div class="fs-sm text-muted mb-2">Whitelabel</div><div class="fs-1 fw-bolder mb-1">Custom</div><div class="fs-sm text-muted mb-2">one-time</div><ul class="vstack gap-2 fs-sm text-body mb-2"><li>✅ Semua fitur Pro</li><li>✅ Source code</li><li>✅ Custom domain</li><li>✅ API key</li><li>✅ Priority support</li><li>✅ Self-hosted</li></ul><a href="https://wa.me/6281234567890" class="d-block text-center py-2 border border rounded-2 fs-sm fw-semibold  ">Hubungi Kami</a></div>
         </div>
     </div>
 </section>
 
 <!-- CTA -->
-<section class="py-24 px-4 text-center">
+<section class="py-2 px-2 text-center">
     <div class="max-w-2xl mx-auto">
-        <h2 class="font-display text-4xl font-bold mb-4">Siap Analisa Lebih Cerdas?</h2>
-        <p class="text-gray-400 mb-8">Gabung dengan ribuan investor Indonesia yang sudah pakai Investo.</p>
+        <h2 class=" display-6 fw-bold mb-2">Siap Analisa Lebih Cerdas?</h2>
+        <p class="text-muted mb-2">Gabung dengan ribuan investor Indonesia yang sudah pakai Investo.</p>
         <a href="/register" class="btn-primary pulse-glow">🚀 Mulai Gratis Sekarang</a>
-        <p class="text-gray-600 text-sm mt-4">Tidak perlu kartu kredit.</p>
+        <p class="text-muted fs-sm mt-2">Tidak perlu kartu kredit.</p>
     </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="border-t border-gray-800 py-12 px-4">
-    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-400">
+<footer class="border-top border py-2 px-2">
+    <div class="max-w-6xl mx-auto row row-cols-2 row-cols-md-4 gap-5 fs-sm text-muted">
         <div>
-            <div class="font-bold text-white mb-3">Investo</div>
-            <p class="text-xs">Platform analisa saham & forex Indonesia. AI-powered, real-time data.</p>
+            <div class="fw-bold text-white mb-2">Investo</div>
+            <p class="fs-xs">Platform analisa saham & forex Indonesia. AI-powered, real-time data.</p>
         </div>
         <div>
-            <div class="font-semibold text-gray-300 mb-3">Produk</div>
-            <a href="/saham" class="block hover:text-white mb-1">Saham IDX</a>
-            <a href="/forex" class="block hover:text-white mb-1">Forex</a>
-            <a href="/screener" class="block hover:text-white mb-1">Screener</a>
-            <a href="/ai/signal-center" class="block hover:text-white mb-1">AI Signals</a>
+            <div class="fw-semibold text-body mb-2">Produk</div>
+            <a href="/saham" class="d-block  mb-1">Saham IDX</a>
+            <a href="/forex" class="d-block  mb-1">Forex</a>
+            <a href="/screener" class="d-block  mb-1">Screener</a>
+            <a href="/ai/signal-center" class="d-block  mb-1">AI Signals</a>
         </div>
         <div>
-            <div class="font-semibold text-gray-300 mb-3">Perusahaan</div>
-            <a href="/blog" class="block hover:text-white mb-1">Blog</a>
-            <a href="/docs" class="block hover:text-white mb-1">Dokumentasi</a>
-            <a href="/pricing" class="block hover:text-white mb-1">Harga</a>
-            <a href="/kontak" class="block hover:text-white mb-1">Kontak</a>
+            <div class="fw-semibold text-body mb-2">Perusahaan</div>
+            <a href="/blog" class="d-block  mb-1">Blog</a>
+            <a href="/docs" class="d-block  mb-1">Dokumentasi</a>
+            <a href="/pricing" class="d-block  mb-1">Harga</a>
+            <a href="/kontak" class="d-block  mb-1">Kontak</a>
         </div>
         <div>
-            <div class="font-semibold text-gray-300 mb-3">Legal</div>
-            <p class="text-xs mb-2">© 2026 Investo.<br>Powered by Go.</p>
-            <p class="text-xs text-gray-600">Investo adalah platform analisa, bukan rekomendasi investasi.</p>
+            <div class="fw-semibold text-body mb-2">Legal</div>
+            <p class="fs-xs mb-2">© 2026 Investo.<br>Powered by Go.</p>
+            <p class="fs-xs text-muted">Investo adalah platform analisa, bukan rekomendasi investasi.</p>
         </div>
     </div>
 </footer>

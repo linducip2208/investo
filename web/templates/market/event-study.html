@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
@@ -107,7 +106,7 @@
 }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
@@ -116,7 +115,7 @@
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
-            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -142,14 +141,14 @@
         <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
                 <h1 class="fs-1 fw-bold text-white">📅 Event Study Engine</h1>
-                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Analisis dampak corporate events terhadap harga saham menggunakan metodologi event study</p>
+                <p class="text-muted dark:text-muted fs-sm mt-1">Analisis dampak corporate events terhadap harga saham menggunakan metodologi event study</p>
             </div>
 
             <div class="card p-2">
                 <h2 class="fs-3 fw-bold text-white mb-2">⚙️ Study Parameters</h2>
                 <div class="row row-cols-1 row-cols-md-4 gap-4 align-items-end">
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Event Type</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Event Type</label>
                         <select x-model="eventType">
                             <template x-for="e in events" :key="e.id">
                                 <option :value="e.id" x-text="e.icon + ' ' + e.name"></option>
@@ -157,11 +156,11 @@
                         </select>
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Days Before: <span class="text-white font-monospace" x-text="daysBefore"></span></label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Days Before: <span class="text-white font-monospace" x-text="daysBefore"></span></label>
                         <input type="range" min="5" max="30" step="1" x-model="daysBefore" class="w-100">
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Days After: <span class="text-white font-monospace" x-text="daysAfter"></span></label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Days After: <span class="text-white font-monospace" x-text="daysAfter"></span></label>
                         <input type="range" min="5" max="30" step="1" x-model="daysAfter" class="w-100">
                     </div>
                     <button @click="runStudy()" :disabled="loading" class="btn-primary" x-text="loading ? '⏳ Running...' : '🔬 Run Study'"></button>
@@ -196,7 +195,7 @@
 
                     <div class="card p-2">
                         <h3 class="fs-sm fw-semibold text-white mb-2">📝 Analysis</h3>
-                        <p class="text-muted dark:text-slate-400 fs-sm lh-lg" x-text="result.description"></p>
+                        <p class="text-muted dark:text-muted fs-sm lh-lg" x-text="result.description"></p>
                     </div>
                 </div>
             </template>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -127,7 +127,7 @@ function yieldCurve() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
@@ -146,7 +146,7 @@ function yieldCurve() {
     <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
             <h1 class="fs-2 fs-1 fw-bold text-white">Yield Curve Analyzer</h1>
-            <p class="fs-sm text-muted dark:text-slate-400 mt-0">SBN (Surat Berharga Negara) yield curve analysis. Shape, spread, and forward-looking signals.</p>
+            <p class="fs-sm text-muted dark:text-muted mt-0">SBN (Surat Berharga Negara) yield curve analysis. Shape, spread, and forward-looking signals.</p>
         </div>
 
         <div class="row row-cols-1 row-cols-lg-3 gap-4">
@@ -180,7 +180,7 @@ function yieldCurve() {
                         </div>
                         <div class="card p-2 mt-2">
                             <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Implication</h3>
-                            <p class="fs-sm text-muted dark:text-slate-400 lh-lg" x-text="analysis.implication"></p>
+                            <p class="fs-sm text-muted dark:text-muted lh-lg" x-text="analysis.implication"></p>
                         </div>
                     </div>
                 </template>

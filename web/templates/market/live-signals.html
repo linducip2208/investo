@@ -6,7 +6,7 @@
     <title>Live Trading Signals · Investo</title>
     <meta name="description" content="Live trading signals dari analisa teknikal multi-indicator. RSI, MACD, MA Cross, Bollinger Bands, Stochastic.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -253,12 +253,12 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -270,10 +270,10 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Live Trading Signals</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">AI-generated signals dari multi-indicator analysis. Auto-refresh setiap 60 detik.</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">AI-generated signals dari multi-indicator analysis. Auto-refresh setiap 60 detik.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-slate-400">
+                    <div class="d-flex align-items-center gap-2 px-2 py-1 bg-body dark:bg-[#0b1120] border border dark:border rounded-2 fs-xs font-monospace text-muted dark:text-muted">
                         <span class="pulse-dot"></span>
                         <span x-text="'Live · '+lastUpdate"></span>
                     </div>
@@ -284,14 +284,14 @@
             <div class="d-flex flex-wrap align-items-center gap-3">
                 <div class="d-flex align-items-center gap-2 px-2 py-2 bg-white dark:bg-white rounded-3 border border dark:border">
                     <span class="widget-title mb-0">Signal Type:</span>
-                    <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'text-slate-400 ">ALL</button>
-                    <button @click="filter='BUY';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='BUY'?'bg-green-600 text-white':'text-green-400 ">
+                    <button @click="filter='ALL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2 " :class="filter==='ALL'?'bg-blue-600 text-white':'text-muted ">ALL</button>
+                    <button @click="filter='BUY';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='BUY'?'bg-green-600 text-white':'text-success ">
                         BUY <span class="tabular-nums" x-text="buyCount"></span>
                     </button>
-                    <button @click="filter='SELL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='SELL'?'bg-red-600 text-white':'text-red-400 ">
+                    <button @click="filter='SELL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='SELL'?'bg-red-600 text-white':'text-danger ">
                         SELL <span class="tabular-nums" x-text="sellCount"></span>
                     </button>
-                    <button @click="filter='NEUTRAL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='NEUTRAL'?'bg-slate-600 text-white':'text-slate-400 ">
+                    <button @click="filter='NEUTRAL';applyFilter()" class="px-2 py-1 fs-xs fw-medium rounded-2  d-flex align-items-center gap-1" :class="filter==='NEUTRAL'?'bg-secondary text-white':'text-muted ">
                         NEUTRAL <span class="tabular-nums" x-text="neutralCount"></span>
                     </button>
                 </div>
@@ -332,7 +332,7 @@
                     <div class="mb-2">
                         <div class="d-flex align-items-center justify-content-between fs-xs mb-1">
                             <span class="text-muted">Confidence</span>
-                            <span class="font-monospace fw-bold" :class="signal.confidence>=70?'text-green-400':signal.confidence>=45?'text-amber-400':'text-red-400'" x-text="signal.confidence+'%'"></span>
+                            <span class="font-monospace fw-bold" :class="signal.confidence>=70?'text-success':signal.confidence>=45?'text-warning':'text-danger'" x-text="signal.confidence+'%'"></span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" :class="confidenceClass(signal.confidence)" :style="'width:'+signal.confidence+'%'"></div>
@@ -352,12 +352,12 @@
 
                     <div class="mb-2">
                         <div class="fs-xs text-muted mb-1">Reason</div>
-                        <div class="fs-xs text-muted dark:text-slate-400 lh-lg" x-text="signal.reason"></div>
+                        <div class="fs-xs text-muted dark:text-muted lh-lg" x-text="signal.reason"></div>
                     </div>
 
                     <div class="d-flex align-items-center gap-2">
                         <a :href="'/saham/'+signal.stock_code+'/chart-pro'" class="flex-fill text-center px-2 py-2 bg-primary bg-opacity-25 text-primary rounded-2 fs-xs fw-medium border border-primary  ">View Chart</a>
-                        <button @click="showDetail(signal)" class="px-2 py-2 bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-slate-400 rounded-2 fs-xs fw-medium border border  dark:hover:bg-secondary-lt ">Detail</button>
+                        <button @click="showDetail(signal)" class="px-2 py-2 bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-muted rounded-2 fs-xs fw-medium border border  dark:hover:bg-secondary-lt ">Detail</button>
                     </div>
                 </div>
                 </template>
@@ -367,7 +367,7 @@
             <template x-if="!loading && filtered.length === 0">
             <div class="text-center py-2">
                 <div class="display-5 mb-2">&#x1F4AD;</div>
-                <p class="text-muted dark:text-slate-400 fs-3 fw-medium">No signals found</p>
+                <p class="text-muted dark:text-muted fs-3 fw-medium">No signals found</p>
                 <p class="text-muted fs-sm mt-1">Coba ganti filter atau refresh data</p>
             </div>
             </template>
@@ -402,11 +402,11 @@
                     </div>
                 </div>
                 <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2">
-                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Signal Analysis</div>
+                    <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Signal Analysis</div>
                     <div class="fs-sm text-body dark:text-body lh-lg" x-text="selectedSignal.reason"></div>
                 </div>
                 <div class="p-2 bg-body dark:bg-[#0b1120] rounded-2">
-                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Indicators Used</div>
+                    <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Indicators Used</div>
                     <div class="d-flex flex-wrap gap-2">
                         <template x-for="ind in (selectedSignal.indicators || [])" :key="ind">
                             <span class="px-2 py-1 bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body rounded-2 fs-xs fw-medium border border" x-text="ind"></span>

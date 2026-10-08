@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Report Generator · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -136,7 +136,7 @@
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-3">
                 <span class="fs-1 sparkle">🤖</span>
                 <h1 class="fs-3 fw-bold text-white">AI Report Generator</h1>
@@ -151,7 +151,7 @@
             <div class="row row-cols-1 row-cols-lg-3 gap-5">
                 <div class="col vstack gap-3">
                     <div class="card p-2">
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Pilih Portofolio</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Pilih Portofolio</label>
                         <select x-model="portfolioId" @change="loadPortfolios()" class="mb-2">
                             <option value="">-- Pilih portofolio --</option>
                             <template x-for="p in portfolios" :key="p.id">
@@ -170,11 +170,11 @@
                     </div>
 
                     <div class="card p-2">
-                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Tentang Fitur</div>
-                        <p class="fs-sm text-muted dark:text-slate-400 lh-lg">
+                        <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Tentang Fitur</div>
+                        <p class="fs-sm text-muted dark:text-muted lh-lg">
                             AI Report Generator menganalisa portofolio Anda dan menghasilkan laporan lengkap mencakup:
                         </p>
-                        <ul class="mt-2 vstack gap-1 fs-sm text-muted dark:text-slate-400">
+                        <ul class="mt-2 vstack gap-1 fs-sm text-muted dark:text-muted">
                             <li class="d-flex align-items-center gap-2"><span class="text-primary">📊</span> Ringkasan performa</li>
                             <li class="d-flex align-items-center gap-2"><span class="text-primary">🤖</span> Analisa naratif AI</li>
                             <li class="d-flex align-items-center gap-2"><span class="text-primary">📋</span> Breakdown top holdings</li>
@@ -187,7 +187,7 @@
                 <div class="col-lg-8">
                     <div class="card p-2">
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Preview Laporan</span>
+                            <span class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Preview Laporan</span>
                             <div class="d-flex gap-2" x-show="reportHtml">
                                 <button @click="printReport()" class="btn btn-secondary fs-xs py-1 px-2">🖨️ Print PDF</button>
                                 <button @click="downloadReport()" class="btn btn-success fs-xs py-1 px-2">📥 Download</button>

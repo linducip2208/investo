@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -49,10 +49,10 @@
                     } catch(e) { this.loaded = true; }
                 },
                 stageBadge(stage) {
-                    if (stage === 'Growth') return 'bg-green-lt text-green-400 border border-green-500/30';
-                    if (stage === 'Mature') return 'bg-blue-lt text-blue-400 border border-info/30';
-                    if (stage === 'Decline') return 'bg-red-lt text-red-400 border border-red-500/30';
-                    return 'bg-slate-500/20 text-slate-400 border border-slate-500/30';
+                    if (stage === 'Growth') return 'bg-green-lt text-success border border-green-500/30';
+                    if (stage === 'Mature') return 'bg-blue-lt text-info border border-info/30';
+                    if (stage === 'Decline') return 'bg-red-lt text-danger border border-red-500/30';
+                    return 'bg-slate-500/20 text-muted border border-slate-500/30';
                 },
                 stageIcon(stage) {
                     if (stage === 'Growth') return '🌱';
@@ -146,12 +146,12 @@
     </aside>
 
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Supply Chain /</span> Industry Lifecycle</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Supply Chain /</span> Industry Lifecycle</div>
         <div class="d-flex align-items-center gap-3">
-            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -166,7 +166,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Analyzing industry lifecycles...</p>
+                <p class="text-muted dark:text-muted">Analyzing industry lifecycles...</p>
             </div>
         </template>
 
@@ -174,7 +174,7 @@
             <div class="vstack gap-4">
                 <div>
                     <h1 class="fs-1 fw-bold text-white">Industry Lifecycle Analyzer</h1>
-                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Classify sectors by lifecycle stage: Growth, Mature, or Decline</p>
+                    <p class="text-muted dark:text-muted fs-sm mt-1">Classify sectors by lifecycle stage: Growth, Mature, or Decline</p>
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4">
@@ -187,7 +187,7 @@
                                 </div>
                                 <span class="px-2 py-1 rounded-pill fs-6 fw-semibold" :class="stageBadge(s.stage)" x-text="s.stage"></span>
                             </div>
-                            <p class="fs-xs text-muted dark:text-slate-400 mb-2" x-text="s.description"></p>
+                            <p class="fs-xs text-muted dark:text-muted mb-2" x-text="s.description"></p>
                             <div class="vstack gap-2">
                                 <div>
                                     <div class="d-flex justify-content-between fs-6 text-muted mb-1">
@@ -230,15 +230,15 @@
                     <div class="row row-cols-1 row-cols-md-3 gap-4 fs-sm">
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-success">Growth Stage</div>
-                            <p class="text-muted dark:text-slate-400">High revenue growth, many new entrants, expanding market. High innovation index.</p>
+                            <p class="text-muted dark:text-muted">High revenue growth, many new entrants, expanding market. High innovation index.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">Mature Stage</div>
-                            <p class="text-muted dark:text-slate-400">Stable growth, consolidated market, moderate competition. Known players dominate.</p>
+                            <p class="text-muted dark:text-muted">Stable growth, consolidated market, moderate competition. Known players dominate.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-danger">Decline Stage</div>
-                            <p class="text-muted dark:text-slate-400">Negative growth, shrinking market. Companies exiting or consolidating.</p>
+                            <p class="text-muted dark:text-muted">Negative growth, shrinking market. Companies exiting or consolidating.</p>
                         </div>
                     </div>
                 </div>

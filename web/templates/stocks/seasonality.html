@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -39,20 +38,20 @@
 <body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="font-display">Investo</span></a>
             <span class="text-muted mx-2">/</span>
-            <a href="/saham" class="text-muted dark:text-slate-400 ">Saham</a>
+            <a href="/saham" class="text-muted dark:text-muted ">Saham</a>
             <span class="text-muted mx-2">/</span>
-            <a href="/saham/[[.Code]]" class="text-muted dark:text-slate-400 ">[[.Code]]</a>
+            <a href="/saham/[[.Code]]" class="text-muted dark:text-muted ">[[.Code]]</a>
             <span class="text-muted mx-2">/</span>
             <span class="text-body dark:text-body fw-semibold">Seasonality</span>
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
-            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -75,10 +74,10 @@
         <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
                 <h1 class="fs-1 fw-bold text-white">📅 Seasonality Analysis &mdash; [[.Code]]</h1>
-                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Analisis pola musiman return bulanan berdasarkan [[.Result.YearsAnalyzed]] tahun data historis</p>
+                <p class="text-muted dark:text-muted fs-sm mt-1">Analisis pola musiman return bulanan berdasarkan [[.Result.YearsAnalyzed]] tahun data historis</p>
                 [[if .Result.IsIllustrative]]
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
-                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. [[if .Result.Source]]<span class="text-muted dark:text-slate-400">Sumber: [[.Result.Source]] · per [[.Result.AsOf]]</span>[[end]]</p>
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. [[if .Result.Source]]<span class="text-muted dark:text-muted">Sumber: [[.Result.Source]] · per [[.Result.AsOf]]</span>[[end]]</p>
                 </div>
                 [[else]]
                 [[if .Result.Source]]<p class="fs-xs text-muted mt-2">Sumber: [[.Result.Source]] · per [[.Result.AsOf]] · [[.Result.DataPoints]] observasi bulanan</p>[[end]]
@@ -87,7 +86,7 @@
 
             <div class="card p-2 bg-gradient bg-gradient-from-blue bg-opacity-25 bg-gradient-to-purple bg-opacity-25 border-primary">
                 <div class="text-center">
-                    <p class="text-muted dark:text-slate-400 fs-sm">📌 Bulan ini secara historis (<span class="fw-semibold text-white">[[.Result.CurrentMonth]]</span>)</p>
+                    <p class="text-muted dark:text-muted fs-sm">📌 Bulan ini secara historis (<span class="fw-semibold text-white">[[.Result.CurrentMonth]]</span>)</p>
                     <p class="fs-1 font-monospace fw-bold mt-2 [[if ge .Result.CurrentMonthAvg 0]]text-success[[else]]text-danger[[end]]">
                         [[if ge .Result.CurrentMonthAvg 0]]+[[end]][[printf "%.2f" .Result.CurrentMonthAvg]]%
                     </p>
@@ -102,11 +101,11 @@
                     [[$ret := index $.Result.MonthlyReturns .]]
                     [[$win := index $.Result.MonthlyWinRate .]]
                     <div class="rounded-3 p-2 text-center   [[if ge $ret 0]]bg-success-lt border border-green-500/30[[else]]bg-danger-lt border border-red-500/30[[end]] [[if eq . "Jan"]]ring-2 ring-blue-500[[end]]">
-                        <p class="fs-xs text-muted dark:text-slate-400 fw-semibold text-uppercase">[[.]]</p>
+                        <p class="fs-xs text-muted dark:text-muted fw-semibold text-uppercase">[[.]]</p>
                         <p class="fs-2 font-monospace fw-bold mt-1 [[if ge $ret 0]]text-success[[else]]text-danger[[end]]">
                             [[if ge $ret 0]]+[[end]][[printf "%.1f" $ret]]%
                         </p>
-                        <p class="fs-xs [[if ge $ret 0]]text-green-400[[else]]text-red-400[[end]] mt-1">
+                        <p class="fs-xs [[if ge $ret 0]]text-success[[else]]text-danger[[end]] mt-1">
                             Win: [[printf "%.0f" $win]]%
                         </p>
                         [[if eq . "Jan"]]
@@ -138,7 +137,7 @@
                     [[range .Months]]
                     [[$winRate := index $.Result.MonthlyWinRate .]]
                     <div class="d-flex align-items-center gap-3">
-                        <span class="w-10 fs-xs text-muted dark:text-slate-400 font-monospace">[[.]]</span>
+                        <span class="w-10 fs-xs text-muted dark:text-muted font-monospace">[[.]]</span>
                         <div class="flex-fill bg-white dark:bg-white rounded-pill h-6 overflow-hidden">
                             <div class="h-100 rounded-pill d-flex align-items-center justify-content-end px-2 "
                                 style="width:[[$winRate]]%;background:[[if ge $winRate 60]]#10b981[[else if ge $winRate 40]]#fbbf24[[else]]#ef4444[[end]]">

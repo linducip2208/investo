@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,7 @@
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -53,17 +53,17 @@
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-xl text-white">Investo</span></a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/docs" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
-                <a href="/blog" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
-                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+<nav x-data="{ open: false }" class="position-sticky top-0 z-3 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-2 text-white">Investo</span></a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-body dark:text-body  ">Beranda</a>
+                <a href="/docs" class="text-body dark:text-body  ">Docs</a>
+                <a href="/blog" class="text-body dark:text-body  ">Blog</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-body dark:text-body  dark:hover:bg-white">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -71,50 +71,50 @@
     </div>
 </nav>
 
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-    <section class="mb-10 reveal">
-        <h1 class="text-3xl lg:text-4xl font-extrabold text-white mb-4">Saham [[.Sector.Name]] Terbaik</h1>
-        <div class="max-w-none text-slate-500 dark:text-slate-400 leading-relaxed">
+<div class="max-w-5xl mx-auto px-2 px-sm-4 px-lg-5 py-2 py-lg-5">
+    <section class="mb-2 reveal">
+        <h1 class="fs-1 display-6 fw-bolder text-white mb-2">Saham [[.Sector.Name]] Terbaik</h1>
+        <div class="max-w-none text-muted dark:text-muted lh-lg">
             <p>[[.Sector.Description]] Sektor ini mencakup [[.Sector.StockCount]] saham yang tercatat di Bursa Efek Indonesia (IDX) per [[.Year]]. [[.Sector.TrendComment]]</p>
             <p>Berikut adalah daftar saham sektor [[.Sector.Name]] terbaik berdasarkan data fundamental seperti PER, PBV, ROE, EPS, dan dividend yield. Data diperbaharui secara berkala.</p>
             <p>Investor dapat menggunakan tabel di bawah ini sebagai titik awal untuk screening saham di sektor [[.Sector.Name]].</p>
         </div>
     </section>
 
-    <div class="flex items-center gap-2 mb-8 reveal">
-        <span class="text-sm font-semibold text-slate-500 dark:text-slate-400">Tahun:</span>
+    <div class="d-flex align-items-center gap-2 mb-2 reveal">
+        <span class="fs-sm fw-semibold text-muted dark:text-muted">Tahun:</span>
         [[range .AvailableYears]]
-        <a href="/sektor/[[$.Sector.Slug]]?year=[[.]]" class="px-4 py-2 rounded-xl text-sm font-medium transition-all [[if . | eq $.Year]]bg-blue-600 text-white[[else]]bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-700[[end]]">[[.]]</a>
+        <a href="/sektor/[[$.Sector.Slug]]?year=[[.]]" class="px-2 py-2 rounded-3 fs-sm fw-medium  [[if . | eq $.Year]]bg-blue-600 text-white[[else]]bg-white text-body dark:text-body hover:bg-secondary-lt[[end]]">[[.]]</a>
         [[end]]
     </div>
 
-    <section class="mb-12 reveal">
+    <section class="mb-2 reveal">
         <div class="card overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
-                        <tr class="bg-white dark:bg-slate-800 text-left">
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider">#</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider">Kode</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider">Nama</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider text-right">Harga</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider text-right">PER</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider text-right">PBV</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider text-right">ROE</th>
-                            <th class="px-5 py-4 font-semibold text-slate-500 dark:text-slate-400 uppercase text-xs tracking-wider text-right">Div Yield</th>
+                        <tr class="bg-white dark:bg-slate-800 text-start">
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs ">#</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs ">Kode</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs ">Nama</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs  text-end">Harga</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs  text-end">PER</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs  text-end">PBV</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs  text-end">ROE</th>
+                            <th class="px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase fs-xs  text-end">Div Yield</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tbody class="divide-y border dark:divide-slate-700">
                         [[range $i, $s := .Stocks]]
-                        <tr class="hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                            <td class="px-5 py-4 text-slate-500 dark:text-slate-400 font-medium">[[add $i 1]]</td>
-                            <td class="px-5 py-4"><a href="/saham/[[$s.Code]]" class="font-mono font-bold text-blue-400 hover:underline">[[$s.Code]]</a></td>
-                            <td class="px-5 py-4 font-medium text-slate-800 dark:text-slate-200">[[$s.Name]]</td>
-                            <td class="px-5 py-4 text-right font-mono text-slate-700 dark:text-slate-300">Rp [[$s.Price]]</td>
-                            <td class="px-5 py-4 text-right font-mono text-slate-500 dark:text-slate-400">[[$s.PER]]x</td>
-                            <td class="px-5 py-4 text-right font-mono text-slate-500 dark:text-slate-400">[[$s.PBV]]x</td>
-                            <td class="px-5 py-4 text-right font-mono text-slate-500 dark:text-slate-400">[[$s.ROE]]%</td>
-                            <td class="px-5 py-4 text-right font-mono text-slate-500 dark:text-slate-400">[[$s.DividendYield]]%</td>
+                        <tr class=" dark:hover:bg-white/50 ">
+                            <td class="px-2 py-2 text-muted dark:text-muted fw-medium">[[add $i 1]]</td>
+                            <td class="px-2 py-2"><a href="/saham/[[$s.Code]]" class="font-monospace fw-bold text-primary ">[[$s.Code]]</a></td>
+                            <td class="px-2 py-2 fw-medium text-body dark:text-slate-200">[[$s.Name]]</td>
+                            <td class="px-2 py-2 text-end font-monospace text-body dark:text-body">Rp [[$s.Price]]</td>
+                            <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted">[[$s.PER]]x</td>
+                            <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted">[[$s.PBV]]x</td>
+                            <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted">[[$s.ROE]]%</td>
+                            <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted">[[$s.DividendYield]]%</td>
                         </tr>
                         [[end]]
                     </tbody>
@@ -123,34 +123,34 @@
         </div>
     </section>
 
-    <section class="mb-12 reveal">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
-            <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
-            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Dapatkan aplikasi saham dengan data 600+ saham IDX, screener sektor, pSEO 1 juta halaman. Whitelabel ready.</p>
-            <a href="/beli-aplikasi-saham" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">
+    <section class="mb-2 reveal">
+        <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 p-lg-5 text-white text-center">
+            <h2 class="fs-1 fw-bold mb-2">Beli Aplikasi Saham — Source Code Investo</h2>
+            <p class="text-primary lh-lg max-w-2xl mx-auto mb-2">Dapatkan aplikasi saham dengan data 600+ saham IDX, screener sektor, pSEO 1 juta halaman. Whitelabel ready.</p>
+            <a href="/beli-aplikasi-saham" class="d-inline-flex align-items-center gap-2 bg-white text-primary fw-bold px-2 py-2 rounded-3 shadow-lg   ">
                 Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </a>
         </div>
     </section>
 
-    <section class="mb-12 reveal">
-        <h2 class="text-2xl font-bold text-white mb-6">Sektor Lainnya</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    <section class="mb-2 reveal">
+        <h2 class="fs-1 fw-bold text-white mb-2">Sektor Lainnya</h2>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 gap-3">
             [[range .OtherSectors]]
-            <a href="/sektor/[[.Slug]]" class="card-lift card rounded-xl p-4 hover:border-blue-500 transition-all group text-center">
-                <div class="text-2xl mb-2">[[.Emoji]]</div>
-                <div class="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">[[.Name]]</div>
-                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">[[.StockCount]] saham</div>
+            <a href="/sektor/[[.Slug]]" class="card-lift card rounded-3 p-2    text-center">
+                <div class="fs-1 mb-2">[[.Emoji]]</div>
+                <div class="fs-sm fw-semibold text-white  ">[[.Name]]</div>
+                <div class="fs-xs text-muted dark:text-muted mt-1">[[.StockCount]] saham</div>
             </a>
             [[end]]
         </div>
     </section>
 </div>
 
-<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-lg text-white">Investo</span></div>
-        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
+<footer class="border-top border dark:border-slate-800 py-2">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-3 text-white">Investo</span></div>
+        <p class="text-muted fs-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
     </div>
 </footer>
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[if .IsEdit]]Edit Berita[[else]]Tambah Berita[[end]] · Admin · [[.AppName]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -41,12 +41,6 @@
             .input-dark:focus { border-color: #3b82f6; }
         }
     </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'], mono: ['JetBrains Mono','Fira Code','monospace'] } } },
-        }
-    </script>
 <style data-investo-compat>
     body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
     .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
@@ -54,130 +48,130 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, slug: '[[.News.Slug]]', autoSlug: [[if .IsEdit]]false[[else]]true[[end]] }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
+<body class="bg-body text-body antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, slug: '[[.News.Slug]]', autoSlug: [[if .IsEdit]]false[[else]]true[[end]] }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
-            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
+    <aside class="sidebar bg-body dark:bg-slate-900 text-white d-flex flex-column position-fixed start-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="d-flex align-items-center gap-3 px-2 py-2 border-bottom border dark:border-slate-700/60">
+            <div class="w-9 h-9 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center fw-bold text-white fs-sm shadow-lg ">I</div>
             <div>
-                <div class="font-bold text-base leading-tight">[[.AppName]]</div>
-                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="fw-bold fs-base lh-1">[[.AppName]]</div>
+                <div class="text-muted dark:text-muted fs-6  text-uppercase">Admin Panel</div>
             </div>
         </div>
-        <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                <span class="text-sm">Dashboard</span>
+        <nav class="flex-fill px-2 py-2 vstack gap-1">
+            <a href="/admin/dashboard" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="fs-sm">Dashboard</span>
             </a>
-            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-                <span class="text-sm">Pengguna</span>
+            <a href="/admin/users" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                <span class="fs-sm">Pengguna</span>
             </a>
-            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
-                <span class="text-sm">Saham</span>
+            <a href="/admin/saham" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+                <span class="fs-sm">Saham</span>
             </a>
-            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
-                <span class="text-sm">Sektor</span>
+            <a href="/admin/sektor" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="fs-sm">Sektor</span>
             </a>
-            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
+            <a href="/admin/berita" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 bg-primary text-white fw-medium  ">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
-                <span class="text-sm">Berita</span>
+                <span class="fs-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="text-sm">Blog</span>
+            <a href="/admin/blog" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="fs-sm">Blog</span>
             </a>
-            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                <span class="text-sm">Pengaturan</span>
+            <a href="/admin/pengaturan" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span class="fs-sm">Pengaturan</span>
             </a>
         </nav>
-        <div class="px-6 py-4 border-t border-slate-200/60 dark:border-slate-700/60 space-y-3">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors text-sm">
+        <div class="px-2 py-2 border-top border dark:border-slate-700/60 vstack gap-2">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="d-flex align-items-center gap-3 w-100 px-2 py-2 rounded-2 text-muted dark:text-muted  dark:hover:bg-white   fs-sm">
                 <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
                 <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
             </button>
-            <div class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 text-xs">
-                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
+            <div class="d-flex align-items-center gap-3 px-2 py-2 text-muted dark:text-muted fs-xs">
+                <div class="w-7 h-7 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fw-bold fs-6">A</div>
                 <div>
-                    <div class="text-slate-700 dark:text-slate-300 text-xs font-medium">[[.AdminName]]</div>
-                    <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
+                    <div class="text-body dark:text-body fs-xs fw-medium">[[.AdminName]]</div>
+                    <a href="/admin/logout" class="text-primary  ">Keluar</a>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
-            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <header class="bg-white bg-opacity-75 dark:bg-slate-900/80  border-bottom border dark:border-slate-700/50 px-2 py-2 d-flex align-items-center justify-content-between position-sticky top-0 z-2">
+            <button @click="sidebarOpen = !sidebarOpen" class="d-lg-none p-2 rounded-2  dark:hover:bg-white ">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
-            <div class="text-sm text-slate-500 font-medium hidden sm:block">[[.AppName]] Admin</div>
-            <span class="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+            <div class="fs-sm text-muted fw-medium d-none d-sm-block">[[.AppName]] Admin</div>
+            <span class="fs-6 text-muted dark:text-muted bg-body dark:bg-slate-800 px-2 py-1 rounded-pill font-monospace">[[.AppVersion]]</span>
         </header>
 
-        <div class="px-6 py-6 max-w-4xl mx-auto space-y-6">
-            <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
-                <a href="/admin/berita" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">Berita</a>
+        <div class="px-2 py-2 max-w-4xl mx-auto vstack gap-4">
+            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted" aria-label="Breadcrumb">
+                <a href="/admin/berita" class=" dark:hover:text-info  fw-medium">Berita</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="text-slate-800 dark:text-slate-200 font-semibold">[[if .IsEdit]]Edit[[else]]Tambah[[end]]</span>
+                <span class="text-body dark:text-slate-200 fw-semibold">[[if .IsEdit]]Edit[[else]]Tambah[[end]]</span>
             </nav>
 
-            <div class="card rounded-2xl border shadow-sm p-6">
-                <h1 class="text-xl font-extrabold text-slate-900 dark:text-white mb-1">[[if .IsEdit]]Edit Berita[[else]]Tambah Berita Baru[[end]]</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">[[if .IsEdit]]Perbarui artikel berita[[else]]Input artikel berita pasar baru[[end]]</p>
+            <div class="card rounded-4 border shadow-sm p-2">
+                <h1 class="fs-2 fw-bolder text-body dark:text-white mb-1">[[if .IsEdit]]Edit Berita[[else]]Tambah Berita Baru[[end]]</h1>
+                <p class="fs-sm text-muted dark:text-muted mb-2">[[if .IsEdit]]Perbarui artikel berita[[else]]Input artikel berita pasar baru[[end]]</p>
 
-                <form method="POST" action="[[if .IsEdit]]/admin/berita/[[.News.ID]]/edit[[else]]/admin/berita/create[[end]]" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul</label>
-                        <input type="text" name="title" value="[[.News.Title]]" required class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow"
+                <form method="POST" action="[[if .IsEdit]]/admin/berita/[[.News.ID]]/edit[[else]]/admin/berita/create[[end]]" class="row row-cols-1 row-cols-md-2 gap-5">
+                    <div class="col-md-12">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Judul</label>
+                        <input type="text" name="title" value="[[.News.Title]]" required class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    "
                             x-on:input="if (autoSlug) { slug = $el.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }">
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Slug</label>
-                        <div class="flex items-center gap-2">
-                            <input type="text" name="slug" x-model="slug" required class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
-                            <button type="button" @click="autoSlug = !autoSlug" class="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0" :class="autoSlug ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400' : ''">
+                    <div class="col-md-12">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Slug</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="text" name="slug" x-model="slug" required class="form-control w-100 px-2 py-2 rounded-3 border fs-sm font-monospace fs-xs    ">
+                            <button type="button" @click="autoSlug = !autoSlug" class="px-2 py-2 rounded-3 border border dark:border-slate-600 fs-xs text-muted  dark:hover:bg-secondary-lt  flex-shrink-0" :class="autoSlug ? 'bg-blue-50 dark:bg-blue-900/20 border-primary dark:border-blue-600 text-primary dark:text-info' : ''">
                                 <span x-text="autoSlug ? 'Auto: ON' : 'Auto: OFF'"></span>
                             </button>
                         </div>
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Konten</label>
-                        <textarea name="content" rows="10" required class="input-dark w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow resize-y font-mono text-xs">[[.News.Content]]</textarea>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Mendukung format HTML dan Markdown</p>
+                    <div class="col-md-12">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Konten</label>
+                        <textarea name="content" rows="10" required class="form-control w-100 px-2 py-2 rounded-3 border fs-sm     resize-y font-monospace fs-xs">[[.News.Content]]</textarea>
+                        <p class="fs-6 text-muted dark:text-muted mt-1">Mendukung format HTML dan Markdown</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Sumber</label>
-                        <input type="text" name="source" value="[[.News.Source]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="Contoh: CNBC Indonesia">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Sumber</label>
+                        <input type="text" name="source" value="[[.News.Source]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="Contoh: CNBC Indonesia">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Source URL</label>
-                        <input type="url" name="source_url" value="[[.News.SourceURL]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="https://...">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Source URL</label>
+                        <input type="url" name="source_url" value="[[.News.SourceURL]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="https://...">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Image URL</label>
-                        <input type="url" name="image_url" value="[[.News.ImageURL]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="https://...">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Image URL</label>
+                        <input type="url" name="image_url" value="[[.News.ImageURL]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="https://...">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tanggal Publish</label>
-                        <input type="datetime-local" name="published_at" value="[[.News.PublishedAt]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Tanggal Publish</label>
+                        <input type="datetime-local" name="published_at" value="[[.News.PublishedAt]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    ">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Sentiment Score</label>
-                        <input type="number" name="sentiment_score" value="[[.News.SentimentScore]]" min="0" max="1" step="0.01" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="0.00 - 1.00">
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">0 = negatif, 0.5 = netral, 1 = positif</p>
+                        <label class="d-block fs-sm fw-semibold text-body dark:text-body mb-1">Sentiment Score</label>
+                        <input type="number" name="sentiment_score" value="[[.News.SentimentScore]]" min="0" max="1" step="0.01" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm font-monospace    " placeholder="0.00 - 1.00">
+                        <p class="fs-6 text-muted dark:text-muted mt-1">0 = negatif, 0.5 = netral, 1 = positif</p>
                     </div>
-                    <div class="md:col-span-2 flex items-center gap-3 pt-2">
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98]">
+                    <div class="col-md-12 d-flex align-items-center gap-3 pt-2">
+                        <button type="submit" class="px-2 py-2 rounded-3 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold    shadow-lg   ">
                             [[if .IsEdit]]Simpan Perubahan[[else]]Publikasikan Berita[[end]]
                         </button>
-                        <a href="/admin/berita" class="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+                        <a href="/admin/berita" class="px-2 py-2 rounded-3 border border dark:border-slate-600 text-muted dark:text-muted  dark:hover:bg-secondary-lt  fs-sm fw-medium">
                             Batal
                         </a>
                     </div>

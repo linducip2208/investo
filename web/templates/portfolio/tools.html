@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="Portfolio tools: Monte Carlo simulation, stress test, tax-loss harvesting, DRIP calculator, dan multi-year projection.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -211,8 +211,8 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted">
                 <a href="/dashboard/portfolios" class=" ">Portfolio</a>
                 <span>/</span>
                 <span class="text-white fw-medium">Tools</span>
@@ -226,7 +226,7 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">Portfolio Tools</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Simulasi risiko, tax-loss harvesting, DRIP calculator & proyeksi valuasi</p>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Simulasi risiko, tax-loss harvesting, DRIP calculator & proyeksi valuasi</p>
             </div>
 
             <!-- TAB NAVIGATION -->
@@ -242,23 +242,23 @@
             <div x-show="activeTab==='monte-carlo'" class="vstack gap-3">
                 <div class="card p-2">
                     <h2 class="widget-title mb-1">Monte Carlo Simulation</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Simulasi ribuan skenario return portofolio berdasarkan data historis.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Simulasi ribuan skenario return portofolio berdasarkan data historis.</p>
                     <div class="row row-cols-1 row-cols-sm-3 gap-4 mb-2">
                         <div>
-                            <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Portfolio</label>
+                            <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Portfolio</label>
                             <select x-model.number="monteCarlo.portfolioId" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   ">
                                 <option value="0">Pilih portfolio...</option>
                                 [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
                             </select>
                         </div>
                         <div>
-                            <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Simulasi</label>
+                            <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Simulasi</label>
                             <select x-model.number="monteCarlo.simulations" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   ">
                                 <option value="500">500</option><option value="1000" selected>1.000</option><option value="5000">5.000</option><option value="10000">10.000</option>
                             </select>
                         </div>
                         <div>
-                            <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Tahun</label>
+                            <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Tahun</label>
                             <select x-model.number="monteCarlo.years" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   ">
                                 <option value="1">1 Tahun</option><option value="3">3 Tahun</option><option value="5">5 Tahun</option><option value="10">10 Tahun</option>
                             </select>
@@ -272,10 +272,10 @@
                 </div>
 
                 <div x-show="monteCarlo.result" class="row row-cols-2 row-cols-sm-4 gap-3">
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Median Return</span><div class="mt-1 font-monospace fs-2 fw-bold" :class="monteCarlo.result.median_return>=0?'text-success':'text-danger'" x-text="(monteCarlo.result.median_return>=0?'+':'')+monteCarlo.result.median_return.toFixed(2)+'%'"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Percentile 5%</span><div class="mt-1 font-monospace fs-2 fw-bold text-danger" x-text="monteCarlo.result.percentile_5.toFixed(2)+'%'"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Percentile 95%</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'+'+monteCarlo.result.percentile_95.toFixed(2)+'%'"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Prob. Positive</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="monteCarlo.result.prob_positive.toFixed(1)+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Median Return</span><div class="mt-1 font-monospace fs-2 fw-bold" :class="monteCarlo.result.median_return>=0?'text-success':'text-danger'" x-text="(monteCarlo.result.median_return>=0?'+':'')+monteCarlo.result.median_return.toFixed(2)+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Percentile 5%</span><div class="mt-1 font-monospace fs-2 fw-bold text-danger" x-text="monteCarlo.result.percentile_5.toFixed(2)+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Percentile 95%</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'+'+monteCarlo.result.percentile_95.toFixed(2)+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Prob. Positive</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="monteCarlo.result.prob_positive.toFixed(1)+'%'"></div></div>
                 </div>
 
                 <div x-show="monteCarlo.result" class="card p-2">
@@ -288,9 +288,9 @@
             <div x-show="activeTab==='stress-test'" class="vstack gap-3">
                 <div class="card p-2">
                     <h2 class="widget-title mb-1">Stress Test Portfolio</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Uji ketahanan portfolio terhadap skenario krisis historis.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Uji ketahanan portfolio terhadap skenario krisis historis.</p>
                     <div class="mb-2">
-                        <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Portfolio</label>
+                        <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Portfolio</label>
                         <select x-model.number="stressTest.portfolioId" class="w-100 w-64 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   ">
                             <option value="0">Pilih portfolio...</option>
                             [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
@@ -299,26 +299,26 @@
                     <div class="row gap-4 row-cols-sm-2 row-cols-lg-3">
                         <div @click="if(stressTest.portfolioId>0)runStressTest('2008_crash')" class="card p-2 cursor-pointer  ">
                             <div class="d-flex justify-content-between mb-2"><div><h3 class="fw-bold text-white">Krisis 2008</h3><p class="fs-xs text-muted">Global Financial Crisis</p></div><span class="font-monospace fs-sm text-danger fw-bold">-50%</span></div>
-                            <p class="fs-xs text-muted dark:text-slate-400">Sektor keuangan & properti paling terdampak.</p>
+                            <p class="fs-xs text-muted dark:text-muted">Sektor keuangan & properti paling terdampak.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('covid_crash')" class="card p-2 cursor-pointer  ">
                             <div class="d-flex justify-content-between mb-2"><div><h3 class="fw-bold text-white">COVID-19 2020</h3><p class="fs-xs text-muted">Pandemi Global</p></div><span class="font-monospace fs-sm text-danger fw-bold">-37%</span></div>
-                            <p class="fs-xs text-muted dark:text-slate-400">Pariwisata anjlok, kesehatan & teknologi naik.</p>
+                            <p class="fs-xs text-muted dark:text-muted">Pariwisata anjlok, kesehatan & teknologi naik.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('1998_crisis')" class="card p-2 cursor-pointer  ">
                             <div class="d-flex justify-content-between mb-2"><div><h3 class="fw-bold text-white">Krisis 1998</h3><p class="fs-xs text-muted">Moneter Asia</p></div><span class="font-monospace fs-sm text-danger fw-bold">-60%</span></div>
-                            <p class="fs-xs text-muted dark:text-slate-400">Perbankan kolaps, IDR -80%.</p>
+                            <p class="fs-xs text-muted dark:text-muted">Perbankan kolaps, IDR -80%.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('interest_hike')" class="card p-2 cursor-pointer  ">
                             <div class="d-flex justify-content-between mb-2"><div><h3 class="fw-bold text-white">Kenaikan Suku Bunga</h3><p class="fs-xs text-muted">BI Rate +2%</p></div><span class="font-monospace fs-sm text-danger fw-bold">-15%</span></div>
-                            <p class="fs-xs text-muted dark:text-slate-400">Properti & perbankan tertekan.</p>
+                            <p class="fs-xs text-muted dark:text-muted">Properti & perbankan tertekan.</p>
                         </div>
                         <div @click="if(stressTest.portfolioId>0)runStressTest('commodity_boom')" class="card p-2 cursor-pointer  ">
                             <div class="d-flex justify-content-between mb-2"><div><h3 class="fw-bold text-white">Commodity Boom</h3><p class="fs-xs text-muted">Super Cycle</p></div><span class="font-monospace fs-sm text-success fw-bold">+20%</span></div>
-                            <p class="fs-xs text-muted dark:text-slate-400">Batu bara +50%, energi melonjak.</p>
+                            <p class="fs-xs text-muted dark:text-muted">Batu bara +50%, energi melonjak.</p>
                         </div>
                     </div>
-                    <div x-show="stressTest.loading" class="mt-2 d-flex align-items-center gap-2 text-muted dark:text-slate-400 fs-sm"><svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Menghitung dampak...</div>
+                    <div x-show="stressTest.loading" class="mt-2 d-flex align-items-center gap-2 text-muted dark:text-muted fs-sm"><svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Menghitung dampak...</div>
                     <div x-show="stressTest.result" class="mt-2 p-2 bg-white/30 dark:bg-slate-800/30 rounded-3 border border/50 dark:border-slate-700/50">
                         <h3 class="fw-bold text-white fs-3 mb-2" x-text="'Hasil: '+stressTest.result.scenario"></h3>
                         <div class="row row-cols-2 gap-4 mb-2">
@@ -334,10 +334,10 @@
             <div x-show="activeTab==='tax-loss'" class="vstack gap-3">
                 <div class="card p-2">
                     <h2 class="widget-title mb-1">Tax-Loss Harvesting</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Identifikasi saham rugi yang bisa direalisasi untuk pengurangan pajak.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Identifikasi saham rugi yang bisa direalisasi untuk pengurangan pajak.</p>
                     <div class="d-flex flex-wrap gap-4 align-items-end mb-2">
                         <div>
-                            <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Portfolio</label>
+                            <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Portfolio</label>
                             <select x-model.number="taxLoss.portfolioId" class="bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   ">
                                 <option value="0">Pilih portfolio...</option>
                                 [[range .Portfolios]]<option value="[[.ID]]">[[.Name]]</option>[[end]]
@@ -345,21 +345,21 @@
                         </div>
                         <button @click="runTaxLoss()" :disabled="taxLoss.portfolioId===0||taxLoss.loading" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue disabled:opacity-50 text-white fs-sm fw-semibold rounded-3  disabled:cursor-not-allowed">Analisis</button>
                     </div>
-                    <div x-show="taxLoss.loading" class="d-flex align-items-center gap-2 text-muted dark:text-slate-400 fs-sm"><svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Analyzing...</div>
+                    <div x-show="taxLoss.loading" class="d-flex align-items-center gap-2 text-muted dark:text-muted fs-sm"><svg class=" w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Analyzing...</div>
                     <div x-show="taxLoss.results.length>0" class="overflow-x-auto mt-2">
                         <table class="table table-vcenter table-hover w-100 fs-sm">
                             <thead>
                                 <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kode</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Avg</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Current</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Loss</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Rekomendasi</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Kode</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Avg</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Current</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Loss</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Rekomendasi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y border/30 dark:divide-slate-700/30">
                                 <template x-for="row in taxLoss.results" :key="row.stock_code">
-                                    <tr class=" dark:hover:bg-slate-700/20 ">
+                                    <tr class=" dark:hover:bg-secondary-lt/20 ">
                                         <td class="px-2 py-2 fw-bold text-primary" x-text="row.stock_code"></td>
                                         <td class="px-2 py-2 text-end font-monospace" x-text="fmtNumber(row.avg_price)"></td>
                                         <td class="px-2 py-2 text-end font-monospace" x-text="fmtNumber(row.current_price)"></td>
@@ -378,24 +378,24 @@
             <div x-show="activeTab==='drip'" class="vstack gap-3">
                 <div class="card p-2">
                     <h2 class="widget-title mb-1">DRIP Calculator</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Hitung pertumbuhan investasi dengan Dividend Reinvestment Plan.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Hitung pertumbuhan investasi dengan Dividend Reinvestment Plan.</p>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gap-4 mb-2">
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kode Saham</label><input x-model="drip.stockCode" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     text-uppercase"></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Investasi (Rp)</label><input x-model.number="drip.investment" type="number" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   "></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Tahun</label><select x-model.number="drip.years" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option value="1">1</option><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="30">30</option></select></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Reinvest</label><select x-model="drip.reinvest" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option :value="true">Ya</option><option :value="false">Tidak</option></select></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kode Saham</label><input x-model="drip.stockCode" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     text-uppercase"></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Investasi (Rp)</label><input x-model.number="drip.investment" type="number" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   "></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Tahun</label><select x-model.number="drip.years" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option value="1">1</option><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="30">30</option></select></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Reinvest</label><select x-model="drip.reinvest" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option :value="true">Ya</option><option :value="false">Tidak</option></select></div>
                     </div>
                     <button @click="runDrip()" :disabled="!drip.stockCode||drip.loading" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue disabled:opacity-50 text-white fs-sm fw-semibold rounded-3  disabled:cursor-not-allowed">Hitung</button>
                 </div>
                 <div x-show="drip.result" class="row row-cols-2 row-cols-sm-4 gap-3">
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Nilai Akhir</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="'Rp '+fmtNumber(drip.result.final_value)"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Total Dividen</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'Rp '+fmtNumber(drip.result.total_dividends)"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Dividend Yield</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="drip.result.dividend_yield.toFixed(2)+'%'"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Total Lembar</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="drip.result.total_shares.toLocaleString()"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Nilai Akhir</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="'Rp '+fmtNumber(drip.result.final_value)"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Total Dividen</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'Rp '+fmtNumber(drip.result.total_dividends)"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Dividend Yield</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="drip.result.dividend_yield.toFixed(2)+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Total Lembar</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="drip.result.total_shares.toLocaleString()"></div></div>
                 </div>
                 <div x-show="drip.result" class="card overflow-hidden">
                     <div class="px-2 py-2 border-bottom border/50 dark:border-slate-700/50"><h3 class="fw-bold text-white">Year-by-Year Breakdown</h3></div>
-                    <div class="overflow-x-auto"><table class="table table-vcenter table-hover w-100 fs-sm"><thead><tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Year</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Start</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Dividends</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">End</th></tr></thead><tbody class="divide-y border/30 dark:divide-slate-700/30"><template x-for="row in drip.result.yearly_data" :key="row.year"><tr class=" dark:hover:bg-slate-700/20"><td class="px-2 py-2 fw-bold text-white" x-text="row.year"></td><td class="px-2 py-2 text-end font-monospace" x-text="'Rp '+fmtNumber(row.start_value)"></td><td class="px-2 py-2 text-end font-monospace text-success" x-text="'Rp '+fmtNumber(row.dividends)"></td><td class="px-2 py-2 text-end font-monospace fw-semibold text-white" x-text="'Rp '+fmtNumber(row.end_value)"></td></tr></template></tbody></table></div>
+                    <div class="overflow-x-auto"><table class="table table-vcenter table-hover w-100 fs-sm"><thead><tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Year</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Start</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Dividends</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">End</th></tr></thead><tbody class="divide-y border/30 dark:divide-slate-700/30"><template x-for="row in drip.result.yearly_data" :key="row.year"><tr class=" dark:hover:bg-secondary-lt/20"><td class="px-2 py-2 fw-bold text-white" x-text="row.year"></td><td class="px-2 py-2 text-end font-monospace" x-text="'Rp '+fmtNumber(row.start_value)"></td><td class="px-2 py-2 text-end font-monospace text-success" x-text="'Rp '+fmtNumber(row.dividends)"></td><td class="px-2 py-2 text-end font-monospace fw-semibold text-white" x-text="'Rp '+fmtNumber(row.end_value)"></td></tr></template></tbody></table></div>
                 </div>
             </div>
 
@@ -403,23 +403,23 @@
             <div x-show="activeTab==='projection'" class="vstack gap-3">
                 <div class="card p-2">
                     <h2 class="widget-title mb-1">Multi-Year EPS Projection</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Proyeksikan EPS dan harga saham berdasarkan growth rate dan discount rate.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Proyeksikan EPS dan harga saham berdasarkan growth rate dan discount rate.</p>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gap-4 mb-2">
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kode Saham</label><input x-model="projection.stockCode" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     text-uppercase"></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Growth Rate (%)</label><input type="range" x-model.number="projection.growth" min="0" max="50" step="0.5" class="w-100 "><div class="d-flex justify-content-between fs-xs text-muted dark:text-slate-400 mt-1"><span>0%</span><span class="font-monospace text-primary" x-text="projection.growth+'%'"></span><span>50%</span></div></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Discount Rate (%)</label><input x-model.number="projection.discount" type="number" min="0" max="30" step="0.5" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   "></div>
-                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Tahun</label><select x-model.number="projection.years" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option></select></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kode Saham</label><input x-model="projection.stockCode" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     text-uppercase"></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Growth Rate (%)</label><input type="range" x-model.number="projection.growth" min="0" max="50" step="0.5" class="w-100 "><div class="d-flex justify-content-between fs-xs text-muted dark:text-muted mt-1"><span>0%</span><span class="font-monospace text-primary" x-text="projection.growth+'%'"></span><span>50%</span></div></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Discount Rate (%)</label><input x-model.number="projection.discount" type="number" min="0" max="30" step="0.5" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   "></div>
+                        <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Tahun</label><select x-model.number="projection.years" class="w-100 bg-white dark:bg-slate-800 border border rounded-3 px-2 py-2 fs-sm text-white   "><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option></select></div>
                     </div>
                     <button @click="runProjection()" :disabled="!projection.stockCode||projection.loading" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue disabled:opacity-50 text-white fs-sm fw-semibold rounded-3  disabled:cursor-not-allowed">Proyeksikan</button>
                 </div>
                 <div x-show="projection.result" class="row row-cols-1 row-cols-sm-3 gap-3">
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">EPS Saat Ini</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="projection.result.initial_eps.toFixed(2)"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Growth Rate</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="projection.result.growth_rate+'%'"></div></div>
-                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Fair Value (DCF)</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'Rp '+fmtNumber(projection.result.fair_value)"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">EPS Saat Ini</span><div class="mt-1 font-monospace fs-2 fw-bold text-white" x-text="projection.result.initial_eps.toFixed(2)"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Growth Rate</span><div class="mt-1 font-monospace fs-2 fw-bold text-primary" x-text="projection.result.growth_rate+'%'"></div></div>
+                    <div class="card p-2"><span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Fair Value (DCF)</span><div class="mt-1 font-monospace fs-2 fw-bold text-success" x-text="'Rp '+fmtNumber(projection.result.fair_value)"></div></div>
                 </div>
                 <div x-show="projection.result" class="card overflow-hidden">
                     <div class="px-2 py-2 border-bottom border/50 dark:border-slate-700/50"><h3 class="fw-bold text-white">Year-by-Year Projection</h3></div>
-                    <div class="overflow-x-auto"><table class="table table-vcenter table-hover w-100 fs-sm"><thead><tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Year</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">EPS</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Price</th></tr></thead><tbody class="divide-y border/30 dark:divide-slate-700/30"><template x-for="(eps,idx) in projection.result.projected_eps" :key="idx"><tr class=" dark:hover:bg-slate-700/20"><td class="px-2 py-2 fw-bold text-white" x-text="idx+1"></td><td class="px-2 py-2 text-end font-monospace text-white" x-text="eps.toFixed(2)"></td><td class="px-2 py-2 text-end font-monospace fw-semibold text-primary" x-text="'Rp '+fmtNumber(projection.result.projected_price[idx])"></td></tr></template></tbody></table></div>
+                    <div class="overflow-x-auto"><table class="table table-vcenter table-hover w-100 fs-sm"><thead><tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30"><th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Year</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">EPS</th><th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Price</th></tr></thead><tbody class="divide-y border/30 dark:divide-slate-700/30"><template x-for="(eps,idx) in projection.result.projected_eps" :key="idx"><tr class=" dark:hover:bg-secondary-lt/20"><td class="px-2 py-2 fw-bold text-white" x-text="idx+1"></td><td class="px-2 py-2 text-end font-monospace text-white" x-text="eps.toFixed(2)"></td><td class="px-2 py-2 text-end font-monospace fw-semibold text-primary" x-text="'Rp '+fmtNumber(projection.result.projected_price[idx])"></td></tr></template></tbody></table></div>
                 </div>
             </div>
         </main>

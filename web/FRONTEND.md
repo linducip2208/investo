@@ -7,7 +7,9 @@ Fintech UI built on **local Tabler + local Tailwind utilities**. No CDN for UI a
 | Asset | Source | Output |
 |---|---|---|
 | Tabler CSS | `node_modules/@tabler/core/scss` (npm) | `web/static/css/vendor/tabler.css` (compiled with `sass`) |
-| Utilities | `web/static/css/input.css` + templates scan | `web/static/css/output.css` (Tailwind v4 CLI) |
+| Fintech theme | hand-written | `web/static/css/fintech.css` (tokens, light default, `html.dark` + `data-bs-theme` dark mode, documented companions) |
+| Legacy states | extracted from local Tailwind build | `web/static/css/legacy-compat.css` (only `dark:`/`disabled:`/`hover:` + leftovers; generated, do not hand-edit) |
+| Utilities (build-only) | `web/static/css/input.css` + template scan | `web/static/css/output.css` (source for compat extraction; NOT linked by pages) |
 | Fintech theme | hand-written | `web/static/css/fintech.css` (tokens, light default, `html.dark` dark mode) |
 | Shell JS | hand-written | `web/static/js/app.js` (theme light/dark/system, toasts, charts, i18n shell, PWA) |
 | Vendor JS | npm: alpinejs, lightweight-charts, chart.js, marked | `web/static/js/vendor/*` |
@@ -21,13 +23,20 @@ Shell language persisted as `investo-lang` (id/en) for `[data-i18n]` chrome labe
 
 ```bash
 npm install            # install frontend deps
-npm run build:assets   # vendor JS + icons, compile Tabler CSS + Tailwind
+npm run build:assets   # vendor JS + icons, compile Tabler CSS + Tailwind + compat
 npm run assets         # only copy vendor JS + icons from node_modules
 npm run css:tabler     # recompile Tabler SCSS
-npm run css:tw         # rebuild Tailwind utilities (run after editing template classes)
+npm run css:tw         # rebuild Tailwind utilities (build-only source for compat)
+npm run css:compat     # regenerate legacy-compat.css from current templates
 go build ./...         # backend (serves web/ via embed, /static/* with cache headers)
 go test ./internal/... # backend tests
 ```
+
+Markup uses Tabler component + utility classes (`card`, `btn`, `table`,
+`badge bg-*-lt`, `alert`, `empty`, `form-control`, `d-flex`, `row`/`col-*`).
+`legacy-compat.css` preserves the remaining state variants Tabler does not
+express declaratively (`dark:`, `disabled:`, `hover:`). After editing template
+classes, re-run `npm run css:tw && npm run css:compat`.
 
 ## PWA
 

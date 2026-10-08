@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -80,7 +80,7 @@
     <div class="main-content flex-fill app-offset-wide d-flex flex-column min-vh-100">
         <header class="topbar position-sticky top-0 z-1 bg-surface bg-opacity-100  border-bottom border px-2 px-lg-4 py-2 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
-                <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 rounded-2  text-muted dark:text-slate-400">
+                <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 rounded-2  text-muted dark:text-muted">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <button @click="printPage()" class="px-2 py-1 rounded-2 bg-body border border fs-xs fw-medium text-body dark:text-slate-300  ">
+                <button @click="printPage()" class="px-2 py-1 rounded-2 bg-body border border fs-xs fw-medium text-body dark:text-body  ">
                     Export
                 </button>
             </div>
@@ -101,7 +101,7 @@
                 <div class="card p-2">
                     <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-4">
                         <div class="flex-fill w-100 w-auto">
-                            <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 mb-1 text-uppercase ">Stock Code</label>
+                            <label class="d-block fs-xs fw-semibold text-muted dark:text-muted mb-1 text-uppercase ">Stock Code</label>
                             <div class="d-flex gap-2">
                                 <input type="text" x-model="ticker" @keyup.enter="runAnalysis()" placeholder="e.g. BBCA" maxlength="4"
                                     class="flex-fill bg-surface border border rounded-2 px-2 py-2 text-white font-monospace fs-sm text-uppercase    "
@@ -118,8 +118,8 @@
                             <p class="fs-xs text-muted mt-1">Kode saham + Persona + Consensus + Signals</p>
                         </div>
                         <div class="d-flex align-items-center gap-2 fs-xs text-muted flex-shrink-0">
-                            <span x-show="result" class="text-muted dark:text-slate-400">Last:</span>
-                            <span x-text="result?.date || ''" class="text-body dark:text-slate-300 font-monospace"></span>
+                            <span x-show="result" class="text-muted dark:text-muted">Last:</span>
+                            <span x-text="result?.date || ''" class="text-body dark:text-body font-monospace"></span>
                         </div>
                     </div>
 
@@ -224,10 +224,10 @@
                 <!-- Stream Live Log -->
                 <div x-show="streamLive" class="card p-2 fade-in">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Live Agent Stream</div>
+                        <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Live Agent Stream</div>
                         <span class="fs-xs text-success pulse">&#x1F534; LIVE</span>
                     </div>
-                    <div class="stream-log fs-xs text-muted dark:text-slate-400" x-ref="streamLog">
+                    <div class="stream-log fs-xs text-muted dark:text-muted" x-ref="streamLog">
                         <template x-for="entry in streamEntries" :key="entry.id">
                             <div class="entry">
                                 <span class="text-muted me-2" x-text="entry.time"></span>
@@ -246,7 +246,7 @@
                             <span class="fs-1">&#x1F321;</span>
                             <div>
                                 <div class="fs-sm fw-semibold text-white">Market Regime</div>
-                                <div class="fs-xs text-muted dark:text-slate-400" x-text="marketRegime.description"></div>
+                                <div class="fs-xs text-muted dark:text-muted" x-text="marketRegime.description"></div>
                             </div>
                         </div>
                         <div class="text-end">
@@ -263,7 +263,7 @@
                 <!-- Consensus Result -->
                 <div x-show="consensus" class="card p-2 fade-in">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Agent Voting Consensus</div>
+                        <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Agent Voting Consensus</div>
                         <span class="fs-xs text-muted" x-text="'Confidence: ' + Math.round(consensus.confidence) + '%'"></span>
                     </div>
                     <div class="vstack gap-2">
@@ -284,7 +284,7 @@
                             <div class="fs-xs fw-semibold text-muted mb-1">Vote Details:</div>
                             <template x-for="v in consensus.vote_details" :key="v.agent">
                                 <div class="d-flex align-items-center justify-content-between fs-xs py-1">
-                                    <span class="text-muted dark:text-slate-400" x-text="v.agent"></span>
+                                    <span class="text-muted dark:text-muted" x-text="v.agent"></span>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="text-muted fs-6" x-text="v.reason"></span>
                                         <span class="signal-badge" :class="signalClass(v.vote)" x-text="v.vote"></span>
@@ -298,7 +298,7 @@
                 <!-- Backtest Result -->
                 <div x-show="backtest" class="card p-2 fade-in">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Signal Backtest</div>
+                        <div class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Signal Backtest</div>
                         <span class="fs-xs text-muted" x-text="'\u{1F4C5} ' + backtest.tested_days + ' hari'"></span>
                     </div>
                     <div class="row row-cols-2 row-cols-md-5 gap-3">
@@ -327,7 +327,7 @@
 
                 <div x-show="loading" class="text-center py-2">
                     <div class=" vstack gap-3">
-                        <p class="fs-3 text-muted dark:text-slate-400 fw-semibold">Running 9 AI Agents...</p>
+                        <p class="fs-3 text-muted dark:text-muted fw-semibold">Running 9 AI Agents...</p>
                         <p class="fs-sm text-muted">Fundamental Technical Sentiment News Bullish Bearish Trader Risk Portfolio Manager</p>
                         <div class="d-flex justify-content-center gap-2 pt-2">
                             <template x-for="i in 9" :key="i">
@@ -342,7 +342,7 @@
                         <span class="fs-2">&#x26A0;</span>
                         <div>
                             <h3 class="fw-semibold text-danger mb-1">Error</h3>
-                            <p class="fs-sm text-muted dark:text-slate-400" x-text="error"></p>
+                            <p class="fs-sm text-muted dark:text-muted" x-text="error"></p>
                         </div>
                     </div>
                 </div>
@@ -374,7 +374,7 @@
                                 <div x-show="report.key_points?.length" class="mb-2">
                                     <ul class="vstack gap-1">
                                         <template x-for="kp in report.key_points" :key="kp">
-                                            <li class="fs-xs text-muted dark:text-slate-400 d-flex align-items-start gap-1">
+                                            <li class="fs-xs text-muted dark:text-muted d-flex align-items-start gap-1">
                                                 <span class="text-primary mt-0 flex-shrink-0">&bull;</span>
                                                 <span x-text="kp"></span>
                                             </li>
@@ -408,7 +408,7 @@
                                 </div>
                                 <ul class="vstack gap-1 mb-2">
                                     <template x-for="kp in report.key_points" :key="kp">
-                                        <li class="fs-xs text-muted dark:text-slate-400 d-flex align-items-start gap-1">
+                                        <li class="fs-xs text-muted dark:text-muted d-flex align-items-start gap-1">
                                             <span class="mt-0 flex-shrink-0" x-text="report.agent === 'bullish_researcher' ? '&#x1F7E2;' : '&#x1F534;'"></span>
                                             <span x-text="kp"></span>
                                         </li>
@@ -488,7 +488,7 @@
                                 </div>
                                 <div class="bg-body rounded-2 p-2 mb-2">
                                     <div class="d-flex justify-content-between fs-xs">
-                                        <span class="text-muted dark:text-slate-400">Position Limit</span>
+                                        <span class="text-muted dark:text-muted">Position Limit</span>
                                         <span class="text-white fw-bold font-monospace" x-text="Math.round(result?.position_pct || 10) + '%'"></span>
                                     </div>
                                 </div>
@@ -520,11 +520,11 @@
                                     <span class="signal-badge fs-sm px-2 py-1" :class="signalClass(result?.final_signal)" x-text="result?.final_signal"></span>
                                     <div>
                                         <div class="fs-xs text-muted">Final Signal</div>
-                                        <div class="fs-xs text-muted dark:text-slate-400">Confidence: <b class="text-white" x-text="Math.round(pmReport.confidence) + '%'"></b></div>
+                                        <div class="fs-xs text-muted dark:text-muted">Confidence: <b class="text-white" x-text="Math.round(pmReport.confidence) + '%'"></b></div>
                                     </div>
                                 </div>
                                 <div x-show="result?.past_reflections?.length" class="mb-2">
-                                    <div class="fs-xs fw-semibold text-muted dark:text-slate-400 mb-2 text-uppercase ">Past Reflections</div>
+                                    <div class="fs-xs fw-semibold text-muted dark:text-muted mb-2 text-uppercase ">Past Reflections</div>
                                     <div class="vstack gap-2 max-h-32 overflow-y-auto">
                                         <template x-for="(ref, i) in result?.past_reflections" :key="i">
                                             <div class="fs-xs text-muted bg-surface rounded-2 p-2 border border fst-italic" x-text="ref"></div>
@@ -541,7 +541,7 @@
                     <div class="card p-2 fade-in" x-show="forecast">
                         <div class="row row-cols-1 row-cols-md-2 gap-4">
                             <div>
-                                <div class="fs-xs fw-semibold text-muted dark:text-slate-400 mb-2 text-uppercase ">Range Forecast (<span x-text="forecast.forecast_days"></span> days)</div>
+                                <div class="fs-xs fw-semibold text-muted dark:text-muted mb-2 text-uppercase ">Range Forecast (<span x-text="forecast.forecast_days"></span> days)</div>
                                 <div class="row row-cols-2 gap-3">
                                     <div class="bg-success bg-opacity-10 rounded-2 p-2 border border-success">
                                         <div class="fs-xs text-muted">70% Low</div>
@@ -565,7 +565,7 @@
                                 <div class="fs-sm fw-semibold text-white mb-2">Direction: <span class="text-uppercase"
                                     :class="{'text-success': forecast.direction === 'bullish', 'text-danger': forecast.direction === 'bearish', 'text-warning': forecast.direction === 'sideways'}"
                                     x-text="forecast.direction"></span></div>
-                                <p class="fs-xs text-muted dark:text-slate-400" x-text="forecast.rationale"></p>
+                                <p class="fs-xs text-muted dark:text-muted" x-text="forecast.rationale"></p>
                             </div>
                         </div>
                     </div>
@@ -590,17 +590,17 @@
                                 <tbody>
                                     <template x-for="h in history" :key="h.id">
                                         <tr class="border-bottom border  ">
-                                            <td class="py-2 pe-2 text-body dark:text-slate-300" x-text="h.decision_date?.substring(0,10)"></td>
+                                            <td class="py-2 pe-2 text-body dark:text-body" x-text="h.decision_date?.substring(0,10)"></td>
                                             <td class="py-2 pe-2">
                                                 <span class="signal-badge" :class="signalClass(h.final_signal)" x-text="h.final_signal"></span>
                                             </td>
-                                            <td class="py-2 pe-2 text-end text-muted dark:text-slate-400 font-monospace" x-text="formatPrice(h.entry_price)"></td>
+                                            <td class="py-2 pe-2 text-end text-muted dark:text-muted font-monospace" x-text="formatPrice(h.entry_price)"></td>
                                             <td class="py-2 pe-2 text-end text-success font-monospace" x-text="formatPrice(h.target_price)"></td>
                                             <td class="py-2 pe-2 text-end text-danger font-monospace" x-text="formatPrice(h.stop_loss)"></td>
                                             <td class="py-2 pe-2 text-end text-warning font-monospace" x-text="Math.round(h.risk_score)"></td>
                                             <td class="py-2 pe-2 text-end">
-                                                <span x-text="h.outcome || '-'" class="text-muted dark:text-slate-400"
-                                                    :class="{'text-success': h.outcome === 'profit', 'text-danger': h.outcome === 'loss', 'text-slate-400': !h.outcome}"></span>
+                                                <span x-text="h.outcome || '-'" class="text-muted dark:text-muted"
+                                                    :class="{'text-success': h.outcome === 'profit', 'text-danger': h.outcome === 'loss', 'text-muted': !h.outcome}"></span>
                                             </td>
                                             <td class="py-2 text-end font-monospace" :class="h.realized_return >= 0 ? 'text-success' : 'text-danger'" x-text="h.realized_return ? (h.realized_return * 100).toFixed(2) + '%' : '-'"></td>
                                         </tr>

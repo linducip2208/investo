@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="[[.Idea.Title]] - oleh [[.Idea.AuthorName]]. Analisis dan ide investasi komunitas.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -35,8 +35,8 @@
                 var d = await r.json();
                 if(r.ok){
                     var btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
-                    if(d.liked){btn.classList.add('text-danger');btn.classList.remove('text-slate-400');btn.querySelector('svg').classList.add('heart-animate')}
-                    else{btn.classList.remove('text-danger');btn.classList.add('text-slate-400')}
+                    if(d.liked){btn.classList.add('text-danger');btn.classList.remove('text-muted');btn.querySelector('svg').classList.add('heart-animate')}
+                    else{btn.classList.remove('text-danger');btn.classList.add('text-muted')}
                     cnt.textContent=d.likes_count;
                     setTimeout(function(){btn.querySelector('svg').classList.remove('heart-animate')},500);
                     [[if not .User]]window.location.href='/login';[[end]]
@@ -114,10 +114,10 @@
 
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
             [[if not .User]]
-            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300  rounded-2 ">Masuk</a>
+            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-body  rounded-2 ">Masuk</a>
             <a href="/register" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 ">Daftar</a>
             [[else]]
             <div class="d-flex align-items-center gap-2"><div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div><span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span></div>
@@ -126,7 +126,7 @@
 
         <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
             <div class="max-w-3xl mx-auto">
-                <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+                <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted mb-2">
                     <a href="/ideas" class=" ">Ide Investasi</a>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     <span class="text-white fw-medium text-truncate">[[.Idea.Title]]</span>
@@ -138,7 +138,7 @@
                         <div class="flex-fill min-w-0">
                             <h1 class="fs-1 fs-1 fw-bold text-white mb-2">[[.Idea.Title]]</h1>
                             <div class="d-flex flex-wrap align-items-center gap-3 fs-sm">
-                                <span class="fw-medium text-body dark:text-slate-300">[[.Idea.AuthorName]]</span>
+                                <span class="fw-medium text-body dark:text-body">[[.Idea.AuthorName]]</span>
                                 <span class="text-muted">[[.TimeAgo]]</span>
                                 [[if .Idea.StockCode]]
                                 <a href="/saham/[[.Idea.StockCode]]" class="px-2 py-0 rounded-2 bg-primary bg-opacity-25 text-primary fs-xs fw-semibold  ">[[.Idea.StockCode]]</a>
@@ -156,10 +156,10 @@
                     <div class="mb-2 rounded-3 overflow-hidden border border dark:border-slate-700"><img src="[[.Idea.ChartImage]]" alt="Chart [[.Idea.StockCode]]" class="w-100 object-cover" onerror="this.parentElement.style.display='none'"></div>
                     [[end]]
 
-                    <div class="prose-content text-body dark:text-slate-300 fs-sm fs-base lh-lg text-prewrap mb-2">[[.Idea.Content]]</div>
+                    <div class="prose-content text-body dark:text-body fs-sm fs-base lh-lg text-prewrap mb-2">[[.Idea.Content]]</div>
 
                     <div class="d-flex align-items-center gap-4 pt-2 border-top border dark:border-slate-700/50">
-                        <button id="like-btn" onclick="toggleLike()" class="d-inline-flex align-items-center gap-2 px-2 py-2 rounded-3 fs-sm fw-semibold border border  dark:hover:bg-slate-800  [[if .IsLiked]]text-danger[[else]]text-slate-400[[end]]">
+                        <button id="like-btn" onclick="toggleLike()" class="d-inline-flex align-items-center gap-2 px-2 py-2 rounded-3 fs-sm fw-semibold border border  dark:hover:bg-white  [[if .IsLiked]]text-danger[[else]]text-muted[[end]]">
                             <svg class="w-5 h-5" fill="[[if .IsLiked]]currentColor[[else]]none[[end]]" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             <span id="like-count">[[.Idea.LikesCount]]</span> Suka
                         </button>
@@ -182,10 +182,10 @@
                         [[range .Comments]]
                         <div class="card p-2">
                             <div class="d-flex align-items-start gap-3">
-                                <div class="w-8 h-8 rounded-pill bg-body dark:bg-slate-700 d-flex align-items-center justify-content-center fs-xs fw-bold text-muted dark:text-slate-400 flex-shrink-0">[[slice .AuthorName 0 1]]</div>
+                                <div class="w-8 h-8 rounded-pill bg-body dark:bg-slate-700 d-flex align-items-center justify-content-center fs-xs fw-bold text-muted dark:text-muted flex-shrink-0">[[slice .AuthorName 0 1]]</div>
                                 <div class="flex-fill min-w-0">
                                     <div class="d-flex align-items-center justify-content-between gap-2 mb-1"><span class="fw-semibold fs-sm text-white">[[.AuthorName]]</span><span class="fs-xs text-muted flex-shrink-0">[[.TimeAgo]]</span></div>
-                                    <p class="fs-sm text-body dark:text-slate-300 lh-lg">[[.Content]]</p>
+                                    <p class="fs-sm text-body dark:text-body lh-lg">[[.Content]]</p>
                                     [[if and .User (eq .User.ID .UserID)]]
                                     <form method="POST" action="/ideas/[[$.Idea.ID]]/comments/[[.ID]]/delete" class="mt-2 d-inline" onsubmit="return confirm('Hapus komentar?')"><button type="submit" class="fs-xs text-muted  ">Hapus</button></form>
                                     [[end]]

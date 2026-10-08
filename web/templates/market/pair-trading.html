@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -62,16 +62,16 @@
                     }
                 },
                 signalBadge(signal) {
-                    if (signal.startsWith('SHORT')) return 'bg-red-lt text-red-400 border border-red-500/30';
-                    if (signal.startsWith('LONG')) return 'bg-green-lt text-green-400 border border-green-500/30';
-                    return 'bg-slate-500/20 text-slate-400 border border-slate-500/30';
+                    if (signal.startsWith('SHORT')) return 'bg-red-lt text-danger border border-red-500/30';
+                    if (signal.startsWith('LONG')) return 'bg-green-lt text-success border border-green-500/30';
+                    return 'bg-slate-500/20 text-muted border border-slate-500/30';
                 },
                 zColor(z) {
                     const az = Math.abs(z);
-                    if (az > 2.5) return 'text-red-400';
+                    if (az > 2.5) return 'text-danger';
                     if (az > 2.0) return 'text-orange-400';
-                    if (az > 1.5) return 'text-yellow-400';
-                    return 'text-slate-400';
+                    if (az > 1.5) return 'text-warning';
+                    return 'text-muted';
                 },
                 corColor(c) {
                     if (c > 0.95) return 'bg-green';
@@ -193,12 +193,12 @@
 
     <!-- TOPBAR -->
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Market /</span> Pair Trading Finder</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Market /</span> Pair Trading Finder</div>
         <div class="d-flex align-items-center gap-3">
-            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -214,7 +214,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Finding correlated pairs...</p>
+                <p class="text-muted dark:text-muted">Finding correlated pairs...</p>
             </div>
         </template>
 
@@ -223,10 +223,10 @@
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
                         <h1 class="fs-1 fw-bold text-white">Pair Trading Finder</h1>
-                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Statistical arbitrage pairs with high correlation</p>
+                        <p class="text-muted dark:text-muted fs-sm mt-1">Statistical arbitrage pairs with high correlation</p>
                     </div>
                     <div class="d-flex align-items-center gap-3">
-                        <span class="fs-xs text-muted dark:text-slate-400">Filter:</span>
+                        <span class="fs-xs text-muted dark:text-muted">Filter:</span>
                         <select x-model="selectedSector" @change="filter()"
                                 class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             <template x-for="s in sectors" :key="s">
@@ -254,7 +254,7 @@
                             <!-- Details -->
                             <div class="row row-cols-2 gap-3 fs-sm">
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Correlation</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Correlation</div>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="font-monospace fw-semibold" :class="corColor(pair.correlation).replace('bg-','text-')" x-text="pair.correlation"></span>
                                         <div class="flex-fill h-1.5 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
@@ -263,32 +263,32 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Z-Score</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Z-Score</div>
                                     <span class="font-monospace fw-semibold" :class="zColor(pair.z_score)" x-text="pair.z_score"></span>
                                 </div>
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Spread Mean</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Spread Mean</div>
                                     <span class="font-monospace text-body dark:text-body" x-text="pair.spread_mean"></span>
                                 </div>
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Spread Std</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Spread Std</div>
                                     <span class="font-monospace text-body dark:text-body" x-text="pair.spread_std"></span>
                                 </div>
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Current Spread</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Current Spread</div>
                                     <span class="font-monospace fw-semibold"
                                           :class="Math.abs(pair.z_score) > 2 ? 'text-warning' : 'text-body'"
                                           x-text="pair.current_spread"></span>
                                 </div>
                                 <div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mb-0">Half-Life</div>
+                                    <div class="fs-xs text-muted dark:text-muted mb-0">Half-Life</div>
                                     <span class="font-monospace text-body dark:text-body" x-text="pair.half_life + 'd'"></span>
                                 </div>
                             </div>
 
                             <!-- Sector Tag -->
                             <div class="mt-2 pt-2 border-top border dark:border">
-                                <span class="d-inline-block px-2 py-1 rounded-2 bg-white dark:bg-white fs-6 text-muted dark:text-slate-400 fw-medium" x-text="pair.sector_name"></span>
+                                <span class="d-inline-block px-2 py-1 rounded-2 bg-white dark:bg-white fs-6 text-muted dark:text-muted fw-medium" x-text="pair.sector_name"></span>
                                 <span class="ms-2 fs-xs text-muted" x-text="pair.stock_a_name + ' / ' + pair.stock_b_name"></span>
                             </div>
                         </div>
@@ -308,15 +308,15 @@
                     <div class="row row-cols-1 row-cols-md-3 gap-6 fs-sm">
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">1. Find Correlation</div>
-                            <p class="text-muted dark:text-slate-400">Identify two stocks in the same sector with correlation &gt; 0.8 over 6 months.</p>
+                            <p class="text-muted dark:text-muted">Identify two stocks in the same sector with correlation &gt; 0.8 over 6 months.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">2. Calculate Spread</div>
-                            <p class="text-muted dark:text-slate-400">Compute log spread between the pair. When z-score &gt; 2, the pair is out of equilibrium.</p>
+                            <p class="text-muted dark:text-muted">Compute log spread between the pair. When z-score &gt; 2, the pair is out of equilibrium.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">3. Execute Trade</div>
-                            <p class="text-muted dark:text-slate-400">LONG the underperformer, SHORT the overperformer. Exit when spread reverts to mean.</p>
+                            <p class="text-muted dark:text-muted">LONG the underperformer, SHORT the overperformer. Exit when spread reverts to mean.</p>
                         </div>
                     </div>
                 </div>

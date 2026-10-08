@@ -1,15 +1,15 @@
-<div x-data="marketClock()" x-init="startClock()" class="inline-flex items-center gap-2">
-    <span class="w-2 h-2 rounded-full" :class="{
+<div x-data="marketClock()" x-init="startClock()" class="d-inline-flex align-items-center gap-2">
+    <span class="w-2 h-2 rounded-pill" :class="{
         'bg-green-400 animate-pulse': status === 'trading',
         'bg-yellow-400 animate-pulse': status === 'pre_open' || status === 'lunch_break',
         'bg-red-400': status === 'post_close' || status === 'weekend'
     }"></span>
-    <span class="text-xs font-semibold font-mono" :class="{
-        'text-green-400': status === 'trading',
-        'text-yellow-400': status === 'pre_open' || status === 'lunch_break',
-        'text-red-400': status === 'post_close' || status === 'weekend'
+    <span class="fs-xs fw-semibold font-monospace" :class="{
+        'text-success': status === 'trading',
+        'text-warning': status === 'pre_open' || status === 'lunch_break',
+        'text-danger': status === 'post_close' || status === 'weekend'
     }" x-text="label"></span>
-    <span x-show="countdown !== ''" class="text-xs text-slate-500 font-mono" x-text="countdown"></span>
+    <span x-show="countdown !== ''" class="fs-xs text-muted font-monospace" x-text="countdown"></span>
 </div>
 
 <script>

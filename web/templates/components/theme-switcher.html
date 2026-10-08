@@ -1,29 +1,29 @@
 <!-- Theme Preset Switcher Component -->
-<div x-data="themeSwitcher()" x-init="initTheme()" class="relative" @click.outside="open = false">
+<div x-data="themeSwitcher()" x-init="initTheme()" class="position-relative" @click.outside="open = false">
     <button @click="open = !open"
-            class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            class="p-2 rounded-2 text-muted dark:text-muted  dark:hover:text-slate-200  dark:hover:bg-white "
             title="Ganti tema">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
     </button>
 
     <div x-show="open"  x-transition:enter-start="opacity-0 scale-95"
-         class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
-        <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-            <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Tema Tampilan</h3>
+         class="position-absolute end-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-3 shadow-lg border border dark:border-slate-700 overflow-hidden z-3">
+        <div class="px-2 py-2 border-bottom border dark:border-slate-700">
+            <h3 class="fs-sm fw-semibold text-body dark:text-white">Tema Tampilan</h3>
         </div>
-        <div class="p-2 space-y-1">
+        <div class="p-2 vstack gap-1">
             <template x-for="t in themes" :key="t.key">
                 <button @click="setTheme(t.key); open = false"
-                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50"
-                        :class="activeTheme === t.key ? 'bg-blue-50 dark:bg-blue-900/20 ring-1 ring-blue-200 dark:ring-blue-800' : ''">
-                    <div class="flex gap-1 shrink-0">
+                        class="w-100 d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-start fs-sm   dark:hover:bg-secondary-lt/50"
+                        :class="activeTheme === t.key ? 'bg-blue-50 dark:bg-blue-900/20   dark:ring-blue-800' : ''">
+                    <div class="d-flex gap-1 flex-shrink-0">
                         <div class="w-4 h-4 rounded" :style="{ background: t.colors[0] }"></div>
                         <div class="w-4 h-4 rounded" :style="{ background: t.colors[1] }"></div>
                         <div class="w-4 h-4 rounded" :style="{ background: t.colors[2] }"></div>
                     </div>
                     <div>
-                        <span class="font-medium text-slate-800 dark:text-slate-200" x-text="t.name"></span>
-                        <span x-show="activeTheme === t.key" class="ml-1.5 text-xs text-blue-600 dark:text-blue-400">&#10003;</span>
+                        <span class="fw-medium text-body dark:text-slate-200" x-text="t.name"></span>
+                        <span x-show="activeTheme === t.key" class="ms-1 fs-xs text-primary dark:text-info">&#10003;</span>
                     </div>
                 </button>
             </template>

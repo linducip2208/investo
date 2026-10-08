@@ -8,7 +8,7 @@
     <meta property="og:title" content="Saham [[.SectorName]] Terbaik [[.Year]]">
     <meta property="og:description" content="Temukan saham [[.SectorName]] dengan kinerja terbaik di IDX. Ranking, harga, dan rasio keuangan.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -16,22 +16,6 @@
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        display: ['Playfair Display', 'Georgia', 'serif'],
-                    },
-                    colors: {
-                        brand: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
-                    }
-                }
-            }
-        }
-    </script>
 <style data-investo-compat>
     body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
     .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
@@ -51,14 +35,14 @@
                 <span class="font-display fw-bold fs-2 text-body dark:text-white">Investo</span>
             </a>
             <nav class="d-none d-md-flex align-items-center gap-6 fs-sm fw-medium">
-                <a href="/" class="text-muted  dark:text-slate-400 dark:hover:text-brand-400 ">Beranda</a>
+                <a href="/" class="text-muted  dark:text-muted dark:hover:text-brand-400 ">Beranda</a>
                 <a href="/saham" class="text-brand-600 dark:text-brand-400">Saham</a>
-                <a href="/forex" class="text-muted  dark:text-slate-400 dark:hover:text-brand-400 ">Forex</a>
-                <a href="/dashboard/portfolios" class="text-muted  dark:text-slate-400 dark:hover:text-brand-400 ">Portofolio</a>
-                <a href="/dashboard/watchlists" class="text-muted  dark:text-slate-400 dark:hover:text-brand-400 ">Watchlist</a>
+                <a href="/forex" class="text-muted  dark:text-muted dark:hover:text-brand-400 ">Forex</a>
+                <a href="/dashboard/portfolios" class="text-muted  dark:text-muted dark:hover:text-brand-400 ">Portofolio</a>
+                <a href="/dashboard/watchlists" class="text-muted  dark:text-muted dark:hover:text-brand-400 ">Watchlist</a>
             </nav>
             <div class="d-flex align-items-center gap-3">
-                <button @click="darkMode = !darkMode" class="p-2 rounded-2 text-muted dark:text-slate-400  dark:hover:text-slate-200  dark:hover:bg-secondary-lt " aria-label="Toggle dark mode">
+                <button @click="darkMode = !darkMode" class="p-2 rounded-2 text-muted dark:text-muted  dark:hover:text-slate-200  dark:hover:bg-secondary-lt " aria-label="Toggle dark mode">
                     <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                     <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </button>
@@ -69,7 +53,7 @@
 </header>
 
 <main class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 py-2">
-    <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+    <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted mb-2">
         <a href="/saham" class=" dark:hover:text-brand-400 ">Saham</a>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         <span class="text-body dark:text-white fw-medium">Sektor [[.SectorName]]</span>
@@ -78,10 +62,10 @@
     <div class="mb-2">
         <span class="px-2 py-1 bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300 rounded-2 fs-xs fw-semibold">[[.SectorName]]</span>
         <h1 class="mt-2 font-display fs-1 display-6 fw-bold text-body dark:text-white">Saham [[.SectorName]] Terbaik [[.Year]]</h1>
-        <p class="mt-2 text-muted dark:text-slate-400 max-w-2xl lh-lg">[[.SectorDescription]]</p>
+        <p class="mt-2 text-muted dark:text-muted max-w-2xl lh-lg">[[.SectorDescription]]</p>
     </div>
 
-    <div class="mb-2 d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+    <div class="mb-2 d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span>Berdasarkan kombinasi kinerja harga, fundamental, dan kapitalisasi pasar. Data per [[.AsOf]].</span>
     </div>
@@ -91,14 +75,14 @@
             <table class="table table-vcenter table-hover w-100 fs-sm">
                 <thead>
                     <tr class="border-bottom border dark:border bg-body dark:bg-white/50">
-                        <th class="text-center px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 w-12">#</th>
-                        <th class="text-start px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Kode</th>
-                        <th class="text-start px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Nama</th>
-                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Harga</th>
-                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Perubahan</th>
-                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 d-none d-sm-table-cell">PER</th>
-                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 d-none d-md-table-cell">PBV</th>
-                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 d-none d-md-table-cell">Market Cap</th>
+                        <th class="text-center px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 w-12">#</th>
+                        <th class="text-start px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Kode</th>
+                        <th class="text-start px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Nama</th>
+                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Harga</th>
+                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Perubahan</th>
+                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 d-none d-sm-table-cell">PER</th>
+                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 d-none d-md-table-cell">PBV</th>
+                        <th class="text-end px-2 px-sm-4 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 d-none d-md-table-cell">Market Cap</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y border dark:divide-slate-700/50">
@@ -108,7 +92,7 @@
                             [[if le $index 2]]
                             <span class="d-inline-flex align-items-center justify-content-center w-7 h-7 rounded-pill fs-xs fw-bold [[if eq $index 0]]bg-warning-lt text-warning dark:bg-warning-lt dark:text-warning[[else if eq $index 1]]bg-secondary-lt text-muted dark:bg-slate-600 dark:text-body[[else]]bg-orange-100 text-warning dark:bg-orange-900/40 dark:text-orange-300[[end]]">[[add $index 1]]</span>
                             [[else]]
-                            <span class="text-muted dark:text-slate-400 dark:text-slate-500 font-monospace fs-xs">[[add $index 1]]</span>
+                            <span class="text-muted dark:text-muted dark:text-muted font-monospace fs-xs">[[add $index 1]]</span>
                             [[end]]
                         </td>
                         <td class="px-2 px-sm-4 py-2">
@@ -118,9 +102,9 @@
                         <td class="px-2 px-sm-4 py-2 text-end font-monospace fs-sm fw-semibold text-body dark:text-white">[[$stock.PriceFormatted]]</td>
                         <td class="px-2 px-sm-4 py-2 text-end font-monospace fs-sm">
                             [[if ge $stock.ChangePercent 0.0]]
-                            <span class="text-success dark:text-emerald-400 fw-semibold">+[[$stock.ChangePercent]]%</span>
+                            <span class="text-success dark:text-success fw-semibold">+[[$stock.ChangePercent]]%</span>
                             [[else]]
-                            <span class="text-danger dark:text-red-400 fw-semibold">[[$stock.ChangePercent]]%</span>
+                            <span class="text-danger dark:text-danger fw-semibold">[[$stock.ChangePercent]]%</span>
                             [[end]]
                         </td>
                         <td class="px-2 px-sm-4 py-2 text-end font-monospace fs-sm text-muted dark:text-body d-none d-sm-table-cell">[[$stock.PER]]x</td>
@@ -130,7 +114,7 @@
                     [[end]]
                     [[if not .Stocks]]
                     <tr>
-                        <td colspan="9" class="px-2 py-2 text-center text-muted dark:text-slate-400 dark:text-slate-500">Belum ada data saham untuk sektor ini</td>
+                        <td colspan="9" class="px-2 py-2 text-center text-muted dark:text-muted dark:text-muted">Belum ada data saham untuk sektor ini</td>
                     </tr>
                     [[end]]
                 </tbody>
@@ -151,7 +135,7 @@
 </main>
 
 <footer class="border-top border dark:border-slate-800 mt-2">
-    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 py-2 text-center fs-sm text-muted dark:text-slate-400 dark:text-slate-500">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 py-2 text-center fs-sm text-muted dark:text-muted dark:text-muted">
         <p>&copy; [[currentYear]] Investo. Data pasar bersumber dari IDX dan disajikan dengan penundaan.</p>
     </div>
 </footer>

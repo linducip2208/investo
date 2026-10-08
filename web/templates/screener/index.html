@@ -6,7 +6,7 @@
     <title>Screener Saham · Investo</title>
     <meta name="description" content="Screener saham IDX dengan filter fundamental lengkap. Cari saham berdasarkan PER, PBV, ROE, DER, dividend yield, EPS growth, dan market cap.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -14,27 +14,6 @@
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
-                    },
-                    colors: {
-                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
-                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
-                        card: { DEFAULT:'#1e293b',border:'#334155' },
-                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
-                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
-                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -123,7 +102,7 @@
                     var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' }); var link = document.createElement('a');
                     link.href = URL.createObjectURL(blob); link.download = 'screener-results.csv'; link.click();
                 },
-                scoreColor(score) { if (score >= 80) return 'bg-green'; if (score >= 60) return 'bg-blue'; if (score >= 40) return 'bg-amber-500'; return 'bg-red'; }
+                scoreColor(score) { if (score >= 80) return 'bg-green'; if (score >= 60) return 'bg-blue'; if (score >= 40) return 'bg-warning'; return 'bg-red'; }
             }
         }
     </script>
@@ -251,12 +230,12 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -269,7 +248,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Screener Saham</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="clock"></p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0" x-text="clock"></p>
                 </div>
             </div>
 
@@ -288,40 +267,40 @@
                     </span>
                 </button>
             </form>
-            <p x-show="nlLoading" x-text="nlMessage" class="fs-xs text-muted dark:text-slate-400 "></p>
-            <p x-show="!nlLoading && nlMessage" x-text="nlMessage" class="fs-xs text-muted dark:text-slate-400"></p>
+            <p x-show="nlLoading" x-text="nlMessage" class="fs-xs text-muted dark:text-muted "></p>
+            <p x-show="!nlLoading && nlMessage" x-text="nlMessage" class="fs-xs text-muted dark:text-muted"></p>
 
             <!-- PRESET BUTTONS -->
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 gap-3">
                 <div class="preset-card" :class="{  activePreset==='value' }" @click="presetScreen('value')">
                     <div class="fs-3 mb-1">&#x1F48E;</div>
                     <div class="fs-sm fw-semibold text-white">Value</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">PER rendah, PBV rendah</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">PER rendah, PBV rendah</div>
                 </div>
                 <div class="preset-card" :class="{  activePreset==='growth' }" @click="presetScreen('growth')">
                     <div class="fs-3 mb-1">&#x1F680;</div>
                     <div class="fs-sm fw-semibold text-white">Growth</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">ROE tinggi</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">ROE tinggi</div>
                 </div>
                 <div class="preset-card" :class="{  activePreset==='dividend' }" @click="presetScreen('dividend')">
                     <div class="fs-3 mb-1">&#x1F4B5;</div>
                     <div class="fs-sm fw-semibold text-white">Dividend</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">Yield tinggi</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">Yield tinggi</div>
                 </div>
                 <div class="preset-card" :class="{  activePreset==='momentum' }" @click="presetScreen('momentum')">
                     <div class="fs-3 mb-1">&#x1F4C8;</div>
                     <div class="fs-sm fw-semibold text-white">Momentum</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">Trend kuat</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">Trend kuat</div>
                 </div>
                 <div class="preset-card" :class="{  activePreset==='defensive' }" @click="presetScreen('defensive')">
                     <div class="fs-3 mb-1">&#x1F6E1;</div>
                     <div class="fs-sm fw-semibold text-white">Defensive</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">DER rendah, big cap</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">DER rendah, big cap</div>
                 </div>
                 <div class="preset-card" :class="{  activePreset==='turnaround' }" @click="presetScreen('turnaround')">
                     <div class="fs-3 mb-1">&#x1F504;</div>
                     <div class="fs-sm fw-semibold text-white">Turnaround</div>
-                    <div class="fs-6 text-muted dark:text-slate-400 mt-0">Recovery play</div>
+                    <div class="fs-6 text-muted dark:text-muted mt-0">Recovery play</div>
                 </div>
             </div>
 
@@ -335,7 +314,7 @@
                         </div>
                         <form id="screener-form" x-show="showFilters || window.innerWidth >= 1024" @submit.prevent="runScreener()" class="vstack gap-3">
                             <div class="select-wrapper">
-                                <label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Sektor</label>
+                                <label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Sektor</label>
                                 <select name="sector_id" class="select-dark">
                                     <option value="">Semua Sektor</option>
                                     [[range .Sectors]]
@@ -344,20 +323,20 @@
                                 </select>
                             </div>
                             <div class="row row-cols-2 gap-2">
-                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">PER Min</label><input type="number" name="min_per" min="0" step="0.1" placeholder="0" class="input-dark"></div>
-                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">PER Max</label><input type="number" name="max_per" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">PER Min</label><input type="number" name="min_per" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">PER Max</label><input type="number" name="max_per" min="0" step="0.1" placeholder="999" class="input-dark"></div>
                             </div>
                             <div class="row row-cols-2 gap-2">
-                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">PBV Min</label><input type="number" name="min_pbv" min="0" step="0.1" placeholder="0" class="input-dark"></div>
-                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">PBV Max</label><input type="number" name="max_pbv" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">PBV Min</label><input type="number" name="min_pbv" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                                <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">PBV Max</label><input type="number" name="max_pbv" min="0" step="0.1" placeholder="999" class="input-dark"></div>
                             </div>
-                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">ROE Min (%)</label><input type="number" name="min_roe" min="0" step="0.1" placeholder="0" class="input-dark"></div>
-                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">DER Max</label><input type="number" name="max_der" min="0" step="0.1" placeholder="999" class="input-dark"></div>
-                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Dividend Yield Min (%)</label><input type="number" name="min_dividend_yield" min="0" step="0.1" placeholder="0" class="input-dark"></div>
-                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">EPS Growth Min (%)</label><input type="number" name="min_eps_growth" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">ROE Min (%)</label><input type="number" name="min_roe" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">DER Max</label><input type="number" name="max_der" min="0" step="0.1" placeholder="999" class="input-dark"></div>
+                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Dividend Yield Min (%)</label><input type="number" name="min_dividend_yield" min="0" step="0.1" placeholder="0" class="input-dark"></div>
+                            <div><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">EPS Growth Min (%)</label><input type="number" name="min_eps_growth" step="0.1" placeholder="0" class="input-dark"></div>
                             <div class="row row-cols-2 gap-2">
-                                <div class="select-wrapper"><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">MCap Min</label><select name="mcap_min" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
-                                <div class="select-wrapper"><label class="d-block fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">MCap Max</label><select name="mcap_max" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
+                                <div class="select-wrapper"><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">MCap Min</label><select name="mcap_min" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
+                                <div class="select-wrapper"><label class="d-block fs-6 fw-semibold text-muted dark:text-muted text-uppercase  mb-1">MCap Max</label><select name="mcap_max" class="select-dark"><option value="">Semua</option><option value="1000000000000">1 Triliun</option><option value="5000000000000">5 Triliun</option><option value="10000000000000">10 Triliun</option><option value="50000000000000">50 Triliun</option></select></div>
                             </div>
                             <div class="d-flex align-items-center gap-3 pt-2">
                                 <button type="submit" class="flex-fill px-2 py-2 bg-primary  text-white fs-sm fw-semibold rounded-3 ">
@@ -384,7 +363,7 @@
 
                     <div x-show="!loading && results.length > 0">
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <p class="fs-sm text-muted dark:text-slate-400">Ditemukan <span class="fw-semibold text-white" x-text="count"></span> saham</p>
+                            <p class="fs-sm text-muted dark:text-muted">Ditemukan <span class="fw-semibold text-white" x-text="count"></span> saham</p>
                             <button @click="exportCSV()" class="d-flex align-items-center gap-1 px-2 py-1 fs-xs fw-medium text-primary bg-primary bg-opacity-25 rounded-2  ">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> CSV
                             </button>
@@ -394,17 +373,17 @@
                                 <table class="table table-vcenter table-hover w-100 fs-sm">
                                     <thead>
                                         <tr class="border-bottom border dark:border bg-white bg-opacity-25 dark:bg-white/30">
-                                            <th @click="sortBy('code')" class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none">Kode<span x-text="sortIndicator('code')"></span></th>
-                                            <th @click="sortBy('name')" class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none">Nama<span x-text="sortIndicator('name')"></span></th>
-                                            <th class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-sm-table-cell">Sektor</th>
-                                            <th @click="sortBy('price')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none">Harga<span x-text="sortIndicator('price')"></span></th>
-                                            <th @click="sortBy('change_percent')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none">Chg%<span x-text="sortIndicator('change_percent')"></span></th>
-                                            <th @click="sortBy('per')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none d-none d-md-table-cell">PER<span x-text="sortIndicator('per')"></span></th>
-                                            <th @click="sortBy('pbv')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none d-none d-md-table-cell">PBV<span x-text="sortIndicator('pbv')"></span></th>
-                                            <th @click="sortBy('roe')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">ROE<span x-text="sortIndicator('roe')"></span></th>
-                                            <th @click="sortBy('der')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">DER<span x-text="sortIndicator('der')"></span></th>
-                                            <th @click="sortBy('div_yield')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">Div%<span x-text="sortIndicator('div_yield')"></span></th>
-                                            <th @click="sortBy('score')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  cursor-pointer  select-none">Score<span x-text="sortIndicator('score')"></span></th>
+                                            <th @click="sortBy('code')" class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none">Kode<span x-text="sortIndicator('code')"></span></th>
+                                            <th @click="sortBy('name')" class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none">Nama<span x-text="sortIndicator('name')"></span></th>
+                                            <th class="text-start px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-sm-table-cell">Sektor</th>
+                                            <th @click="sortBy('price')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none">Harga<span x-text="sortIndicator('price')"></span></th>
+                                            <th @click="sortBy('change_percent')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none">Chg%<span x-text="sortIndicator('change_percent')"></span></th>
+                                            <th @click="sortBy('per')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none d-none d-md-table-cell">PER<span x-text="sortIndicator('per')"></span></th>
+                                            <th @click="sortBy('pbv')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none d-none d-md-table-cell">PBV<span x-text="sortIndicator('pbv')"></span></th>
+                                            <th @click="sortBy('roe')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">ROE<span x-text="sortIndicator('roe')"></span></th>
+                                            <th @click="sortBy('der')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">DER<span x-text="sortIndicator('der')"></span></th>
+                                            <th @click="sortBy('div_yield')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none d-none d-lg-table-cell">Div%<span x-text="sortIndicator('div_yield')"></span></th>
+                                            <th @click="sortBy('score')" class="text-end px-2 px-sm-3 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  cursor-pointer  select-none">Score<span x-text="sortIndicator('score')"></span></th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y border dark:divide-slate-700/50">
@@ -441,13 +420,13 @@
 
                     <div x-show="!loading && results.length === 0 && count === 0" class="card p-2 text-center">
                         <svg class="mx-auto h-16 w-16 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <p class="fs-base fw-medium text-muted dark:text-slate-400">Gunakan screener untuk mencari saham</p>
+                        <p class="fs-base fw-medium text-muted dark:text-muted">Gunakan screener untuk mencari saham</p>
                         <p class="fs-sm text-muted mt-1">Klik preset di atas atau atur filter manual dan klik "Cari"</p>
                     </div>
 
                     <div x-show="!loading && results.length === 0 && count > 0" class="card p-2 text-center">
                         <svg class="mx-auto h-16 w-16 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <p class="fs-base fw-medium text-muted dark:text-slate-400">Tidak ada saham yang cocok</p>
+                        <p class="fs-base fw-medium text-muted dark:text-muted">Tidak ada saham yang cocok</p>
                         <p class="fs-sm text-muted mt-1">Coba longgarkan filter atau ubah kriteria pencarian</p>
                     </div>
                 </div>

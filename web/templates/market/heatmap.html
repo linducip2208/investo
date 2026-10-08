@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -302,12 +302,12 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
+                <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
                 [[if .User]]
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
@@ -324,7 +324,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Market Heatmap</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Visualisasi pergerakan pasar. Toggle antara Saham IDX dan Forex.</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Visualisasi pergerakan pasar. Toggle antara Saham IDX dan Forex.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <button @click="toggleFullscreen" class="d-flex align-items-center gap-2 px-2 py-2 rounded-3 border border dark:border fs-sm fw-medium text-body dark:text-body  dark:hover:bg-white ">
@@ -338,12 +338,12 @@
             <!-- MODE SWITCHER -->
             <div class="card p-2 d-flex align-items-center gap-3 flex-wrap">
                 <span class="fs-xs fw-semibold text-muted text-uppercase ">View:</span>
-                <button @click="switchMode('stocks')" :class="mode==='stocks'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Stocks IDX</button>
-                <button @click="switchMode('forex')" :class="mode==='forex'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Forex</button>
+                <button @click="switchMode('stocks')" :class="mode==='stocks'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-muted border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Stocks IDX</button>
+                <button @click="switchMode('forex')" :class="mode==='forex'?'mode-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'mode-btn text-muted dark:text-muted border'" class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Forex</button>
                 <div class="w-px h-5 bg-body dark:bg-secondary-lt mx-2"></div>
                 <span class="fs-xs fw-semibold text-muted text-uppercase ">TF:</span>
                 <template x-for="tf in timeframes" :key="tf.v">
-                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'tf-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'tf-btn text-muted dark:text-slate-400 border'" class="px-2 py-1 rounded-2 fs-xs fw-medium border " x-text="tf.l"></button>
+                    <button @click="timeframe=tf.v" :class="timeframe===tf.v?'tf-btn active bg-primary bg-opacity-50 text-primary border border-blue-700/50':'tf-btn text-muted dark:text-muted border'" class="px-2 py-1 rounded-2 fs-xs fw-medium border " x-text="tf.l"></button>
                 </template>
             </div>
 
@@ -363,7 +363,7 @@
                         <div class="breadth-seg" :style="{width:declinePct+'%',background:'#ef4444'}"></div>
                         <div class="breadth-seg" :style="{width:unchPct+'%',background:'#94a3b8'}"></div>
                     </div>
-                    <span class="d-none d-sm-inline text-muted dark:text-slate-400" x-text="'A:'+advancePct+'% D:'+declinePct+'%'"></span>
+                    <span class="d-none d-sm-inline text-muted dark:text-muted" x-text="'A:'+advancePct+'% D:'+declinePct+'%'"></span>
                 </div>
                 </template>
 
@@ -374,7 +374,7 @@
                     <div class="vstack gap-2">
                         <template x-for="sp in sectorPerf" :key="sp.name">
                             <div class="d-flex align-items-center gap-3">
-                                <span class="fs-xs text-muted dark:text-slate-400 w-28 text-truncate" x-text="sp.name"></span>
+                                <span class="fs-xs text-muted dark:text-muted w-28 text-truncate" x-text="sp.name"></span>
                                 <div class="flex-fill h-2 bg-white dark:bg-white rounded-pill overflow-hidden">
                                     <div class="sector-perf-bar h-100" :style="{width:Math.min(100,Math.abs(sp.change)*10)+'%',background:sp.change>=0?'#22c55e':'#ef4444'}"></div>
                                 </div>
@@ -393,12 +393,12 @@
 
                 <!-- LEGEND -->
                 <div class="legend-bar gap-x-4">
-                    <span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  me-2">Color Scale</span>
+                    <span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  me-2">Color Scale</span>
                     <template x-for="sw in legendSwatches" :key="sw.pct">
                         <div class="legend-item"><div class="legend-swatch" :style="{background:sw.color}"></div><span x-text="sw.pct"></span></div>
                     </template>
                     <span class="text-muted mx-2">|</span>
-                    <span class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  me-2">Size</span>
+                    <span class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  me-2">Size</span>
                     <div class="legend-item"><span class="legend-swatch" style="background:#334155;width:18px;height:18px"></span><span>XL</span></div>
                     <div class="legend-item"><span class="legend-swatch" style="background:#475569;width:14px;height:14px"></span><span>LG</span></div>
                     <div class="legend-item"><span class="legend-swatch" style="background:#64748b;width:10px;height:10px"></span><span>MD</span></div>
@@ -452,9 +452,9 @@
                 <template x-if="!forexLoading && forexPairs.length>0">
                 <div>
                     <div class="d-flex align-items-center gap-4 mb-2 fs-6">
-                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(150,70%,45%)"></div><span class="text-muted dark:text-slate-400">Base Strengthening</span></div>
-                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(0,70%,45%)"></div><span class="text-muted dark:text-slate-400">Base Weakening</span></div>
-                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#475569"></div><span class="text-muted dark:text-slate-400">Neutral</span></div>
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(150,70%,45%)"></div><span class="text-muted dark:text-muted">Base Strengthening</span></div>
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:hsl(0,70%,45%)"></div><span class="text-muted dark:text-muted">Base Weakening</span></div>
+                        <div class="d-flex align-items-center gap-1"><div class="w-4 h-4 rounded" style="background:#475569"></div><span class="text-muted dark:text-muted">Neutral</span></div>
                     </div>
 
                     <div class="forex-grid">

@@ -1,13 +1,13 @@
 [[define "user/profile.html"]]
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark'); $watch('sidebarOpen', function(v) { if (window.innerWidth < 1024) { if (v) document.body.style.overflow = 'hidden'; else document.body.style.overflow = ''; } })" class="h-full">
+<html lang="id" x-data="{ darkMode: true }" x-init="document.documentElement.classList.add('dark'); $watch('sidebarOpen', function(v) { if (window.innerWidth < 1024) { if (v) document.body.style.overflow = 'hidden'; else document.body.style.overflow = ''; } })" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]] &mdash; Investo</title>
     <meta name="description" content="[[if .MetaDescription]][[.MetaDescription]][[else]]Kelola profil dan informasi akun Investo Anda.[[end]]">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -33,31 +33,31 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full" x-data="{ sidebarOpen: window.innerWidth >= 1024 }" >
+<body class="h-100" x-data="{ sidebarOpen: window.innerWidth >= 1024 }" >
 
-<header class="sticky top-0 z-50 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 flex items-center px-4 lg:px-8">
-    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden mr-3 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 btn-touch" style="min-height:42px;min-width:42px">
+<header class="position-sticky top-0 z-3 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50 d-flex align-items-center px-2 px-lg-5">
+    <button @click="sidebarOpen = !sidebarOpen" class="d-lg-none me-2 p-2 rounded-2 text-muted dark:text-muted  dark:hover:bg-white btn-touch" style="min-height:42px;min-width:42px">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <a href="/dashboard" class="flex items-center gap-2.5">
-        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-sm">I</span>
+    <a href="/dashboard" class="d-flex align-items-center gap-2">
+        <div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center">
+            <span class="text-white fw-bold fs-sm">I</span>
         </div>
-        <span class="font-bold text-lg text-white">Investo</span>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </a>
-    <div class="flex-1"></div>
-    <div class="flex items-center gap-3 ml-2 pl-3 border-l border-slate-200 dark:border-slate-700">
-        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-        <div class="hidden sm:block">
-            <p class="text-sm font-semibold text-white leading-tight">[[.User.Name]]</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400">[[.User.Role]]</p>
+    <div class="flex-fill"></div>
+    <div class="d-flex align-items-center gap-3 ms-2 ps-2 border-start border dark:border-slate-700">
+        <div class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+        <div class="d-none d-sm-block">
+            <p class="fs-sm fw-semibold text-white lh-1">[[.User.Name]]</p>
+            <p class="fs-xs text-muted dark:text-muted">[[.User.Role]]</p>
         </div>
     </div>
 </header>
 
 <aside x-show="sidebarOpen" @click.away="if (window.innerWidth < 1024) sidebarOpen = false"  x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
-       class="fixed inset-y-0 left-0 z-40 w-64 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200/50 dark:border-slate-700/50 pt-16 lg:translate-x-0 lg:static lg:z-auto" :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen && window.innerWidth < 1024 }">
-    <nav class="p-4 space-y-1 overflow-y-auto h-full">
+       class="app-drawer bg-body border-end pt-2" :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen && window.innerWidth < 1024 }">
+    <nav class="p-2 vstack gap-1 overflow-y-auto h-100">
         <a href="/dashboard" class="sidebar-link">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             Dashboard
@@ -74,7 +74,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             Alert
         </a>
-        <div class="pt-4 mt-4 border-t border-slate-200/50 dark:border-slate-700/50">
+        <div class="pt-2 mt-2 border-top border dark:border-slate-700/50">
             <a href="/profil" class="sidebar-link active">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                 Profil
@@ -84,125 +84,125 @@
                 Pengaturan
             </a>
         </div>
-        <div class="pt-4 mt-4 border-t border-slate-200/50 dark:border-slate-700/50">
-            <a href="/logout" class="sidebar-link text-red-400 hover:bg-red-900/20">
+        <div class="pt-2 mt-2 border-top border dark:border-slate-700/50">
+            <a href="/logout" class="sidebar-link text-danger ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                 Keluar
             </a>
         </div>
     </nav>
 </aside>
-<div x-show="sidebarOpen && window.innerWidth < 1024" @click="sidebarOpen = false" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"></div>
+<div x-show="sidebarOpen && window.innerWidth < 1024" @click="sidebarOpen = false" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-lg-none"></div>
 
-<div class="lg:ml-64 min-h-screen">
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h1 class="text-2xl lg:text-3xl font-bold text-white">Profil Saya</h1>
-            <p class="text-slate-500 dark:text-slate-400 mt-1">Kelola informasi akun dan kata sandi Anda.</p>
+<div class="app-offset-wide min-vh-100">
+    <main class="max-w-5xl mx-auto px-2 px-sm-4 px-lg-5 py-2">
+        <div class="mb-2">
+            <h1 class="fs-1 fs-1 fw-bold text-white">Profil Saya</h1>
+            <p class="text-muted dark:text-muted mt-1">Kelola informasi akun dan kata sandi Anda.</p>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2">
-                <div class="card p-6 sm:p-8">
-                    <h2 class="text-lg font-semibold text-white mb-6">Informasi Akun</h2>
+        <div class="row row-cols-1 row-cols-lg-3 gap-6">
+            <div class="col-lg-8">
+                <div class="card p-2 p-sm-5">
+                    <h2 class="fs-3 fw-semibold text-white mb-2">Informasi Akun</h2>
                     [[if .Success]]
-                    <div class="mb-6 p-4 bg-emerald-900/20 border border-emerald-800/50 rounded-xl">
-                        <div class="flex items-center gap-2 text-emerald-400 text-sm">
-                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="mb-2 p-2 bg-success bg-opacity-25 border border-success rounded-3">
+                        <div class="d-flex align-items-center gap-2 text-success fs-sm">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span>[[.Success]]</span>
                         </div>
                     </div>
                     [[end]]
                     [[if .Error]]
-                    <div class="mb-6 p-4 bg-red-900/20 border border-red-800/50 rounded-xl">
-                        <div class="flex items-center gap-2 text-red-400 text-sm">
-                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="mb-2 p-2 bg-danger bg-opacity-25 border border-danger rounded-3">
+                        <div class="d-flex align-items-center gap-2 text-danger fs-sm">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span>[[.Error]]</span>
                         </div>
                     </div>
                     [[end]]
-                    <form method="POST" action="/profil" class="space-y-5">
+                    <form method="POST" action="/profil" class="vstack gap-3">
                         <div>
-                            <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap</label>
+                            <label for="name" class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Nama Lengkap</label>
                             <input type="text" name="name" id="name" required
-                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all text-sm"
+                                   class="w-100 px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-800 text-white       fs-sm"
                                    value="[[.User.Name]]">
                         </div>
                         <div>
-                            <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
+                            <label for="email" class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Email</label>
                             <input type="email" id="email" readonly
-                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 cursor-not-allowed outline-none text-sm"
+                                   class="w-100 px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white bg-opacity-50 dark:bg-slate-800/50 text-muted dark:text-muted cursor-not-allowed  fs-sm"
                                    value="[[.User.Email]]">
-                            <p class="mt-1 text-xs text-slate-500">Email tidak dapat diubah. Hubungi support jika perlu perubahan.</p>
+                            <p class="mt-1 fs-xs text-muted">Email tidak dapat diubah. Hubungi support jika perlu perubahan.</p>
                         </div>
-                        <div class="border-t border-slate-200 dark:border-slate-700 pt-5">
-                            <h3 class="text-base font-semibold text-white mb-4">Ubah Password <span class="text-xs font-normal text-slate-500">(opsional)</span></h3>
-                            <div class="space-y-4">
+                        <div class="border-top border dark:border-slate-700 pt-2">
+                            <h3 class="fs-base fw-semibold text-white mb-2">Ubah Password <span class="fs-xs fw-normal text-muted">(opsional)</span></h3>
+                            <div class="vstack gap-3">
                                 <div>
-                                    <label for="new_password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password Baru</label>
+                                    <label for="new_password" class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Password Baru</label>
                                     <input type="password" name="new_password" id="new_password"
-                                           class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all text-sm"
+                                           class="w-100 px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-800 text-white       fs-sm"
                                            placeholder="Kosongkan jika tidak ingin mengubah">
                                 </div>
                                 <div>
-                                    <label for="new_password_confirm" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Konfirmasi Password Baru</label>
+                                    <label for="new_password_confirm" class="d-block fs-sm fw-medium text-body dark:text-body mb-1">Konfirmasi Password Baru</label>
                                     <input type="password" name="new_password_confirm" id="new_password_confirm"
-                                           class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all text-sm"
+                                           class="w-100 px-2 py-2 rounded-3 border border dark:border-slate-700 bg-white dark:bg-slate-800 text-white       fs-sm"
                                            placeholder="Ketik ulang password baru">
                                 </div>
                             </div>
                         </div>
                         <div class="pt-2">
                             <button type="submit"
-                                    class="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98]">
+                                    class="px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg       ">
                                 Simpan Perubahan
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="space-y-4">
-                <div class="card p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4">Statistik Akun</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-blue-900/30 rounded-xl flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <div class="vstack gap-3">
+                <div class="card p-2">
+                    <h3 class="fs-sm fw-semibold text-white mb-2">Statistik Akun</h3>
+                    <div class="vstack gap-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="w-10 h-10 bg-primary bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">Total Portofolio</div>
-                                    <div class="text-lg font-bold text-white">[[.Stats.TotalPortfolios]]</div>
+                                    <div class="fs-xs text-muted dark:text-muted">Total Portofolio</div>
+                                    <div class="fs-3 fw-bold text-white">[[.Stats.TotalPortfolios]]</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-emerald-900/30 rounded-xl flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="w-10 h-10 bg-success bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center">
+                                    <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">Total Watchlist</div>
-                                    <div class="text-lg font-bold text-white">[[.Stats.TotalWatchlists]]</div>
+                                    <div class="fs-xs text-muted dark:text-muted">Total Watchlist</div>
+                                    <div class="fs-3 fw-bold text-white">[[.Stats.TotalWatchlists]]</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-amber-900/30 rounded-xl flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="w-10 h-10 bg-warning bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center">
+                                    <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">Total Alert</div>
-                                    <div class="text-lg font-bold text-white">[[.Stats.TotalAlerts]]</div>
+                                    <div class="fs-xs text-muted dark:text-muted">Total Alert</div>
+                                    <div class="fs-3 fw-bold text-white">[[.Stats.TotalAlerts]]</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-md p-6 text-white">
-                    <h3 class="text-sm font-semibold mb-2">Butuh Bantuan?</h3>
-                    <p class="text-xs text-blue-100 mb-4">Hubungi tim support kami untuk bantuan teknis atau pertanyaan seputar akun Anda.</p>
-                    <a href="mailto:support@investo.test" class="inline-flex items-center gap-2 text-sm font-medium text-white bg-white/15 hover:bg-white/25 rounded-lg px-4 py-2 transition-colors">
+                <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 shadow p-2 text-white">
+                    <h3 class="fs-sm fw-semibold mb-2">Butuh Bantuan?</h3>
+                    <p class="fs-xs text-primary mb-2">Hubungi tim support kami untuk bantuan teknis atau pertanyaan seputar akun Anda.</p>
+                    <a href="mailto:support@investo.test" class="d-inline-flex align-items-center gap-2 fs-sm fw-medium text-white bg-white bg-opacity-10  rounded-2 px-2 py-2 ">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         Hubungi Support
                     </a>

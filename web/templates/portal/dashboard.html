@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -26,64 +26,64 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex">
-    <aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col min-h-screen shrink-0">
-        <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</div>
-            <span class="font-bold text-white">Investo Portal</span>
+<body class="h-100 d-flex">
+    <aside class="w-56 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column min-vh-100 flex-shrink-0">
+        <div class="d-flex align-items-center gap-2 px-2 h-14 border-bottom border dark:border-slate-800">
+            <div class="w-7 h-7 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded d-flex align-items-center justify-content-center text-white fw-bold fs-xs">I</div>
+            <span class="fw-bold text-white">Investo Portal</span>
         </div>
-        <nav class="flex-1 p-3 space-y-0.5">
+        <nav class="flex-fill p-2 vstack gap-0">
             <a href="/portal" class="nav-link [[if eq .ActivePage "dashboard"]]active[[end]]">📊 Dashboard</a>
             <a href="/portal/portfolios" class="nav-link [[if eq .ActivePage "portfolios"]]active[[end]]">💼 Portofolio</a>
             <a href="/portal/subscription" class="nav-link [[if eq .ActivePage "subscription"]]active[[end]]">💎 Langganan</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/" class="nav-link">🏠 Ke Beranda</a>
-            <a href="/logout" class="nav-link text-red-400">🚪 Keluar</a>
+            <a href="/logout" class="nav-link text-danger">🚪 Keluar</a>
         </nav>
     </aside>
 
-    <main class="flex-1 p-6 overflow-y-auto">
+    <main class="flex-fill p-2 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-2xl font-bold text-white mb-1">Halo, [[.User.Name]]</h1>
-            <p class="text-slate-500 dark:text-slate-400 mb-6">Selamat datang di portal Investo.</p>
+            <h1 class="fs-1 fw-bold text-white mb-1">Halo, [[.User.Name]]</h1>
+            <p class="text-muted dark:text-muted mb-2">Selamat datang di portal Investo.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="card p-5">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 uppercase mb-1">Plan</div>
-                    <div class="text-xl font-bold text-white capitalize">[[.Plan]]</div>
+            <div class="row row-cols-1 row-cols-md-3 gap-4 mb-2">
+                <div class="card p-2">
+                    <div class="fs-xs text-muted dark:text-muted text-uppercase mb-1">Plan</div>
+                    <div class="fs-2 fw-bold text-white text-capitalize">[[.Plan]]</div>
                 </div>
-                <div class="card p-5">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 uppercase mb-1">Jumlah Portofolio</div>
-                    <div class="text-xl font-bold text-white">[[len .Portfolios]]</div>
+                <div class="card p-2">
+                    <div class="fs-xs text-muted dark:text-muted text-uppercase mb-1">Jumlah Portofolio</div>
+                    <div class="fs-2 fw-bold text-white">[[len .Portfolios]]</div>
                 </div>
-                <div class="card p-5">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 uppercase mb-1">Total Kas (Simulasi)</div>
-                    <div class="text-xl font-bold text-white">[[formatPrice .TotalValue]]</div>
+                <div class="card p-2">
+                    <div class="fs-xs text-muted dark:text-muted text-uppercase mb-1">Total Kas (Simulasi)</div>
+                    <div class="fs-2 fw-bold text-white">[[formatPrice .TotalValue]]</div>
                 </div>
             </div>
 
-            <div class="card p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-bold text-white">Portofolio Simulasi</h2>
-                    <a href="/portal/portfolios" class="text-blue-400 text-sm hover:underline">Lihat semua</a>
+            <div class="card p-2">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h2 class="fw-bold text-white">Portofolio Simulasi</h2>
+                    <a href="/portal/portfolios" class="text-primary fs-sm ">Lihat semua</a>
                 </div>
                 [[if .Portfolios]]
-                <div class="space-y-3">
+                <div class="vstack gap-2">
                     [[range .Portfolios]]
-                    <div class="flex items-center justify-between bg-white dark:bg-[#0f172a] rounded-xl px-4 py-3 border border-slate-200 dark:border-slate-800">
+                    <div class="d-flex align-items-center justify-content-between bg-white dark:bg-[#0f172a] rounded-3 px-2 py-2 border border dark:border-slate-800">
                         <div>
-                            <div class="font-semibold text-white">[[.Name]]</div>
-                            <div class="text-xs text-slate-500">Saldo awal [[formatPrice .InitialBalance]]</div>
+                            <div class="fw-semibold text-white">[[.Name]]</div>
+                            <div class="fs-xs text-muted">Saldo awal [[formatPrice .InitialBalance]]</div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-mono font-bold text-white">[[formatPrice .CashBalance]]</div>
-                            <div class="text-xs text-slate-500">kas tersedia</div>
+                        <div class="text-end">
+                            <div class="font-monospace fw-bold text-white">[[formatPrice .CashBalance]]</div>
+                            <div class="fs-xs text-muted">kas tersedia</div>
                         </div>
                     </div>
                     [[end]]
                 </div>
                 [[else]]
-                <p class="text-slate-500 text-center py-6">Belum ada portofolio simulasi.</p>
+                <p class="text-muted text-center py-2">Belum ada portofolio simulasi.</p>
                 [[end]]
             </div>
         </div>

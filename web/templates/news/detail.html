@@ -32,7 +32,7 @@
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -67,12 +67,12 @@
                 <span class=" fw-bold fs-2 text-primary dark:text-brand-400">Investo</span>
             </a>
             <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
-                <a href="/" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Beranda</a>
+                <a href="/" class="text-muted dark:text-body  dark:hover:text-brand-400 ">Beranda</a>
                 <a href="/berita" class="fw-semibold text-primary dark:text-brand-400">Berita</a>
-                <a href="/blog" class="text-muted dark:text-slate-300  dark:hover:text-brand-400 ">Blog</a>
+                <a href="/blog" class="text-muted dark:text-body  dark:hover:text-brand-400 ">Blog</a>
                 <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
-            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-muted dark:text-slate-300  dark:hover:bg-slate-800">
+            <button @click="open = !open" class="d-lg-none p-2 rounded-2 text-muted dark:text-body  dark:hover:bg-white">
                 <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -81,17 +81,17 @@
 </nav>
 
 <article class="max-w-3xl mx-auto px-2 px-sm-4 px-lg-5 py-2 py-lg-5">
-    <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2 reveal">
+    <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted mb-2 reveal">
         <a href="/berita" class=" dark:hover:text-brand-400 ">Berita Pasar Modal</a>
         <span>/</span>
-        <span class="text-muted dark:text-slate-400">[[.Source]]</span>
+        <span class="text-muted dark:text-muted">[[.Source]]</span>
     </div>
 
     <div class="d-flex align-items-center gap-3 mb-2 reveal flex-wrap">
-        <span class="fs-xs fw-semibold px-2 py-1 bg-body dark:bg-slate-800 text-muted dark:text-slate-300 rounded-pill">[[.Source]]</span>
-        <span class="fs-xs text-muted dark:text-slate-400">[[.PublishedAt]]</span>
+        <span class="fs-xs fw-semibold px-2 py-1 bg-body dark:bg-slate-800 text-muted dark:text-body rounded-pill">[[.Source]]</span>
+        <span class="fs-xs text-muted dark:text-muted">[[.PublishedAt]]</span>
         [[if .Category]]
-        <span class="fs-xs px-2 py-0 bg-primary dark:bg-info-lt text-primary dark:text-blue-400 rounded-pill">[[.Category]]</span>
+        <span class="fs-xs px-2 py-0 bg-primary dark:bg-info-lt text-primary dark:text-info rounded-pill">[[.Category]]</span>
         [[end]]
     </div>
 
@@ -109,7 +109,7 @@
 
     [[if .SourceUrl]]
     <div class="d-flex align-items-center justify-content-between border-top border dark:border-slate-800 pt-2 mb-2 reveal">
-        <span class="fs-sm text-muted dark:text-slate-400">Sumber asli:</span>
+        <span class="fs-sm text-muted dark:text-muted">Sumber asli:</span>
         <a href="[[.SourceUrl]]" target="_blank" rel="noopener noreferrer" class="d-inline-flex align-items-center gap-1 fs-sm fw-medium text-primary dark:text-brand-400 ">
             Baca di [[.Source]]
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -141,7 +141,7 @@
             [[range .RelatedNews]]
             <div class="card-lift bg-white dark:bg-slate-900 border border dark:border-slate-800 rounded-3 p-2">
                 <div class="d-flex align-items-center gap-2 mb-1">
-                    <span class="fs-xs text-muted dark:text-slate-400">[[.Source]] &middot; [[.PublishedAt]]</span>
+                    <span class="fs-xs text-muted dark:text-muted">[[.Source]] &middot; [[.PublishedAt]]</span>
                 </div>
                 <a href="/berita/[[.Slug]]" class="d-block ">
                     <h3 class="fw-semibold text-body dark:text-slate-200  dark:group-hover:text-brand-400  fs-sm lh-sm">[[.Title]]</h3>
@@ -153,7 +153,7 @@
     [[end]]
 </article>
 
-<footer class="bg-body dark:bg-slate-900 text-body dark:text-slate-300 py-2 border-top border dark:border-slate-800">
+<footer class="bg-body dark:bg-slate-900 text-body dark:text-body py-2 border-top border dark:border-slate-800">
     <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
         <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
             <span class="fs-2">🏦</span>

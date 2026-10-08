@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Usage Dashboard — Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{brand:{50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",800:"#1e40af",900:"#1e3a8a"}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <script src="/static/js/vendor/chart.umd.min.js"></script>
     <style>
@@ -75,7 +74,7 @@
         <div class="d-flex align-items-center justify-content-between mb-2">
             <div>
                 <h1 class="fs-2 fw-bold text-white">AI Usage Dashboard</h1>
-                <p class="fs-sm text-muted dark:text-slate-400">Monitor penggunaan AI, biaya, dan performa provider.</p>
+                <p class="fs-sm text-muted dark:text-muted">Monitor penggunaan AI, biaya, dan performa provider.</p>
             </div>
             <div class="d-flex gap-2">
                 <select x-model="days" @change="loadData()" class="bg-white dark:bg-[#0f172a] border border text-body dark:text-slate-200 rounded-2 px-2 py-2 fs-sm">
@@ -131,7 +130,7 @@
                             <span class="fw-semibold fs-sm text-white" x-text="name"></span>
                             <span class="w-2 h-2 rounded-pill" :class="info.status === 'healthy' ? 'bg-green-400' : 'bg-red-400'"></span>
                         </div>
-                        <div class="fs-xs text-muted dark:text-slate-400 vstack gap-1">
+                        <div class="fs-xs text-muted dark:text-muted vstack gap-1">
                             <div x-text="info.status"></div>
                             <div>Latency: <span x-text="(info.latency||0).toFixed(0)"></span>ms</div>
                             <div>Budget OK: <span x-text="info.budget_ok ? 'Yes' : 'No'"></span></div>
@@ -162,10 +161,10 @@
                     <tbody>
                         <template x-for="log in recentLogs" :key="log.id">
                             <tr>
-                                <td class="fs-xs text-muted dark:text-slate-400" x-text="log.created_at"></td>
+                                <td class="fs-xs text-muted dark:text-muted" x-text="log.created_at"></td>
                                 <td><span class="badge bg-info-lt" x-text="log.provider"></span></td>
                                 <td class="fs-xs" x-text="log.feature"></td>
-                                <td class="fs-xs text-muted dark:text-slate-400" x-text="log.model || '-'"></td>
+                                <td class="fs-xs text-muted dark:text-muted" x-text="log.model || '-'"></td>
                                 <td x-text="log.tokens_in"></td>
                                 <td x-text="log.tokens_out"></td>
                                 <td x-text="'$'+parseFloat(log.cost).toFixed(6)"></td>

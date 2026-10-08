@@ -1,33 +1,33 @@
 <!-- Global Search Modal (Cmd+K / Ctrl+K) -->
 <div x-data="searchModal()" x-init="init()" @keydown.window.cmd.k.prevent="openSearch()" @keydown.window.ctrl.k.prevent="openSearch()">
     <div x-show="open" @click.self="closeSearch()" @keydown.escape.window="closeSearch()"
-         class="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
+         class="position-fixed top-0 bottom-0 start-0 end-0 z-3 d-flex align-items-start justify-content-center pt-15vh"
           x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-        <div class="absolute inset-0 bg-slate-50/60 dark:bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="position-absolute top-0 bottom-0 start-0 end-0 bg-body bg-opacity-50 dark:bg-slate-900/60 "></div>
 
-        <div class="relative w-full max-w-lg mx-4 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+        <div class="position-relative w-100 max-w-lg mx-2 bg-white dark:bg-slate-800 rounded-4 shadow-lg border border dark:border-slate-700 overflow-hidden"
              @click.outside="closeSearch()">
-            <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-                <svg class="w-5 h-5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <div class="d-flex align-items-center gap-3 px-2 py-2 border-bottom border dark:border-slate-700">
+                <svg class="w-5 h-5 text-muted dark:text-muted flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 <input type="text" x-ref="searchInput" x-model="query" @input.debounce.200ms="search()" @keydown.down.prevent="moveDown()" @keydown.up.prevent="moveUp()" @keydown.enter.prevent="selectResult()"
                        placeholder="Cari saham, halaman..."
-                       class="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white placeholder-slate-400">
+                       class="flex-fill bg-transparent border-0  fs-sm text-body dark:text-white ">
             </div>
 
             <div class="max-h-72 overflow-y-auto">
                 <template x-if="results.stocks && results.stocks.length > 0">
                     <div>
-                        <div class="px-4 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Saham</div>
+                        <div class="px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</div>
                         <template x-for="(s, idx) in results.stocks" :key="'stock-'+s.id">
                             <div @click="goTo('/saham/' + s.code)" @mouseenter="activeIndex = idx"
-                                 class="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                                 class="d-flex align-items-center justify-content-between px-2 py-2  dark:hover:bg-secondary-lt/50 cursor-pointer "
                                  :class="activeIndex === idx ? 'bg-blue-50 dark:bg-blue-900/20' : ''">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 w-12" x-text="s.code"></span>
-                                    <span class="text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px]" x-text="s.name"></span>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="fs-xs fw-bold text-body dark:text-slate-200 w-12" x-text="s.code"></span>
+                                    <span class="fs-xs text-muted dark:text-muted text-truncate max-w-200" x-text="s.name"></span>
                                 </div>
-                                <span class="text-xs font-mono" :class="s.change_percent >= 0 ? 'text-emerald-600' : 'text-red-500'"
+                                <span class="fs-xs font-monospace" :class="s.change_percent >= 0 ? 'text-emerald-600' : 'text-red-500'"
                                       x-text="(s.change_percent >= 0 ? '+' : '') + s.change_percent.toFixed(2) + '%'"></span>
                             </div>
                         </template>
@@ -35,29 +35,29 @@
                 </template>
 
                 <div>
-                    <div class="px-4 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Halaman</div>
+                    <div class="px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Halaman</div>
                     <template x-for="(page, idx) in pageResults" :key="'page-'+idx">
                         <div @click="goTo(page.url)" @mouseenter="activeIndex = (results.stocks ? results.stocks.length : 0) + idx"
-                             class="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                             class="d-flex align-items-center gap-3 px-2 py-2  dark:hover:bg-secondary-lt/50 cursor-pointer "
                              :class="activeIndex === ((results.stocks ? results.stocks.length : 0) + idx) ? 'bg-blue-50 dark:bg-blue-900/20' : ''">
-                            <span class="text-sm" x-text="page.icon"></span>
+                            <span class="fs-sm" x-text="page.icon"></span>
                             <div>
-                                <span class="text-sm font-medium text-slate-800 dark:text-slate-200" x-text="page.label"></span>
-                                <span class="text-xs text-slate-500 dark:text-slate-400 ml-1.5" x-text="'/'+page.url"></span>
+                                <span class="fs-sm fw-medium text-body dark:text-slate-200" x-text="page.label"></span>
+                                <span class="fs-xs text-muted dark:text-muted ms-1" x-text="'/'+page.url"></span>
                             </div>
                         </div>
                     </template>
                 </div>
 
-                <div x-show="noResults && query.length > 0" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+                <div x-show="noResults && query.length > 0" class="px-2 py-2 text-center text-muted dark:text-muted fs-sm">
                     Tidak ada hasil untuk "<span x-text="query"></span>"
                 </div>
             </div>
 
-            <div class="px-4 py-2.5 border-t border-slate-100 dark:border-slate-700 flex items-center gap-4 text-[11px] text-slate-500 dark:text-slate-400">
-                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">ESC</kbd> tutup</span>
-                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">↑↓</kbd> navigasi</span>
-                <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-[10px]">↵</kbd> pilih</span>
+            <div class="px-2 py-2 border-top border dark:border-slate-700 d-flex align-items-center gap-4 fs-6 text-muted dark:text-muted">
+                <span class="d-flex align-items-center gap-1"><kbd class="px-1 py-0 bg-body dark:bg-slate-700 rounded fs-6">ESC</kbd> tutup</span>
+                <span class="d-flex align-items-center gap-1"><kbd class="px-1 py-0 bg-body dark:bg-slate-700 rounded fs-6">↑↓</kbd> navigasi</span>
+                <span class="d-flex align-items-center gap-1"><kbd class="px-1 py-0 bg-body dark:bg-slate-700 rounded fs-6">↵</kbd> pilih</span>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="Ide investasi dari komunitas trader. Bagikan analisis, diskusi saham, dan strategi investasi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -48,8 +48,8 @@
                 if(r.ok){
                     var btn=document.getElementById('like-btn-'+ideaId);
                     var cnt=document.getElementById('like-count-'+ideaId);
-                    if(d.liked){btn.classList.add('text-danger','dark:text-danger');btn.classList.remove('text-slate-400');btn.querySelector('svg').classList.add('heart-animate')}
-                    else{btn.classList.remove('text-danger');btn.classList.add('text-slate-400')}
+                    if(d.liked){btn.classList.add('text-danger','dark:text-danger');btn.classList.remove('text-muted');btn.querySelector('svg').classList.add('heart-animate')}
+                    else{btn.classList.remove('text-danger');btn.classList.add('text-muted')}
                     cnt.textContent=d.likes_count;
                     setTimeout(function(){btn.querySelector('svg').classList.remove('heart-animate')},500);
                     [[if not .User]]window.location.href='/login';[[end]]
@@ -155,10 +155,10 @@
 
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
             [[if not .User]]
-            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300  rounded-2 ">Masuk</a>
+            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-body  rounded-2 ">Masuk</a>
             <a href="/register" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 ">Daftar</a>
             [[else]]
             <div class="d-flex align-items-center gap-2"><div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div><span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span></div>
@@ -169,7 +169,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4 mb-2">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Ide Investasi</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Ide, analisis, dan diskusi dari komunitas trader</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Ide, analisis, dan diskusi dari komunitas trader</p>
                 </div>
                 [[if .User]]
                 <button @click="createOpen=true;title='';content='';stock_code='';chart_image=''" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-3 shadow-lg  ">
@@ -180,15 +180,15 @@
 
             <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3 mb-2">
                 <div class="d-flex align-items-center gap-1 bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-3 p-1 border border dark:border-slate-700/50">
-                    <a href="?sort=latest[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "latest"]]bg-primary text-white[[else]]text-slate-400 hover:text-white[[end]]">Terbaru</a>
-                    <a href="?sort=popular[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "popular"]]bg-primary text-white[[else]]text-slate-400 hover:text-white[[end]]">Terpopuler</a>
-                    <a href="?sort=trending[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "trending"]]bg-primary text-white[[else]]text-slate-400 hover:text-white[[end]]">Trending</a>
+                    <a href="?sort=latest[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "latest"]]bg-primary text-white[[else]]text-muted hover:text-white[[end]]">Terbaru</a>
+                    <a href="?sort=popular[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "popular"]]bg-primary text-white[[else]]text-muted hover:text-white[[end]]">Terpopuler</a>
+                    <a href="?sort=trending[[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-1 rounded-2 fs-xs fw-semibold  [[if eq .SortBy "trending"]]bg-primary text-white[[else]]text-muted hover:text-white[[end]]">Trending</a>
                 </div>
                 <form method="GET" class="d-flex align-items-center gap-2">
                     <input type="hidden" name="sort" value="[[.SortBy]]">
                     <input type="text" name="stock" value="[[.StockCode]]" placeholder="Filter kode saham..." class="px-2 py-1 bg-white dark:bg-slate-800 border border rounded-2 fs-xs text-white     w-36">
-                    <button type="submit" class="px-2 py-1 bg-body dark:bg-slate-700 text-body dark:text-slate-300 fs-xs fw-medium rounded-2  ">Cari</button>
-                    [[if .StockCode]]<a href="?sort=[[.SortBy]]" class="px-2 py-1 text-muted dark:text-slate-400  fs-xs">✕</a>[[end]]
+                    <button type="submit" class="px-2 py-1 bg-body dark:bg-slate-700 text-body dark:text-body fs-xs fw-medium rounded-2  ">Cari</button>
+                    [[if .StockCode]]<a href="?sort=[[.SortBy]]" class="px-2 py-1 text-muted dark:text-muted  fs-xs">✕</a>[[end]]
                 </form>
             </div>
 
@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <h3 class="fw-semibold text-white mb-2 line-clamp-2">[[.Title]]</h3>
-                    <p class="fs-sm text-muted dark:text-slate-400 line-clamp-3 mb-2 lh-lg">[[.Content]]</p>
+                    <p class="fs-sm text-muted dark:text-muted line-clamp-3 mb-2 lh-lg">[[.Content]]</p>
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-3">
                             <span class="fs-xs text-muted"><svg class="w-4 h-4 d-inline mt-n1 me-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg><span id="like-count-[[.ID]]">[[.LikesCount]]</span></span>
@@ -218,7 +218,7 @@
             [[if not .Ideas]]
             <div class="text-center py-2">
                 <div class="display-4 mb-2 opacity-20">💡</div>
-                <p class="text-muted dark:text-slate-400 fw-medium mb-1">Belum ada ide investasi</p>
+                <p class="text-muted dark:text-muted fw-medium mb-1">Belum ada ide investasi</p>
                 <p class="fs-sm text-muted mb-2">Jadilah yang pertama membagikan analisis dan strategi Anda!</p>
                 [[if .User]]
                 <button @click="createOpen=true" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-3 ">Bagikan Ide Pertama</button>
@@ -230,9 +230,9 @@
 
             [[if gt .TotalPages 1]]
             <div class="d-flex align-items-center justify-content-center gap-2 mt-2">
-                [[if gt .Page 1]]<a href="?sort=[[.SortBy]]&page=[[sub .Page 1]][[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-2 card fs-sm text-muted dark:text-slate-400  ">Sebelumnya</a>[[end]]
+                [[if gt .Page 1]]<a href="?sort=[[.SortBy]]&page=[[sub .Page 1]][[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-2 card fs-sm text-muted dark:text-muted  ">Sebelumnya</a>[[end]]
                 <span class="fs-sm text-muted">Halaman [[.Page]] dari [[.TotalPages]]</span>
-                [[if lt .Page .TotalPages]]<a href="?sort=[[.SortBy]]&page=[[add .Page 1]][[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-2 card fs-sm text-muted dark:text-slate-400  ">Selanjutnya</a>[[end]]
+                [[if lt .Page .TotalPages]]<a href="?sort=[[.SortBy]]&page=[[add .Page 1]][[if .StockCode]]&stock=[[.StockCode]][[end]]" class="px-2 py-2 card fs-sm text-muted dark:text-muted  ">Selanjutnya</a>[[end]]
             </div>
             [[end]]
         </main>
@@ -244,23 +244,23 @@
         <div class="position-relative card p-2 w-100 max-w-lg max-h-90 overflow-y-auto" @click.outside="createOpen=false">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <h2 class="fs-3 fw-bold text-white">Bagikan Ide Investasi</h2>
-                <button @click="createOpen=false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <button @click="createOpen=false" class="p-1 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form method="POST" action="/ideas" class="vstack gap-3">
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Judul <span class="text-danger">*</span></label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Judul <span class="text-danger">*</span></label>
                     <input x-model="title" name="title" type="text" required maxlength="500" placeholder="Contoh: Analisis teknikal BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white    ">
                 </div>
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Konten <span class="text-danger">*</span></label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Konten <span class="text-danger">*</span></label>
                     <textarea x-model="content" name="content" rows="6" required placeholder="Tulis analisis Anda..." class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     resize-none"></textarea>
                 </div>
                 <div class="row row-cols-2 gap-4">
-                    <div><label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kode Saham</label><input x-model="stock_code" name="stock_code" type="text" maxlength="10" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-uppercase text-white    "></div>
-                    <div><label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">URL Chart</label><input x-model="chart_image" name="chart_image" type="url" placeholder="https://..." class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white    "></div>
+                    <div><label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kode Saham</label><input x-model="stock_code" name="stock_code" type="text" maxlength="10" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-uppercase text-white    "></div>
+                    <div><label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">URL Chart</label><input x-model="chart_image" name="chart_image" type="url" placeholder="https://..." class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white    "></div>
                 </div>
                 <div class="d-flex align-items-center gap-3 pt-2">
-                    <button type="button" @click="createOpen=false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                    <button type="button" @click="createOpen=false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-body bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
                     <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Publikasikan</button>
                 </div>
             </form>

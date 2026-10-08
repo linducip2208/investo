@@ -7,7 +7,7 @@
     <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/static/sw.js')}</script>
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -40,7 +40,7 @@
                 <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
                 <span class="fw-bold fs-3 text-white">Investo</span>
             </a>
-            <button @click="sidebarOpen=false" class="d-md-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-slate-800">
+            <button @click="sidebarOpen=false" class="d-md-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -49,7 +49,7 @@
             <template x-for="room in rooms" :key="room">
                 <a href="#" @click.prevent="joinRoom(room)" class="sidebar-link" :class="{'active': currentRoom === room}">
                     <span class="fs-sm" x-text="'#' + room"></span>
-                    <span class="ms-auto w-2 h-2 rounded-pill" :class="roomHasActivity(room) ? 'bg-blue-500' : 'bg-slate-700'"></span>
+                    <span class="ms-auto w-2 h-2 rounded-pill" :class="roomHasActivity(room) ? 'bg-blue' : 'bg-secondary-lt'"></span>
                 </a>
             </template>
             <div class="border-top border dark:border-slate-800 my-2"></div>
@@ -63,7 +63,7 @@
 
     <div class="flex-fill d-flex flex-column min-w-0">
         <header class="h-16 border-bottom border dark:border-slate-800 bg-body dark:bg-[#0b1120] d-flex align-items-center px-2 gap-4 flex-shrink-0">
-            <button @click="sidebarOpen=!sidebarOpen" class="d-md-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-slate-800">
+            <button @click="sidebarOpen=!sidebarOpen" class="d-md-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <div class="flex-fill">
@@ -71,7 +71,7 @@
                 <p class="fs-xs text-muted" x-text="currentRoom ? 'Diskusi saham ' + currentRoom : 'Pilih room untuk memulai chat'"></p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <button @click="showDMs=!showDMs" class="px-2 py-1 fs-xs fw-medium text-body dark:text-slate-300 bg-white dark:bg-slate-800  dark:hover:bg-slate-700 rounded-2 ">
+                <button @click="showDMs=!showDMs" class="px-2 py-1 fs-xs fw-medium text-body dark:text-body bg-white dark:bg-slate-800  dark:hover:bg-secondary-lt rounded-2 ">
                     <template x-if="unreadDMCount > 0">
                         <span class="d-inline-flex align-items-center justify-content-center w-5 h-5 bg-primary text-white fs-6 fw-bold rounded-pill me-1" x-text="unreadDMCount"></span>
                     </template>
@@ -109,7 +109,7 @@
                     <template x-if="!currentRoom && !showDMs">
                         <div class="text-center py-2 text-muted">
                             <div class="display-6 mb-2">👋</div>
-                            <p class="fs-sm fw-medium text-body dark:text-slate-300">Selamat datang di Chat Komunitas</p>
+                            <p class="fs-sm fw-medium text-body dark:text-body">Selamat datang di Chat Komunitas</p>
                             <p class="fs-xs mt-1">Pilih stock room di sidebar untuk bergabung diskusi</p>
                         </div>
                     </template>
@@ -133,7 +133,7 @@
                 <h3 class="fs-xs fw-semibold text-muted text-uppercase ">Direct Messages</h3>
                 <div class="vstack gap-1">
                     <template x-for="conv in dmConversations" :key="conv.user_id">
-                        <a href="#" @click.prevent="openDM(conv.user_id)" class="d-flex align-items-center gap-3 p-2 rounded-2  dark:hover:bg-slate-800 ">
+                        <a href="#" @click.prevent="openDM(conv.user_id)" class="d-flex align-items-center gap-3 p-2 rounded-2  dark:hover:bg-white ">
                             <div class="w-9 h-9 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-purple d-flex align-items-center justify-content-center text-white fs-xs fw-bold" x-text="conv.user_name.charAt(0)"></div>
                             <div class="flex-fill min-w-0">
                                 <p class="fs-sm fw-medium text-white text-truncate" x-text="conv.user_name"></p>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan Sistem · Admin · [[.AppName]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -41,12 +41,6 @@
             .input-dark:focus { border-color: #3b82f6; }
         }
     </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'], mono: ['JetBrains Mono','Fira Code','monospace'] } } },
-        }
-    </script>
 <style data-investo-compat>
     body{background:var(--ui-bg)!important;color:var(--ui-text)!important}
     .card{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
@@ -54,185 +48,185 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="bg-main text-main antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, saved: false }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
+<body class="bg-body text-body antialiased" x-data="{ sidebarOpen: false, darkMode: localStorage.getItem('investo-dark-mode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches, saved: false }" x-init="document.documentElement.classList.toggle('dark', darkMode); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {  })">
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-slate-50 dark:bg-slate-900 text-white flex flex-col fixed left-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200/60 dark:border-slate-700/60">
-            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/25">I</div>
+    <aside class="sidebar bg-body dark:bg-slate-900 text-white d-flex flex-column position-fixed start-0 top-0 bottom-0 overflow-y-auto" :class="{ open: sidebarOpen }">
+        <div class="d-flex align-items-center gap-3 px-2 py-2 border-bottom border dark:border-slate-700/60">
+            <div class="w-9 h-9 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center fw-bold text-white fs-sm shadow-lg ">I</div>
             <div>
-                <div class="font-bold text-base leading-tight">[[.AppName]]</div>
-                <div class="text-slate-500 dark:text-slate-400 text-[10px] tracking-widest uppercase">Admin Panel</div>
+                <div class="fw-bold fs-base lh-1">[[.AppName]]</div>
+                <div class="text-muted dark:text-muted fs-6  text-uppercase">Admin Panel</div>
             </div>
         </div>
-        <nav class="flex-1 px-3 py-4 space-y-1">
-            <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                <span class="text-sm">Dashboard</span>
+        <nav class="flex-fill px-2 py-2 vstack gap-1">
+            <a href="/admin/dashboard" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="fs-sm">Dashboard</span>
             </a>
-            <a href="/admin/users" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-                <span class="text-sm">Pengguna</span>
+            <a href="/admin/users" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+                <span class="fs-sm">Pengguna</span>
             </a>
-            <a href="/admin/saham" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
-                <span class="text-sm">Saham</span>
+            <a href="/admin/saham" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
+                <span class="fs-sm">Saham</span>
             </a>
-            <a href="/admin/sektor" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
-                <span class="text-sm">Sektor</span>
+            <a href="/admin/sektor" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="fs-sm">Sektor</span>
             </a>
-            <a href="/admin/berita" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
-                <span class="text-sm">Berita</span>
+            <a href="/admin/berita" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/><circle cx="8" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M12 13h6" stroke-linecap="round"/></svg>
+                <span class="fs-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors group">
-                <svg class="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="text-sm">Blog</span>
+            <a href="/admin/blog" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+                <svg class="w-5 h-5 flex-shrink-0 text-muted dark:text-muted  " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3v5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h3.5l1 3h-5.5l1-3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="fs-sm">Blog</span>
             </a>
-            <a href="/admin/pengaturan" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors group">
+            <a href="/admin/pengaturan" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 bg-primary text-white fw-medium  ">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                <span class="text-sm">Pengaturan</span>
+                <span class="fs-sm">Pengaturan</span>
             </a>
         </nav>
-        <div class="px-6 py-4 border-t border-slate-200/60 dark:border-slate-700/60 space-y-3">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-white transition-colors text-sm">
+        <div class="px-2 py-2 border-top border dark:border-slate-700/60 vstack gap-2">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark', darkMode); localStorage.setItem('investo-dark-mode', darkMode ? 'true' : 'false')" class="d-flex align-items-center gap-3 w-100 px-2 py-2 rounded-2 text-muted dark:text-muted  dark:hover:bg-white   fs-sm">
                 <svg x-show="!darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 <svg x-show="darkMode" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
                 <span x-text="darkMode ? 'Mode Terang' : 'Mode Gelap'"></span>
             </button>
-            <div class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 text-xs">
-                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-[10px]">A</div>
+            <div class="d-flex align-items-center gap-3 px-2 py-2 text-muted dark:text-muted fs-xs">
+                <div class="w-7 h-7 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fw-bold fs-6">A</div>
                 <div>
-                    <div class="text-slate-700 dark:text-slate-300 text-xs font-medium">[[.AdminName]]</div>
-                    <a href="/admin/logout" class="text-blue-400 hover:text-blue-300 transition-colors">Keluar</a>
+                    <div class="text-body dark:text-body fs-xs fw-medium">[[.AdminName]]</div>
+                    <a href="/admin/logout" class="text-primary  ">Keluar</a>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700/50 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
-            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <header class="bg-white bg-opacity-75 dark:bg-slate-900/80  border-bottom border dark:border-slate-700/50 px-2 py-2 d-flex align-items-center justify-content-between position-sticky top-0 z-2">
+            <button @click="sidebarOpen = !sidebarOpen" class="d-lg-none p-2 rounded-2  dark:hover:bg-white ">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
-            <div class="text-sm text-slate-500 font-medium hidden sm:block">[[.AppName]] Admin</div>
-            <span class="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">[[.AppVersion]]</span>
+            <div class="fs-sm text-muted fw-medium d-none d-sm-block">[[.AppName]] Admin</div>
+            <span class="fs-6 text-muted dark:text-muted bg-body dark:bg-slate-800 px-2 py-1 rounded-pill font-monospace">[[.AppVersion]]</span>
         </header>
 
-        <div class="px-6 py-6 max-w-4xl mx-auto space-y-6">
+        <div class="px-2 py-2 max-w-4xl mx-auto vstack gap-4">
             <div>
-                <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Pengaturan Sistem</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Konfigurasi aplikasi Investo</p>
+                <h1 class="fs-1 fw-bolder text-body dark:text-white">Pengaturan Sistem</h1>
+                <p class="fs-sm text-muted dark:text-muted mt-1">Konfigurasi aplikasi Investo</p>
             </div>
 
-            <div class="card rounded-2xl border shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                    <h2 class="font-bold text-base text-slate-900 dark:text-white">Umum</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pengaturan dasar aplikasi</p>
+            <div class="card rounded-4 border shadow-sm overflow-hidden">
+                <div class="px-2 py-2 border-bottom border dark:border-slate-700">
+                    <h2 class="fw-bold fs-base text-body dark:text-white">Umum</h2>
+                    <p class="fs-xs text-muted dark:text-muted mt-0">Pengaturan dasar aplikasi</p>
                 </div>
                 <form method="POST" action="/admin/pengaturan" @submit="saved = true; setTimeout(() => saved = false, 3000)">
-                    <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                    <div class="divide-y border dark:divide-slate-700/50">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
                             <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">App Name</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Nama aplikasi yang ditampilkan di title bar dan header</p>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">App Name</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Nama aplikasi yang ditampilkan di title bar dan header</p>
                             </div>
-                            <div class="sm:col-span-2">
-                                <input type="text" name="app_name" value="[[.Settings.AppName]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
+                            <div class="col-sm-8">
+                                <input type="text" name="app_name" value="[[.Settings.AppName]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    ">
                             </div>
                         </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
                             <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">App URL</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">URL publik aplikasi (contoh: https://investo.id)</p>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">App URL</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">URL publik aplikasi (contoh: https://investo.id)</p>
                             </div>
-                            <div class="sm:col-span-2">
-                                <input type="url" name="app_url" value="[[.Settings.AppURL]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
+                            <div class="col-sm-8">
+                                <input type="url" name="app_url" value="[[.Settings.AppURL]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    ">
                             </div>
                         </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
                             <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Default Data Source</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Sumber data default untuk harga saham (IDX / Yahoo Finance / Alpha Vantage)</p>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">Default Data Source</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Sumber data default untuk harga saham (IDX / Yahoo Finance / Alpha Vantage)</p>
                             </div>
-                            <div class="sm:col-span-2">
-                                <select name="default_data_source" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow appearance-none bg-no-repeat" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e&quot;); background-position: right 0.75rem center; background-size: 1.25rem;">
+                            <div class="col-sm-8">
+                                <select name="default_data_source" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm     appearance-none bg-no-repeat" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e&quot;); background-position: right 0.75rem center; background-size: 1.25rem;">
                                     <option value="idx" [[if eq .Settings.DefaultDataSource "idx"]]selected[[end]]>IDX (Bursa Efek Indonesia)</option>
                                     <option value="yahoo" [[if eq .Settings.DefaultDataSource "yahoo"]]selected[[end]]>Yahoo Finance</option>
                                     <option value="alpha_vantage" [[if eq .Settings.DefaultDataSource "alpha_vantage"]]selected[[end]]>Alpha Vantage</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
                             <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Scraper Interval (menit)</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Interval penjadwalan scraper data harga saham</p>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">Scraper Interval (menit)</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Interval penjadwalan scraper data harga saham</p>
                             </div>
-                            <div class="sm:col-span-2">
-                                <input type="number" name="scraper_interval" value="[[.Settings.ScraperInterval]]" min="1" max="1440" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
+                            <div class="col-sm-8">
+                                <input type="number" name="scraper_interval" value="[[.Settings.ScraperInterval]]" min="1" max="1440" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm font-monospace    ">
                             </div>
                         </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
                             <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Max Alerts Per User</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Batas maksimal alert/notifikasi per pengguna</p>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">Max Alerts Per User</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Batas maksimal alert/notifikasi per pengguna</p>
                             </div>
-                            <div class="sm:col-span-2">
-                                <input type="number" name="max_alerts_per_user" value="[[.Settings.MaxAlertsPerUser]]" min="1" max="100" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700">
-                        <h2 class="font-bold text-base text-slate-900 dark:text-white mb-1">Email (SMTP)</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Konfigurasi pengiriman email</p>
-                    </div>
-                    <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                            <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Host</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Server SMTP untuk pengiriman email</p>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <input type="text" name="smtp_host" value="[[.Settings.SMTPHost]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="smtp.gmail.com">
-                            </div>
-                        </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                            <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Port</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Port SMTP (umum: 587 untuk TLS, 465 untuk SSL)</p>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <input type="number" name="smtp_port" value="[[.Settings.SMTPPort]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="587">
-                            </div>
-                        </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                            <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Username</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Username akun SMTP</p>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <input type="text" name="smtp_user" value="[[.Settings.SMTPUser]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="user@gmail.com">
-                            </div>
-                        </div>
-                        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                            <div>
-                                <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">SMTP Password</label>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Password / App Password SMTP</p>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <input type="password" name="smtp_password" value="[[.Settings.SMTPPassword]]" class="input-dark w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-shadow" placeholder="••••••••">
+                            <div class="col-sm-8">
+                                <input type="number" name="max_alerts_per_user" value="[[.Settings.MaxAlertsPerUser]]" min="1" max="100" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm font-monospace    ">
                             </div>
                         </div>
                     </div>
 
-                    <div class="px-6 py-5 border-t border-slate-200 dark:border-slate-700 flex items-center gap-4">
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98]">
+                    <div class="px-2 py-2 border-top border dark:border-slate-700">
+                        <h2 class="fw-bold fs-base text-body dark:text-white mb-1">Email (SMTP)</h2>
+                        <p class="fs-xs text-muted dark:text-muted">Konfigurasi pengiriman email</p>
+                    </div>
+                    <div class="divide-y border dark:divide-slate-700/50">
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
+                            <div>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">SMTP Host</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Server SMTP untuk pengiriman email</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" name="smtp_host" value="[[.Settings.SMTPHost]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="smtp.gmail.com">
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
+                            <div>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">SMTP Port</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Port SMTP (umum: 587 untuk TLS, 465 untuk SSL)</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="number" name="smtp_port" value="[[.Settings.SMTPPort]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm font-monospace    " placeholder="587">
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
+                            <div>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">SMTP Username</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Username akun SMTP</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" name="smtp_user" value="[[.Settings.SMTPUser]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="user@gmail.com">
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 row row-cols-1 row-cols-sm-3 gap-4 align-items-start">
+                            <div>
+                                <label class="fs-sm fw-semibold text-body dark:text-body">SMTP Password</label>
+                                <p class="fs-6 text-muted dark:text-muted mt-0">Password / App Password SMTP</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="password" name="smtp_password" value="[[.Settings.SMTPPassword]]" class="form-control w-100 px-2 py-2 rounded-3 border fs-sm    " placeholder="••••••••">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-2 py-2 border-top border dark:border-slate-700 d-flex align-items-center gap-4">
+                        <button type="submit" class="px-2 py-2 rounded-3 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold    shadow-lg   ">
                             Simpan Pengaturan
                         </button>
-                        <div x-show="saved" x-transition class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+                        <div x-show="saved" x-transition class="d-flex align-items-center gap-2 text-success dark:text-success fs-sm fw-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             Pengaturan disimpan
                         </div>
@@ -240,26 +234,26 @@
                 </form>
             </div>
 
-            <div class="card rounded-2xl border shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                    <h2 class="font-bold text-base text-slate-900 dark:text-white">Informasi Sistem</h2>
+            <div class="card rounded-4 border shadow-sm overflow-hidden">
+                <div class="px-2 py-2 border-bottom border dark:border-slate-700">
+                    <h2 class="fw-bold fs-base text-body dark:text-white">Informasi Sistem</h2>
                 </div>
-                <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                    <div class="px-6 py-3 flex items-center justify-between text-sm">
-                        <span class="text-slate-500 dark:text-slate-400">Go Version</span>
-                        <span class="font-mono text-slate-700 dark:text-slate-300 font-semibold">[[.GoVersion]]</span>
+                <div class="divide-y border dark:divide-slate-700/50">
+                    <div class="px-2 py-2 d-flex align-items-center justify-content-between fs-sm">
+                        <span class="text-muted dark:text-muted">Go Version</span>
+                        <span class="font-monospace text-body dark:text-body fw-semibold">[[.GoVersion]]</span>
                     </div>
-                    <div class="px-6 py-3 flex items-center justify-between text-sm">
-                        <span class="text-slate-500 dark:text-slate-400">App Version</span>
-                        <span class="font-mono text-slate-700 dark:text-slate-300 font-semibold">[[.AppVersion]]</span>
+                    <div class="px-2 py-2 d-flex align-items-center justify-content-between fs-sm">
+                        <span class="text-muted dark:text-muted">App Version</span>
+                        <span class="font-monospace text-body dark:text-body fw-semibold">[[.AppVersion]]</span>
                     </div>
-                    <div class="px-6 py-3 flex items-center justify-between text-sm">
-                        <span class="text-slate-500 dark:text-slate-400">Database</span>
-                        <span class="font-mono text-slate-700 dark:text-slate-300 font-semibold">[[if .DBConnected]]<span class="text-emerald-600 dark:text-emerald-400">Connected</span>[[else]]<span class="text-red-500">Disconnected</span>[[end]]</span>
+                    <div class="px-2 py-2 d-flex align-items-center justify-content-between fs-sm">
+                        <span class="text-muted dark:text-muted">Database</span>
+                        <span class="font-monospace text-body dark:text-body fw-semibold">[[if .DBConnected]]<span class="text-success dark:text-success">Connected</span>[[else]]<span class="text-danger">Disconnected</span>[[end]]</span>
                     </div>
-                    <div class="px-6 py-3 flex items-center justify-between text-sm">
-                        <span class="text-slate-500 dark:text-slate-400">Uptime</span>
-                        <span class="font-mono text-slate-700 dark:text-slate-300 font-semibold">[[.Uptime]]</span>
+                    <div class="px-2 py-2 d-flex align-items-center justify-content-between fs-sm">
+                        <span class="text-muted dark:text-muted">Uptime</span>
+                        <span class="font-monospace text-body dark:text-body fw-semibold">[[.Uptime]]</span>
                     </div>
                 </div>
             </div>

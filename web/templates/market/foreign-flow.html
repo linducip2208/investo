@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -44,7 +44,7 @@
 <body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3">
@@ -55,7 +55,7 @@
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
-            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -87,7 +87,7 @@
         <div class="max-w-7xl mx-auto vstack gap-4">
             <div>
                 <h1 class="fs-1 fw-bold text-white">🌏 Foreign vs Domestic Flow</h1>
-                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Aliran dana asing masuk dan keluar pasar saham Indonesia</p>
+                <p class="text-muted dark:text-muted fs-sm mt-1">Aliran dana asing masuk dan keluar pasar saham Indonesia</p>
                 [[if .Flows]][[if (index .Flows 0).IsDemo]]
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
                     <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif / demo</span> — contoh, bukan data real-time (feed foreign flow belum tersedia).</p>
@@ -98,7 +98,7 @@
             <div class="net-summary">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
                     <div>
-                        <p class="text-muted dark:text-slate-400 fs-sm">Net Foreign Flow Hari Ini</p>
+                        <p class="text-muted dark:text-muted fs-sm">Net Foreign Flow Hari Ini</p>
                         <p class="fs-1 font-monospace fw-bold [[if eq .FlowDirection "Net Inflow"]]text-success[[else]]text-danger[[end]] mt-1">
                             [[if eq .FlowDirection "Net Inflow"]]+[[else]]-[[end]]Rp [[formatNumber .TotalNet]]
                         </p>

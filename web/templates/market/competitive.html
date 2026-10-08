@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -160,10 +160,10 @@
     </aside>
 
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Supply Chain /</span> Competitive Landscape</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Supply Chain /</span> Competitive Landscape</div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]
             <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body  ">
@@ -177,7 +177,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Loading competitive landscape...</p>
+                <p class="text-muted dark:text-muted">Loading competitive landscape...</p>
             </div>
         </template>
 
@@ -186,7 +186,7 @@
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
                         <h1 class="fs-1 fw-bold text-white">Competitive Landscape</h1>
-                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Porter's Five Forces analysis for IDX sectors</p>
+                        <p class="text-muted dark:text-muted fs-sm mt-1">Porter's Five Forces analysis for IDX sectors</p>
                     </div>
                     <select x-model="selectedSector" @change="loadSector()"
                             class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
@@ -219,7 +219,7 @@
                                             </div>
                                             <div>
                                                 <div class="fs-6 text-muted text-uppercase">Revenue Growth</div>
-                                                <span class="font-monospace" :class="c.revenue_growth > 0 ? 'text-green-400' : 'text-red-400'" x-text="c.revenue_growth.toFixed(1) + '%'"></span>
+                                                <span class="font-monospace" :class="c.revenue_growth > 0 ? 'text-success' : 'text-danger'" x-text="c.revenue_growth.toFixed(1) + '%'"></span>
                                             </div>
                                             <div>
                                                 <div class="fs-6 text-muted text-uppercase">Porter Rivalry</div>
@@ -232,25 +232,25 @@
                                         </div>
                                         <div class="border-top border dark:border pt-2">
                                             <div class="fs-6 text-muted text-uppercase mb-1">Key Differentiator</div>
-                                            <span class="fs-xs text-muted dark:text-slate-400" x-text="c.differentiator"></span>
+                                            <span class="fs-xs text-muted dark:text-muted" x-text="c.differentiator"></span>
                                         </div>
                                         <div class="mt-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-2 p-2">
                                             <div class="fs-6 text-muted text-uppercase mb-2">Porter's Five Forces Summary</div>
                                             <div class="row row-cols-2 row-cols-md-5 gap-2 fs-6">
                                                 <div class="text-center">
-                                                    <div class="fw-semibold" :class="c.supplier_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Supplier: ' + c.supplier_power + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.supplier_power > 6 ? 'text-danger' : 'text-success'" x-text="'Supplier: ' + c.supplier_power + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="fw-semibold" :class="c.buyer_power > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Buyer: ' + c.buyer_power + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.buyer_power > 6 ? 'text-danger' : 'text-success'" x-text="'Buyer: ' + c.buyer_power + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="fw-semibold" :class="c.rivalry > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Rivalry: ' + c.rivalry + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.rivalry > 6 ? 'text-danger' : 'text-success'" x-text="'Rivalry: ' + c.rivalry + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="fw-semibold" :class="c.barrier < 5 ? 'text-red-400' : 'text-green-400'" x-text="'Entry: ' + c.barrier + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.barrier < 5 ? 'text-danger' : 'text-success'" x-text="'Entry: ' + c.barrier + '/10'"></div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <div class="fw-semibold" :class="c.substitute > 6 ? 'text-red-400' : 'text-green-400'" x-text="'Sub: ' + c.substitute + '/10'"></div>
+                                                    <div class="fw-semibold" :class="c.substitute > 6 ? 'text-danger' : 'text-success'" x-text="'Sub: ' + c.substitute + '/10'"></div>
                                                 </div>
                                             </div>
                                         </div>

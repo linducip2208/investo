@@ -6,7 +6,7 @@
     <title>Watchlist Saya &mdash; Investo</title>
     <meta name="description" content="Pantau saham favorit Anda dengan watchlist personal. Lacak pergerakan harga dan buat keputusan investasi lebih cepat.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -160,12 +160,12 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -177,7 +177,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4 mb-2">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Watchlist Saya</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Pantau saham favorit Anda dalam satu tempat</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Pantau saham favorit Anda dalam satu tempat</p>
                 </div>
                 <button @click="modalOpen = true" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-3 shadow-lg  ">
                     <svg class="w-4 h-4 d-inline me-1 mt-n1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -189,7 +189,7 @@
             <div class="mb-2 border-bottom border dark:border-slate-800 overflow-x-auto">
                 <div class="d-flex gap-1 mb-n1">
                     [[range .Watchlists]]
-                    <button @click="activeWatchlist='[[.ID]]'" :class="activeWatchlist==='[[.ID]]'?'border-blue-400 text-primary bg-primary-lt':'border-transparent text-muted dark:text-slate-400 " class="px-2 py-2 fs-sm fw-semibold border-bottom rounded-top-2  text-nowrap">[[.Name]] <span class="ms-1 fs-xs fw-normal text-muted">([[.StockCount]])</span></button>
+                    <button @click="activeWatchlist='[[.ID]]'" :class="activeWatchlist==='[[.ID]]'?'border-blue-400 text-primary bg-primary-lt':'border-transparent text-muted dark:text-muted " class="px-2 py-2 fs-sm fw-semibold border-bottom rounded-top-2  text-nowrap">[[.Name]] <span class="ms-1 fs-xs fw-normal text-muted">([[.StockCount]])</span></button>
                     [[end]]
                 </div>
             </div>
@@ -202,18 +202,18 @@
                         <table class="table table-vcenter table-hover w-100 fs-sm">
                             <thead>
                                 <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kode</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Nama</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Harga</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Perubahan</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Aksi</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Kode</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Nama</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Harga</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Perubahan</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y border/30 dark:divide-slate-700/30">
                                 [[range .Stocks]]
-                                <tr class=" dark:hover:bg-slate-700/20  cursor-pointer" onclick="window.location='/saham/[[.Code]]'">
+                                <tr class=" dark:hover:bg-secondary-lt/20  cursor-pointer" onclick="window.location='/saham/[[.Code]]'">
                                     <td class="px-2 py-2"><span class="fw-bold text-primary ">[[.Code]]</span></td>
-                                    <td class="px-2 py-2 text-body dark:text-slate-300 max-w-160 text-truncate">[[.Name]]</td>
+                                    <td class="px-2 py-2 text-body dark:text-body max-w-160 text-truncate">[[.Name]]</td>
                                     <td class="px-2 py-2 text-end font-monospace fw-semibold text-white">[[.PriceFormatted]]</td>
                                     <td class="px-2 py-2 text-end font-monospace fs-sm">
                                         [[if ge .ChangePercent 0.0]]
@@ -234,7 +234,7 @@
                 [[else]]
                 <div class="text-center py-2">
                     <div class="display-5 mb-2 opacity-20">⭐</div>
-                    <p class="text-muted dark:text-slate-400 fw-medium">Watchlist ini masih kosong</p>
+                    <p class="text-muted dark:text-muted fw-medium">Watchlist ini masih kosong</p>
                     <p class="fs-sm text-muted mt-1">Buka halaman saham dan tambahkan ke watchlist</p>
                 </div>
                 [[end]]
@@ -243,7 +243,7 @@
             [[else]]
             <div class="text-center py-2">
                 <div class="display-4 mb-2 opacity-20">⭐</div>
-                <p class="text-muted dark:text-slate-400 fw-medium mb-1">Belum ada watchlist</p>
+                <p class="text-muted dark:text-muted fw-medium mb-1">Belum ada watchlist</p>
                 <p class="fs-sm text-muted mb-2">Buat watchlist untuk mulai memantau saham favorit</p>
                 <button @click="modalOpen = true" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-medium rounded-3 ">Buat Watchlist</button>
             </div>
@@ -257,15 +257,15 @@
         <div class="position-relative card p-2 w-100 max-w-md" @click.outside="modalOpen = false">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <h2 class="fs-3 fw-bold text-white">Watchlist Baru</h2>
-                <button @click="modalOpen = false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <button @click="modalOpen = false" class="p-1 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form @submit.prevent="createWatchlist()">
                 <div class="mb-2">
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Nama Watchlist <span class="text-danger">*</span></label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Nama Watchlist <span class="text-danger">*</span></label>
                     <input id="wl-name" type="text" required placeholder="Contoh: Saham Blue Chip" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     ">
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <button type="button" @click="modalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                    <button type="button" @click="modalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-body bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
                     <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Simpan</button>
                 </div>
             </form>

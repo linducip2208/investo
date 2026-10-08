@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Bot · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -196,7 +196,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
@@ -215,7 +215,7 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">🤖 WhatsApp Bot</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Dapatkan info saham & forex langsung via WhatsApp. Kirim perintah dan dapatkan respons instan.</p>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Dapatkan info saham & forex langsung via WhatsApp. Kirim perintah dan dapatkan respons instan.</p>
             </div>
 
             <div class="row row-cols-1 row-cols-lg-3 gap-4">
@@ -247,7 +247,7 @@
 
                     <div class="card p-2">
                         <h2 class="widget-title mb-2">Test Bot</h2>
-                        <p class="fs-sm text-muted dark:text-slate-400 mb-2">Simulasikan mengirim perintah ke bot dan lihat responnya.</p>
+                        <p class="fs-sm text-muted dark:text-muted mb-2">Simulasikan mengirim perintah ke bot dan lihat responnya.</p>
                         <div class="d-flex gap-2">
                             <input type="text" x-model="testCommand" placeholder="INFO BBCA" @keydown.enter="sendTest()"
                                 class="flex-fill px-2 py-2 bg-white dark:bg-white border border rounded-3 fs-sm text-white      text-uppercase">
@@ -274,7 +274,7 @@
                                 <div class="d-flex align-items-center gap-2 mb-1">
                                     <span class="fs-xs font-monospace fw-bold text-primary">INFO {CODE}</span>
                                 </div>
-                                <p class="fs-xs text-muted dark:text-slate-400 mb-2">Info lengkap saham</p>
+                                <p class="fs-xs text-muted dark:text-muted mb-2">Info lengkap saham</p>
                                 <div class="bg-body dark:bg-slate-900 rounded-2 p-2 fs-xs font-monospace text-body dark:text-body">
                                     💰 BBCA: Rp 10,150<br>
                                     📈 +2.3%<br>
@@ -284,38 +284,38 @@
 
                             <div class="p-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-3">
                                 <span class="fs-xs font-monospace fw-bold text-success">HARGA {CODE}</span>
-                                <p class="fs-xs text-muted dark:text-slate-400 mt-1">Harga saham terkini</p>
+                                <p class="fs-xs text-muted dark:text-muted mt-1">Harga saham terkini</p>
                                 <div class="bg-body dark:bg-slate-900 rounded-2 p-2 fs-xs font-monospace text-body dark:text-body mt-1">💰 BBCA: Rp 10,150</div>
                             </div>
 
                             <div class="p-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-3">
                                 <span class="fs-xs font-monospace fw-bold text-primary">CHART {CODE}</span>
-                                <p class="fs-xs text-muted dark:text-slate-400 mt-1">Link halaman chart</p>
+                                <p class="fs-xs text-muted dark:text-muted mt-1">Link halaman chart</p>
                                 <div class="bg-body dark:bg-slate-900 rounded-2 p-2 fs-xs font-monospace text-body dark:text-body mt-1">📊 Chart BBCA: /saham/bbca</div>
                             </div>
 
                             <div class="p-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-3">
                                 <span class="fs-xs font-monospace fw-bold text-info">FOREX {PAIR}</span>
-                                <p class="fs-xs text-muted dark:text-slate-400 mt-1">Info pasangan mata uang</p>
+                                <p class="fs-xs text-muted dark:text-muted mt-1">Info pasangan mata uang</p>
                                 <div class="bg-body dark:bg-slate-900 rounded-2 p-2 fs-xs font-monospace text-body dark:text-body mt-1">💱 USD/IDR: 15,750.00</div>
                             </div>
 
                             <div class="p-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-3">
                                 <span class="fs-xs font-monospace fw-bold text-warning">ALERT {CODE} {PRICE}</span>
-                                <p class="fs-xs text-muted dark:text-slate-400 mt-1">Buat alert harga</p>
+                                <p class="fs-xs text-muted dark:text-muted mt-1">Buat alert harga</p>
                                 <div class="bg-body dark:bg-slate-900 rounded-2 p-2 fs-xs font-monospace text-body dark:text-body mt-1">✅ Alert dibuat: BBCA > 12,000</div>
                             </div>
 
                             <div class="p-2 bg-white bg-opacity-50 dark:bg-white/50 rounded-3">
                                 <span class="fs-xs font-monospace fw-bold text-primary">HELP</span>
-                                <p class="fs-xs text-muted dark:text-slate-400 mt-1">Tampilkan bantuan</p>
+                                <p class="fs-xs text-muted dark:text-muted mt-1">Tampilkan bantuan</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="card p-2 mt-2" style="background:linear-gradient(135deg,#1e293b,#0f172a)">
                         <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Cara Konek</h3>
-                        <div class="vstack gap-2 fs-xs text-muted dark:text-slate-400">
+                        <div class="vstack gap-2 fs-xs text-muted dark:text-muted">
                             <div class="d-flex gap-2"><span class="text-success">1.</span> Simpan nomor bot ke kontak WhatsApp</div>
                             <div class="d-flex gap-2"><span class="text-success">2.</span> Kirim pesan "HELP" untuk memulai</div>
                             <div class="d-flex gap-2"><span class="text-success">3.</span> Bot akan merespons otomatis</div>

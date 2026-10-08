@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan AI · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -124,7 +124,7 @@
 
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-3">
                 <span class="fs-1 sparkle">🤖</span>
                 <h1 class="fs-3 fw-bold text-white">Pengaturan AI</h1>
@@ -138,18 +138,18 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div class="card p-2 max-w-2xl">
                 <h2 class="fs-3 fw-bold text-white mb-1">Konfigurasi AI Provider</h2>
-                <p class="fs-sm text-muted dark:text-slate-400 mb-2">Atur koneksi AI untuk fitur Smart Search, Report Generator, dan Social Post.</p>
+                <p class="fs-sm text-muted dark:text-muted mb-2">Atur koneksi AI untuk fitur Smart Search, Report Generator, dan Social Post.</p>
                 <form class="vstack gap-3">
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">API Key</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">API Key</label>
                         <input type="password" x-model="apiKey" placeholder="sk-...">
                     </div>
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Base URL</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Base URL</label>
                         <input type="text" x-model="baseUrl" placeholder="https://api.openai.com/v1">
                     </div>
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Model</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Model</label>
                         <input type="text" x-model="model" placeholder="gpt-4o-mini">
                     </div>
                     <button type="button" @click="save()" class="btn btn-primary">

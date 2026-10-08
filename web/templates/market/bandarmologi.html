@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -46,7 +46,7 @@
 <body class="h-100" x-data="{ sidebarOpen: false }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-white">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3">
@@ -59,7 +59,7 @@
             [[if .User]]
             <a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
             [[else]]
-            <a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>
+            <a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>
             [[end]]
         </div>
     </div>
@@ -94,7 +94,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-4">
                 <div>
                     <h1 class="fs-1 fw-bold text-white">🕵️ Bandarmologi</h1>
-                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Deteksi aktivitas bandar berdasarkan pola volume dan harga</p>
+                    <p class="text-muted dark:text-muted fs-sm mt-1">Deteksi aktivitas bandar berdasarkan pola volume dan harga</p>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                     <div class="d-flex align-items-start justify-content-between">
                         <div>
                             <a href="/saham/[[.StockCode]]" class="text-white fw-bold  ">[[.StockCode]]</a>
-                            <p class="text-muted dark:text-slate-400 fs-xs">[[.StockName]]</p>
+                            <p class="text-muted dark:text-muted fs-xs">[[.StockName]]</p>
                         </div>
                         <span class="badge badge-[[.Type]]">[[.Type]]</span>
                     </div>

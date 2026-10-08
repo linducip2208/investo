@@ -6,7 +6,7 @@
     <title>Trade Journal &mdash; Investo</title>
     <meta name="description" content="Catat dan analisis setiap trade Anda. Track win rate, profit/loss, dan emosi trading.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -142,9 +142,9 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
-            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-slate-400">
+            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-muted">
                 <span class="text-white fw-medium">Trade Journal</span>
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto ps-2 border-start border dark:border-slate-700">
@@ -159,7 +159,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">📓 Trade Journal</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Catat setiap trade untuk evaluasi dan improvement</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Catat setiap trade untuk evaluasi dan improvement</p>
                 </div>
                 <button @click="showModal = true"
                     class="px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3    shadow-lg">
@@ -198,7 +198,7 @@
 
             <div class="d-flex flex-wrap align-items-center gap-3">
                 <div class="d-flex align-items-center gap-2">
-                    <label class="fs-xs text-muted dark:text-slate-400">Filter:</label>
+                    <label class="fs-xs text-muted dark:text-muted">Filter:</label>
                     <input type="text" x-model="filterStock" placeholder="Kode saham..."
                         class="w-28 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-1 fs-xs text-white font-monospace text-uppercase   ">
                 </div>
@@ -215,22 +215,22 @@
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
-                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Arah</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Entry</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Exit</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Qty</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">P/L</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">ROI</th>
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Strategi</th>
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Emosi</th>
-                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase "></th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</th>
+                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Arah</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Entry</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Exit</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Qty</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">P/L</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">ROI</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Strategi</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Emosi</th>
+                                <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase "></th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border/30 dark:divide-slate-700/30">
                             [[if .Journals]]
                             [[range .Journals]]
-                            <tr class=" dark:hover:bg-slate-700/20 ">
+                            <tr class=" dark:hover:bg-secondary-lt/20 ">
                                 <td class="px-2 py-2">
                                     <a href="/saham/[[.StockCode]]" class="fw-bold text-primary  fs-sm">[[.StockCode]]</a>
                                 </td>
@@ -249,7 +249,7 @@
                                     <span class="text-muted">Open</span>
                                     [[end]]
                                 </td>
-                                <td class="px-2 py-2 text-end font-monospace fs-xs text-muted dark:text-slate-400 d-none d-table-cell">[[printf "%.0f" .Quantity]]</td>
+                                <td class="px-2 py-2 text-end font-monospace fs-xs text-muted dark:text-muted d-none d-table-cell">[[printf "%.0f" .Quantity]]</td>
                                 <td class="px-2 py-2 text-end font-monospace fs-xs fw-semibold">
                                     [[if .ProfitLoss]]
                                     <span class="[[if ge .ProfitLoss 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .ProfitLoss 0.0]]+[[end]]Rp [[printf "%.0f" .ProfitLoss]]</span>
@@ -264,7 +264,7 @@
                                     <span class="text-muted">--</span>
                                     [[end]]
                                 </td>
-                                <td class="px-2 py-2 fs-xs text-muted dark:text-slate-400 d-none d-table-cell max-w-120 text-truncate">[[.StrategyUsed]]</td>
+                                <td class="px-2 py-2 fs-xs text-muted dark:text-muted d-none d-table-cell max-w-120 text-truncate">[[.StrategyUsed]]</td>
                                 <td class="px-2 py-2 d-none d-table-cell">
                                     [[if .Emotions]]
                                     <span class="emotion-tag [[if eq .Emotions "Confident"]]emotion-confident[[else if eq .Emotions "Nervous"]]emotion-nervous[[else if eq .Emotions "FOMO"]]emotion-fomo[[else if eq .Emotions "Patient"]]emotion-patient[[else if eq .Emotions "Regretful"]]emotion-regretful[[else]]emotion-patient[[end]]">[[.Emotions]]</span>
@@ -299,40 +299,40 @@
                 <div class="card p-2 w-100 max-w-lg max-h-90 overflow-y-auto" @click.outside="showModal = false">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <h2 class="fs-3 fw-bold text-white">New Trade Entry</h2>
-                        <button @click="showModal = false" class="text-muted dark:text-slate-400  p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                        <button @click="showModal = false" class="text-muted dark:text-muted  p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                     </div>
                     <form method="POST" action="/dashboard/journal" class="vstack gap-2">
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Kode Saham</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Kode Saham</label>
                             <input type="text" name="stock_code" required placeholder="BBCA" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace text-uppercase   ">
                         </div>
                         <div class="row row-cols-2 gap-3">
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Entry Date</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Entry Date</label>
                                 <input type="date" name="entry_date" required class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             </div>
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Exit Date</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Exit Date</label>
                                 <input type="date" name="exit_date" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             </div>
                         </div>
                         <div class="row row-cols-2 gap-3">
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Entry Price</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Entry Price</label>
                                 <input type="number" name="entry_price" required step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
                             </div>
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Exit Price</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Exit Price</label>
                                 <input type="number" name="exit_price" step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
                             </div>
                         </div>
                         <div class="row row-cols-2 gap-3">
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Quantity (lot)</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Quantity (lot)</label>
                                 <input type="number" name="quantity" required step="1" placeholder="0" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white font-monospace   ">
                             </div>
                             <div>
-                                <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Direction</label>
+                                <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Direction</label>
                                 <select name="direction" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                     <option value="buy">BUY (Long)</option>
                                     <option value="sell">SELL (Short)</option>
@@ -340,7 +340,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Strategi</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Strategi</label>
                             <select name="strategy_used" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih Strategi --</option>
                                 <option value="Golden Cross Swing">Golden Cross Swing</option>
@@ -355,7 +355,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Emosi</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Emosi</label>
                             <select name="emotions" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih --</option>
                                 <option value="Confident">Confident (Percaya Diri)</option>
@@ -366,7 +366,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Outcome</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Outcome</label>
                             <select name="outcome" class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white  ">
                                 <option value="">-- Pilih --</option>
                                 <option value="win">Win</option>
@@ -375,11 +375,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Catatan</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Catatan</label>
                             <textarea name="notes" rows="3" placeholder="Alasan entry, lesson learned, dll..." class="w-100 bg-body/50 dark:bg-slate-700/50 border border rounded-2 px-2 py-2 fs-sm text-white    resize-none"></textarea>
                         </div>
                         <div class="d-flex gap-3 pt-2">
-                            <button type="button" @click="showModal = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body/50 dark:bg-slate-700/50 border border rounded-3  dark:hover:bg-slate-700 ">Batal</button>
+                            <button type="button" @click="showModal = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-body bg-body/50 dark:bg-slate-700/50 border border rounded-3  dark:hover:bg-secondary-lt ">Batal</button>
                             <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3    shadow-lg">Simpan</button>
                         </div>
                     </form>

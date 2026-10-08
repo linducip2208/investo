@@ -6,7 +6,7 @@
     <title>[[.Portfolio.Name]] &mdash; Analytics &mdash; Investo</title>
     <meta name="description" content="Analytics mendalam portofolio [[.Portfolio.Name]]: performa, alokasi sektor, dan atribusi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -127,9 +127,9 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
-            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-slate-400">
+            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-muted">
                 <a href="/dashboard/portfolios" class=" ">Portofolio</a>
                 <span>/</span>
                 <a href="/dashboard/portfolios/[[.Portfolio.ID]]" class=" ">[[.Portfolio.Name]]</a>
@@ -146,7 +146,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">[[.Portfolio.Name]]</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Portfolio Intelligence & Analytics</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Portfolio Intelligence & Analytics</p>
                 </div>
                 <div class="text-end">
                     <div class="fs-1 font-monospace fw-bold text-white">[[if .Performance]]Rp [[printf "%.0f" .Performance.TotalValue]][[end]]</div>
@@ -156,13 +156,13 @@
 
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 gap-3">
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Total Return</span>
-                    <div class="mt-1 font-monospace fs-3 fw-bold [[if .Performance]][[if ge .Performance.TotalGainPercent 0.0]]text-success[[else]]text-danger[[end]][[else]]text-slate-400[[end]]">[[if .Performance]][[printf "%.2f" .Performance.TotalGainPercent]]%[[else]]--[[end]]</div>
+                    <div class="mt-1 font-monospace fs-3 fw-bold [[if .Performance]][[if ge .Performance.TotalGainPercent 0.0]]text-success[[else]]text-danger[[end]][[else]]text-muted[[end]]">[[if .Performance]][[printf "%.2f" .Performance.TotalGainPercent]]%[[else]]--[[end]]</div>
                 </div>
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Volatility</span><div class="mt-1 font-monospace fs-3 fw-bold text-white">--</div></div>
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Sharpe Ratio</span><div class="mt-1 font-monospace fs-3 fw-bold text-white">--</div></div>
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Max Drawdown</span><div class="mt-1 font-monospace fs-3 fw-bold text-danger">--</div></div>
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Win Rate</span>
-                    <div class="mt-1 font-monospace fs-3 fw-bold [[if .Attribution]][[if ge .Attribution.WinRate 50.0]]text-success[[else]]text-danger[[end]][[else]]text-slate-400[[end]]">[[if .Attribution]][[printf "%.0f" .Attribution.WinRate]]%[[else]]--[[end]]</div>
+                    <div class="mt-1 font-monospace fs-3 fw-bold [[if .Attribution]][[if ge .Attribution.WinRate 50.0]]text-success[[else]]text-danger[[end]][[else]]text-muted[[end]]">[[if .Attribution]][[printf "%.0f" .Attribution.WinRate]]%[[else]]--[[end]]</div>
                 </div>
                 <div class="card p-2"><span class="fs-6 fw-semibold text-muted text-uppercase ">Holdings</span><div class="mt-1 font-monospace fs-3 fw-bold text-white">[[if .Performance]][[len .Performance.Holdings]][[else]]0[[end]]</div></div>
             </div>
@@ -192,24 +192,24 @@
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Stock</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Qty</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Avg</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Price</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Value</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Weight</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Gain</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Stock</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Qty</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Avg</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Price</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Value</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Weight</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Gain</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border/30 dark:divide-slate-700/30">
                             [[if .Performance]][[range .Performance.Holdings]]
-                            <tr class=" dark:hover:bg-slate-700/20 ">
+                            <tr class=" dark:hover:bg-secondary-lt/20 ">
                                 <td class="px-2 py-2"><a href="/saham/[[.Stock.Code]]" class="fw-bold text-primary ">[[.Stock.Code]]</a><span class="text-muted ms-1 d-none d-sm-inline">[[.Stock.Name]]</span></td>
                                 <td class="px-2 py-2 text-end font-monospace">[[printf "%.0f" .Quantity]]</td>
                                 <td class="px-2 py-2 text-end font-monospace text-muted d-none d-table-cell">[[printf "%.0f" .AvgPrice]]</td>
                                 <td class="px-2 py-2 text-end font-monospace fw-semibold text-white">[[printf "%.0f" .CurrentPrice]]</td>
                                 <td class="px-2 py-2 text-end font-monospace text-white">[[printf "%.0f" .MarketValue]]</td>
-                                <td class="px-2 py-2 text-end font-monospace text-muted dark:text-slate-400 d-none d-table-cell">[[printf "%.1f" .Weight]]%</td>
+                                <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted d-none d-table-cell">[[printf "%.1f" .Weight]]%</td>
                                 <td class="px-2 py-2 text-end font-monospace fw-semibold [[if ge .GainPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .GainPercent 0.0]]+[[end]][[printf "%.2f" .GainPercent]]%</td>
                             </tr>
                             [[end]][[end]]

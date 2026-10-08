@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COT Data (Commitment of Traders) · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -172,7 +172,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block"><input type="text" placeholder="Cari saham, forex..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white   "></div>
             <div class="d-flex align-items-center gap-2 ms-auto">
                 <div class="fs-xs text-muted font-monospace" x-text="clock"></div>
@@ -187,7 +187,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">COT Data — Commitment of Traders</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Posisi trader institusional di pasar futures forex</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Posisi trader institusional di pasar futures forex</p>
                 </div>
             </div>
 
@@ -198,7 +198,7 @@
 
             <div class="d-flex flex-wrap gap-2">
                 [[range .Reports]]
-                <button @click="loadCOT('[[.Pair]]')" :class="selectedPair==='[[.Pair]]'?'bg-blue-600 text-white':'bg-secondary-lt text-slate-400'" class="px-2 py-2 rounded-3 fs-sm fw-semibold  ">[[.Pair]]</button>
+                <button @click="loadCOT('[[.Pair]]')" :class="selectedPair==='[[.Pair]]'?'bg-blue-600 text-white':'bg-secondary-lt text-muted'" class="px-2 py-2 rounded-3 fs-sm fw-semibold  ">[[.Pair]]</button>
                 [[end]]
             </div>
 
@@ -222,7 +222,7 @@
                             </div>
                             <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
                                 <span class="fs-6 text-muted">Net Positions</span>
-                                <span class="font-monospace fs-base fw-bold d-block" :class="report.net_positions >= 0 ? 'text-emerald-400' : 'text-red-400'" x-text="fmt(report.net_positions)"></span>
+                                <span class="font-monospace fs-base fw-bold d-block" :class="report.net_positions >= 0 ? 'text-success' : 'text-danger'" x-text="fmt(report.net_positions)"></span>
                             </div>
                             <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
                                 <span class="fs-6 text-muted">Open Interest</span>
@@ -243,7 +243,7 @@
 
                     <div class="card p-2">
                         <div class="widget-title">Cara Membaca COT</div>
-                        <ul class="fs-xs text-muted dark:text-slate-400 vstack gap-1">
+                        <ul class="fs-xs text-muted dark:text-muted vstack gap-1">
                             <li><b class="text-white">COT Index 80+</b> = posisi long ekstrem, risiko reversal bearish</li>
                             <li><b class="text-white">COT Index 20-</b> = posisi short ekstrem, risiko reversal bullish</li>
                             <li>Net position positif = spekulator bullish</li>

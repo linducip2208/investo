@@ -6,7 +6,7 @@
     <title>Fundamental [[.Stock.Code]] &mdash; [[.Stock.Name]] &mdash; Investo</title>
     <meta name="description" content="Data fundamental lengkap saham [[.Stock.Code]] ([[.Stock.Name]]): laporan keuangan, rasio, dan metrik valuasi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -146,8 +146,8 @@
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted">
             <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <a href="/saham/[[.Stock.Code]]" class=" ">[[.Stock.Code]]</a>
@@ -179,23 +179,23 @@
             [[if .Fundamentals]]
             [[range $i, $f := .Fundamentals]]
             [[if eq $i 0]]
-            <span class="px-2 py-1 rounded-2 fs-xs fw-semibold [[if eq $f.Source "yahoo"]]bg-success-lt text-emerald-400[[else if eq $f.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-warning-lt text-amber-400[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else if eq $f.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]</span>
+            <span class="px-2 py-1 rounded-2 fs-xs fw-semibold [[if eq $f.Source "yahoo"]]bg-success-lt text-success[[else if eq $f.Source "fmp"]]bg-sky-900/40 text-sky-400[[else]]bg-warning-lt text-warning[[end]]">[[if eq $f.Source "yahoo"]]Data: Yahoo Finance[[else if eq $f.Source "fmp"]]Data: FMP[[else]]Data: Estimasi[[end]]</span>
             [[end]]
             [[end]]
             [[end]]
         </div>
-        <p class="fs-3 text-muted dark:text-slate-400 mt-n2">[[.Stock.Name]]</p>
+        <p class="fs-3 text-muted dark:text-muted mt-n2">[[.Stock.Name]]</p>
 
         <!-- RINGKASAN KEUANGAN -->
         <div>
             <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Ringkasan Keuangan</h2>
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 gap-4">
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Pendapatan</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.RevenueFormatted]]</span></div>
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Laba Bersih</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.NetIncomeFormatted]]</span></div>
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">EPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EPSFormatted]]</span></div>
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">BVPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.BVPSFormatted]]</span></div>
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Aset</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.TotalAssetsFormatted]]</span></div>
-                <div class="card p-2"><span class="fs-xs text-muted dark:text-slate-400">Ekuitas</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EquityFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">Pendapatan</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.RevenueFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">Laba Bersih</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.NetIncomeFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">EPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EPSFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">BVPS</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.BVPSFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">Total Aset</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.TotalAssetsFormatted]]</span></div>
+                <div class="card p-2"><span class="fs-xs text-muted dark:text-muted">Ekuitas</span><span class="d-block mt-1 font-monospace fs-base fw-bold text-body dark:text-[#f8fafc]">[[.FinancialSummary.EquityFormatted]]</span></div>
             </div>
         </div>
 
@@ -204,37 +204,37 @@
             <h2 class="fs-3 fw-bold text-body dark:text-[#f8fafc] mb-2">Rasio Keuangan</h2>
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 gap-4">
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">ROE</span>
+                    <span class="fs-xs text-muted dark:text-muted">ROE</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.ROE 15.0]]text-success[[else if ge .Ratios.ROE 5.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.ROE]]%</span>
                     <span class="fs-6 text-muted mt-1 d-block">Return on Equity</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">ROA</span>
+                    <span class="fs-xs text-muted dark:text-muted">ROA</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.ROA 5.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.ROA]]%</span>
                     <span class="fs-6 text-muted mt-1 d-block">Return on Assets</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">PER</span>
+                    <span class="fs-xs text-muted dark:text-muted">PER</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.PER]]x</span>
                     <span class="fs-6 text-muted mt-1 d-block">Price to Earnings</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">PBV</span>
+                    <span class="fs-xs text-muted dark:text-muted">PBV</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.PBV]]x</span>
                     <span class="fs-6 text-muted mt-1 d-block">Price to Book</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">DER</span>
+                    <span class="fs-xs text-muted dark:text-muted">DER</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if le .Ratios.DER 1.0]]text-success[[else if le .Ratios.DER 2.0]]text-warning[[else]]text-danger[[end]]">[[.Ratios.DER]]x</span>
                     <span class="fs-6 text-muted mt-1 d-block">Debt to Equity</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">NPM</span>
+                    <span class="fs-xs text-muted dark:text-muted">NPM</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold [[if ge .Ratios.NPM 10.0]]text-success[[else]]text-warning[[end]]">[[.Ratios.NPM]]%</span>
                     <span class="fs-6 text-muted mt-1 d-block">Net Profit Margin</span>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs text-muted dark:text-slate-400">Dividend Yield</span>
+                    <span class="fs-xs text-muted dark:text-muted">Dividend Yield</span>
                     <span class="d-block mt-1 font-monospace fs-1 fw-bold text-body dark:text-[#f8fafc]">[[.Ratios.DividendYield]]%</span>
                     <span class="fs-6 text-muted mt-1 d-block">Dividend to Price</span>
                 </div>
@@ -249,13 +249,13 @@
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
-                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Periode</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Pendapatan</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Laba Bersih</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">EPS</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">BVPS</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">ROE</th>
-                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-mobile">DER</th>
+                                <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Periode</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Pendapatan</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Laba Bersih</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">EPS</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">BVPS</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">ROE</th>
+                                <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 hide-mobile">DER</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">

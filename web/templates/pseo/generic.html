@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     <meta property="og:description" content="[[.MetaDescription]]">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -28,55 +28,55 @@
     </style>
 </head>
 <body>
-<nav class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5">
-                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div>
-                <span class="font-bold text-xl text-white">Investo</span>
+<nav class="position-sticky top-0 z-3 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2">
+                <div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div>
+                <span class="fw-bold fs-2 text-white">Investo</span>
             </a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/saham" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Saham</a>
-                <a href="/docs" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Docs</a>
-                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-body dark:text-body  ">Beranda</a>
+                <a href="/saham" class="text-body dark:text-body  ">Saham</a>
+                <a href="/docs" class="text-body dark:text-body  ">Docs</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
             </div>
         </div>
     </div>
 </nav>
 
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-    <h1 class="text-3xl lg:text-4xl font-extrabold text-white mb-4">[[.Title]]</h1>
-    <p class="text-slate-500 dark:text-slate-400 text-lg mb-8">Platform analisa saham & forex Indonesia. Data fundamental lengkap, chart teknikal, screener, portfolio tracker, dan multi-agent AI.</p>
+<div class="max-w-4xl mx-auto px-2 px-sm-4 px-lg-5 py-2 py-lg-5">
+    <h1 class="fs-1 display-6 fw-bolder text-white mb-2">[[.Title]]</h1>
+    <p class="text-muted dark:text-muted fs-3 mb-2">Platform analisa saham & forex Indonesia. Data fundamental lengkap, chart teknikal, screener, portfolio tracker, dan multi-agent AI.</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-        <a href="/saham" class="card p-6 hover:border-blue-500 transition-all">
-            <div class="text-2xl mb-2">📈</div>
-            <div class="font-bold text-white mb-1">Saham IDX</div>
-            <div class="text-sm text-slate-500 dark:text-slate-400">Harga, fundamental, teknikal, valuasi.</div>
+    <div class="row row-cols-1 row-cols-md-3 gap-4 mb-2">
+        <a href="/saham" class="card p-2  ">
+            <div class="fs-1 mb-2">📈</div>
+            <div class="fw-bold text-white mb-1">Saham IDX</div>
+            <div class="fs-sm text-muted dark:text-muted">Harga, fundamental, teknikal, valuasi.</div>
         </a>
-        <a href="/forex" class="card p-6 hover:border-blue-500 transition-all">
-            <div class="text-2xl mb-2">💱</div>
-            <div class="font-bold text-white mb-1">Forex & Crypto</div>
-            <div class="text-sm text-slate-500 dark:text-slate-400">Kurs, strength meter, arbitrage.</div>
+        <a href="/forex" class="card p-2  ">
+            <div class="fs-1 mb-2">💱</div>
+            <div class="fw-bold text-white mb-1">Forex & Crypto</div>
+            <div class="fs-sm text-muted dark:text-muted">Kurs, strength meter, arbitrage.</div>
         </a>
-        <a href="/ai/agents" class="card p-6 hover:border-blue-500 transition-all">
-            <div class="text-2xl mb-2">🧠</div>
-            <div class="font-bold text-white mb-1">Multi-Agent AI</div>
-            <div class="text-sm text-slate-500 dark:text-slate-400">Analisis BUY/SELL/HOLD otomatis.</div>
+        <a href="/ai/agents" class="card p-2  ">
+            <div class="fs-1 mb-2">🧠</div>
+            <div class="fw-bold text-white mb-1">Multi-Agent AI</div>
+            <div class="fs-sm text-muted dark:text-muted">Analisis BUY/SELL/HOLD otomatis.</div>
         </a>
     </div>
 
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 text-white text-center">
-        <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
-        <p class="text-blue-100 max-w-2xl mx-auto mb-6">Dapatkan source code platform investasi lengkap. Whitelabel ready, pSEO built-in, admin panel.</p>
-        <a href="/beli-aplikasi-saham" class="inline-block bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition-all">Lihat Penawaran</a>
+    <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 text-white text-center">
+        <h2 class="fs-1 fw-bold mb-2">Beli Aplikasi Saham — Source Code Investo</h2>
+        <p class="text-primary max-w-2xl mx-auto mb-2">Dapatkan source code platform investasi lengkap. Whitelabel ready, pSEO built-in, admin panel.</p>
+        <a href="/beli-aplikasi-saham" class="d-inline-block bg-white text-primary fw-bold px-2 py-2 rounded-3  ">Lihat Penawaran</a>
     </div>
 </div>
 
-<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-        <p class="text-slate-500 text-sm">&copy; [[currentYear]] Investo. Disclaimer: Bukan rekomendasi investasi.</p>
+<footer class="border-top border dark:border-slate-800 py-2">
+    <div class="max-w-7xl mx-auto px-2 text-center">
+        <p class="text-muted fs-sm">&copy; [[currentYear]] Investo. Disclaimer: Bukan rekomendasi investasi.</p>
     </div>
 </footer>
     <script src="/static/js/app.js" defer></script>

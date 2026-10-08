@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +31,7 @@
     </style>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -47,87 +47,87 @@
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-xl text-white">Investo</span></a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/saham" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Saham</a>
-                <a href="/blog" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+<nav x-data="{ open: false }" class="position-sticky top-0 z-3 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-2 text-white">Investo</span></a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-body dark:text-body  ">Beranda</a>
+                <a href="/saham" class="text-body dark:text-body  ">Saham</a>
+                <a href="/blog" class="text-body dark:text-body  ">Blog</a>
                 [[if .User]]
-                <a href="/dashboard" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Dashboard</a>
                 [[else]]
-                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
                 [[end]]
             </div>
         </div>
     </div>
 </nav>
 
-<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<main class="max-w-4xl mx-auto px-2 px-sm-4 px-lg-5 py-2">
     [[if .IsCommunity]]
-    <section class="mb-12 reveal">
-        <span class="inline-block px-3 py-1 text-xs font-semibold bg-emerald-900/30 text-emerald-300 rounded-full mb-4">Komunitas</span>
-        <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Komunitas Saham [[.City]]</h1>
-        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Temukan grup diskusi, workshop, dan sesi sharing pengalaman investasi saham di [[.City]] dan sekitarnya.</p>
+    <section class="mb-2 reveal">
+        <span class="d-inline-block px-2 py-1 fs-xs fw-semibold bg-success bg-opacity-25 text-success rounded-pill mb-2">Komunitas</span>
+        <h1 class="display-6 display-5 fw-bolder text-white lh-1">Komunitas Saham [[.City]]</h1>
+        <p class="fs-base text-muted dark:text-muted mt-2">Temukan grup diskusi, workshop, dan sesi sharing pengalaman investasi saham di [[.City]] dan sekitarnya.</p>
     </section>
-    <section class="mb-12 reveal">
-        <div class="card p-6 lg:p-8">
-            <h2 class="text-2xl font-bold text-white mb-4">Gabung Komunitas Investor di [[.City]]</h2>
-            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
+    <section class="mb-2 reveal">
+        <div class="card p-2 p-lg-5">
+            <h2 class="fs-1 fw-bold text-white mb-2">Gabung Komunitas Investor di [[.City]]</h2>
+            <div class="vstack gap-3 text-muted dark:text-muted lh-lg">
                 <p>Di [[.City]] dan wilayah [[.Province]], semakin banyak investor yang tergabung dalam komunitas saham untuk saling belajar dan berbagi pengalaman.</p>
                 <p>Komunitas saham di [[.City]] biasanya mengadakan pertemuan rutin, baik online maupun offline, untuk membahas analisis pasar, strategi investasi, dan review portofolio.</p>
-                <h3 class="font-semibold text-white text-base mt-6">Aktivitas Komunitas</h3>
-                <ul class="list-disc pl-6 space-y-2">
+                <h3 class="fw-semibold text-white fs-base mt-2">Aktivitas Komunitas</h3>
+                <ul class="list-disc ps-2 vstack gap-2">
                     <li>Weekly market review & diskusi saham pilihan</li>
                     <li>Workshop analisis fundamental dan teknikal</li>
                     <li>Sesi sharing pengalaman dari investor berpengalaman</li>
                     <li>Simulasi trading dan kompetisi portofolio</li>
                     <li>Kunjungan ke kantor BEI dan sekuritas</li>
                 </ul>
-                <h3 class="font-semibold text-white text-base mt-6">Cara Bergabung</h3>
+                <h3 class="fw-semibold text-white fs-base mt-2">Cara Bergabung</h3>
                 <p>Untuk bergabung dengan komunitas saham di [[.City]], Anda bisa mencari grup di Telegram, WhatsApp, atau Discord dengan kata kunci "saham [[.City]]" atau "investor [[.Province]]".</p>
             </div>
         </div>
     </section>
     [[else if .IsApp]]
-    <section class="mb-12 reveal">
-        <span class="inline-block px-3 py-1 text-xs font-semibold bg-violet-900/30 text-violet-300 rounded-full mb-4">Aplikasi</span>
-        <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Aplikasi Saham Terbaik untuk Investor di [[.City]]</h1>
-        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Rekomendasi aplikasi trading dan analisis saham terbaik untuk investor di [[.City]].</p>
+    <section class="mb-2 reveal">
+        <span class="d-inline-block px-2 py-1 fs-xs fw-semibold bg-primary bg-opacity-25 text-primary rounded-pill mb-2">Aplikasi</span>
+        <h1 class="display-6 display-5 fw-bolder text-white lh-1">Aplikasi Saham Terbaik untuk Investor di [[.City]]</h1>
+        <p class="fs-base text-muted dark:text-muted mt-2">Rekomendasi aplikasi trading dan analisis saham terbaik untuk investor di [[.City]].</p>
     </section>
-    <section class="mb-12 reveal">
-        <div class="card p-6 lg:p-8">
-            <h2 class="text-2xl font-bold text-white mb-4">Aplikasi Trading untuk [[.City]]</h2>
-            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
+    <section class="mb-2 reveal">
+        <div class="card p-2 p-lg-5">
+            <h2 class="fs-1 fw-bold text-white mb-2">Aplikasi Trading untuk [[.City]]</h2>
+            <div class="vstack gap-3 text-muted dark:text-muted lh-lg">
                 <p>Investor di [[.City]] dan [[.Province]] memiliki akses ke berbagai aplikasi trading saham yang terdaftar di OJK.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-                        <div class="font-semibold text-white">Full Service Sekuritas</div>
-                        <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cocok untuk investor yang butuh riset dan rekomendasi dari analis profesional.</div>
+                <div class="row row-cols-1 row-cols-sm-2 gap-4 mt-2">
+                    <div class="bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 p-2">
+                        <div class="fw-semibold text-white">Full Service Sekuritas</div>
+                        <div class="fs-sm text-muted dark:text-muted mt-1">Cocok untuk investor yang butuh riset dan rekomendasi dari analis profesional.</div>
                     </div>
-                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-                        <div class="font-semibold text-white">Online Trading Platform</div>
-                        <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cocok untuk trader aktif dengan fitur chart dan order yang lengkap.</div>
+                    <div class="bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 p-2">
+                        <div class="fw-semibold text-white">Online Trading Platform</div>
+                        <div class="fs-sm text-muted dark:text-muted mt-1">Cocok untuk trader aktif dengan fitur chart dan order yang lengkap.</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     [[else]]
-    <section class="mb-12 reveal">
-        <span class="inline-block px-3 py-1 text-xs font-semibold bg-blue-900/30 text-blue-300 rounded-full mb-4">Edukasi</span>
-        <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">Belajar Saham di [[.City]]</h1>
-        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">Panduan lengkap belajar investasi saham untuk pemula di [[.City]], [[.Province]].</p>
+    <section class="mb-2 reveal">
+        <span class="d-inline-block px-2 py-1 fs-xs fw-semibold bg-primary bg-opacity-25 text-primary rounded-pill mb-2">Edukasi</span>
+        <h1 class="display-6 display-5 fw-bolder text-white lh-1">Belajar Saham di [[.City]]</h1>
+        <p class="fs-base text-muted dark:text-muted mt-2">Panduan lengkap belajar investasi saham untuk pemula di [[.City]], [[.Province]].</p>
     </section>
-    <section class="mb-12 reveal">
-        <div class="card p-6 lg:p-8">
-            <h2 class="text-2xl font-bold text-white mb-4">Mulai Investasi Saham di [[.City]]</h2>
-            <div class="space-y-4 text-slate-500 dark:text-slate-400 leading-relaxed">
+    <section class="mb-2 reveal">
+        <div class="card p-2 p-lg-5">
+            <h2 class="fs-1 fw-bold text-white mb-2">Mulai Investasi Saham di [[.City]]</h2>
+            <div class="vstack gap-3 text-muted dark:text-muted lh-lg">
                 <p>Di [[.City]], banyak investor yang mulai terjun ke pasar modal Indonesia melalui Bursa Efek Indonesia (BEI). Dengan modal mulai dari Rp 100.000, siapa pun bisa memulai investasi saham.</p>
-                <h3 class="font-semibold text-white text-base mt-6">Langkah Memulai</h3>
-                <ol class="list-decimal pl-6 space-y-2">
+                <h3 class="fw-semibold text-white fs-base mt-2">Langkah Memulai</h3>
+                <ol class="list-decimal ps-2 vstack gap-2">
                     <li>Siapkan KTP, NPWP, dan rekening bank</li>
                     <li>Pilih sekuritas terpercaya yang terdaftar di OJK</li>
                     <li>Buka rekening saham online (RDN + SID)</li>
@@ -135,8 +135,8 @@
                     <li>Mulai beli saham pertama Anda</li>
                     <li>Pantau portofolio dan belajar terus menerus</li>
                 </ol>
-                <h3 class="font-semibold text-white text-base mt-6">Tips untuk Investor [[.City]]</h3>
-                <ul class="list-disc pl-6 space-y-2">
+                <h3 class="fw-semibold text-white fs-base mt-2">Tips untuk Investor [[.City]]</h3>
+                <ul class="list-disc ps-2 vstack gap-2">
                     <li>Ikuti seminar dan workshop investasi di [[.City]]</li>
                     <li>Bergabung dengan komunitas saham lokal</li>
                     <li>Baca berita ekonomi dan pasar modal secara rutin</li>
@@ -146,33 +146,33 @@
             </div>
         </div>
     </section>
-    <section class="mb-12 reveal">
-        <h2 class="text-2xl font-bold text-white mb-6">Saham Rekomendasi untuk Pemula</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <section class="mb-2 reveal">
+        <h2 class="fs-1 fw-bold text-white mb-2">Saham Rekomendasi untuk Pemula</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-4">
             [[range .RecommendedStocks]]
-            <a href="/saham/[[.Code]]" class="card-lift card rounded-xl p-4 hover:border-blue-500 transition-all group">
-                <div class="font-mono font-bold text-blue-400">[[.Code]]</div>
-                <div class="text-sm font-semibold text-white mt-1">[[.Name]]</div>
-                <div class="text-xs text-slate-500 mt-1">[[.Sector]]</div>
+            <a href="/saham/[[.Code]]" class="card-lift card rounded-3 p-2   ">
+                <div class="font-monospace fw-bold text-primary">[[.Code]]</div>
+                <div class="fs-sm fw-semibold text-white mt-1">[[.Name]]</div>
+                <div class="fs-xs text-muted mt-1">[[.Sector]]</div>
             </a>
             [[end]]
         </div>
     </section>
     [[end]]
 
-    <section class="mb-12 reveal">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
-            <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
-            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Dapatkan aplikasi saham & forex dengan data 600+ saham IDX, pSEO built-in, city-based landing pages. Whitelabel ready.</p>
-            <a href="/beli-aplikasi-saham" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+    <section class="mb-2 reveal">
+        <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 p-lg-5 text-white text-center">
+            <h2 class="fs-1 fw-bold mb-2">Beli Aplikasi Saham — Source Code Investo</h2>
+            <p class="text-primary lh-lg max-w-2xl mx-auto mb-2">Dapatkan aplikasi saham & forex dengan data 600+ saham IDX, pSEO built-in, city-based landing pages. Whitelabel ready.</p>
+            <a href="/beli-aplikasi-saham" class="d-inline-flex align-items-center gap-2 bg-white text-primary fw-bold px-2 py-2 rounded-3 shadow-lg   ">Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
         </div>
     </section>
 </main>
 
-<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-lg text-white">Investo</span></div>
-        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
+<footer class="border-top border dark:border-slate-800 py-2">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-3 text-white">Investo</span></div>
+        <p class="text-muted fs-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
     </div>
 </footer>
 

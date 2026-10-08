@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -36,7 +36,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="dcfBuilder()">
+<body class="h-100 d-flex" x-data="dcfBuilder()">
 
 <script>
 function dcfBuilder() {
@@ -102,12 +102,12 @@ document.addEventListener('alpine:init', function() { self = document.querySelec
 </script>
 
 <!-- SIDEBAR -->
-<aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col" class="max-md:hidden">
-    <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-        <span class="font-bold text-lg text-white">Investo</span>
+<aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column" class="d-none d-md-block">
+    <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+        <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+        <span class="fw-bold fs-3 text-white">Investo</span>
     </div>
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span>&#x1F4CA;</span> Dashboard</a>
         <a href="/calculators" class="sidebar-link active"><span>&#x1F9EE;</span> Kalkulator</a>
         <a href="/calculators/right-issue" class="sidebar-link"><span>&#x1F4C8;</span> Right Issue</a>
@@ -118,93 +118,93 @@ document.addEventListener('alpine:init', function() { self = document.querySelec
 </aside>
 
 <!-- MAIN -->
-<div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="flex-1 max-w-md hidden sm:block">
-            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
+<div class="flex-fill app-offset min-vh-100 d-flex flex-column">
+    <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex-fill max-w-md d-none d-sm-block">
+            <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="d-flex align-items-center gap-2 ms-auto">
             [[if .User]]
-            <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+            <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
-            <a href="/login" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Masuk</a>
+            <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
             [[end]]
         </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+    <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
-            <h1 class="text-xl lg:text-2xl font-bold text-white">DCF Scenario Builder</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Discounted Cash Flow valuation with multiple growth scenarios.</p>
+            <h1 class="fs-2 fs-1 fw-bold text-white">DCF Scenario Builder</h1>
+            <p class="fs-sm text-muted dark:text-muted mt-0">Discounted Cash Flow valuation with multiple growth scenarios.</p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="card p-6 space-y-4">
-                <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Input Parameters</h3>
+        <div class="row row-cols-1 row-cols-lg-2 gap-4">
+            <div class="card p-2 vstack gap-3">
+                <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Input Parameters</h3>
 
                 <div>
-                    <label class="input-label">Current Free Cash Flow (Rp Juta)</label>
-                    <input type="number" x-model.number="currentFCF" class="input-field" step="10000">
+                    <label class="form-label">Current Free Cash Flow (Rp Juta)</label>
+                    <input type="number" x-model.number="currentFCF" class="form-control" step="10000">
                 </div>
 
-                <div class="grid grid-cols-3 gap-3">
+                <div class="row row-cols-3 gap-3">
                     <div>
-                        <label class="input-label">Growth Opt. (%)</label>
-                        <input type="number" x-model.number="optimisticGrowth" class="input-field" step="0.5">
+                        <label class="form-label">Growth Opt. (%)</label>
+                        <input type="number" x-model.number="optimisticGrowth" class="form-control" step="0.5">
                     </div>
                     <div>
-                        <label class="input-label">Growth Base (%)</label>
-                        <input type="number" x-model.number="baseGrowth" class="input-field" step="0.5">
+                        <label class="form-label">Growth Base (%)</label>
+                        <input type="number" x-model.number="baseGrowth" class="form-control" step="0.5">
                     </div>
                     <div>
-                        <label class="input-label">Growth Pess. (%)</label>
-                        <input type="number" x-model.number="pessimisticGrowth" class="input-field" step="0.5">
+                        <label class="form-label">Growth Pess. (%)</label>
+                        <input type="number" x-model.number="pessimisticGrowth" class="form-control" step="0.5">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="row row-cols-2 gap-3">
                     <div>
-                        <label class="input-label">WACC (%)</label>
-                        <input type="number" x-model.number="wacc" class="input-field" step="0.1">
+                        <label class="form-label">WACC (%)</label>
+                        <input type="number" x-model.number="wacc" class="form-control" step="0.1">
                     </div>
                     <div>
-                        <label class="input-label">Terminal Growth (%)</label>
-                        <input type="number" x-model.number="terminalGrowth" class="input-field" step="0.1">
+                        <label class="form-label">Terminal Growth (%)</label>
+                        <input type="number" x-model.number="terminalGrowth" class="form-control" step="0.1">
                     </div>
                 </div>
 
                 <div>
-                    <label class="input-label">Shares Outstanding (Juta)</label>
-                    <input type="number" x-model.number="sharesOutstanding" class="input-field" step="100">
+                    <label class="form-label">Shares Outstanding (Juta)</label>
+                    <input type="number" x-model.number="sharesOutstanding" class="form-control" step="100">
                 </div>
 
-                <button @click="calculate()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold text-sm rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg">
+                <button @click="calculate()" class="w-100 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fw-bold fs-sm rounded-3    shadow-lg">
                     Calculate DCF
                 </button>
             </div>
 
-            <div class="card p-6" x-show="results">
-                <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Fair Value per Share</h3>
-                <div class="grid grid-cols-3 gap-3">
+            <div class="card p-2" x-show="results">
+                <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Fair Value per Share</h3>
+                <div class="row row-cols-3 gap-3">
                     <template x-for="r in results" :key="r.name">
                         <div class="result-cell" :class="cellClass(r.name)">
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1" x-text="r.name"></p>
-                            <p class="text-lg font-extrabold font-mono text-white" x-text="formatPrice(r.fairValue)"></p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" x-text="r.growthRate + '% growth'"></p>
+                            <p class="fs-xs text-muted dark:text-muted mb-1" x-text="r.name"></p>
+                            <p class="fs-3 fw-bolder font-monospace text-white" x-text="formatPrice(r.fairValue)"></p>
+                            <p class="fs-xs text-muted dark:text-muted mt-1" x-text="r.growthRate + '% growth'"></p>
                         </div>
                     </template>
                 </div>
 
                 <template x-if="results">
-                    <div class="mt-4 space-y-2 text-xs">
+                    <div class="mt-2 vstack gap-2 fs-xs">
                         <template x-for="r in results" :key="'detail-'+r.name">
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-3 flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400" x-text="r.name"></span>
-                                <div class="flex gap-4 font-mono text-slate-700 dark:text-slate-300">
+                            <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-2 p-2 d-flex align-items-center justify-content-between">
+                                <span class="text-muted dark:text-muted" x-text="r.name"></span>
+                                <div class="d-flex gap-4 font-monospace text-body dark:text-body">
                                     <span>PV FCF: <span x-text="formatB(r.pvCashFlows)"></span></span>
                                     <span>PV Terminal: <span x-text="formatB(r.pvTerminal)"></span></span>
                                     <span>EV: <span x-text="formatB(r.enterpriseValue)"></span></span>
@@ -215,13 +215,13 @@ document.addEventListener('alpine:init', function() { self = document.querySelec
                 </template>
             </div>
 
-            <div class="card p-12 text-center lg:col-span-2" x-show="!results">
-                <p class="text-5xl mb-4">&#x1F4B0;</p>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Masukkan parameter di atas dan klik <span class="text-blue-400 font-semibold">Calculate DCF</span> untuk melihat hasil.</p>
+            <div class="card p-2 text-center col-lg-12" x-show="!results">
+                <p class="display-5 mb-2">&#x1F4B0;</p>
+                <p class="text-muted dark:text-muted fs-sm">Masukkan parameter di atas dan klik <span class="text-primary fw-semibold">Calculate DCF</span> untuk melihat hasil.</p>
             </div>
         </div>
     </main>
 </div>
-<div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
+<div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>    <script src="/static/js/app.js" defer></script>
 </body>
 </html>

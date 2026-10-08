@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -31,19 +31,19 @@
 <body class="bg-body dark:bg-[#0b1120] text-body dark:text-slate-200" x-data="forwardRules()">
 <div class="max-w-3xl mx-auto px-2 py-2">
     <h1 class="fs-1 fw-bold text-white mb-2">Auto-Forward Rules</h1>
-    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Teruskan sinyal trading ke bot lain berdasarkan aturan tertentu.</p>
+    <p class="fs-sm text-muted dark:text-muted mb-2">Teruskan sinyal trading ke bot lain berdasarkan aturan tertentu.</p>
 
     <div class="card p-2 vstack gap-3">
         <div>
-            <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Min Confidence (%)</label>
+            <label class="fs-xs text-muted dark:text-muted d-block mb-1">Min Confidence (%)</label>
             <input type="number" min="0" max="100" x-model.number="rules.confidence_min" class="input-field">
         </div>
         <div>
-            <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Pattern Match (regex, opsional)</label>
+            <label class="fs-xs text-muted dark:text-muted d-block mb-1">Pattern Match (regex, opsional)</label>
             <input type="text" x-model="rules.pattern_match" placeholder="cth: BBCA|BBRI" class="input-field">
         </div>
         <div>
-            <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Signal Types</label>
+            <label class="fs-xs text-muted dark:text-muted d-block mb-1">Signal Types</label>
             <div class="d-flex gap-4">
                 <label class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body"><input type="checkbox" value="BUY" x-model="rules.signal_types" class="rounded"> BUY</label>
                 <label class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body"><input type="checkbox" value="SELL" x-model="rules.signal_types" class="rounded"> SELL</label>
@@ -51,13 +51,13 @@
             </div>
         </div>
         <div>
-            <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Target Bot ID</label>
+            <label class="fs-xs text-muted dark:text-muted d-block mb-1">Target Bot ID</label>
             <input type="number" x-model.number="rules.target_bot_id" class="input-field">
         </div>
         <button @click="save()" class="btn btn-primary">Simpan Rules</button>
     </div>
 
-    <div x-show="toast" x-text="toast" class="mt-2 fs-sm" :class="ok ? 'text-emerald-400' : 'text-red-400'"></div>
+    <div x-show="toast" x-text="toast" class="mt-2 fs-sm" :class="ok ? 'text-success' : 'text-danger'"></div>
 </div>
 
 <script>

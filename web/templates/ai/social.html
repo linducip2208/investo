@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Social Post Generator · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -138,7 +138,7 @@
     <!-- MAIN -->
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-3">
                 <span class="fs-1 sparkle">📝</span>
                 <h1 class="fs-3 fw-bold text-white">AI Social Post Generator</h1>
@@ -154,13 +154,13 @@
                 <!-- Controls -->
                 <div class="col vstack gap-3">
                     <div class="card p-2">
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Kode Saham</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Kode Saham</label>
                         <input type="text" x-model="stockCode" placeholder="Contoh: BBCA, TLKM, ASII"
                                class="mb-2 font-monospace text-uppercase">
                     </div>
 
                     <div class="card p-2">
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Tema Konten</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Tema Konten</label>
                         <div class="row row-cols-2 gap-2">
                             <button @click="theme='bullish'" :class="{'selected': theme==='bullish'}" class="theme-btn">
                                 <span class="d-block fs-3 mb-1"><svg class="d-inline-block" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6l4 4l8-8"/><path d="M14 7h7v7"/></svg></span> Bullish
@@ -181,7 +181,7 @@
                     </div>
 
                     <div class="card p-2">
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Platform</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Platform</label>
                         <div class="row row-cols-2 gap-2">
                             <button @click="platform='twitter'" :class="{'selected': platform==='twitter'}" class="platform-btn">
                                 <span class="fs-3">🐦</span> Twitter/X
@@ -207,7 +207,7 @@
                 <div class="col-lg-8">
                     <div x-show="!post && !loading" class="card p-2 text-center">
                         <span class="display-5 d-block mb-2">📝</span>
-                        <p class="text-muted dark:text-slate-400 fs-sm">Pilih kode saham, tema, dan platform lalu klik Generate</p>
+                        <p class="text-muted dark:text-muted fs-sm">Pilih kode saham, tema, dan platform lalu klik Generate</p>
                         <p class="text-muted fs-xs mt-1">AI akan membuat konten yang engaging dan ready-to-post</p>
                     </div>
 
@@ -221,9 +221,9 @@
                     <div x-show="post" class="vstack gap-3">
                         <div class="card p-2">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Preview</span>
+                                <span class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Preview</span>
                                 <div class="d-flex align-items-center gap-3">
-                                    <span class="fs-xs font-monospace" :class="charCount > maxChars ? 'text-danger' : 'text-slate-400'">
+                                    <span class="fs-xs font-monospace" :class="charCount > maxChars ? 'text-danger' : 'text-muted'">
                                         <span x-text="charCount"></span>/<span x-text="maxChars"></span> karakter
                                     </span>
                                 </div>

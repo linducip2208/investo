@@ -6,7 +6,7 @@
     <title>Alert Harga &mdash; Investo</title>
     <meta name="description" content="Atur alert harga saham multi-kondisi. Dapatkan notifikasi via web, Telegram, WhatsApp, atau email.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -171,7 +171,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
@@ -185,7 +185,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4 mb-2">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">Alert Harga</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Multi-kondisi alert dengan notifikasi Web, Telegram, WhatsApp & Email</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Multi-kondisi alert dengan notifikasi Web, Telegram, WhatsApp & Email</p>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <button @click="modalOpen = true" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue text-white fs-sm fw-semibold rounded-3 shadow-lg  ">
@@ -200,9 +200,9 @@
             <!-- TABS -->
             <div class="mb-2 border-bottom border dark:border-slate-800">
                 <nav class="d-flex gap-0 mb-n1 overflow-x-auto">
-                    <button @click="activeTab='alerts'" :class="activeTab==='alerts'?'border-blue-400 text-blue-400':'border-transparent text-muted dark:text-slate-400 " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">🔔 Alert Saya</button>
-                    <button @click="activeTab='templates'" :class="activeTab==='templates'?'border-blue-400 text-blue-400':'border-transparent text-muted dark:text-slate-400 " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">📋 Template</button>
-                    <button @click="activeTab='history'" :class="activeTab==='history'?'border-blue-400 text-blue-400':'border-transparent text-muted dark:text-slate-400 " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">📜 History</button>
+                    <button @click="activeTab='alerts'" :class="activeTab==='alerts'?'border-blue-400 text-info':'border-transparent text-muted dark:text-muted " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">🔔 Alert Saya</button>
+                    <button @click="activeTab='templates'" :class="activeTab==='templates'?'border-blue-400 text-info':'border-transparent text-muted dark:text-muted " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">📋 Template</button>
+                    <button @click="activeTab='history'" :class="activeTab==='history'?'border-blue-400 text-info':'border-transparent text-muted dark:text-muted " class="text-nowrap px-2 py-2 border-bottom fw-medium fs-sm ">📜 History</button>
                 </nav>
             </div>
 
@@ -213,19 +213,19 @@
                         <table class="table table-vcenter table-hover w-100 fs-sm">
                             <thead>
                                 <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kondisi</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Target</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Harga</th>
-                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Trigger</th>
-                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Notif</th>
-                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Status</th>
-                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Aksi</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Kondisi</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Target</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Harga</th>
+                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Trigger</th>
+                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Notif</th>
+                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Status</th>
+                                    <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y border/30 dark:divide-slate-700/30">
                                 [[range .Alerts]]
-                                <tr class=" dark:hover:bg-slate-700/20 ">
+                                <tr class=" dark:hover:bg-secondary-lt/20 ">
                                     <td class="px-2 py-2">
                                         <a href="/saham/[[.StockCode]]" class="fw-bold text-primary ">[[.StockCode]]</a>
                                         <span class="fs-xs text-muted ms-2 d-none d-sm-inline">[[.StockName]]</span>
@@ -240,11 +240,11 @@
                                         [[end]]
                                     </td>
                                     <td class="px-2 py-2 text-end font-monospace fw-semibold text-white">[[.TargetPriceFormatted]]</td>
-                                    <td class="px-2 py-2 text-end font-monospace text-muted dark:text-slate-400">[[.CurrentPriceFormatted]]</td>
-                                    <td class="px-2 py-2 text-center"><span class="px-2 py-0 rounded-pill fs-xs fw-semibold [[if gt .TriggerCount 0]]bg-warning-lt text-warning[[else]]bg-slate-700 text-slate-400[[end]]">[[.TriggerCount]]x</span></td>
-                                    <td class="px-2 py-2 text-center"><span class="fs-xs fw-medium text-muted dark:text-slate-400 text-uppercase">[[.NotificationType]]</span></td>
+                                    <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted">[[.CurrentPriceFormatted]]</td>
+                                    <td class="px-2 py-2 text-center"><span class="px-2 py-0 rounded-pill fs-xs fw-semibold [[if gt .TriggerCount 0]]bg-warning-lt text-warning[[else]]bg-secondary-lt text-muted[[end]]">[[.TriggerCount]]x</span></td>
+                                    <td class="px-2 py-2 text-center"><span class="fs-xs fw-medium text-muted dark:text-muted text-uppercase">[[.NotificationType]]</span></td>
                                     <td class="px-2 py-2 text-center">
-                                        <button @click="toggleAlert('[[.ID]]')" class="position-relative d-inline-flex h-6 w-11 align-items-center rounded-pill  [[if .IsActive]]bg-blue-600[[else]]bg-slate-600[[end]]">
+                                        <button @click="toggleAlert('[[.ID]]')" class="position-relative d-inline-flex h-6 w-11 align-items-center rounded-pill  [[if .IsActive]]bg-blue-600[[else]]bg-secondary[[end]]">
                                             <span class="d-inline-block h-4 w-4  rounded-pill bg-white  [[if .IsActive]]translate-x-6[[else]]translate-x-1[[end]]"></span>
                                         </button>
                                     </td>
@@ -273,7 +273,7 @@
                     <div class="card p-2 cursor-pointer  ">
                         <div class="fs-1 mb-2">[[.Icon]]</div>
                         <h3 class="fw-semibold text-white fs-sm mb-1">[[.Name]]</h3>
-                        <p class="fs-xs text-muted dark:text-slate-400 line-clamp-3 mb-2">[[.Description]]</p>
+                        <p class="fs-xs text-muted dark:text-muted line-clamp-3 mb-2">[[.Description]]</p>
                         <span class="fs-xs fw-medium text-primary  cursor-pointer">Gunakan</span>
                     </div>
                     [[end]]
@@ -291,21 +291,21 @@
                         <table class="table table-vcenter table-hover w-100 fs-sm">
                             <thead>
                                 <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Tanggal</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Notif</th>
-                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Trigger</th>
-                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kondisi</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Tanggal</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Notif</th>
+                                    <th class="text-center px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Trigger</th>
+                                    <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Kondisi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y border/30 dark:divide-slate-700/30">
                                 [[range .TriggeredAlerts]]
-                                <tr class=" dark:hover:bg-slate-700/20 ">
+                                <tr class=" dark:hover:bg-secondary-lt/20 ">
                                     <td class="px-2 py-2 fs-xs text-muted font-monospace text-nowrap">[[if .LastTriggeredAt]][[.LastTriggeredAtFormatted]][[else]]-[[end]]</td>
                                     <td class="px-2 py-2"><span class="fw-bold text-primary">[[.StockCode]]</span><span class="fs-xs text-muted ms-2 d-none d-sm-inline">[[.StockName]]</span></td>
-                                    <td class="px-2 py-2"><span class="px-2 py-0 rounded-2 fs-xs fw-semibold text-uppercase bg-body dark:bg-slate-700 text-body dark:text-slate-300">[[.NotificationType]]</span></td>
+                                    <td class="px-2 py-2"><span class="px-2 py-0 rounded-2 fs-xs fw-semibold text-uppercase bg-body dark:bg-slate-700 text-body dark:text-body">[[.NotificationType]]</span></td>
                                     <td class="px-2 py-2 text-center"><span class="px-2 py-0 rounded-pill fs-xs fw-semibold bg-warning/30 text-warning">[[.TriggerCount]]x</span></td>
-                                    <td class="px-2 py-2"><span class="fs-xs text-muted dark:text-slate-400">[[.Condition]]</span></td>
+                                    <td class="px-2 py-2"><span class="fs-xs text-muted dark:text-muted">[[.Condition]]</span></td>
                                 </tr>
                                 [[end]]
                             </tbody>
@@ -325,28 +325,28 @@
         <div class="position-relative card p-2 w-100 max-w-lg max-h-90 overflow-y-auto" @click.outside="modalOpen = false">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <h2 class="fs-3 fw-bold text-white">Alert Baru</h2>
-                <button @click="modalOpen = false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <button @click="modalOpen = false" class="p-1 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form @submit.prevent="createAlert()">
                 <div class="vstack gap-3">
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kode Saham <span class="text-danger">*</span></label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kode Saham <span class="text-danger">*</span></label>
                         <input x-model="alertCode" type="text" required placeholder="Contoh: BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white  text-uppercase    ">
                     </div>
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kondisi</label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kondisi</label>
                         <select x-model="alertCondition" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   ">
                             <option value="above">Harga Naik Di Atas</option>
                             <option value="below">Harga Turun Di Bawah</option>
                         </select>
                     </div>
                     <div>
-                        <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Target Harga <span class="text-danger">*</span></label>
+                        <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Target Harga <span class="text-danger">*</span></label>
                         <input x-model="alertTargetPrice" type="number" step="1" required placeholder="Contoh: 10000" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white     ">
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-3 mt-2">
-                    <button type="button" @click="modalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                    <button type="button" @click="modalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-body bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
                     <button type="submit" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Simpan</button>
                 </div>
             </form>
@@ -359,15 +359,15 @@
         <div class="position-relative card p-2 w-100 max-w-lg max-h-90 overflow-y-auto" @click.outside="templateModalOpen = false">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <h2 class="fs-3 fw-bold text-white">Alert Advanced</h2>
-                <button @click="templateModalOpen = false" class="p-1 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <button @click="templateModalOpen = false" class="p-1 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <div class="vstack gap-3">
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Kode Saham <span class="text-danger">*</span></label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Kode Saham <span class="text-danger">*</span></label>
                     <input x-model="advancedStockCode" type="text" required placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white  text-uppercase   ">
                 </div>
                 <div>
-                    <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Notifikasi</label>
+                    <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Notifikasi</label>
                     <select x-model="advancedNotifType" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-3 fs-sm text-white   ">
                         <option value="web">Web (Dashboard)</option>
                         <option value="email">Email</option>
@@ -377,7 +377,7 @@
                 </div>
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <label class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kondisi</label>
+                        <label class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Kondisi</label>
                         <button type="button" @click="addCondition()" class="fs-xs fw-medium text-primary ">+ Tambah</button>
                     </div>
                     <template x-for="(cond, idx) in conditions" :key="idx">
@@ -401,7 +401,7 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-3 mt-2">
-                <button type="button" @click="templateModalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300 bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
+                <button type="button" @click="templateModalOpen = false" class="flex-fill px-2 py-2 fs-sm fw-medium text-body dark:text-body bg-body dark:bg-slate-700 rounded-3  ">Batal</button>
                 <button type="button" @click="createAdvancedAlert()" class="flex-fill px-2 py-2 fs-sm fw-semibold text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 shadow-lg  ">Buat Alert</button>
             </div>
         </div>

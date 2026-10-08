@@ -6,7 +6,7 @@
     <title>Risk Analysis &mdash; [[.Portfolio.Name]] &mdash; Investo</title>
     <meta name="description" content="Analisis risiko AI untuk portofolio [[.Portfolio.Name]]: VaR, drawdown, Sharpe ratio, beta, diversifikasi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -139,9 +139,9 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
-            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-slate-400">
+            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-muted">
                 <a href="/dashboard/portfolios" class=" ">Portofolio</a>
                 <span>/</span>
                 <a href="/dashboard/portfolios/[[.Portfolio.ID]]" class=" ">[[.Portfolio.Name]]</a>
@@ -158,7 +158,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">[[.Portfolio.Name]] &mdash; Risk Analysis</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">AI-powered portfolio risk assessment</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">AI-powered portfolio risk assessment</p>
                 </div>
             </div>
 
@@ -179,7 +179,7 @@
                         </svg>
                         <div class="position-absolute top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
                             <span class="display-6 font-monospace fw-bolder text-white">[[printf "%.0f" .Risk.RiskScore]]</span>
-                            <span class="fs-xs text-muted dark:text-slate-400 mt-1">/ 100</span>
+                            <span class="fs-xs text-muted dark:text-muted mt-1">/ 100</span>
                         </div>
                     </div>
                     <div class="mt-2 px-2 py-1 rounded-pill fs-xs fw-bold text-uppercase 
@@ -245,7 +245,7 @@
                     [[range $i, $rec := .Risk.Recommendations]]
                     <div class="d-flex align-items-start gap-3 p-2 rounded-3 bg-white/50 dark:bg-slate-800/50 border border/50 dark:border-slate-700/50">
                         <span class="fs-3 flex-shrink-0">[[index $icons $i]]</span>
-                        <p class="fs-sm text-body dark:text-slate-300 lh-lg">[[$rec]]</p>
+                        <p class="fs-sm text-body dark:text-body lh-lg">[[$rec]]</p>
                     </div>
                     [[end]]
                 </div>
@@ -254,7 +254,7 @@
             <div class="card p-2 text-center">
                 <div class="display-5 mb-2">📊</div>
                 <h3 class="fs-3 fw-semibold text-white mb-2">Tidak dapat menganalisis risiko</h3>
-                <p class="text-muted dark:text-slate-400 fs-sm">Portfolio kosong atau data harga tidak tersedia.</p>
+                <p class="text-muted dark:text-muted fs-sm">Portfolio kosong atau data harga tidak tersedia.</p>
             </div>
             [[end]]
         </main>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -92,10 +92,10 @@
 
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
             [[if not .User]]
-            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-slate-300  rounded-2 ">Masuk</a>
+            <a href="/login" class="px-2 py-2 fs-sm fw-medium text-body dark:text-body  rounded-2 ">Masuk</a>
             <a href="/register" class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-3 ">Daftar</a>
             [[else]]
             <div class="d-flex align-items-center gap-2"><div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div><span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span></div>
@@ -103,7 +103,7 @@
         </header>
 
         <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
-            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted mb-2">
                 <a href="/saham" class=" ">Saham</a>
                 <span>/</span>
                 <span class="text-white fw-medium">[[.StockCode]]</span>
@@ -121,14 +121,14 @@
                     [[end]]
                     <div>
                         <h1 class="fs-2 fw-bold text-white">[[.StockCode]] - [[.Stock.Name]]</h1>
-                        <p class="fs-sm text-muted dark:text-slate-400">Diskusi dan analisis komunitas</p>
+                        <p class="fs-sm text-muted dark:text-muted">Diskusi dan analisis komunitas</p>
                     </div>
                 </div>
             </div>
             [[else]]
             <div class="mb-2">
                 <h1 class="fs-1 fw-bold text-white">Diskusi [[.StockCode]]</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-1">Diskusi dan analisis komunitas</p>
+                <p class="fs-sm text-muted dark:text-muted mt-1">Diskusi dan analisis komunitas</p>
             </div>
             [[end]]
 
@@ -150,10 +150,10 @@
                 [[range .Discussions]]
                 <div class="card p-2">
                     <div class="d-flex align-items-start gap-3">
-                        <div class="w-9 h-9 rounded-pill bg-body dark:bg-slate-700 d-flex align-items-center justify-content-center fs-xs fw-bold text-muted dark:text-slate-400 flex-shrink-0">[[slice .AuthorName 0 1]]</div>
+                        <div class="w-9 h-9 rounded-pill bg-body dark:bg-slate-700 d-flex align-items-center justify-content-center fs-xs fw-bold text-muted dark:text-muted flex-shrink-0">[[slice .AuthorName 0 1]]</div>
                         <div class="flex-fill min-w-0">
                             <div class="d-flex align-items-center gap-2 mb-2"><span class="fw-semibold fs-sm text-white">[[.AuthorName]]</span><span class="fs-xs text-muted">[[.TimeAgo]]</span></div>
-                            <p class="fs-sm text-body dark:text-slate-300 lh-lg text-prewrap">[[.Content]]</p>
+                            <p class="fs-sm text-body dark:text-body lh-lg text-prewrap">[[.Content]]</p>
                         </div>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                 [[if not .Discussions]]
                 <div class="text-center py-2">
                     <div class="display-5 mb-2 opacity-20">💬</div>
-                    <p class="text-muted dark:text-slate-400 fw-medium">Belum ada diskusi untuk [[.StockCode]]</p>
+                    <p class="text-muted dark:text-muted fw-medium">Belum ada diskusi untuk [[.StockCode]]</p>
                     <p class="fs-sm text-muted mt-1">Jadilah yang pertama memulai diskusi!</p>
                 </div>
                 [[end]]
@@ -169,9 +169,9 @@
 
             [[if gt .TotalPages 1]]
             <div class="d-flex align-items-center justify-content-center gap-2 mt-2">
-                [[if gt .Page 1]]<a href="?page=[[sub .Page 1]]" class="px-2 py-2 card fs-sm text-muted dark:text-slate-400  ">Sebelumnya</a>[[end]]
+                [[if gt .Page 1]]<a href="?page=[[sub .Page 1]]" class="px-2 py-2 card fs-sm text-muted dark:text-muted  ">Sebelumnya</a>[[end]]
                 <span class="fs-sm text-muted">Halaman [[.Page]] dari [[.TotalPages]]</span>
-                [[if lt .Page .TotalPages]]<a href="?page=[[add .Page 1]]" class="px-2 py-2 card fs-sm text-muted dark:text-slate-400  ">Selanjutnya</a>[[end]]
+                [[if lt .Page .TotalPages]]<a href="?page=[[add .Page 1]]" class="px-2 py-2 card fs-sm text-muted dark:text-muted  ">Selanjutnya</a>[[end]]
             </div>
             [[end]]
         </main>

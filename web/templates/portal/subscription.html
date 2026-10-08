@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -26,67 +26,67 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex">
-    <aside class="w-56 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col min-h-screen shrink-0">
-        <div class="flex items-center gap-2 px-4 h-14 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center text-white font-bold text-xs">I</div>
-            <span class="font-bold text-white">Investo Portal</span>
+<body class="h-100 d-flex">
+    <aside class="w-56 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column min-vh-100 flex-shrink-0">
+        <div class="d-flex align-items-center gap-2 px-2 h-14 border-bottom border dark:border-slate-800">
+            <div class="w-7 h-7 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded d-flex align-items-center justify-content-center text-white fw-bold fs-xs">I</div>
+            <span class="fw-bold text-white">Investo Portal</span>
         </div>
-        <nav class="flex-1 p-3 space-y-0.5">
+        <nav class="flex-fill p-2 vstack gap-0">
             <a href="/portal" class="nav-link">📊 Dashboard</a>
             <a href="/portal/portfolios" class="nav-link">💼 Portofolio</a>
             <a href="/portal/subscription" class="nav-link [[if eq .ActivePage "subscription"]]active[[end]]">💎 Langganan</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
             <a href="/" class="nav-link">🏠 Ke Beranda</a>
-            <a href="/logout" class="nav-link text-red-400">🚪 Keluar</a>
+            <a href="/logout" class="nav-link text-danger">🚪 Keluar</a>
         </nav>
     </aside>
 
-    <main class="flex-1 p-6 overflow-y-auto">
+    <main class="flex-fill p-2 overflow-y-auto">
         <div class="max-w-3xl mx-auto">
-            <h1 class="text-2xl font-bold text-white mb-6">Langganan</h1>
+            <h1 class="fs-1 fw-bold text-white mb-2">Langganan</h1>
 
-            <div class="card p-6 mb-6">
-                <div class="flex items-center justify-between mb-4">
+            <div class="card p-2 mb-2">
+                <div class="d-flex align-items-center justify-content-between mb-2">
                     <div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 uppercase mb-1">Plan Saat Ini</div>
-                        <div class="text-2xl font-bold text-white capitalize">[[.Plan]]</div>
+                        <div class="fs-xs text-muted dark:text-muted text-uppercase mb-1">Plan Saat Ini</div>
+                        <div class="fs-1 fw-bold text-white text-capitalize">[[.Plan]]</div>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase [[if eq .Plan "whitelabel"]]bg-purple-900/40 text-purple-300[[else if eq .Plan "pro"]]bg-blue-900/40 text-blue-300[[else]]bg-slate-700 text-slate-300[[end]]">[[.Plan]]</span>
+                    <span class="px-2 py-1 rounded-pill fs-xs fw-bold text-uppercase [[if eq .Plan "whitelabel"]]bg-purple-900/40 text-primary[[else if eq .Plan "pro"]]bg-info-lt/40 text-info[[else]]bg-secondary-lt text-body[[end]]">[[.Plan]]</span>
                 </div>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Kelola langganan Anda. Upgrade untuk akses fitur premium (AI agents, signals, backtesting, API access).</p>
+                <p class="fs-sm text-muted dark:text-muted">Kelola langganan Anda. Upgrade untuk akses fitur premium (AI agents, signals, backtesting, API access).</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="card p-5">
-                    <div class="font-bold text-white mb-1">Free</div>
-                    <div class="text-xs text-slate-500 mb-3">Fitur dasar</div>
-                    <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4">
+            <div class="row row-cols-1 row-cols-md-3 gap-4">
+                <div class="card p-2">
+                    <div class="fw-bold text-white mb-1">Free</div>
+                    <div class="fs-xs text-muted mb-2">Fitur dasar</div>
+                    <ul class="fs-xs text-muted dark:text-muted vstack gap-1 mb-2">
                         <li>• Data saham & forex</li>
                         <li>• Screener dasar</li>
                         <li>• Portfolio tracker</li>
                     </ul>
-                    <a href="/pricing" class="block text-center py-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-white text-sm font-semibold hover:bg-slate-600">Detail</a>
+                    <a href="/pricing" class="d-block text-center py-2 rounded-2 bg-body dark:bg-slate-700 text-white fs-sm fw-semibold ">Detail</a>
                 </div>
-                <div class="card p-5 border-blue-500">
-                    <div class="font-bold text-white mb-1">Pro</div>
-                    <div class="text-xs text-slate-500 mb-3">Fitur lengkap</div>
-                    <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4">
+                <div class="card p-2 border-primary">
+                    <div class="fw-bold text-white mb-1">Pro</div>
+                    <div class="fs-xs text-muted mb-2">Fitur lengkap</div>
+                    <ul class="fs-xs text-muted dark:text-muted vstack gap-1 mb-2">
                         <li>• Multi-Agent AI</li>
                         <li>• AI Signals & Backtesting</li>
                         <li>• API access</li>
                     </ul>
-                    <a href="/pricing" class="block text-center py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500">Upgrade</a>
+                    <a href="/pricing" class="d-block text-center py-2 rounded-2 bg-primary text-white fs-sm fw-semibold ">Upgrade</a>
                 </div>
-                <div class="card p-5">
-                    <div class="font-bold text-white mb-1">Whitelabel</div>
-                    <div class="text-xs text-slate-500 mb-3">Source code + lisensi</div>
-                    <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4">
+                <div class="card p-2">
+                    <div class="fw-bold text-white mb-1">Whitelabel</div>
+                    <div class="fs-xs text-muted mb-2">Source code + lisensi</div>
+                    <ul class="fs-xs text-muted dark:text-muted vstack gap-1 mb-2">
                         <li>• Source code lengkap</li>
                         <li>• Self-hosted</li>
                         <li>• Rebrand bebas</li>
                     </ul>
-                    <a href="/pricing" class="block text-center py-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-white text-sm font-semibold hover:bg-slate-600">Detail</a>
+                    <a href="/pricing" class="d-block text-center py-2 rounded-2 bg-body dark:bg-slate-700 text-white fs-sm fw-semibold ">Detail</a>
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@
     <title>Daftar Saham IDX &mdash; Investo</title>
     <meta name="description" content="Daftar lengkap saham Bursa Efek Indonesia. Cari, filter berdasarkan sektor, dan pantau harga saham terkini.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -212,7 +212,7 @@ function stockList() {
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <div class="position-relative">
                 <svg class="position-absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -221,7 +221,7 @@ function stockList() {
         </div>
         <div class="d-flex align-items-center gap-2 ms-auto">
             <span class="fs-xs text-muted font-monospace d-none d-sm-block" x-text="clock"></span>
-            <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
+            <a href="/dashboard/alerts" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></a>
             [[if .User]]
             <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                 <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
@@ -245,7 +245,7 @@ function stockList() {
             <div class="d-flex align-items-center gap-2">
                 <span class="fs-xs text-muted d-none d-sm-block" x-text="clock">--:--</span>
                 <span class="w-1.5 h-1.5 rounded-pill bg-success "></span>
-                <span class="fs-xs text-muted dark:text-slate-400 fw-medium">Live</span>
+                <span class="fs-xs text-muted dark:text-muted fw-medium">Live</span>
             </div>
         </div>
 
@@ -255,7 +255,7 @@ function stockList() {
                 <template x-for="(s,i) in ticker.concat(ticker)" :key="i">
                     <span class="d-inline-flex align-items-center gap-2 fs-sm text-nowrap flex-shrink-0">
                         <span class="fw-semibold text-white font-monospace" x-text="s.code"></span>
-                        <span class="text-muted dark:text-slate-400 font-monospace" x-text="fmt(s.price)"></span>
+                        <span class="text-muted dark:text-muted font-monospace" x-text="fmt(s.price)"></span>
                         <span :class="(s.change||0)>=0?'text-success':'text-danger'" class="font-monospace fs-xs" x-text="((s.change||0)>=0?'+':'')+(s.change||0).toFixed(1)+'%'"></span>
                     </span>
                 </template>
@@ -286,12 +286,12 @@ function stockList() {
                 <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
                         <tr class="border-bottom border dark:border/50 bg-white dark:bg-[#1e293b]">
-                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Kode</th>
-                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Nama Perusahaan</th>
-                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6 hide-mobile">Sektor</th>
-                            <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Harga</th>
-                            <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6">Perubahan</th>
-                            <th class="text-center px-2 py-2 fw-semibold text-muted dark:text-slate-400 text-uppercase  fs-6" style="min-width:100px">Chart Mini</th>
+                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Kode</th>
+                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Nama Perusahaan</th>
+                            <th class="text-start px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6 hide-mobile">Sektor</th>
+                            <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Harga</th>
+                            <th class="text-end px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6">Perubahan</th>
+                            <th class="text-center px-2 py-2 fw-semibold text-muted dark:text-muted text-uppercase  fs-6" style="min-width:100px">Chart Mini</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y border dark:divide-slate-700/30">
@@ -336,17 +336,17 @@ function stockList() {
             <p class="fs-sm text-muted">Halaman <span class="text-white fw-semibold">[[.Page]]</span> dari <span class="text-white fw-semibold">[[.TotalPages]]</span></p>
             <div class="d-flex align-items-center gap-1">
                 [[if gt .Page 1]]
-                <a href="/saham?page=[[subtract .Page 1]][[if .Search]]&search=[[.Search]][[end]][[if .CurrentSector]]&sector=[[.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-slate-400 bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">Sebelumnya</a>
+                <a href="/saham?page=[[subtract .Page 1]][[if .Search]]&search=[[.Search]][[end]][[if .CurrentSector]]&sector=[[.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-muted bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">Sebelumnya</a>
                 [[end]]
                 [[range .PageNumbers]]
                 [[if eq . $.Page]]
                 <span class="px-2 py-2 fs-sm fw-semibold text-white bg-primary rounded-3">[[.]]</span>
                 [[else]]
-                <a href="/saham?page=[[.]][[if $.Search]]&search=[[$.Search]][[end]][[if $.CurrentSector]]&sector=[[$.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-slate-400 bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">[[.]]</a>
+                <a href="/saham?page=[[.]][[if $.Search]]&search=[[$.Search]][[end]][[if $.CurrentSector]]&sector=[[$.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-muted bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">[[.]]</a>
                 [[end]]
                 [[end]]
                 [[if lt .Page .TotalPages]]
-                <a href="/saham?page=[[add .Page 1]][[if .Search]]&search=[[.Search]][[end]][[if .CurrentSector]]&sector=[[.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-slate-400 bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">Berikutnya</a>
+                <a href="/saham?page=[[add .Page 1]][[if .Search]]&search=[[.Search]][[end]][[if .CurrentSector]]&sector=[[.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-muted bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">Berikutnya</a>
                 [[end]]
             </div>
         </div>

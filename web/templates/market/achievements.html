@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achievements · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -219,7 +219,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
@@ -239,24 +239,24 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">🏅 Achievements</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Kumpulkan semua badge dan jadilah Investo Master!</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Kumpulkan semua badge dan jadilah Investo Master!</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <div class="bg-white dark:bg-white rounded-3 px-2 py-2 text-center">
-                        <span class="fs-xs text-muted dark:text-slate-400 d-block">Ter-unlock</span>
+                        <span class="fs-xs text-muted dark:text-muted d-block">Ter-unlock</span>
                         <span class="font-monospace fs-2 fw-bold text-warning" x-text="unlockedCount+'/'+totalCount"></span>
                     </div>
                     <div class="bg-white dark:bg-white rounded-3 px-2 py-2 text-center">
-                        <span class="fs-xs text-muted dark:text-slate-400 d-block">Progress</span>
+                        <span class="fs-xs text-muted dark:text-muted d-block">Progress</span>
                         <span class="font-monospace fs-2 fw-bold text-success" x-text="totalCount>0?Math.round(unlockedCount/totalCount*100)+'%':'0%'"></span>
                     </div>
                 </div>
             </div>
 
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <button @click="activeCategory='all'" :class="activeCategory==='all'?'bg-info-lt/40 text-primary border-blue-700/50':'text-slate-400 border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Semua</button>
+                <button @click="activeCategory='all'" :class="activeCategory==='all'?'bg-info-lt/40 text-primary border-blue-700/50':'text-muted border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">Semua</button>
                 <template x-for="cat in categories" :key="cat.name">
-                    <button @click="activeCategory=cat.name" :class="activeCategory===cat.name?'bg-info-lt/40 text-primary border-blue-700/50':'text-slate-400 border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">
+                    <button @click="activeCategory=cat.name" :class="activeCategory===cat.name?'bg-info-lt/40 text-primary border-blue-700/50':'text-muted border dark:border " class="px-2 py-1 rounded-2 fs-sm fw-medium border ">
                         <span x-text="cat.name"></span>
                         <span class="fs-xs ms-1 opacity-60" x-text="cat.unlocked+'/'+cat.count"></span>
                     </button>
@@ -269,8 +269,8 @@
                         <div class="d-flex align-items-start gap-3">
                             <span class="fs-1 flex-shrink-0" x-text="a.icon"></span>
                             <div class="flex-fill min-w-0">
-                                <h3 class="fw-semibold fs-sm text-truncate" :class="a.unlocked?'text-white':'text-slate-400'" x-text="a.name"></h3>
-                                <p class="fs-xs mt-0" :class="a.unlocked?'text-blue-200':'text-slate-500'" x-text="a.description"></p>
+                                <h3 class="fw-semibold fs-sm text-truncate" :class="a.unlocked?'text-white':'text-muted'" x-text="a.name"></h3>
+                                <p class="fs-xs mt-0" :class="a.unlocked?'text-info':'text-muted'" x-text="a.description"></p>
                             </div>
                             <span x-show="a.unlocked" class="fs-2 flex-shrink-0">✅</span>
                             <span x-show="!a.unlocked" class="fs-2 flex-shrink-0">🔒</span>
@@ -279,7 +279,7 @@
                         <div x-show="!a.unlocked && a.target > 0" class="mt-2">
                             <div class="d-flex align-items-center justify-content-between fs-xs mb-1">
                                 <span class="text-muted">Progress</span>
-                                <span class="font-monospace text-muted dark:text-slate-400" x-text="a.progress+'/'+a.target"></span>
+                                <span class="font-monospace text-muted dark:text-muted" x-text="a.progress+'/'+a.target"></span>
                             </div>
                             <div class="w-100 h-2 bg-body dark:bg-secondary-lt rounded-pill overflow-hidden">
                                 <div class="h-100 bg-gradient bg-gradient-from-blue bg-gradient-to-purple rounded-pill  " :style="{width:progressPercent(a)+'%'}"></div>

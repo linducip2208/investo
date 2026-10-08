@@ -6,7 +6,7 @@
     <title>[[.Portfolio.Name]] &mdash; Portofolio &mdash; Investo</title>
     <meta name="description" content="Detail portofolio [[.Portfolio.Name]]: alokasi aset, daftar holding, dan kinerja investasi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -185,12 +185,12 @@
     <!-- MAIN -->
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white      ">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -199,7 +199,7 @@
         </header>
 
         <main class="flex-fill p-2 p-lg-4 overflow-y-auto">
-            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400 mb-2">
+            <nav class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted mb-2">
                 <a href="/dashboard/portfolios" class=" ">Portofolio</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 <span class="text-white fw-medium">[[.Portfolio.Name]]</span>
@@ -216,7 +216,7 @@
                     <div class="mt-2 fs-1 fw-bold text-white font-monospace">[[if ge .Portfolio.TotalGainLoss 0.0]]+[[end]][[.Portfolio.TotalGainLossFormatted]]</div>
                 </div>
                 <div class="card p-2">
-                    <span class="fs-xs fw-medium text-muted dark:text-slate-400 text-uppercase ">Gain/Loss %</span>
+                    <span class="fs-xs fw-medium text-muted dark:text-muted text-uppercase ">Gain/Loss %</span>
                     <div class="mt-2 fs-1 fw-bold font-monospace [[if ge .Portfolio.GainLossPercent 0.0]]text-success[[else]]text-danger[[end]]">[[if ge .Portfolio.GainLossPercent 0.0]]+[[end]][[.Portfolio.GainLossPercent]]%</div>
                 </div>
             </div>
@@ -259,15 +259,15 @@
             <div x-show="showAddForm" class="card p-2 mb-2">
                 <div class="row row-cols-1 row-cols-sm-4 gap-3">
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Kode Saham</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Kode Saham</label>
                         <input id="add-code" type="text" placeholder="BBCA" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white      text-uppercase">
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Jumlah (Lot)</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Jumlah (Lot)</label>
                         <input id="add-qty" type="number" min="1" placeholder="10" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     ">
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Rata</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1">Harga Rata</label>
                         <input id="add-price" type="number" step="1" placeholder="Harga per lembar" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     ">
                     </div>
                     <div class="d-flex align-items-end">
@@ -281,25 +281,25 @@
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border/50 dark:border-slate-700/50 bg-white/30 dark:bg-slate-800/30">
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Kode</th>
-                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Nama</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Jumlah</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-table-cell">Harga Rata</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Harga Pasar</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Nilai Pasar</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">G/L</th>
-                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Aksi</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Kode</th>
+                                <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Nama</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Jumlah</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-table-cell">Harga Rata</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Harga Pasar</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Nilai Pasar</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">G/L</th>
+                                <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border/30 dark:divide-slate-700/30">
                             [[range .Holdings]]
-                            <tr class=" dark:hover:bg-slate-700/20 ">
+                            <tr class=" dark:hover:bg-secondary-lt/20 ">
                                 <td class="px-2 py-2">
                                     <a href="/saham/[[.Code]]" class="fw-bold text-primary ">[[.Code]]</a>
                                 </td>
-                                <td class="px-2 py-2 text-body dark:text-slate-300 d-none d-table-cell max-w-120 text-truncate">[[.Name]]</td>
+                                <td class="px-2 py-2 text-body dark:text-body d-none d-table-cell max-w-120 text-truncate">[[.Name]]</td>
                                 <td class="px-2 py-2 text-end font-monospace text-white">[[.Quantity]]</td>
-                                <td class="px-2 py-2 text-end font-monospace text-muted dark:text-slate-400 d-none d-table-cell">[[.AvgPriceFormatted]]</td>
+                                <td class="px-2 py-2 text-end font-monospace text-muted dark:text-muted d-none d-table-cell">[[.AvgPriceFormatted]]</td>
                                 <td class="px-2 py-2 text-end font-monospace fw-semibold text-white">[[.CurrentPriceFormatted]]</td>
                                 <td class="px-2 py-2 text-end font-monospace text-white">[[.MarketValueFormatted]]</td>
                                 <td class="px-2 py-2 text-end font-monospace">
@@ -328,17 +328,17 @@
             <div class="card p-2 mt-2" x-data="{}">
                 <h2 class="widget-title mb-2">Kalkulator Profit/Loss</h2>
                 <div class="row row-cols-2 row-cols-sm-4 gap-3 mb-2">
-                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Beli</label><input type="number" x-model="buyPrice" step="1" placeholder="1000" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
-                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Harga Jual</label><input type="number" x-model="sellPrice" step="1" placeholder="1500" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
-                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Jumlah (Lot)</label><input type="number" x-model="quantity" step="1" placeholder="10" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
-                    <div><label class="d-block fs-xs text-muted dark:text-slate-400 mb-1">Fee (%)</label><input type="number" x-model="feePercent" step="0.01" placeholder="0.15" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-muted mb-1">Harga Beli</label><input type="number" x-model="buyPrice" step="1" placeholder="1000" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-muted mb-1">Harga Jual</label><input type="number" x-model="sellPrice" step="1" placeholder="1500" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-muted mb-1">Jumlah (Lot)</label><input type="number" x-model="quantity" step="1" placeholder="10" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
+                    <div><label class="d-block fs-xs text-muted dark:text-muted mb-1">Fee (%)</label><input type="number" x-model="feePercent" step="0.01" placeholder="0.15" class="w-100 px-2 py-2 bg-white dark:bg-slate-800 border border rounded-2 fs-sm text-white     "></div>
                 </div>
                 <div class="row row-cols-2 row-cols-sm-5 gap-3">
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Beli</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + ((buyPrice||0)*(quantity||0)*100).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Total Jual</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + (((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Profit Kotor</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100))>=0?'text-success':'text-danger'" x-text="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">Profit Bersih</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-slate-400">ROI %</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0?'+':'')+((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100).toFixed(2)+'%'"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-muted">Total Beli</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + ((buyPrice||0)*(quantity||0)*100).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-muted">Total Jual</span><div class="mt-1 font-monospace fs-sm fw-bold text-white" x-text="'Rp ' + (((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-muted">Profit Kotor</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100))>=0?'text-success':'text-danger'" x-text="(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100)-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-muted">Profit Bersih</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))>=0?'+Rp ':'-Rp ') + Math.abs(((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100)).toLocaleString('id-ID')"></div></div>
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3 p-2"><span class="fs-xs text-muted dark:text-muted">ROI %</span><div class="mt-1 font-monospace fs-sm fw-bold" :class="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0)?'text-success':'text-danger'" x-text="((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100>=0?'+':'')+((((sellPrice||0)*(quantity||0)*100*((100-(feePercent||0))/100))-((buyPrice||0)*(quantity||0)*100))/((buyPrice||0)*(quantity||0)*100||1)*100).toFixed(2)+'%'"></div></div>
                 </div>
             </div>
         </main>

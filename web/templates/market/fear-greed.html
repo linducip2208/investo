@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -209,15 +209,15 @@
 
     <!-- TOPBAR -->
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400">
+        <div class="fs-sm text-muted dark:text-muted">
             <span class="text-muted">Market /</span> Fear &amp; Greed Index
         </div>
         <div class="d-flex align-items-center gap-3">
             <span class="fs-xs text-muted font-monospace" x-text="'Auto-refresh: 5m'"></span>
-            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -234,7 +234,7 @@
             <div class="row gap-6">
                 <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                     <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                    <p class="text-muted dark:text-slate-400">Loading market sentiment data...</p>
+                    <p class="text-muted dark:text-muted">Loading market sentiment data...</p>
                 </div>
             </div>
         </template>
@@ -245,16 +245,16 @@
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
                         <h1 class="fs-1 fw-bold text-white">Fear &amp; Greed Index</h1>
-                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">Indonesia Market Sentiment Indicator</p>
+                        <p class="text-muted dark:text-muted fs-sm mt-1">Indonesia Market Sentiment Indicator</p>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <span class="px-2 py-1 rounded-pill fs-xs fw-semibold font-monospace"
                               :class="{
-                                'bg-red-lt text-red-400': label === 'Extreme Fear',
+                                'bg-red-lt text-danger': label === 'Extreme Fear',
                                 'bg-orange-lt text-orange-400': label === 'Fear',
-                                'bg-yellow-lt text-yellow-400': label === 'Neutral',
+                                'bg-yellow-lt text-warning': label === 'Neutral',
                                 'bg-lime-lt text-lime-400': label === 'Greed',
-                                'bg-green-lt text-green-400': label === 'Extreme Greed'
+                                'bg-green-lt text-success': label === 'Extreme Greed'
                               }" x-text="label"></span>
                     </div>
                 </div>
@@ -296,7 +296,7 @@
                             </svg>
                             <div class="text-center mt-2">
                                 <span id="gauge-label" class="display-6 fw-bold text-white font-monospace" x-text="score"></span>
-                                <span class="fs-sm text-muted dark:text-slate-400">/100</span>
+                                <span class="fs-sm text-muted dark:text-muted">/100</span>
                             </div>
                         </div>
 
@@ -304,15 +304,15 @@
                         <div class="flex-fill row row-cols-1 row-cols-sm-2 row-cols-lg-3 gap-4 w-100">
                             <template x-for="(value, name) in components" :key="name">
                                 <div class="bg-white dark:bg-[#0f172a] border border dark:border rounded-3 p-2  ">
-                                    <div class="fs-xs text-muted dark:text-slate-400 fw-semibold text-uppercase  mb-2" x-text="name"></div>
+                                    <div class="fs-xs text-muted dark:text-muted fw-semibold text-uppercase  mb-2" x-text="name"></div>
                                     <div class="d-flex align-items-end gap-2 mb-2">
                                         <span class="fs-1 fw-bold font-monospace"
                                               :class="{
-                                                  'text-red-400': value <= 25,
+                                                  'text-danger': value <= 25,
                                                   'text-orange-400': value > 25 && value <= 45,
-                                                  'text-yellow-400': value > 45 && value <= 55,
+                                                  'text-warning': value > 45 && value <= 55,
                                                   'text-lime-400': value > 55 && value <= 75,
-                                                  'text-green-400': value > 75
+                                                  'text-success': value > 75
                                               }" x-text="value"></span>
                                         <span class="fs-xs text-muted mb-1">/100</span>
                                     </div>
@@ -369,11 +369,11 @@
                     </template>
                     <!-- Legend -->
                     <div class="d-flex flex-wrap gap-3 mt-2">
-                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-danger"></span> Extreme Fear</div>
-                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-warning"></span> Fear</div>
-                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-warning"></span> Neutral</div>
-                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-success"></span> Greed</div>
-                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-slate-400"><span class="w-3 h-3 rounded bg-success"></span> Extreme Greed</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-muted"><span class="w-3 h-3 rounded bg-danger"></span> Extreme Fear</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-muted"><span class="w-3 h-3 rounded bg-warning"></span> Fear</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-muted"><span class="w-3 h-3 rounded bg-warning"></span> Neutral</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-muted"><span class="w-3 h-3 rounded bg-success"></span> Greed</div>
+                        <div class="d-flex align-items-center gap-1 fs-xs text-muted dark:text-muted"><span class="w-3 h-3 rounded bg-success"></span> Extreme Greed</div>
                     </div>
                 </div>
 
@@ -382,27 +382,27 @@
                     <h2 class="fs-3 fw-bold text-white mb-2">Index Composition</h2>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 gap-4">
                         <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
-                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Market Momentum</div>
+                            <div class="fs-xs text-muted dark:text-muted text-uppercase  mb-1">Market Momentum</div>
                             <div class="fs-1 fw-bold text-white font-monospace">25%</div>
                             <div class="fs-xs text-muted mt-1">% of stocks above MA50</div>
                         </div>
                         <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
-                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Stock Breadth</div>
+                            <div class="fs-xs text-muted dark:text-muted text-uppercase  mb-1">Stock Breadth</div>
                             <div class="fs-1 fw-bold text-white font-monospace">25%</div>
                             <div class="fs-xs text-muted mt-1">Advance/decline ratio</div>
                         </div>
                         <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
-                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Volatility</div>
+                            <div class="fs-xs text-muted dark:text-muted text-uppercase  mb-1">Volatility</div>
                             <div class="fs-1 fw-bold text-white font-monospace">25%</div>
                             <div class="fs-xs text-muted mt-1">IHSG 20-day std dev</div>
                         </div>
                         <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
-                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Foreign Flow</div>
+                            <div class="fs-xs text-muted dark:text-muted text-uppercase  mb-1">Foreign Flow</div>
                             <div class="fs-1 fw-bold text-white font-monospace">12.5%</div>
                             <div class="fs-xs text-muted mt-1">Net buy ratio</div>
                         </div>
                         <div class="bg-white dark:bg-[#0f172a] rounded-3 p-2 border border dark:border">
-                            <div class="fs-xs text-muted dark:text-slate-400 text-uppercase  mb-1">Trading Volume</div>
+                            <div class="fs-xs text-muted dark:text-muted text-uppercase  mb-1">Trading Volume</div>
                             <div class="fs-1 fw-bold text-white font-monospace">12.5%</div>
                             <div class="fs-xs text-muted mt-1">Volume vs 20-day avg</div>
                         </div>

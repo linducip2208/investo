@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signal Center · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -57,7 +57,7 @@
 <body class="h-100" x-data="signalCenter()" >
 
 <header class="position-sticky top-0 z-3 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50 d-flex align-items-center px-2 px-lg-5">
-    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none me-2 p-2 rounded-2 text-muted dark:text-slate-400  dark:hover:bg-slate-800" style="min-height:42px;min-width:42px">
+    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none me-2 p-2 rounded-2 text-muted dark:text-muted  dark:hover:bg-white" style="min-height:42px;min-width:42px">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     <a href="/dashboard" class="d-flex align-items-center gap-2">
@@ -145,13 +145,13 @@
                             </div>
                             <div class="d-flex align-items-center gap-2 mt-2">
                                 <span class="signal-badge" :class="'signal-'+signal.signal" x-text="signal.signal.replace('_',' ')"></span>
-                                <span class="fs-sm text-muted dark:text-slate-400">
+                                <span class="fs-sm text-muted dark:text-muted">
                                     <span class="fw-semibold text-white" x-text="signal.confidence+'%'"></span> confidence
                                 </span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center gap-1">
-                            <button @click="distributeSignal(signal)" class="p-2 rounded-2  dark:hover:bg-slate-700 text-muted dark:text-slate-400  " title="Distribute via WA/Webhook">
+                            <button @click="distributeSignal(signal)" class="p-2 rounded-2  dark:hover:bg-secondary-lt text-muted dark:text-muted  " title="Distribute via WA/Webhook">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
                             </button>
                         </div>
@@ -161,12 +161,12 @@
                         <template x-for="(score, agent) in signal.agent_scores" :key="agent">
                             <div>
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="fs-xs text-muted dark:text-slate-400 text-capitalize" x-text="agent.replace('_',' ')"></span>
+                                    <span class="fs-xs text-muted dark:text-muted text-capitalize" x-text="agent.replace('_',' ')"></span>
                                     <span class="fs-xs font-monospace fw-semibold text-white" x-text="score+'/100'"></span>
                                 </div>
                                 <div class="w-100 bg-body dark:bg-slate-700 rounded-pill h-1.5">
                                     <div class="score-bar h-1.5 rounded-pill" :style="'width:'+score+'%'"
-                                         :class="score >= 70 ? 'bg-emerald-500' : (score >= 50 ? 'bg-blue-500' : 'bg-red-500')"></div>
+                                         :class="score >= 70 ? 'bg-green' : (score >= 50 ? 'bg-blue' : 'bg-red')"></div>
                                 </div>
                             </div>
                         </template>
@@ -174,15 +174,15 @@
 
                     <div class="row row-cols-3 gap-2 mb-2 text-center">
                         <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-2 p-2">
-                            <p class="fs-xs text-muted dark:text-slate-400">Entry</p>
+                            <p class="fs-xs text-muted dark:text-muted">Entry</p>
                             <p class="fs-sm font-monospace fw-bold text-white" x-text="signal.entry_price"></p>
                         </div>
                         <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-2 p-2">
-                            <p class="fs-xs text-muted dark:text-slate-400">Stop Loss</p>
+                            <p class="fs-xs text-muted dark:text-muted">Stop Loss</p>
                             <p class="fs-sm font-monospace fw-bold text-danger" x-text="signal.stop_loss"></p>
                         </div>
                         <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-2 p-2">
-                            <p class="fs-xs text-muted dark:text-slate-400">Target</p>
+                            <p class="fs-xs text-muted dark:text-muted">Target</p>
                             <p class="fs-sm font-monospace fw-bold text-success" x-text="signal.take_profit"></p>
                         </div>
                     </div>
@@ -204,7 +204,7 @@
         <div x-show="signals.length === 0 && !generating" class="card p-2 text-center col-12">
             <div class="display-4 mb-2">🔍</div>
             <h3 class="fs-3 fw-semibold text-white mb-2">Belum ada sinyal</h3>
-            <p class="text-muted dark:text-slate-400 max-w-md mx-auto">Masukkan kode saham BEI atau pair forex lalu klik "Generate Signal" untuk memulai analisis multi-agent.</p>
+            <p class="text-muted dark:text-muted max-w-md mx-auto">Masukkan kode saham BEI atau pair forex lalu klik "Generate Signal" untuk memulai analisis multi-agent.</p>
             <div class="mt-2 d-flex flex-wrap gap-2 justify-content-center">
                 <button @click="quickGenerate(['BBCA','BBRI','TLKM','ASII'])" class="btn btn-outline fs-xs">Analisis Saham Populer</button>
                 <button @click="quickGenerate(['USDIDR','EURUSD','GBPJPY'])" class="btn btn-outline fs-xs">Analisis Forex Pair</button>
@@ -217,24 +217,24 @@
                 <table class="table table-vcenter table-hover w-100 fs-xs">
                     <thead>
                         <tr class="border-bottom border dark:border-slate-700/50">
-                            <th class="text-start py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Instrument</th>
-                            <th class="text-start py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Market</th>
-                            <th class="text-start py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Signal</th>
-                            <th class="text-end py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Confidence</th>
-                            <th class="text-end py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Time</th>
-                            <th class="text-center py-2 text-muted dark:text-slate-400 fw-medium text-uppercase ">Action</th>
+                            <th class="text-start py-2 text-muted dark:text-muted fw-medium text-uppercase ">Instrument</th>
+                            <th class="text-start py-2 text-muted dark:text-muted fw-medium text-uppercase ">Market</th>
+                            <th class="text-start py-2 text-muted dark:text-muted fw-medium text-uppercase ">Signal</th>
+                            <th class="text-end py-2 text-muted dark:text-muted fw-medium text-uppercase ">Confidence</th>
+                            <th class="text-end py-2 text-muted dark:text-muted fw-medium text-uppercase ">Time</th>
+                            <th class="text-center py-2 text-muted dark:text-muted fw-medium text-uppercase ">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <template x-for="signal in signals" :key="signal.instrument + signal.timestamp">
-                            <tr class="border-bottom border dark:border-slate-700/30  dark:hover:bg-slate-800/30">
+                            <tr class="border-bottom border dark:border-slate-700/30  dark:hover:bg-white/30">
                                 <td class="py-2 font-monospace fw-semibold text-white" x-text="signal.instrument"></td>
-                                <td class="py-2 text-muted dark:text-slate-400" x-text="signal.market_type"></td>
+                                <td class="py-2 text-muted dark:text-muted" x-text="signal.market_type"></td>
                                 <td class="py-2">
                                     <span class="signal-badge" :class="'signal-'+signal.signal" x-text="signal.signal.replace('_',' ')"></span>
                                 </td>
                                 <td class="py-2 text-end font-monospace text-white" x-text="signal.confidence+'%'"></td>
-                                <td class="py-2 text-end text-muted dark:text-slate-400 font-monospace" x-text="new Date(signal.timestamp).toLocaleTimeString('id-ID')"></td>
+                                <td class="py-2 text-end text-muted dark:text-muted font-monospace" x-text="new Date(signal.timestamp).toLocaleTimeString('id-ID')"></td>
                                 <td class="py-2 text-center">
                                     <button @click="distributeSignal(signal)" class="fs-xs text-primary  ">Distribute</button>
                                 </td>

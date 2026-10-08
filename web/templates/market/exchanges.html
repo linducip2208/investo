@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -187,7 +187,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 ">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <div class="flex-fill max-w-md d-none d-sm-block">
@@ -206,7 +206,7 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-4 overflow-y-auto">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white mb-1">Connected Exchanges</h1>
-                <p class="fs-sm text-muted dark:text-slate-400">Hubungkan akun broker Anda untuk trading langsung dari Investo.</p>
+                <p class="fs-sm text-muted dark:text-muted">Hubungkan akun broker Anda untuk trading langsung dari Investo.</p>
             </div>
 
             <div class="card p-2 bg-warning bg-opacity-10 border-warning">
@@ -299,14 +299,14 @@
                     <div class="d-flex align-items-center gap-3">
                         <div class="w-12 h-12 rounded-3 bg-body bg-opacity-50 dark:bg-secondary-lt d-flex align-items-center justify-content-center text-muted fs-1">+</div>
                         <div>
-                            <h3 class="fw-semibold text-muted dark:text-slate-400 fs-sm">Broker Lainnya</h3>
+                            <h3 class="fw-semibold text-muted dark:text-muted fs-sm">Broker Lainnya</h3>
                             <span class="fs-xs text-muted">Request via support</span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 fs-xs">
                         <span class="text-muted">Hubungi kami untuk request broker</span>
                     </div>
-                    <a href="/kontak" class="w-100 py-2 rounded-3 border border dark:border text-muted dark:text-slate-400 fw-medium fs-sm text-center  dark:hover:bg-white ">Request Broker</a>
+                    <a href="/kontak" class="w-100 py-2 rounded-3 border border dark:border text-muted dark:text-muted fw-medium fs-sm text-center  dark:hover:bg-white ">Request Broker</a>
                 </div>
             </div>
 
@@ -316,17 +316,17 @@
                     <div>
                         <div class="w-8 h-8 rounded-2 bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center fw-bold fs-sm mb-2">1</div>
                         <h4 class="fw-semibold text-white mb-1">Autentikasi Aman</h4>
-                        <p class="text-muted dark:text-slate-400 lh-lg">Koneksi menggunakan API key / token dari broker Anda. Kredensial dienkripsi dan tidak pernah disimpan dalam plain text.</p>
+                        <p class="text-muted dark:text-muted lh-lg">Koneksi menggunakan API key / token dari broker Anda. Kredensial dienkripsi dan tidak pernah disimpan dalam plain text.</p>
                     </div>
                     <div>
                         <div class="w-8 h-8 rounded-2 bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center fw-bold fs-sm mb-2">2</div>
                         <h4 class="fw-semibold text-white mb-1">Sync Portfolio</h4>
-                        <p class="text-muted dark:text-slate-400 lh-lg">Portfolio, watchlist, dan order history otomatis tersinkronisasi antara Investo dan broker Anda.</p>
+                        <p class="text-muted dark:text-muted lh-lg">Portfolio, watchlist, dan order history otomatis tersinkronisasi antara Investo dan broker Anda.</p>
                     </div>
                     <div>
                         <div class="w-8 h-8 rounded-2 bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center fw-bold fs-sm mb-2">3</div>
                         <h4 class="fw-semibold text-white mb-1">Trading Langsung</h4>
-                        <p class="text-muted dark:text-slate-400 lh-lg">Beli dan jual saham langsung dari chart tanpa harus pindah aplikasi. Alert terpicu bisa auto-execute order.</p>
+                        <p class="text-muted dark:text-muted lh-lg">Beli dan jual saham langsung dari chart tanpa harus pindah aplikasi. Alert terpicu bisa auto-execute order.</p>
                     </div>
                 </div>
             </div>

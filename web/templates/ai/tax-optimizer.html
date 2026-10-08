@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tax Optimizer &mdash; Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -52,10 +52,10 @@
         <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
             <div class="d-flex align-items-center justify-content-between px-2 py-2">
                 <div class="d-flex align-items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
                     <h1 class="fs-3 fw-semibold text-white">Tax Optimizer</h1>
                 </div>
-                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-muted   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
             </div>
         </header>
 
@@ -68,13 +68,13 @@
                             <div class="w-10 h-10 gradient-blue rounded-3 d-flex align-items-center justify-content-center text-white fs-2">💸</div>
                             <div>
                                 <h2 class="fs-2 fw-bold text-white">Tax-Loss Harvesting</h2>
-                                <p class="fs-sm text-muted dark:text-slate-400">Optimasi pajak portofolio sebelum akhir tahun</p>
+                                <p class="fs-sm text-muted dark:text-muted">Optimasi pajak portofolio sebelum akhir tahun</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-2">
-                        <label class="d-block fs-sm text-muted dark:text-slate-400 mb-2">Pilih Portofolio</label>
+                        <label class="d-block fs-sm text-muted dark:text-muted mb-2">Pilih Portofolio</label>
                         <select x-model="selectedPortfolio" class="w-100 bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 px-2 py-2 text-white   ">
                             <option value="">-- Pilih portofolio --</option>
                         </select>
@@ -91,22 +91,22 @@
                     <template x-if="result">
                         <div>
                             <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-3 p-2 mb-2">
-                                <div class="fs-sm text-muted dark:text-slate-400">Ringkasan</div>
+                                <div class="fs-sm text-muted dark:text-muted">Ringkasan</div>
                                 <p class="text-white mt-2" x-text="result.summary"></p>
                             </div>
 
                             <div class="row row-cols-3 gap-4 mb-2">
                                 <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-3 p-2 text-center">
                                     <div class="fs-1 fw-bold text-white" x-text="result.total_holdings"></div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mt-1">Total Holdings</div>
+                                    <div class="fs-xs text-muted dark:text-muted mt-1">Total Holdings</div>
                                 </div>
                                 <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-3 p-2 text-center">
                                     <div class="fs-1 fw-bold text-success" x-text="'Rp ' + (result.tax_savings_est || 0).toLocaleString()"></div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mt-1">Estimasi Hemat Pajak</div>
+                                    <div class="fs-xs text-muted dark:text-muted mt-1">Estimasi Hemat Pajak</div>
                                 </div>
                                 <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-3 p-2 text-center">
                                     <div class="fs-1 fw-bold text-primary" x-text="result.year_end_date"></div>
-                                    <div class="fs-xs text-muted dark:text-slate-400 mt-1">Batas Akhir</div>
+                                    <div class="fs-xs text-muted dark:text-muted mt-1">Batas Akhir</div>
                                 </div>
                             </div>
 
@@ -119,10 +119,10 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                                     <div class="d-flex align-items-center gap-2">
                                                         <span class="fw-bold text-white font-monospace" x-text="s.code"></span>
-                                                        <span class="fs-sm text-muted dark:text-slate-400" x-text="s.name"></span>
+                                                        <span class="fs-sm text-muted dark:text-muted" x-text="s.name"></span>
                                                     </div>
                                                     <span class="px-2 py-1 rounded-pill fs-xs fw-semibold"
-                                                          :class="s.action === 'JUAL' ? 'bg-red-900/50 text-danger' : 'bg-green-900/50 text-success'"
+                                                          :class="s.action === 'JUAL' ? 'bg-danger-lt/50 text-danger' : 'bg-success-lt/50 text-success'"
                                                           x-text="s.action"></span>
                                                 </div>
                                                 <div class="row row-cols-3 gap-4 fs-sm mb-2">
@@ -130,7 +130,7 @@
                                                     <div><span class="text-muted">Avg Price:</span> <span class="text-white" x-text="s.avg_price"></span></div>
                                                     <div><span class="text-muted">PL:</span> <span :class="s.unrealized_pl_pct < 0 ? 'text-danger' : 'text-success'" x-text="s.unrealized_pl_pct.toFixed(2) + '%'"></span></div>
                                                 </div>
-                                                <div class="fs-sm text-muted dark:text-slate-400 mb-1" x-text="s.reason"></div>
+                                                <div class="fs-sm text-muted dark:text-muted mb-1" x-text="s.reason"></div>
                                                 <div class="fs-xs text-muted" x-text="s.sell_before"></div>
                                             </div>
                                         </template>
@@ -144,7 +144,7 @@
                 <div class="card p-2">
                     <div class="d-flex align-items-center gap-3">
                         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="fs-sm text-muted dark:text-slate-400">Tax-loss harvesting adalah strategi legal untuk mengurangi pajak capital gain. Konsultasikan dengan akuntan Anda.</span>
+                        <span class="fs-sm text-muted dark:text-muted">Tax-loss harvesting adalah strategi legal untuk mengurangi pajak capital gain. Konsultasikan dengan akuntan Anda.</span>
                     </div>
                 </div>
             </div>

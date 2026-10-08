@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Webhook Intelligence &mdash; Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -52,10 +52,10 @@
         <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
             <div class="d-flex align-items-center justify-content-between px-2 py-2">
                 <div class="d-flex align-items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
                     <h1 class="fs-3 fw-semibold text-white">Webhook Intelligence</h1>
                 </div>
-                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-muted   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
             </div>
         </header>
 
@@ -67,7 +67,7 @@
                         <div class="w-10 h-10 gradient-blue rounded-3 d-flex align-items-center justify-content-center text-white fs-2">🔗</div>
                         <div>
                             <h2 class="fs-2 fw-bold text-white">Webhook Rules</h2>
-                            <p class="fs-sm text-muted dark:text-slate-400">Konfigurasi webhook dengan deskripsi AI</p>
+                            <p class="fs-sm text-muted dark:text-muted">Konfigurasi webhook dengan deskripsi AI</p>
                         </div>
                     </div>
 
@@ -83,7 +83,7 @@
                                     <input type="checkbox" class="form-check-input" checked>
                                 </label>
                             </div>
-                            <p class="fs-sm text-muted dark:text-slate-400 mb-2">[[.Description]]</p>
+                            <p class="fs-sm text-muted dark:text-muted mb-2">[[.Description]]</p>
                             <div class="d-flex align-items-center gap-2">
                                 <input type="text" placeholder="https://your-slack-webhook-url..." class="form-control" aria-label="URL webhook">
                                 <button @click="testWebhook($event.target.previousElementSibling.value)" class="btn">Test</button>

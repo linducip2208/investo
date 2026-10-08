@@ -6,7 +6,7 @@
     <title>Custom Indicator · [[.Stock.Code]] · Investo</title>
     <meta name="description" content="Buat indikator kustom untuk [[.Stock.Code]] dengan formula parser.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -71,7 +71,7 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h3 class="fw-bold text-white">Formula</h3>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Write your indicator formula using supported functions</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Write your indicator formula using supported functions</p>
                 </div>
                 <div class="d-flex gap-2">
                     <button @click="testFormula()" :disabled="testing" class="px-2 py-2 bg-primary  disabled:opacity-50 text-white fs-sm fw-semibold rounded-2  d-flex align-items-center gap-2">
@@ -105,17 +105,17 @@
                 </template>
             </div>
             <div class="mt-2 p-2 bg-body bg-opacity-50 dark:bg-slate-900/50 rounded-3 border border dark:border/30">
-                <h4 class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Examples</h4>
+                <h4 class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Examples</h4>
                 <div class="row row-cols-1 row-cols-md-3 gap-3 fs-xs font-monospace">
-                    <button @click="currentFormula = 'SMA(20) > SMA(50)'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-slate-400   border border dark:border/30">
+                    <button @click="currentFormula = 'SMA(20) > SMA(50)'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-muted   border border dark:border/30">
                         <div class="text-primary fw-semibold mb-1">Golden Cross</div>
                         SMA(20) > SMA(50)
                     </button>
-                    <button @click="currentFormula = 'RSI(14) < 30'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-slate-400   border border dark:border/30">
+                    <button @click="currentFormula = 'RSI(14) < 30'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-muted   border border dark:border/30">
                         <div class="text-warning fw-semibold mb-1">Oversold</div>
                         RSI(14) < 30
                     </button>
-                    <button @click="currentFormula = 'RSI(14) > 70'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-slate-400   border border dark:border/30">
+                    <button @click="currentFormula = 'RSI(14) > 70'; testFormula()" class="text-start p-2 bg-white bg-opacity-50 dark:bg-white/50  dark:hover:bg-secondary-lt rounded-2 text-muted dark:text-muted   border border dark:border/30">
                         <div class="text-danger fw-semibold mb-1">Overbought</div>
                         RSI(14) > 70
                     </button>
@@ -132,7 +132,7 @@
                 <div class="d-flex gap-1">
                     <template x-for="(v, i) in indicatorData.slice(-5)" :key="i">
                         <span class="px-2 py-0 rounded fs-xs font-monospace fw-semibold"
-                              :class="v === 1 ? 'bg-success-lt text-emerald-400' : v === 0 ? 'bg-white text-slate-500' : 'bg-info-lt text-blue-400'"
+                              :class="v === 1 ? 'bg-success-lt text-success' : v === 0 ? 'bg-white text-muted' : 'bg-info-lt text-info'"
                               x-text="typeof v === 'number' ? v.toFixed(4) : v"></span>
                     </template>
                 </div>
@@ -167,12 +167,12 @@
         <h3 class="fs-3 fw-bold text-white mb-2">Save Indicator</h3>
         <div class="vstack gap-3">
             <div>
-                <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Name</label>
+                <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Name</label>
                 <input x-model="saveName" class="w-100 bg-body dark:bg-slate-900 border border rounded-3 px-2 py-2 text-white fs-sm  " placeholder="My Custom Indicator">
             </div>
             <div>
-                <label class="d-block fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-1">Formula</label>
-                <div class="bg-body dark:bg-slate-900 border border rounded-3 px-2 py-2 text-muted dark:text-slate-400 font-monospace fs-sm" x-text="currentFormula"></div>
+                <label class="d-block fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-1">Formula</label>
+                <div class="bg-body dark:bg-slate-900 border border rounded-3 px-2 py-2 text-muted dark:text-muted font-monospace fs-sm" x-text="currentFormula"></div>
             </div>
             <div class="d-flex gap-2 pt-2">
                 <button @click="saveIndicator()" :disabled="saving" class="flex-fill px-2 py-2 bg-primary  disabled:opacity-50 text-white fw-semibold rounded-3  fs-sm" x-text="saving ? 'Saving...' : 'Save'"></button>

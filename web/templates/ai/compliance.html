@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Compliance Checker &mdash; Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -52,10 +52,10 @@
         <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
             <div class="d-flex align-items-center justify-content-between px-2 py-2">
                 <div class="d-flex align-items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-[#1e293b] "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
                     <h1 class="fs-3 fw-semibold text-white">Compliance Checker</h1>
                 </div>
-                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-muted   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
             </div>
         </header>
 
@@ -65,7 +65,7 @@
                 <div class="card p-2 text-center">
                     <div class="w-16 h-16 gradient-blue rounded-4 d-flex align-items-center justify-content-center text-white fs-1 mx-auto mb-2">🛡️</div>
                     <h2 class="fs-2 fw-bold text-white mb-2">Cek Kepatuhan Portofolio</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">AI akan memeriksa portofolio Anda terhadap aturan OJK, syariah, dan best practices.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">AI akan memeriksa portofolio Anda terhadap aturan OJK, syariah, dan best practices.</p>
                     <div class="d-flex gap-3 justify-content-center mb-2">
                         <select id="portfolioSelect" class="bg-white dark:bg-[#0f172a] border border dark:border-[#334155] rounded-3 px-2 py-2 text-white fs-sm  ">
                             <option value="1">Portfolio 1</option>
@@ -87,7 +87,7 @@
                         <div class="row row-cols-3 gap-4">
                             <div class="bg-white dark:bg-[#0f172a] border border dark:border-[#1e293b] rounded-3 p-2 text-center">
                                 <div class="fs-1 fw-bold text-white" x-text="report.total_checks"></div>
-                                <div class="fs-xs text-muted dark:text-slate-400 mt-1">Total Pemeriksaan</div>
+                                <div class="fs-xs text-muted dark:text-muted mt-1">Total Pemeriksaan</div>
                             </div>
                             <div class="bg-white dark:bg-[#0f172a] border border-success rounded-3 p-2 text-center">
                                 <div class="fs-1 fw-bold text-success" x-text="report.passed_checks"></div>
@@ -112,7 +112,7 @@
                                                 <span class="fw-semibold text-danger fs-sm" x-text="v.rule"></span>
                                                 <span class="px-2 py-0 bg-danger bg-opacity-50 text-danger fs-xs rounded-pill fw-semibold" x-text="v.severity"></span>
                                             </div>
-                                            <p class="fs-sm text-body dark:text-slate-300 mb-2" x-text="v.detail"></p>
+                                            <p class="fs-sm text-body dark:text-body mb-2" x-text="v.detail"></p>
                                             <p class="fs-xs text-muted" x-text="v.recommendation"></p>
                                         </div>
                                     </template>
@@ -142,7 +142,7 @@
 
                         <div class="card p-2">
                             <h3 class="fs-3 fw-semibold text-white mb-2">Ringkasan</h3>
-                            <p class="fs-sm text-body dark:text-slate-300" x-text="report.summary"></p>
+                            <p class="fs-sm text-body dark:text-body" x-text="report.summary"></p>
                         </div>
                     </div>
                 </template>
@@ -150,7 +150,7 @@
                 <div class="card p-2">
                     <div class="d-flex align-items-center gap-3">
                         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="fs-sm text-muted dark:text-slate-400">Pemeriksaan berdasarkan aturan OJK. Hasil ini bersifat informatif, bukan nasihat resmi.</span>
+                        <span class="fs-sm text-muted dark:text-muted">Pemeriksaan berdasarkan aturan OJK. Hasil ini bersifat informatif, bukan nasihat resmi.</span>
                     </div>
                 </div>
             </div>

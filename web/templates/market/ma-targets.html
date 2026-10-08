@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -50,9 +50,9 @@ function maTargets() {
             } catch(e) { this.loading = false; }
         },
         probColor(p) {
-            if (p >= 75) return 'text-green-400';
-            if (p >= 60) return 'text-amber-400';
-            return 'text-red-400';
+            if (p >= 75) return 'text-success';
+            if (p >= 60) return 'text-warning';
+            return 'text-danger';
         },
         probBg(p) {
             if (p >= 75) return 'bg-success-lt border-green-700/50';
@@ -83,7 +83,7 @@ function maTargets() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
@@ -102,7 +102,7 @@ function maTargets() {
     <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
             <h1 class="fs-2 fs-1 fw-bold text-white">M&A Target Screener</h1>
-            <p class="fs-sm text-muted dark:text-slate-400 mt-0">Screen stocks with high M&A potential based on valuation, industry fragmentation, and corporate structure.</p>
+            <p class="fs-sm text-muted dark:text-muted mt-0">Screen stocks with high M&A potential based on valuation, industry fragmentation, and corporate structure.</p>
         </div>
 
         <template x-if="loading">
@@ -120,10 +120,10 @@ function maTargets() {
                         <div class="d-flex align-items-start justify-content-between mb-2">
                             <div>
                                 <h3 class="fs-3 fw-bold text-white" x-text="t.code"></h3>
-                                <p class="fs-sm text-muted dark:text-slate-400" x-text="t.name"></p>
+                                <p class="fs-sm text-muted dark:text-muted" x-text="t.name"></p>
                             </div>
                             <div class="text-center px-2 py-2 rounded-3 border" :class="probBg(t.probability_score)">
-                                <p class="fs-xs text-muted dark:text-slate-400 mb-0">Probability</p>
+                                <p class="fs-xs text-muted dark:text-muted mb-0">Probability</p>
                                 <p class="fs-2 fw-bolder font-monospace" :class="probColor(t.probability_score)" x-text="t.probability_score + '%'"></p>
                             </div>
                         </div>
@@ -152,7 +152,7 @@ function maTargets() {
                             <span class="fs-xs text-muted" x-text="t.market_cap"></span>
                         </div>
 
-                        <p class="fs-sm text-muted dark:text-slate-400 lh-lg" x-text="t.rationale"></p>
+                        <p class="fs-sm text-muted dark:text-muted lh-lg" x-text="t.rationale"></p>
                     </div>
                 </template>
             </div>

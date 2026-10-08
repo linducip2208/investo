@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waran Tracker · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -46,7 +45,7 @@
             async fetch() { this.loading=true; try{var r=await fetch('/api/market/waran');var d=await r.json();this.warans=d.warans||[]}catch(e){} this.loading=false; },
             tickCountdowns() { this.warans = this.warans.map(function(w){ w._days = Math.max(0, Math.floor((new Date(w.expiry_date).getTime() - Date.now()) / 86400000)); return w; }); },
             statusClass(s) { return s === 'In the Money' ? 'text-success' : 'text-danger'; },
-            getBadge(s) { return s === 'In the Money' ? 'bg-success-lt text-green-400' : 'bg-danger-lt text-red-400'; },
+            getBadge(s) { return s === 'In the Money' ? 'bg-success-lt text-success' : 'bg-danger-lt text-danger'; },
             fmtPrice(v) { return v ? 'Rp ' + Math.round(v).toLocaleString('id-ID') : '-'; }
         }
     }
@@ -80,7 +79,7 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill">
                 <h1 class="fs-3 fw-bold text-white">Waran Tracker</h1>
             </div>
@@ -120,16 +119,16 @@
                                     <td class="font-monospace text-body dark:text-body" x-text="'Rp '+Math.round(w.exercise_price).toLocaleString('id-ID')"></td>
                                     <td class="font-monospace text-white" x-text="'Rp '+Math.round(w.current_stock_price).toLocaleString('id-ID')"></td>
                                     <td class="font-monospace text-white" x-text="'Rp '+Math.round(w.waran_price).toLocaleString('id-ID')"></td>
-                                    <td class="text-muted dark:text-slate-400 fs-xs">
+                                    <td class="text-muted dark:text-muted fs-xs">
                                         <div x-text="w.expiry_date"></div>
-                                        <div class="fs-6" :class="w._days <= 30 ? 'text-danger' : 'text-slate-500'" x-text="(w._days || 0) + ' hari lagi'" x-show="w._days >= 0"></div>
+                                        <div class="fs-6" :class="w._days <= 30 ? 'text-danger' : 'text-muted'" x-text="(w._days || 0) + ' hari lagi'" x-show="w._days >= 0"></div>
                                         <div class="fs-6 text-danger" x-show="w._days <= 0">Expired</div>
                                     </td>
                                     <td class="font-monospace fs-sm" :class="w.premium > 0 ? 'text-danger' : 'text-success'" x-text="(w.premium > 0 ? '+' : '') + w.premium.toFixed(1) + '%'"></td>
                                     <td class="font-monospace fs-sm text-body dark:text-body" x-text="w.gearing.toFixed(1) + 'x'"></td>
                                     <td class="font-monospace fs-sm text-body dark:text-body" x-text="'Rp '+Math.round(w.break_even).toLocaleString('id-ID')"></td>
                                     <td>
-                                        <span class="badge px-2 py-0 rounded fs-6 fw-semibold" :class="w.status==='In the Money'?'bg-success-lt text-green-400':'bg-danger-lt text-red-400'" x-text="w.status"></span>
+                                        <span class="badge px-2 py-0 rounded fs-6 fw-semibold" :class="w.status==='In the Money'?'bg-success-lt text-success':'bg-danger-lt text-danger'" x-text="w.status"></span>
                                     </td>
                                 </tr>
                             </template>

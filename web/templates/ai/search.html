@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Smart Search · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -132,7 +132,7 @@
     <!-- MAIN -->
     <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-3">
                 <span class="fs-1 sparkle">🔮</span>
                 <h1 class="fs-3 fw-bold text-white">AI Smart Search</h1>
@@ -148,7 +148,7 @@
             <div class="card p-2 p-lg-5 text-center">
                 <span class="display-5 mb-2 d-block sparkle">🔮</span>
                 <h2 class="fs-2 fs-1 fw-bold text-white mb-2">Cari Saham dengan Bahasa Alami</h2>
-                <p class="text-muted dark:text-slate-400 fs-sm mb-2 max-w-lg mx-auto">Gunakan AI untuk mencari saham berdasarkan deskripsi, sektor, karakteristik, atau kriteria apapun dalam bahasa Indonesia.</p>
+                <p class="text-muted dark:text-muted fs-sm mb-2 max-w-lg mx-auto">Gunakan AI untuk mencari saham berdasarkan deskripsi, sektor, karakteristik, atau kriteria apapun dalam bahasa Indonesia.</p>
                 <div class="max-w-xl mx-auto position-relative">
                     <span class="position-absolute left-4 top-50 translate-middle-y fs-3 sparkle">✨</span>
                     <input type="text" x-model="query" @keydown.enter="search()"
@@ -185,7 +185,7 @@
             <!-- Results -->
             <div x-show="results.length > 0">
                 <div class="d-flex align-items-center justify-content-between mb-2">
-                    <p class="fs-sm text-muted dark:text-slate-400"><span x-text="count"></span> hasil untuk "<span class="text-white fw-medium" x-text="query"></span>"</p>
+                    <p class="fs-sm text-muted dark:text-muted"><span x-text="count"></span> hasil untuk "<span class="text-white fw-medium" x-text="query"></span>"</p>
                 </div>
                 <div class="vstack gap-2">
                     <template x-for="(r, i) in results" :key="i">
@@ -194,7 +194,7 @@
                                 <div class="flex-fill">
                                     <div class="d-flex align-items-center gap-3 mb-1">
                                         <span class="fw-bold text-white font-monospace fs-sm" x-text="r.code"></span>
-                                        <span class="text-muted dark:text-slate-400 fs-sm" x-text="r.name"></span>
+                                        <span class="text-muted dark:text-muted fs-sm" x-text="r.name"></span>
                                         <span x-show="r.change_pct !== 0"
                                               :class="r.change_pct >= 0 ? 'text-success bg-success-lt' : 'text-danger bg-danger-lt'"
                                               class="fs-xs px-1 py-0 rounded font-monospace"
@@ -205,8 +205,8 @@
                                 <div class="text-end ms-2">
                                     <div class="font-monospace text-white fw-semibold fs-sm" x-text="'Rp ' + Math.round(r.price||0).toLocaleString('id-ID')"></div>
                                     <div class="d-flex gap-3 mt-1 fs-6 text-muted">
-                                        <span x-show="r.per > 0">PER <span class="text-body dark:text-slate-300 font-monospace" x-text="(r.per||0).toFixed(1) + 'x'"></span></span>
-                                        <span x-show="r.dividend_yield > 0">Div <span class="text-body dark:text-slate-300 font-monospace" x-text="(r.dividend_yield||0).toFixed(2) + '%'"></span></span>
+                                        <span x-show="r.per > 0">PER <span class="text-body dark:text-body font-monospace" x-text="(r.per||0).toFixed(1) + 'x'"></span></span>
+                                        <span x-show="r.dividend_yield > 0">Div <span class="text-body dark:text-body font-monospace" x-text="(r.dividend_yield||0).toFixed(2) + '%'"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -218,7 +218,7 @@
             <!-- No Results -->
             <div x-show="!loading && searched && !results.length" class="card p-2 text-center">
                 <span class="display-6 d-block mb-2">🔍</span>
-                <p class="text-muted dark:text-slate-400 fs-sm">Tidak ada hasil untuk "<span class="text-white" x-text="query"></span>"</p>
+                <p class="text-muted dark:text-muted fs-sm">Tidak ada hasil untuk "<span class="text-white" x-text="query"></span>"</p>
                 <p class="text-muted fs-xs mt-1">Coba query lain atau gunakan kata kunci yang berbeda</p>
             </div>
         </main>

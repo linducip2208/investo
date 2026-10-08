@@ -6,7 +6,7 @@
     <title>AI Signal Generator · Investo</title>
     <meta name="description" content="Generate trading signals berbasis AI dengan analisa multi-indicator. RSI, MACD, MA, Bollinger Bands, Stochastic.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -291,12 +291,12 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -308,7 +308,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">AI Signal Generator</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Analisa teknikal mendalam dengan multi-indicator untuk satu saham.</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Analisa teknikal mendalam dengan multi-indicator untuk satu saham.</p>
                 </div>
                 <template x-if="signal">
                 <button @click="printReport()" class="px-2 py-2 bg-body bg-opacity-50 dark:bg-secondary-lt text-body dark:text-body rounded-3 fs-xs fw-medium border border  dark:hover:bg-secondary-lt  d-flex align-items-center gap-2">
@@ -332,7 +332,7 @@
                             <template x-for="stock in stockResults" :key="stock.id || stock.code">
                                 <div class="search-dropdown-item" @click="selectStock(stock)">
                                     <span class="font-monospace fw-bold text-white" x-text="stock.code"></span>
-                                    <span class="text-muted dark:text-slate-400 ms-2" x-text="stock.name"></span>
+                                    <span class="text-muted dark:text-muted ms-2" x-text="stock.name"></span>
                                 </div>
                             </template>
                         </div>
@@ -355,7 +355,7 @@
                     </template>
                 </div>
                 <template x-if="selectedStock">
-                <div class="mt-2 fs-sm text-muted dark:text-slate-400">
+                <div class="mt-2 fs-sm text-muted dark:text-muted">
                     Selected: <span class="text-white fw-medium" x-text="selectedStock.code + ' - ' + selectedStock.name"></span>
                 </div>
                 </template>
@@ -386,7 +386,7 @@
                                 <span class="font-monospace fs-2 fw-bold text-white" x-text="signal.stock_code"></span>
                                 <span class="badge" :class="badgeClass(signal.type)" :style="'font-size:13px;padding:5px 14px'" x-text="signal.type"></span>
                             </div>
-                            <div class="fs-sm text-muted dark:text-slate-400" x-text="signal.stock_name"></div>
+                            <div class="fs-sm text-muted dark:text-muted" x-text="signal.stock_name"></div>
                         </div>
                         <div class="text-end">
                             <div class="font-monospace fs-1 fw-bold text-white" x-text="formatPrice(signal.price)"></div>
@@ -425,7 +425,7 @@
                             <div class="p-2 bg-white dark:bg-[#0f172a] rounded-3 text-center border border dark:border/50">
                                 <div class="fs-6 text-muted text-uppercase  mb-1">Risk/Reward</div>
                                 <div class="font-monospace fs-3 fw-bold text-white">
-                                    <span x-text="riskReward()" :class="parseFloat(riskReward())>=2?'text-green-400':parseFloat(riskReward())>=1?'text-amber-400':'text-red-400'"></span>
+                                    <span x-text="riskReward()" :class="parseFloat(riskReward())>=2?'text-success':parseFloat(riskReward())>=1?'text-warning':'text-danger'"></span>
                                     <span class="fs-xs text-muted">:1</span>
                                 </div>
                             </div>
@@ -448,19 +448,19 @@
                         <div class="widget-title">Suggested Entry/Exit</div>
                         <div class="vstack gap-2">
                             <div class="d-flex justify-content-between align-items-center p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <span class="fs-xs text-muted dark:text-slate-400">Entry Price</span>
+                                <span class="fs-xs text-muted dark:text-muted">Entry Price</span>
                                 <span class="font-monospace fs-sm fw-semibold text-white" x-text="formatPrice(signal.price)"></span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <span class="fs-xs text-muted dark:text-slate-400">Target (2x ATR)</span>
+                                <span class="fs-xs text-muted dark:text-muted">Target (2x ATR)</span>
                                 <span class="font-monospace fs-sm fw-semibold text-success" x-text="formatPrice(signal.target_price)"></span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <span class="fs-xs text-muted dark:text-slate-400">Stop Loss (1.5x ATR)</span>
+                                <span class="fs-xs text-muted dark:text-muted">Stop Loss (1.5x ATR)</span>
                                 <span class="font-monospace fs-sm fw-semibold text-danger" x-text="formatPrice(signal.stop_loss)"></span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <span class="fs-xs text-muted dark:text-slate-400">Risk/Reward Ratio</span>
+                                <span class="fs-xs text-muted dark:text-muted">Risk/Reward Ratio</span>
                                 <span class="font-monospace fs-sm fw-semibold text-white">
                                     <span x-text="riskReward()"></span> : 1
                                 </span>
@@ -472,11 +472,11 @@
                         <div class="widget-title">Signal Stats</div>
                         <div class="vstack gap-2">
                             <div class="p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <div class="fs-xs text-muted dark:text-slate-400 mb-1">Generated At</div>
+                                <div class="fs-xs text-muted dark:text-muted mb-1">Generated At</div>
                                 <div class="font-monospace fs-sm text-white" x-text="signal.created_at || 'N/A'"></div>
                             </div>
                             <div class="p-2 bg-white dark:bg-[#0f172a] rounded-2">
-                                <div class="fs-xs text-muted dark:text-slate-400 mb-1">Indicators Analyzed</div>
+                                <div class="fs-xs text-muted dark:text-muted mb-1">Indicators Analyzed</div>
                                 <div class="font-monospace fs-sm text-white" x-text="(signal.indicators || []).length + ' indicators'"></div>
                             </div>
                         </div>
@@ -488,7 +488,7 @@
             <template x-if="!loading && !signal && !error">
             <div class="text-center py-2">
                 <div class="display-4 mb-2">&#x1F9E0;</div>
-                <p class="text-muted dark:text-slate-400 fs-3 fw-medium">Pilih saham dan generate sinyal</p>
+                <p class="text-muted dark:text-muted fs-3 fw-medium">Pilih saham dan generate sinyal</p>
                 <p class="text-muted fs-sm mt-1">AI akan menganalisa RSI, MACD, MA Cross, Bollinger Bands, dan Stochastic</p>
             </div>
             </template>

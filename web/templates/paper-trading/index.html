@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paper Trading · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -59,7 +59,7 @@
                 error: '',
                 success: '',
                 currentPlan: 'free',
-                planBadge: {label:'Free',color:'bg-slate-600'},
+                planBadge: {label:'Free',color:'bg-secondary'},
 
                 init() {
                     this.fetchPortfolio();
@@ -252,8 +252,8 @@
     </aside>
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
-        <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-slate-400 ">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <div class="flex-fill max-w-md d-none d-sm-block">
@@ -279,15 +279,15 @@
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div>
                     <h1 class="fs-1 fs-1 fw-bold text-white">Paper Trading</h1>
-                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Simulasi trading saham dengan uang virtual Rp 100 juta</p>
+                    <p class="text-muted dark:text-muted fs-sm mt-1">Simulasi trading saham dengan uang virtual Rp 100 juta</p>
                 </div>
             </div>
 
-            <div x-show="error" class="card border-danger/30 p-2 d-flex align-items-center gap-3" style="background:rgba(220,38,38,.08)" @click="error=''" x-cloak>
+            <div x-show="error" class="card border-danger p-2 d-flex align-items-center gap-3" style="background:rgba(220,38,38,.08)" @click="error=''" x-cloak>
                 <svg class="w-5 h-5 text-danger flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <span class="fs-sm text-danger" x-text="error"></span>
             </div>
-            <div x-show="success" class="card border-success/30 p-2 d-flex align-items-center gap-3" style="background:rgba(16,185,129,.08)" x-cloak>
+            <div x-show="success" class="card border-success p-2 d-flex align-items-center gap-3" style="background:rgba(16,185,129,.08)" x-cloak>
                 <svg class="w-5 h-5 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <span class="fs-sm text-success" x-text="success"></span>
             </div>
@@ -315,18 +315,18 @@
                 <h3 class="fw-semibold text-white mb-2 d-flex align-items-center gap-2"><span>&#x1F4C8;</span> Buy / Sell</h3>
                 <div class="row row-cols-md-4 gap-3 align-items-end">
                     <div>
-                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Kode Saham</label>
+                        <label class="fs-xs text-muted dark:text-muted d-block mb-1">Kode Saham</label>
                         <input x-model="tradeForm.code" class="input-field" placeholder="BBCA" @keydown.enter="executeTrade()">
                     </div>
                     <div>
-                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Tipe</label>
+                        <label class="fs-xs text-muted dark:text-muted d-block mb-1">Tipe</label>
                         <select x-model="tradeForm.type" class="input-field">
                             <option value="buy">Buy (Beli)</option>
                             <option value="sell">Sell (Jual)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="fs-xs text-muted dark:text-slate-400 d-block mb-1">Lot (100 lembar/lot)</label>
+                        <label class="fs-xs text-muted dark:text-muted d-block mb-1">Lot (100 lembar/lot)</label>
                         <input x-model.number="tradeForm.quantity" type="number" class="input-field" placeholder="Jumlah lot" min="1" step="1">
                     </div>
                     <div>
@@ -347,7 +347,7 @@
                 <div class="overflow-x-auto">
                     <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                         <thead>
-                            <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                            <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-muted fs-xs text-uppercase ">
                                 <th class="px-2 py-2">Saham</th>
                                 <th class="px-2 py-2 text-end">Qty</th>
                                 <th class="px-2 py-2 text-end">Avg Price</th>
@@ -357,12 +357,12 @@
                                 <th class="px-2 py-2 text-end">P/L%</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y border/50 dark:divide-slate-700/50">
+                        <tbody class="divide-y border dark:divide-slate-700/50">
                             <template x-if="holdings.length === 0">
                                 <tr><td colspan="7" class="px-2 py-2 text-center text-muted">Belum ada holdings. Mulai trading dengan buy saham.</td></tr>
                             </template>
                             <template x-for="h in holdings" :key="h.stock_code">
-                                <tr class=" dark:hover:bg-slate-700/20 ">
+                                <tr class=" dark:hover:bg-secondary-lt/20 ">
                                     <td class="px-2 py-2">
                                         <span class="fw-semibold text-white font-monospace" x-text="h.stock_code"></span>
                                         <span class="fs-xs text-muted ms-2" x-text="h.stock_name || ''"></span>
@@ -392,7 +392,7 @@
                     <div class="overflow-x-auto">
                         <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                             <thead>
-                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-muted fs-xs text-uppercase ">
                                     <th class="px-2 py-2">Waktu</th>
                                     <th class="px-2 py-2">Saham</th>
                                     <th class="px-2 py-2 text-center">Tipe</th>
@@ -402,12 +402,12 @@
                                     <th class="px-2 py-2 text-end">Fee</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y border/50 dark:divide-slate-700/50">
+                            <tbody class="divide-y border dark:divide-slate-700/50">
                                 <template x-if="trades.length === 0">
                                     <tr><td colspan="7" class="px-2 py-2 text-center text-muted">Belum ada transaksi.</td></tr>
                                 </template>
                                 <template x-for="t in trades" :key="t.id">
-                                    <tr class=" dark:hover:bg-slate-700/20 ">
+                                    <tr class=" dark:hover:bg-secondary-lt/20 ">
                                         <td class="px-2 py-2 fs-xs text-muted font-monospace" x-text="new Date(t.executed_at).toLocaleString('id-ID')"></td>
                                         <td class="px-2 py-2 fw-semibold text-white font-monospace" x-text="t.stock_code"></td>
                                         <td class="px-2 py-2 text-center">
@@ -432,19 +432,19 @@
                     <div class="overflow-x-auto">
                         <table class="table table-vcenter table-hover w-100 text-start fs-sm">
                             <thead>
-                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-slate-400 fs-xs text-uppercase ">
+                                <tr class="border-bottom border dark:border-slate-700 text-muted dark:text-muted fs-xs text-uppercase ">
                                     <th class="px-2 py-2 w-8">#</th>
                                     <th class="px-2 py-2">User</th>
                                     <th class="px-2 py-2 text-end">Return</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y border/50 dark:divide-slate-700/50">
+                            <tbody class="divide-y border dark:divide-slate-700/50">
                                 <template x-if="leaderboard.length === 0">
                                     <tr><td colspan="3" class="px-2 py-2 text-center text-muted">Belum ada data leaderboard.</td></tr>
                                 </template>
                                 <template x-for="(lb, i) in leaderboard" :key="lb.portfolio_id">
-                                    <tr class=" dark:hover:bg-slate-700/20 ">
-                                        <td class="px-2 py-2 font-monospace fs-xs" :class="i < 3 ? 'text-yellow-400 font-bold' : 'text-slate-500'" x-text="'#'+(i+1)"></td>
+                                    <tr class=" dark:hover:bg-secondary-lt/20 ">
+                                        <td class="px-2 py-2 font-monospace fs-xs" :class="i < 3 ? 'text-warning font-bold' : 'text-muted'" x-text="'#'+(i+1)"></td>
                                         <td class="px-2 py-2">
                                             <span class="text-white fs-sm" x-text="'User #' + lb.user_id"></span>
                                         </td>
@@ -460,7 +460,7 @@
             </div>
         </main>
     </div>
-    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black/60  d-none" @click="sidebarOpen=false" :class="{'!block':sidebarOpen}"></div>
+    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" @click="sidebarOpen=false" :class="{'!block':sidebarOpen}"></div>
     <script src="/static/js/app.js" defer></script>
 </body>
 </html>

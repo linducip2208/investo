@@ -1,30 +1,30 @@
 <!-- Notification Bell Dropdown Component -->
 <div x-data="notificationBell()" x-init="fetchUnread(); fetchNotifications(); setInterval(() => { fetchUnread(); fetchNotifications() }, 60000)"
-     class="relative" @click.outside="open = false">
+     class="position-relative" @click.outside="open = false">
     <button @click="open = !open; if (open) fetchNotifications()"
-            class="relative p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            class="position-relative p-2 rounded-2 text-muted dark:text-muted  dark:hover:text-slate-200  dark:hover:bg-white ">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
         </svg>
         <span x-show="unreadCount > 0"
-              class="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none"
+              class="position-absolute top-0 end-0 w-4.5 h-4.5 bg-danger text-white fs-6 fw-bold rounded-pill d-flex align-items-center justify-content-center lh-1"
               style="width: 18px; height: 18px;"
               x-text="unreadCount > 99 ? '99+' : unreadCount">3</span>
     </button>
 
     <div x-show="open"  x-transition:enter-start="opacity-0 scale-95 -translate-y-2" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-         class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
-        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-            <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Notifikasi</h3>
+         class="position-absolute end-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-3 shadow-lg border border dark:border-slate-700 overflow-hidden z-3">
+        <div class="d-flex align-items-center justify-content-between px-2 py-2 border-bottom border dark:border-slate-700">
+            <h3 class="fs-sm fw-semibold text-body dark:text-white">Notifikasi</h3>
             <button @click="markAllRead()" x-show="unreadCount > 0"
-                    class="text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium">
+                    class="fs-xs text-primary dark:text-info  fw-medium">
                 Tandai semua dibaca
             </button>
         </div>
 
-        <div class="max-h-[360px] overflow-y-auto">
+        <div class="max-h-360 overflow-y-auto">
             <template x-if="notifications.length === 0">
-                <div class="px-4 py-10 text-center text-slate-500 dark:text-slate-400 dark:text-slate-500 text-sm">
+                <div class="px-2 py-2 text-center text-muted dark:text-muted dark:text-muted fs-sm">
                     <svg class="w-10 h-10 mx-auto mb-2 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                     Tidak ada notifikasi
                 </div>
@@ -32,18 +32,18 @@
 
             <template x-for="n in notifications" :key="n.id">
                 <div @click="markRead(n); if (n.link) window.location = n.link"
-                     class="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors border-b border-slate-50 dark:border-slate-700/30"
+                     class="d-flex align-items-start gap-3 px-2 py-2  dark:hover:bg-secondary-lt/50 cursor-pointer  border-bottom border dark:border-slate-700/30"
                      :class="!n.is_read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                    <div class="w-8 h-8 rounded-2 d-flex align-items-center justify-content-center flex-shrink-0 mt-0"
                          :class="notifIconBg(n.type)">
-                        <span class="text-sm" x-html="notifIcon(n.type)"></span>
+                        <span class="fs-sm" x-html="notifIcon(n.type)"></span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-slate-900 dark:text-white leading-tight" x-text="n.title"></p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2" x-text="n.message"></p>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 dark:text-slate-500 mt-1" x-text="timeAgo(n.created_at)"></p>
+                    <div class="flex-fill min-w-0">
+                        <p class="fs-sm fw-medium text-body dark:text-white lh-1" x-text="n.title"></p>
+                        <p class="fs-xs text-muted dark:text-muted mt-0 line-clamp-2" x-text="n.message"></p>
+                        <p class="fs-6 text-muted dark:text-muted dark:text-muted mt-1" x-text="timeAgo(n.created_at)"></p>
                     </div>
-                    <div x-show="!n.is_read" class="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-2"></div>
+                    <div x-show="!n.is_read" class="w-2 h-2 bg-primary rounded-pill flex-shrink-0 mt-2"></div>
                 </div>
             </template>
         </div>

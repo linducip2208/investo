@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Margin Calculator · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -172,7 +172,7 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block"><input type="text" placeholder="Cari saham, forex..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white   "></div>
             <div class="d-flex align-items-center gap-2 ms-auto">
                 <div class="fs-xs text-muted font-monospace" x-text="clock"></div>
@@ -186,27 +186,27 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">Margin Calculator</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Hitung margin yang dibutuhkan untuk membuka posisi forex</p>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Hitung margin yang dibutuhkan untuk membuka posisi forex</p>
             </div>
 
             <div class="row row-cols-1 row-cols-lg-2 gap-5">
                 <div class="card p-2 vstack gap-3">
                     <div class="widget-title">Parameter Posisi</div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1 fw-medium">Pasangan Forex</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1 fw-medium">Pasangan Forex</label>
                         <select x-model="pair" class="form-input">
                             [[range .Pairs]]<option value="[[.]]">[[.]]</option>[[end]]
                         </select>
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1 fw-medium">Position Size (Lot)</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1 fw-medium">Position Size (Lot)</label>
                         <input type="number" x-model="positionSize" class="form-input" placeholder="1.0" step="0.01" min="0.01">
                     </div>
                     <div>
-                        <label class="d-block fs-xs text-muted dark:text-slate-400 mb-1 fw-medium">Leverage</label>
+                        <label class="d-block fs-xs text-muted dark:text-muted mb-1 fw-medium">Leverage</label>
                         <div class="d-flex gap-2 flex-wrap">
                             [[range .Leverages]]
-                            <button @click="leverage=[[.]]" :class="leverage==[[.]]?'bg-blue-600 text-white':'bg-secondary-lt text-slate-400'" class="px-2 py-2 rounded-3 fs-sm fw-semibold ">1:[[.]]</button>
+                            <button @click="leverage=[[.]]" :class="leverage==[[.]]?'bg-blue-600 text-white':'bg-secondary-lt text-muted'" class="px-2 py-2 rounded-3 fs-sm fw-semibold ">1:[[.]]</button>
                             [[end]]
                         </div>
                     </div>
@@ -231,14 +231,14 @@
                             </div>
                             <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
                                 <span class="d-block fs-xs text-muted">Free Margin</span>
-                                <span class="font-monospace fs-3 fw-bold" :class="result.free_margin > 0 ? 'text-emerald-400' : 'text-red-400'" x-text="'$ '+fmt(result.free_margin)"></span>
+                                <span class="font-monospace fs-3 fw-bold" :class="result.free_margin > 0 ? 'text-success' : 'text-danger'" x-text="'$ '+fmt(result.free_margin)"></span>
                             </div>
                         </div>
 
                         <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="fs-xs text-muted">Margin Used</span>
-                                <span class="font-monospace fs-sm fw-bold" :class="result.margin_percent > 80 ? 'text-red-400' : result.margin_percent > 50 ? 'text-yellow-400' : 'text-emerald-400'" x-text="fmt(result.margin_percent)+'%'"></span>
+                                <span class="font-monospace fs-sm fw-bold" :class="result.margin_percent > 80 ? 'text-danger' : result.margin_percent > 50 ? 'text-warning' : 'text-success'" x-text="fmt(result.margin_percent)+'%'"></span>
                             </div>
                             <div class="w-100 bg-body dark:bg-secondary-lt rounded-pill h-2.5">
                                 <div class="h-2.5 rounded-pill  " :class="result.margin_percent > 80 ? 'bg-red' : result.margin_percent > 50 ? 'bg-yellow' : 'bg-green'" :style="'width:'+Math.min(result.margin_percent,100)+'%'"></div>
@@ -256,7 +256,7 @@
                 <div class="vstack gap-3">
                     <div class="card p-2">
                         <div class="widget-title">Informasi Leverage</div>
-                        <div class="vstack gap-2 fs-xs text-muted dark:text-slate-400">
+                        <div class="vstack gap-2 fs-xs text-muted dark:text-muted">
                             <div class="d-flex justify-content-between py-1 border-bottom border dark:border-slate-800"><span>Leverage 1:1</span><span class="text-white">Margin 100% (no leverage)</span></div>
                             <div class="d-flex justify-content-between py-1 border-bottom border dark:border-slate-800"><span>Leverage 1:10</span><span class="text-white">Margin 10%</span></div>
                             <div class="d-flex justify-content-between py-1 border-bottom border dark:border-slate-800"><span>Leverage 1:20</span><span class="text-white">Margin 5%</span></div>
@@ -269,10 +269,10 @@
                         <div class="widget-title">Level Margin Call</div>
                         <div class="vstack gap-2 fs-xs">
                             <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 d-flex justify-content-between">
-                                <span class="text-muted dark:text-slate-400">Margin Call Level</span>
+                                <span class="text-muted dark:text-muted">Margin Call Level</span>
                                 <span class="font-monospace text-warning fw-semibold" x-text="result ? '$ '+fmt(result.margin_call_level) : '--'">--</span></div>
                             <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2 d-flex justify-content-between">
-                                <span class="text-muted dark:text-slate-400">Stop Out Level</span>
+                                <span class="text-muted dark:text-muted">Stop Out Level</span>
                                 <span class="font-monospace text-danger fw-semibold" x-text="result ? '$ '+fmt(result.stop_out_price) : '--'">--</span></div>
                         </div>
                         <div class="fs-6 text-muted mt-2">Margin Call terjadi saat equity turun di bawah required margin. Stop Out terjadi saat broker menutup paksa posisi.</div>

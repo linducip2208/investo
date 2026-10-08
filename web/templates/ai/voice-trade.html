@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice-to-Trade &mdash; Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -93,12 +93,12 @@
         <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
             <div class="d-flex align-items-center justify-content-between px-2 py-2">
                 <div class="d-flex align-items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] ">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-[#1e293b] ">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                     <h1 class="fs-3 fw-semibold text-white">Voice-to-Trade</h1>
                 </div>
-                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-slate-400   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 fs-sm text-muted dark:text-muted   dark:hover:bg-[#1e293b] rounded-2 ">Dashboard</a>
             </div>
         </header>
 
@@ -108,7 +108,7 @@
                 <div class="card p-2 text-center">
                     <div class="mb-2">
                         <h2 class="fs-2 fw-bold text-white mb-2">Voice-to-Trade</h2>
-                        <p class="fs-sm text-muted dark:text-slate-400">Ucapkan perintah trading dan AI akan membuat alert otomatis.</p>
+                        <p class="fs-sm text-muted dark:text-muted">Ucapkan perintah trading dan AI akan membuat alert otomatis.</p>
                     </div>
 
                     <div class="mb-2">
@@ -120,7 +120,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
                             </svg>
                         </button>
-                        <p class="mt-2 fs-sm" :class="listening ? 'text-danger font-semibold' : 'text-slate-400'"
+                        <p class="mt-2 fs-sm" :class="listening ? 'text-danger font-semibold' : 'text-muted'"
                            x-text="listening ? '🎤 Mendengarkan...' : 'Klik untuk mulai bicara'"></p>
                     </div>
 
@@ -146,17 +146,17 @@
                                 <span class="text-success fw-semibold fs-sm">Perintah Terdeteksi</span>
                             </div>
                             <div class="vstack gap-2 fs-sm">
-                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">Aksi</span><span class="text-white fw-semibold" x-text="result?.action || '-'"></span></div>
-                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">Jumlah</span><span class="text-white" x-text="(result?.quantity || '') + ' ' + (result?.unit || '')"></span></div>
-                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">Saham</span><span class="text-white fw-bold font-monospace" x-text="result?.stock_code || '-'"></span></div>
-                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-slate-400">Kondisi</span><span class="text-white" x-text="(result?.condition || '') + (result?.price ? ' @ ' + result.price : '')"></span></div>
+                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted">Aksi</span><span class="text-white fw-semibold" x-text="result?.action || '-'"></span></div>
+                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted">Jumlah</span><span class="text-white" x-text="(result?.quantity || '') + ' ' + (result?.unit || '')"></span></div>
+                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted">Saham</span><span class="text-white fw-bold font-monospace" x-text="result?.stock_code || '-'"></span></div>
+                                <div class="d-flex justify-content-between"><span class="text-muted dark:text-muted">Kondisi</span><span class="text-white" x-text="(result?.condition || '') + (result?.price ? ' @ ' + result.price : '')"></span></div>
                             </div>
                             <div class="mt-2 pt-2 border-top border-success">
-                                <p class="fs-sm text-body dark:text-slate-300" x-text="result?.message"></p>
+                                <p class="fs-sm text-body dark:text-body" x-text="result?.message"></p>
                             </div>
                             <div class="mt-2 d-flex gap-3">
                                 <button @click="createAlert()" class="flex-fill py-2 bg-primary text-white fs-sm fw-medium rounded-2  ">Buat Alert</button>
-                                <button @click="result=null;transcript=''" class="px-2 py-2 fs-sm text-muted dark:text-slate-400  border border dark:border-[#334155] rounded-2 ">Reset</button>
+                                <button @click="result=null;transcript=''" class="px-2 py-2 fs-sm text-muted dark:text-muted  border border dark:border-[#334155] rounded-2 ">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -164,11 +164,11 @@
                     <div class="mt-2 text-start border-top border dark:border-[#1e293b] pt-2">
                         <div class="fs-sm text-muted mb-2">Contoh perintah suara:</div>
                         <div class="vstack gap-2">
-                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-slate-300 font-monospace cursor-pointer  "
+                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-body font-monospace cursor-pointer  "
                                  @click="parseDemo($event.target.textContent)">"Beli 10 lot BBCA kalau tembus 6500"</div>
-                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-slate-300 font-monospace cursor-pointer  "
+                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-body font-monospace cursor-pointer  "
                                  @click="parseDemo($event.target.textContent)">"Jual 5 lot TLKM kalau turun ke 3000"</div>
-                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-slate-300 font-monospace cursor-pointer  "
+                            <div class="bg-white dark:bg-[#0f172a] rounded-2 px-2 py-2 fs-sm text-body dark:text-body font-monospace cursor-pointer  "
                                  @click="parseDemo($event.target.textContent)">"Beli 100 lembar ASII naik ke 5000"</div>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                 <div class="card p-2">
                     <div class="d-flex align-items-center gap-3 mb-2">
                         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="fs-sm text-muted dark:text-slate-400">Pastikan microphone diizinkan. Data suara diproses di browser dengan Web Speech API.</span>
+                        <span class="fs-sm text-muted dark:text-muted">Pastikan microphone diizinkan. Data suara diproses di browser dengan Web Speech API.</span>
                     </div>
                 </div>
             </div>

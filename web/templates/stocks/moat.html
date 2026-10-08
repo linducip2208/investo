@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -118,7 +118,7 @@ function moatAnalysis() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
@@ -137,10 +137,10 @@ function moatAnalysis() {
     <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
         <div>
             <h1 class="fs-2 fs-1 fw-bold text-white">Moat Analysis: <span x-text="code"></span></h1>
-            <p class="fs-sm text-muted dark:text-slate-400 mt-0">Economic moat assessment across 5 dimensions. How strong is the competitive advantage?</p>
+            <p class="fs-sm text-muted dark:text-muted mt-0">Economic moat assessment across 5 dimensions. How strong is the competitive advantage?</p>
             <template x-if="result && result.is_illustrative">
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
-                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. <span class="text-muted dark:text-slate-400" x-text="'Sumber: ' + (result.source || '-') + (result.as_of ? ' · per ' + result.as_of : '')"></span></p>
+                    <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data real-time. <span class="text-muted dark:text-muted" x-text="'Sumber: ' + (result.source || '-') + (result.as_of ? ' · per ' + result.as_of : '')"></span></p>
                 </div>
             </template>
             <p class="fs-xs text-muted mt-2" x-show="result && !result.is_illustrative && result.source" x-text="'Sumber: ' + result.source + (result.as_of ? ' · per ' + result.as_of : '')"></p>
@@ -155,9 +155,9 @@ function moatAnalysis() {
         <template x-if="!loading && result">
             <div class="vstack gap-3">
                 <div class="card p-2 text-center" :class="moatClass(result.moat_width)">
-                    <h3 class="fs-sm text-muted dark:text-slate-400 mb-1">Moat Width</h3>
+                    <h3 class="fs-sm text-muted dark:text-muted mb-1">Moat Width</h3>
                     <p class="fs-1 fw-bolder text-white" x-text="result.moat_width"></p>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-1"><span class="font-monospace text-white" x-text="result.total_stars.toFixed(1)"></span> / 25 stars</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-1"><span class="font-monospace text-white" x-text="result.total_stars.toFixed(1)"></span> / 25 stars</p>
                 </div>
 
                 <div class="row row-cols-1 row-cols-lg-5 gap-4">
@@ -174,7 +174,7 @@ function moatAnalysis() {
                                 <div class="bg-white bg-opacity-50 dark:bg-white/50 rounded-3 p-2">
                                     <div class="d-flex align-items-center justify-content-between mb-1">
                                         <span class="fs-sm fw-semibold text-body dark:text-slate-200" x-text="dim.name"></span>
-                                        <span class="font-monospace fs-sm" :class="{'text-amber-400': dim.stars >= 4, 'text-slate-400': dim.stars < 4}">
+                                        <span class="font-monospace fs-sm" :class="{'text-warning': dim.stars >= 4, 'text-muted': dim.stars < 4}">
                                             <span x-show="dim.stars >= 1">&#x2605;</span>
                                             <span x-show="dim.stars >= 2">&#x2605;</span>
                                             <span x-show="dim.stars >= 3">&#x2605;</span>
@@ -197,7 +197,7 @@ function moatAnalysis() {
 
                 <div class="card p-2">
                     <h3 class="fs-sm fw-semibold text-body dark:text-body mb-2">Moat Narrative</h3>
-                    <p class="fs-sm text-muted dark:text-slate-400 lh-lg" x-text="result.narrative"></p>
+                    <p class="fs-sm text-muted dark:text-muted lh-lg" x-text="result.narrative"></p>
                 </div>
             </div>
         </template>

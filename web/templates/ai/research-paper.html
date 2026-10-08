@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
     var d=p==='dark'||(p==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']},colors:{brand:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'},success:{DEFAULT:'#10b981',dark:'#064e3b'},danger:{DEFAULT:'#ef4444',dark:'#7f1d1d'}}}}}</script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -62,16 +61,16 @@
 }">
     <div class="topbar">
         <div class="d-flex align-items-center gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-slate-800">
+            <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <a href="/" class="d-flex align-items-center gap-2 text-white fw-bold fs-3"><span>💹</span><span class="">Investo</span></a>
             <span class="text-muted mx-2">/</span>
-            <span class="text-body dark:text-slate-300 fw-semibold">Research Paper</span>
+            <span class="text-body dark:text-body fw-semibold">Research Paper</span>
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]<a href="/dashboard" class="px-2 py-2 fs-sm fw-medium text-white bg-primary rounded-2  ">Dashboard</a>
-            [[else]]<a href="/login" class="fs-sm text-muted dark:text-slate-400 ">Masuk</a>[[end]]
+            [[else]]<a href="/login" class="fs-sm text-muted dark:text-muted ">Masuk</a>[[end]]
         </div>
     </div>
 
@@ -96,7 +95,7 @@
         <div class="max-w-4xl mx-auto vstack gap-4">
             <div>
                 <h1 class="fs-1 fw-bold text-white">📝 AI Research Paper Generator</h1>
-                <p class="text-muted dark:text-slate-400 fs-sm mt-1">Generate laporan riset analitis terstruktur untuk topik investasi apapun</p>
+                <p class="text-muted dark:text-muted fs-sm mt-1">Generate laporan riset analitis terstruktur untuk topik investasi apapun</p>
             </div>
 
             <div class="card p-2">
@@ -106,10 +105,10 @@
                     <button @click="generate()" :disabled="loading" class="btn-primary text-nowrap" x-text="loading ? '⏳ Generating...' : '🚀 Generate Paper'"></button>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-2">
-                    <button @click="topic='Analisis Sektor Perbankan Indonesia 2026'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-slate-400   ">Perbankan 2026</button>
-                    <button @click="topic='Prospek Sektor Teknologi Indonesia Pasca IPO'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-slate-400   ">Teknologi & IPO</button>
-                    <button @click="topic='Analisis Energi Terbarukan Indonesia: Peluang & Tantangan'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-slate-400   ">Energi Terbarukan</button>
-                    <button @click="topic='Perbandingan Valuasi BBCA vs BBRI vs BMRI 2026'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-slate-400   ">BBCA vs BBRI</button>
+                    <button @click="topic='Analisis Sektor Perbankan Indonesia 2026'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-muted   ">Perbankan 2026</button>
+                    <button @click="topic='Prospek Sektor Teknologi Indonesia Pasca IPO'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-muted   ">Teknologi & IPO</button>
+                    <button @click="topic='Analisis Energi Terbarukan Indonesia: Peluang & Tantangan'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-muted   ">Energi Terbarukan</button>
+                    <button @click="topic='Perbandingan Valuasi BBCA vs BBRI vs BMRI 2026'; generate()" class="px-2 py-1 fs-xs rounded-pill bg-white dark:bg-slate-800 text-muted dark:text-muted   ">BBCA vs BBRI</button>
                 </div>
             </div>
 
@@ -123,7 +122,7 @@
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h2 class="fs-3 fw-bold text-white">📄 Research Paper</h2>
                             <div class="d-flex gap-2">
-                                <a :href="downloadUrl" class="px-2 py-2 fs-sm fw-medium rounded-2 bg-white dark:bg-slate-800 text-white  dark:hover:bg-slate-700 ">⬇ Download HTML</a>
+                                <a :href="downloadUrl" class="px-2 py-2 fs-sm fw-medium rounded-2 bg-white dark:bg-slate-800 text-white  dark:hover:bg-secondary-lt ">⬇ Download HTML</a>
                                 <button onclick="window.print()" class="px-2 py-2 fs-sm fw-medium rounded-2 bg-primary text-white  ">🖨 Print PDF</button>
                             </div>
                         </div>

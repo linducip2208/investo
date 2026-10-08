@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="Kalender dividen saham IDX. Lihat jadwal ex-date, payment date, dividend yield, dan leaderboard saham dividen tertinggi.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -14,27 +14,6 @@
     if(d)document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-bs-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();
     </script>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Consolas', 'monospace']
-                    },
-                    colors: {
-                        brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
-                        surface: { DEFAULT:'#0f172a',light:'#1e293b',border:'#334155',hover:'#1e293b' },
-                        card: { DEFAULT:'#1e293b',border:'#334155' },
-                        success: { DEFAULT:'#10b981',light:'#d1fae5',dark:'#064e3b' },
-                        danger: { DEFAULT:'#ef4444',light:'#fee2e2',dark:'#7f1d1d' },
-                        warning: { DEFAULT:'#f59e0b',light:'#fef3c7',dark:'#78350f' }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         *{scrollbar-width:thin;scrollbar-color:#334155 #0b1120}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0b1120}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
         body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#0b1120;color:#e2e8f0}
@@ -196,12 +175,12 @@
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill max-w-md d-none d-sm-block">
                 <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
-                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-slate-400   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+                <button onclick="location.href='/dashboard/alerts'" class="position-relative p-2 text-muted dark:text-muted   rounded-2  dark:hover:bg-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                     <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
                     <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
@@ -213,7 +192,7 @@
         <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">Kalender Dividen</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="clock"></p>
+                <p class="fs-sm text-muted dark:text-muted mt-0" x-text="clock"></p>
             </div>
 
             <div class="row row-cols-1 row-cols-lg-3 gap-6">
@@ -221,8 +200,8 @@
                     <div class="card overflow-hidden">
                         <!-- TABS -->
                         <div class="d-flex border-bottom border dark:border">
-                            <button @click="activeTab='upcoming'" :class="activeTab==='upcoming'?'border-info text-blue-400':'border-transparent text-muted dark:text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold border-bottom ">Mendatang</button>
-                            <button @click="activeTab='history'" :class="activeTab==='history'?'border-info text-blue-400':'border-transparent text-muted dark:text-slate-400 " class="tab-btn px-2 py-2 fs-sm fw-semibold border-bottom ">Riwayat</button>
+                            <button @click="activeTab='upcoming'" :class="activeTab==='upcoming'?'border-info text-info':'border-transparent text-muted dark:text-muted " class="tab-btn px-2 py-2 fs-sm fw-semibold border-bottom ">Mendatang</button>
+                            <button @click="activeTab='history'" :class="activeTab==='history'?'border-info text-info':'border-transparent text-muted dark:text-muted " class="tab-btn px-2 py-2 fs-sm fw-semibold border-bottom ">Riwayat</button>
                         </div>
 
                         <!-- UPCOMING TAB -->
@@ -232,12 +211,12 @@
                                 <table class="table table-vcenter table-hover w-100 fs-sm">
                                     <thead>
                                         <tr class="border-bottom border dark:border bg-white bg-opacity-25 dark:bg-white/30">
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
-                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Dividen</th>
-                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Yield</th>
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-sm-table-cell">Ex-Date</th>
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-md-table-cell">Payment</th>
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-lg-table-cell">Tipe</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</th>
+                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Dividen</th>
+                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Yield</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-sm-table-cell">Ex-Date</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-md-table-cell">Payment</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-lg-table-cell">Tipe</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y border dark:divide-slate-700/50">
@@ -280,11 +259,11 @@
                                 <table class="table table-vcenter table-hover w-100 fs-sm">
                                     <thead>
                                         <tr class="border-bottom border dark:border bg-white bg-opacity-25 dark:bg-white/30">
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Saham</th>
-                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Dividen</th>
-                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Yield</th>
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-sm-table-cell">Ex-Date</th>
-                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-none d-md-table-cell">Payment</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Saham</th>
+                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Dividen</th>
+                                            <th class="text-end px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Yield</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-sm-table-cell">Ex-Date</th>
+                                            <th class="text-start px-2 px-sm-4 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-none d-md-table-cell">Payment</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y border dark:divide-slate-700/50">

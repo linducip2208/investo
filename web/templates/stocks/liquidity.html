@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liquidity Zones - [[.Stock.Code]] - Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -156,8 +156,8 @@ function liquidityApp() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-slate-400">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="d-flex align-items-center gap-2 fs-sm text-muted dark:text-muted">
             <a href="/saham" class=" ">Saham</a>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <a :href="'/saham/'+stockCode" class=" " x-text="stockCode"></a>
@@ -181,7 +181,7 @@ function liquidityApp() {
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white" x-text="'Liquidity Zones &mdash; '+stockCode"></h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0" x-text="stockName+' &mdash; Volume Profile dan Liquidity Zones. Support (hijau) di bawah harga, Resistance (merah) di atas.'"></p>
+                <p class="fs-sm text-muted dark:text-muted mt-0" x-text="stockName+' &mdash; Volume Profile dan Liquidity Zones. Support (hijau) di bawah harga, Resistance (merah) di atas.'"></p>
             </div>
             <a :href="'/saham/'+stockCode" class="px-2 py-2 bg-body dark:bg-secondary-lt  text-body dark:text-slate-200 fs-sm fw-medium rounded-3 ">&larr; Kembali ke [[.Stock.Code]]</a>
         </div>
@@ -229,7 +229,7 @@ function liquidityApp() {
                 <div class="vstack gap-2">
                     <template x-for="(z, idx) in zones" :key="idx">
                         <div class="d-flex align-items-center gap-3 group">
-                            <span class="fs-6 font-monospace text-muted dark:text-slate-400 w-10 text-end" x-text="'Rp '+z.price.toLocaleString()"></span>
+                            <span class="fs-6 font-monospace text-muted dark:text-muted w-10 text-end" x-text="'Rp '+z.price.toLocaleString()"></span>
                             <div class="flex-fill h-8 bg-white dark:bg-white rounded-r-lg position-relative overflow-hidden  ">
                                 <div class="zone-bar position-absolute top-0 bottom-0 start-0 rounded-2 d-flex align-items-center px-2" :style="{width:barWidth(z.volume)+'%',backgroundColor:getBarColor(z),border:'1px solid '+getBorderColor(z)}">
                                     <span class="fs-xs font-monospace fw-semibold text-white drop-shadow" x-text="formatVol(z.volume)"></span>
@@ -248,7 +248,7 @@ function liquidityApp() {
 
         <!-- LEGEND -->
         <div class="card p-2">
-            <h4 class="fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Legend</h4>
+            <h4 class="fs-xs fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Legend</h4>
             <div class="row row-cols-1 row-cols-sm-3 gap-4 fs-xs">
                 <div class="d-flex align-items-center gap-2">
                     <div class="w-8 h-4 rounded" style="background:rgba(16,185,129,0.7);border:1px solid #10b981"></div>
@@ -274,11 +274,11 @@ function liquidityApp() {
                     <table class="table table-vcenter table-hover w-100 fs-sm">
                         <thead>
                             <tr class="border-bottom border dark:border/50">
-                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">#</th>
-                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Price Level</th>
-                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Type</th>
-                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Volume</th>
-                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-slate-400 fs-xs text-uppercase ">Strength</th>
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">#</th>
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Price Level</th>
+                                <th class="text-start py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Type</th>
+                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Volume</th>
+                                <th class="text-end py-2 px-2 fw-semibold text-muted dark:text-muted fs-xs text-uppercase ">Strength</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y border dark:divide-slate-700/30">
@@ -291,7 +291,7 @@ function liquidityApp() {
                                     </td>
                                     <td class="py-2 px-2 font-monospace fs-xs text-end text-body dark:text-body" x-text="formatVol(z.volume)"></td>
                                     <td class="py-2 px-2 font-monospace fs-xs text-end">
-                                        <span :class="z.strength>=5?'text-success':z.strength>=3?'text-warning':'text-slate-400'" x-text="z.strength.toFixed(1)"></span>
+                                        <span :class="z.strength>=5?'text-success':z.strength>=3?'text-warning':'text-muted'" x-text="z.strength.toFixed(1)"></span>
                                     </td>
                                 </tr>
                             </template>

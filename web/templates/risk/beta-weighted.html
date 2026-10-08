@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beta-Weighted Portfolio · Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -38,7 +38,7 @@
     .widget-title{color:var(--ui-muted)!important}
     </style>
 </head>
-<body class="h-full flex" x-data="betaWeighted()">
+<body class="h-100 d-flex" x-data="betaWeighted()">
     <script>
         function betaWeighted() {
             return {
@@ -116,12 +116,12 @@
         }
     </script>
 
-    <aside class="sidebar fixed inset-y-0 left-0 z-50 w-60 bg-[#f4f6fb] dark:bg-[#0b1120] border-r border-slate-200 dark:border-slate-800 flex flex-col max-md:hidden" id="sidebar">
-        <div class="flex items-center gap-3 px-5 h-16 border-b border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white text-sm">I</div>
-            <span class="font-bold text-lg text-white">Investo</span>
+    <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border-slate-800 d-flex flex-column d-none d-md-block" id="sidebar">
+        <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border-slate-800">
+            <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
+            <span class="fw-bold fs-3 text-white">Investo</span>
         </div>
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
             <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
@@ -152,8 +152,8 @@
   <path d="M9 4v13" />
   <path d="M15 7v13" />
 </svg></span> Heatmap</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Portfolio</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Portfolio</p>
             <a href="/dashboard/portfolios" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
@@ -181,8 +181,8 @@
   <path d="M12 17l0 .01" />
   <path d="M16 17l0 .01" />
 </svg></span> Tools</a>
-            <div class="border-t border-slate-200 dark:border-slate-800 my-2"></div>
-            <p class="px-4 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-1">Risk</p>
+            <div class="border-top border dark:border-slate-800 my-2"></div>
+            <p class="px-2 fs-6 fw-semibold text-muted text-uppercase  mb-1">Risk</p>
             <a href="/risk/wash-sale" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M12 9v4" />
@@ -197,115 +197,115 @@
         </nav>
     </aside>
 
-    <div class="flex-1 lg:ml-60 min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 h-16 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center px-4 lg:px-8 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-            <div class="flex-1 max-w-md hidden sm:block"><input type="text" placeholder="Cari saham, forex..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"></div>
-            <div class="flex items-center gap-2 ml-auto">
-                <div class="text-xs text-slate-500 font-mono" x-text="clock"></div>
-                <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">[[slice .User.Name 0 1]]</div>
-                    <span class="text-sm font-medium text-white hidden sm:block">[[.User.Name]]</span>
+    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
+        <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <div class="flex-fill max-w-md d-none d-sm-block"><input type="text" placeholder="Cari saham, forex..." class="w-100 bg-white dark:bg-slate-800 border border dark:border-slate-700 rounded-3 px-2 py-2 fs-sm text-white   "></div>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="fs-xs text-muted font-monospace" x-text="clock"></div>
+                <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border-slate-700">
+                    <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
+                    <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 p-4 lg:p-6 space-y-5 overflow-y-auto">
+        <main class="flex-fill p-2 p-lg-4 vstack gap-3 overflow-y-auto">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white">Beta-Weighted Portfolio</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Hitung weighted beta portfolio relatif terhadap IHSG</p>
+                <h1 class="fs-2 fs-1 fw-bold text-white">Beta-Weighted Portfolio</h1>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Hitung weighted beta portfolio relatif terhadap IHSG</p>
             </div>
 
-            <div class="card p-6 max-w-lg">
+            <div class="card p-2 max-w-lg">
                 <div class="widget-title">Pilih Portfolio</div>
-                <div class="flex gap-3">
-                    <input type="number" x-model="portfolioId" class="form-input flex-1" placeholder="Portfolio ID" min="1" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:12px;padding:10px 14px;font-size:14px;color:#e2e8f0;outline:none" @keydown.enter="calculate()">
-                    <button @click="calculate()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-indigo-500 transition-all" :disabled="loading">
+                <div class="d-flex gap-3">
+                    <input type="number" x-model="portfolioId" class="form-control flex-fill" placeholder="Portfolio ID" min="1" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:12px;padding:10px 14px;font-size:14px;color:#e2e8f0;outline:none" @keydown.enter="calculate()">
+                    <button @click="calculate()" class="px-2 py-2 bg-gradient bg-gradient-from-blue bg-gradient-to-indigo text-white fw-semibold rounded-3   " :disabled="loading">
                         <span x-show="!loading">Analisis</span>
                         <span x-show="loading">Loading...</span>
                     </button>
                 </div>
             </div>
 
-            <div x-show="result && !result.error" class="grid grid-cols-1 lg:grid-cols-3 gap-5" x-transition>
-                <div class="card p-6 text-center">
+            <div x-show="result && !result.error" class="row row-cols-1 row-cols-lg-3 gap-5" x-transition>
+                <div class="card p-2 text-center">
                     <div class="widget-title">Portfolio Beta</div>
                     <canvas id="gaugeCanvas" width="240" height="200"></canvas>
-                    <div class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                        <span x-show="result.portfolio_beta < 0.8" class="text-emerald-400 font-semibold">Defensive (Beta &lt; 0.8)</span>
-                        <span x-show="result.portfolio_beta >= 0.8 && result.portfolio_beta <= 1.2" class="text-yellow-400 font-semibold">Sejalan IHSG (Beta 0.8-1.2)</span>
-                        <span x-show="result.portfolio_beta > 1.2" class="text-red-400 font-semibold">Aggressive (Beta &gt; 1.2)</span>
+                    <div class="mt-2 fs-xs text-muted dark:text-muted">
+                        <span x-show="result.portfolio_beta < 0.8" class="text-success fw-semibold">Defensive (Beta &lt; 0.8)</span>
+                        <span x-show="result.portfolio_beta >= 0.8 && result.portfolio_beta <= 1.2" class="text-warning fw-semibold">Sejalan IHSG (Beta 0.8-1.2)</span>
+                        <span x-show="result.portfolio_beta > 1.2" class="text-danger fw-semibold">Aggressive (Beta &gt; 1.2)</span>
                     </div>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="card p-5">
+                <div class="vstack gap-2">
+                    <div class="card p-2">
                         <div class="widget-title">IHSG Exposure</div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm"><span class="text-slate-500 dark:text-slate-400">Portofolio Value</span><span class="font-mono font-bold text-white" x-text="'Rp '+fmt(result.portfolio_value)"></span></div>
-                            <div class="flex justify-between text-sm"><span class="text-slate-500 dark:text-slate-400">IHSG Exposure</span><span class="font-mono font-bold text-blue-400" x-text="'Rp '+fmt(result.ihsg_exposure)"></span></div>
-                            <div class="flex justify-between text-sm"><span class="text-slate-500 dark:text-slate-400">Dollar Exposure</span><span class="font-mono font-bold text-emerald-400" x-text="'$ '+fmt(result.dollar_exposure)"></span></div>
+                        <div class="vstack gap-2">
+                            <div class="d-flex justify-content-between fs-sm"><span class="text-muted dark:text-muted">Portofolio Value</span><span class="font-monospace fw-bold text-white" x-text="'Rp '+fmt(result.portfolio_value)"></span></div>
+                            <div class="d-flex justify-content-between fs-sm"><span class="text-muted dark:text-muted">IHSG Exposure</span><span class="font-monospace fw-bold text-primary" x-text="'Rp '+fmt(result.ihsg_exposure)"></span></div>
+                            <div class="d-flex justify-content-between fs-sm"><span class="text-muted dark:text-muted">Dollar Exposure</span><span class="font-monospace fw-bold text-success" x-text="'$ '+fmt(result.dollar_exposure)"></span></div>
                         </div>
                     </div>
-                    <div class="card p-5">
+                    <div class="card p-2">
                         <div class="widget-title">Impact Estimasi</div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3 text-center">
-                                <span class="block text-xs text-slate-500">IHSG -5%</span>
-                                <span class="font-mono text-lg font-bold text-red-400" x-text="'-Rp '+fmt(result.ihsg_drop_5pct)"></span>
+                        <div class="row row-cols-2 gap-2">
+                            <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-3 p-2 text-center">
+                                <span class="d-block fs-xs text-muted">IHSG -5%</span>
+                                <span class="font-monospace fs-3 fw-bold text-danger" x-text="'-Rp '+fmt(result.ihsg_drop_5pct)"></span>
                             </div>
-                            <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-3 text-center">
-                                <span class="block text-xs text-slate-500">IHSG -10%</span>
-                                <span class="font-mono text-lg font-bold text-red-400" x-text="'-Rp '+fmt(result.ihsg_drop_10pct)"></span>
+                            <div class="bg-white bg-opacity-50 dark:bg-slate-800/50 rounded-3 p-2 text-center">
+                                <span class="d-block fs-xs text-muted">IHSG -10%</span>
+                                <span class="font-monospace fs-3 fw-bold text-danger" x-text="'-Rp '+fmt(result.ihsg_drop_10pct)"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="card p-5">
+                    <div class="card p-2">
                         <div class="widget-title">Sector Beta Breakdown</div>
-                        <div class="space-y-1.5">
+                        <div class="vstack gap-1">
                             [[range $sector, $beta := .SectorBetas]]
-                            <div class="flex justify-between text-xs">
-                                <span class="text-slate-500 dark:text-slate-400">[[$sector]]</span>
-                                <span class="font-mono font-semibold text-blue-400">[[$beta]]</span>
+                            <div class="d-flex justify-content-between fs-xs">
+                                <span class="text-muted dark:text-muted">[[$sector]]</span>
+                                <span class="font-monospace fw-semibold text-primary">[[$beta]]</span>
                             </div>
                             [[end]]
                         </div>
                     </div>
                 </div>
 
-                <div class="card p-5">
+                <div class="card p-2">
                     <div class="widget-title">Holding Beta Detail</div>
-                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
-                        <table class="w-full text-xs">
-                            <thead class="sticky top-0 bg-white dark:bg-[#1e293b] z-10 text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                                <tr><th class="text-left py-2 px-2">Code</th><th class="text-right py-2 px-2">Weight</th><th class="text-right py-2 px-2">Beta</th><th class="text-right py-2 px-2">Contrib.</th></tr>
+                    <div class="overflow-x-auto max-h-400 overflow-y-auto">
+                        <table class="table table-vcenter table-hover w-100 fs-xs">
+                            <thead class="position-sticky top-0 bg-white dark:bg-[#1e293b] z-1 text-muted dark:text-muted text-uppercase ">
+                                <tr><th class="text-start py-2 px-2">Code</th><th class="text-end py-2 px-2">Weight</th><th class="text-end py-2 px-2">Beta</th><th class="text-end py-2 px-2">Contrib.</th></tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                            <tbody class="divide-y border dark:divide-slate-800">
                                 <template x-for="h in result.holding_betas" :key="h.code">
-                                    <tr class="hover:bg-white/30 dark:hover:bg-slate-800/30">
-                                        <td class="py-2 px-2 font-mono font-medium text-white" x-text="h.code"></td>
-                                        <td class="py-2 px-2 text-right font-mono" x-text="h.weight.toFixed(1)+'%'"></td>
-                                        <td class="py-2 px-2 text-right font-mono" x-text="h.beta.toFixed(2)"></td>
-                                        <td class="py-2 px-2 text-right font-mono text-blue-400" x-text="h.contribution.toFixed(2)"></td>
+                                    <tr class=" dark:hover:bg-white/30">
+                                        <td class="py-2 px-2 font-monospace fw-medium text-white" x-text="h.code"></td>
+                                        <td class="py-2 px-2 text-end font-monospace" x-text="h.weight.toFixed(1)+'%'"></td>
+                                        <td class="py-2 px-2 text-end font-monospace" x-text="h.beta.toFixed(2)"></td>
+                                        <td class="py-2 px-2 text-end font-monospace text-primary" x-text="h.contribution.toFixed(2)"></td>
                                     </tr>
                                 </template>
                             </tbody>
                         </table>
                     </div>
-                    <p class="text-[10px] text-slate-600 mt-2">Beta = 1.0 artinya bergerak searah IHSG. Beta = 0.5 artinya separuh pergerakan IHSG. Data beta adalah ilustrasi.</p>
+                    <p class="fs-6 text-muted mt-2">Beta = 1.0 artinya bergerak searah IHSG. Beta = 0.5 artinya separuh pergerakan IHSG. Data beta adalah ilustrasi.</p>
                 </div>
             </div>
 
-            <div x-show="result && result.error" class="card p-6 text-center">
-                <p class="text-red-400" x-text="result.error"></p>
+            <div x-show="result && result.error" class="card p-2 text-center">
+                <p class="text-danger" x-text="result.error"></p>
             </div>
 
-            <div x-show="!result && !loading" class="card p-6 text-center">
-                <p class="text-slate-500">Masukkan Portfolio ID dan klik "Analisis" untuk melihat beta-weighted portfolio Anda.</p>
+            <div x-show="!result && !loading" class="card p-2 text-center">
+                <p class="text-muted">Masukkan Portfolio ID dan klik "Analisis" untuk melihat beta-weighted portfolio Anda.</p>
             </div>
         </main>
     </div>
-    <div id="sb-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
+    <div id="sb-overlay" class="position-fixed top-0 bottom-0 start-0 end-0 z-2 bg-black bg-opacity-50  d-none" onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');this.classList.toggle('hidden')"></div>
     <script src="/static/js/app.js" defer></script>
 </body>
 </html>

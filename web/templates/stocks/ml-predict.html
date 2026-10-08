@@ -6,7 +6,7 @@
     <title>[[.Title]]</title>
     <meta name="description" content="ML Price Prediction dengan regresi linear. Prediksi harga [[.StockCode]] berbasis data historis 90 hari.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -346,11 +346,11 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="d-flex align-items-center gap-3">
                 <a :href="'/saham/'+stockCode" class="font-monospace fw-bold fs-3 text-primary " x-text="stockCode"></a>
-                <span class="fs-sm text-muted dark:text-slate-400">&#x2022;</span>
-                <span class="fs-sm text-muted dark:text-slate-400">ML Price Prediction</span>
+                <span class="fs-sm text-muted dark:text-muted">&#x2022;</span>
+                <span class="fs-sm text-muted dark:text-muted">ML Price Prediction</span>
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto">
                 <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
@@ -433,7 +433,7 @@
                         <div class="fs-xs text-muted mt-0">R-squared</div>
                     </div>
                     <div class="card p-2 text-center">
-                        <div class="fs-sm font-monospace fw-bold" :class="prediction.slope >= 0 ? 'text-green-400' : 'text-red-400'" x-text="prediction.slope.toFixed(4)"></div>
+                        <div class="fs-sm font-monospace fw-bold" :class="prediction.slope >= 0 ? 'text-success' : 'text-danger'" x-text="prediction.slope.toFixed(4)"></div>
                         <div class="fs-xs text-muted mt-0">Slope</div>
                     </div>
                     <div class="card p-2 text-center">
@@ -504,7 +504,7 @@
             <template x-if="!loading && !prediction && !error">
             <div class="card text-center py-2">
                 <div class="display-4 mb-2">&#x1F9E0;</div>
-                <p class="text-muted dark:text-slate-400 fw-medium fs-3">Masukkan kode saham dan klik Predict</p>
+                <p class="text-muted dark:text-muted fw-medium fs-3">Masukkan kode saham dan klik Predict</p>
                 <p class="text-muted fs-sm mt-1">Model regresi linear akan menganalisa 90 hari data historis untuk memproyeksikan harga.</p>
             </div>
             </template>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -188,12 +188,12 @@
     </aside>
 
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Quant /</span> Smart Beta Screener</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Quant /</span> Smart Beta Screener</div>
         <div class="d-flex align-items-center gap-3">
-            <button @click="recalculate()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Recalculate">
+            <button @click="recalculate()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Recalculate">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -208,7 +208,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Loading smart beta screener...</p>
+                <p class="text-muted dark:text-muted">Loading smart beta screener...</p>
             </div>
         </template>
 
@@ -216,11 +216,11 @@
             <div class="vstack gap-4">
                 <div>
                     <h1 class="fs-1 fw-bold text-white">Smart Beta Screener</h1>
-                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Build custom multi-factor portfolios with weighted factor exposures</p>
+                    <p class="text-muted dark:text-muted fs-sm mt-1">Build custom multi-factor portfolios with weighted factor exposures</p>
                 </div>
 
                 <div class="card p-2">
-                    <h2 class="fs-sm fw-semibold text-muted dark:text-slate-400 text-uppercase  mb-2">Factor Selection & Weights (must sum to 100%)</h2>
+                    <h2 class="fs-sm fw-semibold text-muted dark:text-muted text-uppercase  mb-2">Factor Selection & Weights (must sum to 100%)</h2>
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 gap-4">
                         <template x-for="(f, i) in factors" :key="f.key">
                             <div class="vstack gap-2">
@@ -236,7 +236,7 @@
                             </div>
                         </template>
                     </div>
-                    <div class="mt-2 fs-xs" :class="factors.reduce((s,f)=>s+f.weight,0) === 100 ? 'text-green-400' : 'text-red-400'">
+                    <div class="mt-2 fs-xs" :class="factors.reduce((s,f)=>s+f.weight,0) === 100 ? 'text-success' : 'text-danger'">
                         Total: <span class="font-monospace fw-bold" x-text="factors.reduce((s,f)=>s+f.weight,0) + '%'"></span>
                         <span x-show="factors.reduce((s,f)=>s+f.weight,0) !== 100" class="ms-1">(must equal 100%)</span>
                     </div>
@@ -247,10 +247,10 @@
                         <table class="table table-vcenter table-hover w-100 fs-sm">
                             <thead>
                                 <tr class="border-bottom border dark:border">
-                                    <th class="text-start p-2 fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Rank</th>
-                                    <th class="text-start p-2 fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Stock</th>
-                                    <th class="text-end p-2 fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Smart Beta Score</th>
-                                    <th class="p-2 fs-xs fw-semibold text-muted dark:text-slate-400 text-uppercase ">Factor Breakdown</th>
+                                    <th class="text-start p-2 fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Rank</th>
+                                    <th class="text-start p-2 fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Stock</th>
+                                    <th class="text-end p-2 fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Smart Beta Score</th>
+                                    <th class="p-2 fs-xs fw-semibold text-muted dark:text-muted text-uppercase ">Factor Breakdown</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -286,15 +286,15 @@
                     <div class="row row-cols-1 row-cols-md-3 gap-4 fs-sm">
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">1. Select Factors</div>
-                            <p class="text-muted dark:text-slate-400">Choose factors that match your investment thesis. Common combinations: Value+Quality for defensive, Momentum+Growth for aggressive.</p>
+                            <p class="text-muted dark:text-muted">Choose factors that match your investment thesis. Common combinations: Value+Quality for defensive, Momentum+Growth for aggressive.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">2. Set Weights</div>
-                            <p class="text-muted dark:text-slate-400">Adjust slider weights to emphasize certain factors. Weights auto-normalize to 100%.</p>
+                            <p class="text-muted dark:text-muted">Adjust slider weights to emphasize certain factors. Weights auto-normalize to 100%.</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">3. Analyze Results</div>
-                            <p class="text-muted dark:text-slate-400">Top-ranked stocks have the highest composite score. Review factor breakdown bars for diversification.</p>
+                            <p class="text-muted dark:text-muted">Top-ranked stocks have the highest composite score. Review factor breakdown bars for diversification.</p>
                         </div>
                     </div>
                 </div>

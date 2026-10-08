@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -196,15 +196,15 @@
 
     <!-- TOPBAR -->
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400">
+        <div class="fs-sm text-muted dark:text-muted">
             <span class="text-muted">AI /</span> Trading Coach
         </div>
         <div class="d-flex align-items-center gap-3">
             [[if .User]]
-            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-slate-300  ">
+            <a href="/profil" class="d-flex align-items-center gap-2 fs-sm text-body dark:text-body  ">
                 <span class="w-8 h-8 bg-primary rounded-pill d-flex align-items-center justify-content-center fs-xs fw-bold text-white">[[slice .User.Name 0 1]]</span>
             </a>
             [[end]]
@@ -253,27 +253,27 @@
             <div class="px-2 pb-2">
                 <div class="d-flex flex-wrap gap-2">
                     <button @click="input='Bagaimana cara memulai investasi saham untuk pemula?'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Bagaimana cara mulai investasi?
                     </button>
                     <button @click="input='Jelaskan perbedaan analisis fundamental dan teknikal'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Fundamental vs Teknikal?
                     </button>
                     <button @click="input='Apa itu cut loss dan bagaimana menentukan levelnya?'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Tips cut loss
                     </button>
                     <button @click="input='Bagaimana cara diversifikasi portfolio yang baik?'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Cara diversifikasi portfolio
                     </button>
                     <button @click="input='Apa itu PER, PBV, ROE dan bagaimana menggunakannya?'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Jelaskan PER, PBV, ROE
                     </button>
                     <button @click="input='Bagaimana psikologi yang baik dalam trading saham?'; send()"
-                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-slate-400   ">
+                            class="px-2 py-1 fs-xs bg-white dark:bg-[#1e293b] border border dark:border-slate-700 rounded-2 text-muted dark:text-muted   ">
                         Psikologi trading
                     </button>
                 </div>

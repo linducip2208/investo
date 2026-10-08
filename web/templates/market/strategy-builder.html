@@ -6,7 +6,7 @@
     <title>AI Strategy Builder &mdash; Investo</title>
     <meta name="description" content="Bangun dan backtest strategi trading sendiri. 6 strategi pre-built + custom strategy builder.">
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -138,9 +138,9 @@
 
     <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
         <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
             <div class="flex-fill"></div>
-            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-slate-400">
+            <div class="d-flex align-items-center gap-3 fs-sm text-muted dark:text-muted">
                 <span class="text-white fw-medium">AI Strategy Builder</span>
             </div>
             <div class="d-flex align-items-center gap-2 ms-auto ps-2 border-start border dark:border">
@@ -155,7 +155,7 @@
             <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3">
                 <div>
                     <h1 class="fs-2 fs-1 fw-bold text-white">🧠 AI Strategy Builder</h1>
-                    <p class="fs-sm text-muted dark:text-slate-400 mt-0">Pilih strategi pre-built atau bangun strategi custom Anda sendiri</p>
+                    <p class="fs-sm text-muted dark:text-muted mt-0">Pilih strategi pre-built atau bangun strategi custom Anda sendiri</p>
                 </div>
                 <button @click="showCustom = !showCustom"
                     class="px-2 py-2 fs-sm fw-medium text-white bg-gradient bg-gradient-from-purple bg-gradient-to-purple rounded-3    shadow-lg">
@@ -173,14 +173,14 @@
                             <h3 class="fw-semibold text-white fs-sm">[[.Name]]</h3>
                             <span class="fs-6 fw-semibold text-uppercase  px-2 py-0 rounded-pill bg-primary bg-opacity-10 text-primary">Pre-built</span>
                         </div>
-                        <p class="fs-xs text-muted dark:text-slate-400 lh-lg mb-2">[[.Description]]</p>
+                        <p class="fs-xs text-muted dark:text-muted lh-lg mb-2">[[.Description]]</p>
                         <div class="vstack gap-1 mb-2">
                             <div class="fs-6 text-muted"><span class="text-success fw-semibold">Entry:</span> [[.EntryRules]]</div>
                             <div class="fs-6 text-muted"><span class="text-danger fw-semibold">Exit:</span> [[.ExitRules]]</div>
                         </div>
                         <div class="d-flex gap-2 fs-6 font-monospace">
-                            <span class="px-2 py-1 rounded bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-slate-400">SL [[printf "%.0f" .StopLoss]]%</span>
-                            <span class="px-2 py-1 rounded bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-slate-400">TP [[printf "%.0f" .TakeProfit]]%</span>
+                            <span class="px-2 py-1 rounded bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-muted">SL [[printf "%.0f" .StopLoss]]%</span>
+                            <span class="px-2 py-1 rounded bg-body bg-opacity-50 dark:bg-secondary-lt text-muted dark:text-muted">TP [[printf "%.0f" .TakeProfit]]%</span>
                         </div>
                         <div class="mt-2 pt-2 border-top border dark:border/50">
                             <span class="fs-6 text-muted">Kondisi:</span>
@@ -198,15 +198,15 @@
                     <h2 class="widget-title mb-2">Backtest: <span x-text="selectedStrategy" class="text-primary"></span></h2>
                     <div class="row row-cols-1 row-cols-sm-3 gap-3 mb-2">
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Kode Saham</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Kode Saham</label>
                             <input type="text" x-model="stockCode" placeholder="BBCA" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace text-uppercase   ">
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Dari</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Dari</label>
                             <input type="date" x-model="startDate" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace  ">
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Sampai</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Sampai</label>
                             <input type="date" x-model="endDate" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace  ">
                         </div>
                     </div>
@@ -245,12 +245,12 @@
                                 <table class="table table-vcenter table-hover w-100 fs-sm">
                                     <thead>
                                         <tr class="border-bottom border dark:border/50 bg-white bg-opacity-25 dark:bg-white/30 position-sticky top-0">
-                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">#</th>
-                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Entry</th>
-                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Exit</th>
-                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Entry Price</th>
-                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">Exit Price</th>
-                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase ">P/L</th>
+                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">#</th>
+                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Entry</th>
+                                            <th class="text-start px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Exit</th>
+                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Entry Price</th>
+                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">Exit Price</th>
+                                            <th class="text-end px-2 py-2 fs-6 fw-semibold text-muted dark:text-muted text-uppercase ">P/L</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y border dark:divide-slate-700/30">
@@ -275,15 +275,15 @@
             <div x-show="showCustom" x-transition>
                 <div class="card p-2">
                     <h2 class="widget-title mb-2">Custom Strategy Builder</h2>
-                    <p class="fs-sm text-muted dark:text-slate-400 mb-2">Buat strategi Anda sendiri dengan kombinasi indikator teknikal.</p>
+                    <p class="fs-sm text-muted dark:text-muted mb-2">Buat strategi Anda sendiri dengan kombinasi indikator teknikal.</p>
 
                     <div class="mb-2">
-                        <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Nama Strategi</label>
+                        <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Nama Strategi</label>
                         <input type="text" x-model="customName" placeholder="My Custom Strategy" class="w-100 w-1 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white   ">
                     </div>
 
                     <div class="mb-2">
-                        <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-2">Kondisi Entry</label>
+                        <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-2">Kondisi Entry</label>
                         <template x-for="(cond, idx) in customConditions" :key="idx">
                             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                                 <select x-model="cond.indicator" class="bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white  ">
@@ -318,15 +318,15 @@
 
                     <div class="row row-cols-2 row-cols-sm-4 gap-3 mb-2">
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Stop Loss %</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Stop Loss %</label>
                             <input type="number" x-model="customSL" step="0.5" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace  ">
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Take Profit %</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Take Profit %</label>
                             <input type="number" x-model="customTP" step="0.5" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace  ">
                         </div>
                         <div>
-                            <label class="fs-6 fw-semibold text-muted dark:text-slate-400 text-uppercase  d-block mb-1">Kode Saham</label>
+                            <label class="fs-6 fw-semibold text-muted dark:text-muted text-uppercase  d-block mb-1">Kode Saham</label>
                             <input type="text" x-model="stockCode" placeholder="BBCA" class="w-100 bg-body bg-opacity-50 dark:bg-secondary-lt border border rounded-2 px-2 py-2 fs-sm text-white font-monospace text-uppercase   ">
                         </div>
                         <div class="d-flex align-items-end">

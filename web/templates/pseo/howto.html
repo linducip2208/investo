@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +34,7 @@
     </style>
     <script defer src="/static/js/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -50,66 +50,66 @@
 </head>
 <body>
 
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#f4f6fb]/90 dark:bg-[#0b1120]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <a href="/" class="flex items-center gap-2.5"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-xl text-white">Investo</span></a>
-            <div class="hidden lg:flex items-center gap-6 text-sm">
-                <a href="/" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
-                <a href="/saham" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Saham</a>
-                <a href="/blog" class="text-slate-700 dark:text-slate-300 hover:text-blue-400 transition-colors">Blog</a>
+<nav x-data="{ open: false }" class="position-sticky top-0 z-3 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5">
+        <div class="d-flex align-items-center justify-content-between h-16">
+            <a href="/" class="d-flex align-items-center gap-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-2 text-white">Investo</span></a>
+            <div class="d-none d-lg-flex align-items-center gap-6 fs-sm">
+                <a href="/" class="text-body dark:text-body  ">Beranda</a>
+                <a href="/saham" class="text-body dark:text-body  ">Saham</a>
+                <a href="/blog" class="text-body dark:text-body  ">Blog</a>
                 [[if .User]]
-                <a href="/dashboard" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Dashboard</a>
+                <a href="/dashboard" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Dashboard</a>
                 [[else]]
-                <a href="/login" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all">Masuk</a>
+                <a href="/login" class="px-2 py-2 rounded-3 bg-primary text-white fw-semibold  ">Masuk</a>
                 [[end]]
             </div>
         </div>
     </div>
 </nav>
 
-<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <nav class="text-sm text-slate-500 mb-8" aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 flex-wrap">
-            <li><a href="/" class="hover:text-blue-400 transition-colors">Home</a></li><li>/</li>
-            <li><a href="/docs" class="hover:text-blue-400 transition-colors">Panduan</a></li><li>/</li>
-            <li class="text-white font-medium">[[.PageTitle]]</li>
+<main class="max-w-4xl mx-auto px-2 px-sm-4 px-lg-5 py-2">
+    <nav class="fs-sm text-muted mb-2" aria-label="Breadcrumb">
+        <ol class="d-flex align-items-center gap-2 flex-wrap">
+            <li><a href="/" class=" ">Home</a></li><li>/</li>
+            <li><a href="/docs" class=" ">Panduan</a></li><li>/</li>
+            <li class="text-white fw-medium">[[.PageTitle]]</li>
         </ol>
     </nav>
 
-    <section class="mb-12 reveal">
-        <span class="inline-block px-3 py-1 text-xs font-semibold bg-amber-900/30 text-amber-300 rounded-full mb-4">Panduan</span>
-        <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight">[[.PageTitle]]</h1>
-        <p class="text-base text-slate-500 dark:text-slate-400 mt-4">[[.MetaDescription]]</p>
+    <section class="mb-2 reveal">
+        <span class="d-inline-block px-2 py-1 fs-xs fw-semibold bg-warning bg-opacity-25 text-warning rounded-pill mb-2">Panduan</span>
+        <h1 class="display-6 display-5 fw-bolder text-white lh-1">[[.PageTitle]]</h1>
+        <p class="fs-base text-muted dark:text-muted mt-2">[[.MetaDescription]]</p>
     </section>
 
     [[if .IsStockSpecific]]
-    <section class="mb-12 reveal">
-        <div class="bg-blue-900/20 border border-blue-800/50 rounded-2xl p-6 flex items-start gap-4">
-            <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shrink-0">
+    <section class="mb-2 reveal">
+        <div class="bg-primary bg-opacity-25 border border-primary rounded-4 p-2 d-flex align-items-start gap-4">
+            <div class="w-12 h-12 bg-primary rounded-3 d-flex align-items-center justify-content-center flex-shrink-0">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div>
-                <h3 class="font-semibold text-blue-100">Disclaimer</h3>
-                <p class="text-sm text-blue-300 mt-1">Panduan ini bersifat edukatif dan bukan merupakan rekomendasi beli atau jual. Selalu lakukan riset mandiri sebelum mengambil keputusan investasi.</p>
+                <h3 class="fw-semibold text-primary">Disclaimer</h3>
+                <p class="fs-sm text-primary mt-1">Panduan ini bersifat edukatif dan bukan merupakan rekomendasi beli atau jual. Selalu lakukan riset mandiri sebelum mengambil keputusan investasi.</p>
             </div>
         </div>
     </section>
     [[end]]
 
-    <section class="mb-12 reveal">
-        <h2 class="text-2xl font-bold text-white mb-6">Langkah-langkah</h2>
-        <div class="space-y-6">
+    <section class="mb-2 reveal">
+        <h2 class="fs-1 fw-bold text-white mb-2">Langkah-langkah</h2>
+        <div class="vstack gap-4">
             [[range $i, $step := .Steps]]
-            <div class="card p-6 lg:p-8 relative overflow-hidden">
-                <div class="flex items-start gap-5">
-                    <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-xl font-extrabold shrink-0 shadow-lg shadow-blue-600/25">[[add $i 1]]</div>
-                    <div class="flex-1 space-y-3">
-                        <h3 class="font-bold text-xl text-white">[[$step.Name]]</h3>
-                        <p class="text-slate-500 dark:text-slate-400 leading-relaxed">[[$step.Description]]</p>
+            <div class="card p-2 p-lg-5 position-relative overflow-hidden">
+                <div class="d-flex align-items-start gap-5">
+                    <div class="w-12 h-12 bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fs-2 fw-bolder flex-shrink-0 shadow-lg ">[[add $i 1]]</div>
+                    <div class="flex-fill vstack gap-2">
+                        <h3 class="fw-bold fs-2 text-white">[[$step.Name]]</h3>
+                        <p class="text-muted dark:text-muted lh-lg">[[$step.Description]]</p>
                         [[if $step.Tips]]
-                        <div class="bg-amber-900/20 border-l-4 border-amber-400 rounded-r-lg p-3 mt-3">
-                            <p class="text-sm text-amber-200"><strong>Tips:</strong> [[$step.Tips]]</p>
+                        <div class="bg-warning bg-opacity-25 border-start border-4 border-warning rounded-end-2 p-2 mt-2">
+                            <p class="fs-sm text-warning"><strong>Tips:</strong> [[$step.Tips]]</p>
                         </div>
                         [[end]]
                     </div>
@@ -120,17 +120,17 @@
     </section>
 
     [[if .RelatedHowTo]]
-    <section class="mb-12 reveal">
-        <h2 class="text-2xl font-bold text-white mb-6">Panduan Terkait</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <section class="mb-2 reveal">
+        <h2 class="fs-1 fw-bold text-white mb-2">Panduan Terkait</h2>
+        <div class="row row-cols-1 row-cols-sm-2 gap-3">
             [[range .RelatedHowTo]]
-            <a href="[[.URL]]" class="card-lift card rounded-xl p-4 hover:border-blue-500 transition-all group flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-900/30 rounded-lg flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <a href="[[.URL]]" class="card-lift card rounded-3 p-2    d-flex align-items-center gap-3">
+                <div class="w-10 h-10 bg-primary bg-opacity-25 rounded-2 d-flex align-items-center justify-content-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
                 <div>
-                    <div class="font-semibold text-sm text-white group-hover:text-blue-400 transition-colors">[[.Title]]</div>
-                    <div class="text-xs text-slate-500 mt-0.5">[[.Description]]</div>
+                    <div class="fw-semibold fs-sm text-white  ">[[.Title]]</div>
+                    <div class="fs-xs text-muted mt-0">[[.Description]]</div>
                 </div>
             </a>
             [[end]]
@@ -138,19 +138,19 @@
     </section>
     [[end]]
 
-    <section class="mb-12 reveal">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 lg:p-10 text-white text-center">
-            <h2 class="text-2xl font-bold mb-3">Beli Aplikasi Saham — Source Code Investo</h2>
-            <p class="text-blue-100 leading-relaxed max-w-2xl mx-auto mb-6">Dapatkan aplikasi saham & forex dengan fitur lengkap: screener, chart teknikal, portfolio tracker, alert. Whitelabel ready.</p>
-            <a href="/beli-aplikasi-saham" class="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:bg-blue-50 transition-all">Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+    <section class="mb-2 reveal">
+        <div class="bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-4 p-2 p-lg-5 text-white text-center">
+            <h2 class="fs-1 fw-bold mb-2">Beli Aplikasi Saham — Source Code Investo</h2>
+            <p class="text-primary lh-lg max-w-2xl mx-auto mb-2">Dapatkan aplikasi saham & forex dengan fitur lengkap: screener, chart teknikal, portfolio tracker, alert. Whitelabel ready.</p>
+            <a href="/beli-aplikasi-saham" class="d-inline-flex align-items-center gap-2 bg-white text-primary fw-bold px-2 py-2 rounded-3 shadow-lg   ">Lihat Penawaran<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
         </div>
     </section>
 </main>
 
-<footer class="border-t border-slate-200 dark:border-slate-800 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">I</span></div><span class="font-bold text-lg text-white">Investo</span></div>
-        <p class="text-slate-500 text-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
+<footer class="border-top border dark:border-slate-800 py-2">
+    <div class="max-w-7xl mx-auto px-2 px-sm-4 px-lg-5 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2"><div class="w-8 h-8 bg-gradient bg-gradient-from-blue bg-gradient-to-blue rounded-2 d-flex align-items-center justify-content-center"><span class="text-white fw-bold fs-sm">I</span></div><span class="fw-bold fs-3 text-white">Investo</span></div>
+        <p class="text-muted fs-sm">&copy; 2026 Investo. Powered by Go. | Disclaimer: Bukan rekomendasi investasi.</p>
     </div>
 </footer>
 

@@ -1,34 +1,34 @@
-<div x-data="voiceSearch()" x-init="initVoice()" class="fixed bottom-6 right-6 z-50">
+<div x-data="voiceSearch()" x-init="initVoice()" class="position-fixed bottom-6 right-6 z-3">
     <button @click="toggleListening"
-            :class="listening ? 'bg-red-600 scale-110' : 'bg-blue-600 hover:bg-blue-700'"
-            class="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-white transition-all duration-300 hover:shadow-blue-500/30"
+            :class="listening ? 'bg-red-600 scale-110' : 'bg-blue-600 "
+            class="w-14 h-14 rounded-pill shadow-lg d-flex align-items-center justify-content-center text-white   "
             title="Voice Command">
         <svg x-show="!listening" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
         </svg>
-        <svg x-show="listening" class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg x-show="listening" class="w-6 h-6 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v1M12 22v1M4.22 4.22l.707.707M19.07 19.07l.707.707M1 12h1M22 12h1M4.22 19.78l.707-.707M19.07 4.93l.707-.707"/>
         </svg>
     </button>
     <div x-show="listening"
-         class="absolute bottom-16 right-0 bg-white dark:bg-slate-800 border border-slate-600 rounded-xl p-4 w-72 shadow-2xl">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="flex gap-1">
-                <span class="w-1.5 h-5 bg-blue-500 rounded animate-pulse" style="animation-delay:0s"></span>
-                <span class="w-1.5 h-5 bg-blue-500 rounded animate-pulse" style="animation-delay:0.2s"></span>
-                <span class="w-1.5 h-5 bg-blue-500 rounded animate-pulse" style="animation-delay:0.4s"></span>
-                <span class="w-1.5 h-5 bg-blue-500 rounded animate-pulse" style="animation-delay:0.6s"></span>
+         class="position-absolute bottom-16 end-0 bg-white dark:bg-slate-800 border border rounded-3 p-2 w-72 shadow-lg">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="d-flex gap-1">
+                <span class="w-1.5 h-5 bg-primary rounded " style="animation-delay:0s"></span>
+                <span class="w-1.5 h-5 bg-primary rounded " style="animation-delay:0.2s"></span>
+                <span class="w-1.5 h-5 bg-primary rounded " style="animation-delay:0.4s"></span>
+                <span class="w-1.5 h-5 bg-primary rounded " style="animation-delay:0.6s"></span>
             </div>
-            <span class="text-sm text-blue-400 font-medium">Mendengarkan...</span>
+            <span class="fs-sm text-primary fw-medium">Mendengarkan...</span>
         </div>
-        <p x-show="transcript" class="text-sm text-white mb-2"><span x-text="transcript"></span></p>
-        <p x-show="error" class="text-xs text-red-400" x-text="error"></p>
-        <div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-            <p class="text-[10px] text-slate-500 mb-1">Contoh: "buka saham BBCA"</p>
-            <div class="flex flex-wrap gap-1">
-                <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded">dashboard</span>
-                <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded">forex</span>
-                <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded">screener</span>
+        <p x-show="transcript" class="fs-sm text-white mb-2"><span x-text="transcript"></span></p>
+        <p x-show="error" class="fs-xs text-danger" x-text="error"></p>
+        <div class="mt-2 pt-2 border-top border dark:border-slate-700">
+            <p class="fs-6 text-muted mb-1">Contoh: "buka saham BBCA"</p>
+            <div class="d-flex flex-wrap gap-1">
+                <span class="fs-6 bg-body dark:bg-slate-700 text-muted dark:text-muted px-1 py-0 rounded">dashboard</span>
+                <span class="fs-6 bg-body dark:bg-slate-700 text-muted dark:text-muted px-1 py-0 rounded">forex</span>
+                <span class="fs-6 bg-body dark:bg-slate-700 text-muted dark:text-muted px-1 py-0 rounded">screener</span>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -49,9 +49,9 @@
                     } catch(e) { this.loaded = true; }
                 },
                 signalBadge(signal) {
-                    if (signal === 'Overweight') return 'bg-green-lt text-green-400 border border-green-500/30';
-                    if (signal === 'Underweight') return 'bg-red-lt text-red-400 border border-red-500/30';
-                    return 'bg-slate-500/20 text-slate-400 border border-slate-500/30';
+                    if (signal === 'Overweight') return 'bg-green-lt text-success border border-green-500/30';
+                    if (signal === 'Underweight') return 'bg-red-lt text-danger border border-red-500/30';
+                    return 'bg-slate-500/20 text-muted border border-slate-500/30';
                 },
                 factorIcon(factor) {
                     const icons = { Value:'💰', Size:'📏', Momentum:'🚀', Quality:'⭐', LowVol:'🛡️', Growth:'🌱' };
@@ -159,12 +159,12 @@
     </aside>
 
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Quant /</span> Factor Timing</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Quant /</span> Factor Timing</div>
         <div class="d-flex align-items-center gap-3">
-            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -179,7 +179,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Analyzing factor timing...</p>
+                <p class="text-muted dark:text-muted">Analyzing factor timing...</p>
             </div>
         </template>
 
@@ -187,7 +187,7 @@
             <div class="vstack gap-4">
                 <div>
                     <h1 class="fs-1 fw-bold text-white">Factor Timing Model</h1>
-                    <p class="text-muted dark:text-slate-400 fs-sm mt-1">Which factor is leading this quarter? Dynamic factor rotation signals.</p>
+                    <p class="text-muted dark:text-muted fs-sm mt-1">Which factor is leading this quarter? Dynamic factor rotation signals.</p>
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gap-4">
@@ -201,7 +201,7 @@
                                 <span class="px-2 py-1 rounded-pill fs-6 fw-semibold" :class="signalBadge(t.signal)" x-text="t.signal"></span>
                             </div>
                             <div class="mb-2">
-                                <div class="d-flex justify-content-between fs-xs text-muted dark:text-slate-400 mb-1">
+                                <div class="d-flex justify-content-between fs-xs text-muted dark:text-muted mb-1">
                                     <span>Score</span>
                                     <span class="font-monospace" x-text="t.current_score.toFixed(1)"></span>
                                 </div>
@@ -209,7 +209,7 @@
                                     <div class="h-100 rounded-pill  " :class="barColor(t.factor)" :style="{ width: Math.min(100, t.current_score) + '%' }"></div>
                                 </div>
                             </div>
-                            <p class="fs-xs text-muted dark:text-slate-400 lh-lg" x-text="t.rationale"></p>
+                            <p class="fs-xs text-muted dark:text-muted lh-lg" x-text="t.rationale"></p>
                         </div>
                     </template>
                 </div>
@@ -219,15 +219,15 @@
                     <div class="row row-cols-1 row-cols-md-3 gap-4 fs-sm">
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">1. Quintile Analysis</div>
-                            <p class="text-muted dark:text-slate-400">Rank all stocks by each factor, take the top 20% for each factor</p>
+                            <p class="text-muted dark:text-muted">Rank all stocks by each factor, take the top 20% for each factor</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">2. Compare Performance</div>
-                            <p class="text-muted dark:text-slate-400">Compare average returns of top-quintile portfolios across factors</p>
+                            <p class="text-muted dark:text-muted">Compare average returns of top-quintile portfolios across factors</p>
                         </div>
                         <div class="vstack gap-2">
                             <div class="fw-semibold text-primary">3. Generate Signals</div>
-                            <p class="text-muted dark:text-slate-400">Overweight factors outperforming by &gt;20%, Underweight those underperforming</p>
+                            <p class="text-muted dark:text-muted">Overweight factors outperforming by &gt;20%, Underweight those underperforming</p>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -72,17 +72,17 @@
                     const map = {
                         'Breakout': 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
                         'Dip Buy': 'bg-orange-lt text-orange-400 border border-orange-500/30',
-                        'Momentum': 'bg-blue-lt text-blue-400 border border-info/30',
-                        'Value': 'bg-green-lt text-green-400 border border-green-500/30',
+                        'Momentum': 'bg-blue-lt text-info border border-info/30',
+                        'Value': 'bg-green-lt text-success border border-green-500/30',
                         'Dividend Capture': 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30',
-                        'Mean Reversion': 'bg-yellow-lt text-yellow-400 border border-yellow-500/30'
+                        'Mean Reversion': 'bg-yellow-lt text-warning border border-yellow-500/30'
                     };
-                    return map[strat] || 'bg-slate-500/20 text-slate-400';
+                    return map[strat] || 'bg-slate-500/20 text-muted';
                 },
                 riskBadge(risk) {
-                    if (risk === 'Low') return 'bg-green-lt text-green-400';
-                    if (risk === 'Medium') return 'bg-yellow-lt text-yellow-400';
-                    return 'bg-red-lt text-red-400';
+                    if (risk === 'Low') return 'bg-green-lt text-success';
+                    if (risk === 'Medium') return 'bg-yellow-lt text-warning';
+                    return 'bg-red-lt text-danger';
                 },
                 rangePercent(entry, target) {
                     const entryNum = parseFloat(entry);
@@ -208,12 +208,12 @@
 
     <!-- TOPBAR -->
     <header class="position-fixed top-0 end-0 start-0 left-60 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 z-2 d-flex align-items-center justify-content-between px-2">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  ">
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  ">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="fs-sm text-muted dark:text-slate-400"><span class="text-muted">Market /</span> Trade Ideas Generator</div>
+        <div class="fs-sm text-muted dark:text-muted"><span class="text-muted">Market /</span> Trade Ideas Generator</div>
         <div class="d-flex align-items-center gap-3">
-            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-slate-400  " title="Refresh">
+            <button @click="fetch()" class="p-2 rounded-2  dark:hover:bg-white text-muted dark:text-muted  " title="Refresh">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
             [[if .User]]
@@ -229,7 +229,7 @@
         <template x-if="!loaded">
             <div class="card p-2 d-flex flex-column align-items-center justify-content-center vstack gap-3">
                 <div class="w-16 h-16 border-4 border-primary border-top rounded-pill "></div>
-                <p class="text-muted dark:text-slate-400">Generating trade ideas...</p>
+                <p class="text-muted dark:text-muted">Generating trade ideas...</p>
             </div>
         </template>
 
@@ -238,17 +238,17 @@
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-4">
                     <div>
                         <h1 class="fs-1 fw-bold text-white">Trade Ideas Generator</h1>
-                        <p class="text-muted dark:text-slate-400 fs-sm mt-1">AI-powered trade setups using multi-strategy analysis</p>
+                        <p class="text-muted dark:text-muted fs-sm mt-1">AI-powered trade setups using multi-strategy analysis</p>
                     </div>
                     <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <span class="fs-xs text-muted dark:text-slate-400">Strategy:</span>
+                        <span class="fs-xs text-muted dark:text-muted">Strategy:</span>
                         <select x-model="selectedStrategy" @change="filter()"
                                 class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             <template x-for="s in strategies" :key="s">
                                 <option :value="s" x-text="s"></option>
                             </template>
                         </select>
-                        <span class="fs-xs text-muted dark:text-slate-400">Risk:</span>
+                        <span class="fs-xs text-muted dark:text-muted">Risk:</span>
                         <select x-model="selectedRisk" @change="filter()"
                                 class="bg-white dark:bg-white border border rounded-2 px-2 py-2 fs-sm text-white  ">
                             <template x-for="r in riskLevels" :key="r">
@@ -271,7 +271,7 @@
                                             <span class="font-monospace fw-bold fs-3 text-white" x-text="idea.stock_code"></span>
                                             <span class="px-2 py-0 rounded-pill fs-6 fw-semibold" :class="stratBadge(idea.strategy)" x-text="idea.strategy"></span>
                                         </div>
-                                        <span class="fs-xs text-muted dark:text-slate-400" x-text="idea.name"></span>
+                                        <span class="fs-xs text-muted dark:text-muted" x-text="idea.name"></span>
                                     </div>
                                     <span class="fs-sm font-monospace fw-bold text-white" x-text="idea.price"></span>
                                 </div>
@@ -296,11 +296,11 @@
                             <!-- Expandable Details -->
                             <div x-show="expanded[idx]" class="px-2 py-2 border-top border dark:border vstack gap-2">
                                 <div class="d-flex justify-content-between fs-sm">
-                                    <span class="text-muted dark:text-slate-400">Timeframe</span>
+                                    <span class="text-muted dark:text-muted">Timeframe</span>
                                     <span class="text-body dark:text-body font-monospace" x-text="idea.timeframe"></span>
                                 </div>
                                 <div class="d-flex justify-content-between fs-sm">
-                                    <span class="text-muted dark:text-slate-400">Risk Level</span>
+                                    <span class="text-muted dark:text-muted">Risk Level</span>
                                     <span class="px-2 py-0 rounded fs-6 fw-semibold" :class="riskBadge(idea.risk_level)" x-text="idea.risk_level"></span>
                                 </div>
                             </div>

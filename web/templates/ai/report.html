@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Stock Report &mdash; [[.Stock.Code]] &mdash; Investo</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -102,7 +102,7 @@
         <header class="position-sticky top-0 z-2 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-[#1e293b]">
             <div class="d-flex align-items-center justify-content-between px-2 py-2">
                 <div class="d-flex align-items-center gap-3">
-                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400  rounded-2  dark:hover:bg-[#1e293b] ">
+                    <button onclick="document.getElementById('sidebar').classList.toggle('d-none d-md-block');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted  rounded-2  dark:hover:bg-[#1e293b] ">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                     <h1 class="fs-3 fw-semibold text-white">AI Research Report</h1>
@@ -114,7 +114,7 @@
                     </button>
                     <button @click="regenerating=true;location.reload()"
                             :disabled="regenerating"
-                            class="d-flex align-items-center gap-2 px-2 py-2 bg-white dark:bg-[#1e293b] text-body dark:text-slate-300 fs-sm fw-medium rounded-2  dark:hover:bg-[#334155] disabled:opacity-50 ">
+                            class="d-flex align-items-center gap-2 px-2 py-2 bg-white dark:bg-[#1e293b] text-body dark:text-body fs-sm fw-medium rounded-2  dark:hover:bg-[#334155] disabled:opacity-50 ">
                         <svg class="w-4 h-4" :class="{'animate-spin': regenerating}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                         Regenerate
                     </button>
@@ -133,12 +133,12 @@
                                 <div class="w-12 h-12 gradient-blue rounded-3 d-flex align-items-center justify-content-center text-white fs-2 fw-bold">[[slice .Stock.Code 0 1]]</div>
                                 <div>
                                     <h2 class="fs-2 fw-bold text-white">[[.Stock.Code]]</h2>
-                                    <p class="fs-sm text-muted dark:text-slate-400">[[.Stock.Name]]</p>
+                                    <p class="fs-sm text-muted dark:text-muted">[[.Stock.Name]]</p>
                                 </div>
                             </div>
                             <div class="d-flex gap-3 mt-2">
                                 <span class="fs-xs bg-primary bg-opacity-50 text-primary px-2 py-1 rounded-pill">AI Research Report</span>
-                                <span class="fs-xs bg-white dark:bg-slate-800 text-muted dark:text-slate-400 px-2 py-1 rounded-pill">[[.Stock.Subsector]]</span>
+                                <span class="fs-xs bg-white dark:bg-slate-800 text-muted dark:text-muted px-2 py-1 rounded-pill">[[.Stock.Subsector]]</span>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                 <div class="card p-2">
                     <div class="d-flex align-items-center gap-3">
                         <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
-                        <div class="fs-sm text-muted dark:text-slate-400">
+                        <div class="fs-sm text-muted dark:text-muted">
                             <strong class="text-warning">Disclaimer:</strong> Laporan ini dihasilkan oleh AI dan bersifat informatif. Tidak merupakan rekomendasi beli/jual. Selalu lakukan riset mandiri dan konsultasikan dengan penasihat keuangan profesional sebelum mengambil keputusan investasi.
                         </div>
                     </div>

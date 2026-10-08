@@ -292,6 +292,8 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 @keyframes fin-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .animate-ticker { animation: fin-ticker 40s linear infinite; }
 .backdrop-blur { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.blur-3xl { filter: blur(64px); }
+.scale-110 { transform: scale(1.1); }
 @keyframes fin-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .animate-pulse { animation: fin-pulse 2s ease-in-out infinite; }
 .animate-spin { animation: fin-spin 0.8s linear infinite; display: inline-block; }
@@ -351,6 +353,49 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .max-w-80 { max-width: 80%; }
 .aspect-video { aspect-ratio: 16 / 9; }
 .w-24 { width: 6rem; }
+.w-1.5 { width: 0.375rem; }
+.w-4.5 { width: 1.125rem; }
+.h-4.5 { height: 1.125rem; }
+.h-72 { height: 18rem; }
+.h-96 { height: 24rem; }
+.w-80 { width: 20rem; }
+.w-96 { width: 24rem; }
+.max-h-72 { max-height: 18rem; }
+.max-h-360 { max-height: 360px; }
+.top-16 { top: 4rem; }
+.left-16 { left: 4rem; }
+.right-16 { right: 4rem; }
+.bottom-16 { bottom: 4rem; }
+.top-1.5 { top: 0.375rem; }
+.right-1.5 { right: 0.375rem; }
+.left-3 { left: 0.75rem; }
+.right-6 { right: 1.5rem; }
+.top-25 { top: 25%; }
+.bottom-25 { bottom: 25%; }
+.start-25 { inset-inline-start: 25%; }
+.end-25 { inset-inline-end: 25%; }
+.pt-15vh { padding-top: 15vh; }
+.w-5-6 { width: 83.3333%; }
+
+/* transform companions for Alpine-driven drawers */
+.-translate-x-full { transform: translateX(-100%); }
+.translate-x-0 { transform: none; }
+.z-auto { z-index: auto; }
+
+/* generic slide-over drawer: fixed on mobile, static column on desktop */
+.app-drawer {
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 70; width: 16rem;
+}
+@media (min-width: 992px) {
+  .app-drawer { position: static; z-index: auto; transform: none; }
+}
+
+/* selectable pill cards (radio/checkbox without framework variants) */
+.pill-check:has(input:checked) {
+  border-color: var(--ui-primary) !important;
+  background: var(--ui-primary-soft);
+  color: var(--ui-primary);
+}
 
 /* max-width / max-height companions (documented layout constants) */
 .max-w-xs { max-width: 20rem; }
@@ -377,6 +422,10 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .top-24 { top: 6rem; }
 .min-w-0 { min-width: 0; }
 .resize-none { resize: none; }
+.resize-y { resize: vertical; }
+.appearance-none { appearance: none; }
+.bg-no-repeat { background-repeat: no-repeat; }
+.list-decimal { list-style-type: decimal; }
 
 /* app-shell width companions (sidebar offsets) */
 .w-60 { width: 15rem; }

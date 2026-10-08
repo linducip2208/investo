@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[[.Title]]</title>
     <link rel="stylesheet" href="/static/css/vendor/tabler.css">
-    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/legacy-compat.css">
     <link rel="stylesheet" href="/static/css/fintech.css">
     <script data-investo-assets>
     (function(){try{var p=localStorage.getItem('investo-theme')||'light';
@@ -104,7 +104,7 @@ function macroDashboard() {
 <!-- MAIN -->
 <div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border-slate-800 d-flex align-items-center px-2 px-lg-5 gap-4">
-        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-slate-400 "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button onclick="document.getElementById('sidebar').classList.toggle('max-md:hidden');document.getElementById('sb-overlay').classList.toggle('hidden')" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <input type="text" placeholder="Cari saham, forex, atau halaman..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 px-2 py-2 fs-sm text-white      " onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q.length>1)location.href='/saham?search='+encodeURIComponent(q)}">
         </div>
@@ -124,7 +124,7 @@ function macroDashboard() {
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-4">
             <div>
                 <h1 class="fs-2 fs-1 fw-bold text-white">Macro Factor Dashboard</h1>
-                <p class="fs-sm text-muted dark:text-slate-400 mt-0">Key economic indicators affecting Indonesian capital markets. BI Rate, inflation, GDP, currency, and more.</p>
+                <p class="fs-sm text-muted dark:text-muted mt-0">Key economic indicators affecting Indonesian capital markets. BI Rate, inflation, GDP, currency, and more.</p>
                 <div class="card p-2 mt-2 border-warning bg-warning bg-opacity-10">
                     <p class="fs-xs text-warning">⚠️ <span class="fw-semibold">Data ilustratif</span> — contoh, bukan data BI/BPS real-time.</p>
                 </div>
@@ -149,7 +149,7 @@ function macroDashboard() {
                         </div>
                         <div class="fs-1 fw-bolder text-white mb-1 font-monospace" x-text="indicator.value"></div>
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fs-xs text-muted dark:text-slate-400">Prev: <span class="font-monospace text-body dark:text-body" x-text="indicator.previous"></span></span>
+                            <span class="fs-xs text-muted dark:text-muted">Prev: <span class="font-monospace text-body dark:text-body" x-text="indicator.previous"></span></span>
                             <span class="fs-xs fw-semibold px-2 py-0 rounded-pill" :class="{'bg-success-lt/50 text-green-300': indicator.change.includes('+') || indicator.change.includes('-0') && !indicator.change.includes('--'), 'bg-danger-lt text-danger': indicator.change.includes('-') && !indicator.change.includes('+'), 'bg-secondary-lt text-body': !indicator.change.includes('+') && !indicator.change.includes('-')}" x-text="indicator.change"></span>
                         </div>
                         <div class="d-flex flex-wrap gap-1">
