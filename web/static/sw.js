@@ -1,5 +1,5 @@
 /* Investo service worker v2 — local-first PWA. */
-const CACHE_NAME = 'investo-v2';
+const CACHE_NAME = 'investo-v3';
 const PRECACHE = [
     '/',
     '/dashboard',
@@ -13,7 +13,7 @@ const PRECACHE = [
     '/static/icons/icon-192.png',
     '/static/icons/icon-512.png',
     '/static/css/vendor/tabler.css',
-    '/static/css/output.css',
+    '/static/css/legacy-compat.css',
     '/static/css/fintech.css',
     '/static/css/app.css',
     '/static/js/app.js',
