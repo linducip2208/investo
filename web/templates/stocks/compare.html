@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ darkMode: localStorage.getItem('investo-dark-mode') === 'true' || (!localStorage.getItem('investo-dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-init="$watch('darkMode', val => { localStorage.setItem('investo-dark-mode', val); document.documentElement.classList.toggle('dark', val); }); document.documentElement.classList.toggle('dark', darkMode);" class="scroll-smooth">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,10 +43,16 @@
                 <a href="/dashboard/watchlists" class="text-muted  dark:text-muted dark:hover:text-brand-400 ">Watchlist</a>
             </nav>
             <div class="d-flex align-items-center gap-3">
-                <button @click="darkMode = !darkMode" class="p-2 rounded-2 text-muted dark:text-muted  dark:hover:text-slate-200  dark:hover:bg-secondary-lt " aria-label="Toggle dark mode">
-                    <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                    <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                </button>
+                <div data-dropdown>
+                    <button type="button" data-dropdown-toggle class="p-2 rounded-2 text-muted" aria-label="Pilih tema" aria-haspopup="menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                    </button>
+                    <div class="menu" role="menu" aria-label="Tema" data-theme-menu>
+                        <button type="button" class="mi" data-set-theme="light" role="menuitemradio">Terang</button>
+                        <button type="button" class="mi" data-set-theme="dark" role="menuitemradio">Gelap</button>
+                        <button type="button" class="mi" data-set-theme="system" role="menuitemradio">Sistem</button>
+                    </div>
+                </div>
                 <a href="/dashboard" class="fs-sm fw-medium text-muted  dark:text-body dark:hover:text-brand-400  d-none d-sm-block">Masuk</a>
             </div>
         </div>

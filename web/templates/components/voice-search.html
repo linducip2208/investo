@@ -1,6 +1,6 @@
 <div x-data="voiceSearch()" x-init="initVoice()" class="position-fixed bottom-6 right-6 z-3">
     <button @click="toggleListening"
-            :class="listening ? 'bg-red-600 scale-110' : 'bg-blue-600 "
+            :class="listening ? 'bg-danger scale-110' : 'bg-primary'"
             class="w-14 h-14 rounded-pill shadow-lg d-flex align-items-center justify-content-center text-white   "
             title="Voice Command">
         <svg x-show="!listening" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@
             </div>
             <span class="fs-sm text-primary fw-medium">Mendengarkan...</span>
         </div>
-        <p x-show="transcript" class="fs-sm text-white mb-2"><span x-text="transcript"></span></p>
+        <p x-show="transcript" class="fs-sm text-body mb-2"><span x-text="transcript"></span></p>
         <p x-show="error" class="fs-xs text-danger" x-text="error"></p>
         <div class="mt-2 pt-2 border-top border dark:border-slate-700">
             <p class="fs-6 text-muted mb-1">Contoh: "buka saham BBCA"</p>

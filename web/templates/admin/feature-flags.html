@@ -46,7 +46,7 @@
 
     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <aside class="sidebar bg-body dark:bg-slate-900 text-white d-flex flex-column position-fixed start-0 top-0 bottom-0 overflow-y-auto z-3" :class="{ open: sidebarOpen }">
+    <aside class="sidebar bg-body dark:bg-slate-900 d-flex flex-column position-fixed start-0 top-0 bottom-0 overflow-y-auto z-3" :class="{ open: sidebarOpen }">
         <div class="d-flex align-items-center gap-3 px-2 py-2 border-bottom border dark:border-slate-700/60">
             <div class="w-9 h-9 bg-gradient bg-gradient-from-blue bg-gradient-to-indigo rounded-2 d-flex align-items-center justify-content-center fw-bold text-white fs-sm shadow-lg ">I</div>
             <div>
@@ -55,11 +55,11 @@
             </div>
         </div>
         <nav class="flex-fill px-2 py-2 vstack gap-1">
-            <a href="/admin" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="fs-sm">Dashboard</span>
             </a>
-            <a href="/admin/analytics" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/analytics" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="fs-sm">Analytics</span>
             </a>
@@ -67,27 +67,27 @@
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
                 <span class="fs-sm">Feature Flags</span>
             </a>
-            <a href="/admin/users" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/users" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
                 <span class="fs-sm">Pengguna</span>
             </a>
-            <a href="/admin/stocks" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/stocks" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-5 3 3 5-6 6 5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="1" width="22" height="22" rx="3"/></svg>
                 <span class="fs-sm">Saham</span>
             </a>
-            <a href="/admin/sectors" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/sectors" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/></svg>
                 <span class="fs-sm">Sektor</span>
             </a>
-            <a href="/admin/news" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/news" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20" stroke-linecap="round"/></svg>
                 <span class="fs-sm">Berita</span>
             </a>
-            <a href="/admin/blog" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/blog" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8l-5-5z"/></svg>
                 <span class="fs-sm">Blog</span>
             </a>
-            <a href="/admin/pipeline" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body  dark:hover:bg-white   ">
+            <a href="/admin/pipeline" class="d-flex align-items-center gap-3 px-2 py-2 rounded-2 text-body dark:text-body     ">
                 <svg class="w-5 h-5 text-muted dark:text-muted " fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0116 0"/></svg>
                 <span class="fs-sm">Pipeline</span>
             </a>
@@ -105,7 +105,7 @@
 
     <main class="main-content">
         <header class="bg-body bg-opacity-100 dark:bg-slate-900/95  border-bottom border dark:border-slate-700/50 px-2 py-2 d-flex align-items-center justify-content-between position-sticky top-0 z-2">
-            <button @click="sidebarOpen = !sidebarOpen" class="d-lg-none p-2 rounded-2  dark:hover:bg-white ">
+            <button @click="sidebarOpen = !sidebarOpen" class="d-lg-none p-2 rounded-2   ">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
             </button>
             <div class="fs-sm text-muted dark:text-muted fw-medium d-none d-sm-block">Feature Flags Management</div>
