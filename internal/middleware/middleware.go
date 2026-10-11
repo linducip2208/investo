@@ -1,8 +1,11 @@
 package middleware
 
 import (
+	"bufio"
 	"encoding/json"
+	"errors"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,6 +22,22 @@ type responseWriter struct {
 func (rw *responseWriter) WriteHeader(code int) {
 	rw.status = code
 	rw.ResponseWriter.WriteHeader(code)
+}
+
+// Hijack passes hijacking through so gorilla/websocket upgrades keep working
+// behind the Logger middleware. Without this every /ws handshake fails.
+func (rw *responseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	if h, ok := rw.ResponseWriter.(http.Hijacker); ok {
+		return h.Hijack()
+	}
+	return nil, nil, errors.New("hijack not supported by underlying writer")
+}
+
+// Flush passes flushing through for streaming handlers (SSE, etc.).
+func (rw *responseWriter) Flush() {
+	if f, ok := rw.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
 }
 
 func Logger(next http.Handler) http.Handler {
