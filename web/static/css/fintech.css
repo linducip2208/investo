@@ -290,7 +290,14 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 
 /* marquee ticker + backdrop blur + pulse/spin companions */
 @keyframes fin-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.animate-ticker { animation: fin-ticker 40s linear infinite; }
+.animate-ticker { animation: fin-ticker 75s linear infinite; }
+/* Seamless readable ticker: fixed 75s cycle, pauses on hover.
+   Track keeps DOM stable across data updates (no animation restart). */
+.ticker-track {
+  display: flex; align-items: center; gap: 2.5rem; width: max-content;
+  animation: fin-ticker 75s linear infinite;
+}
+.ticker-viewport:hover .ticker-track { animation-play-state: paused; }
 .backdrop-blur { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .blur-3xl { filter: blur(64px); }
 .scale-110 { transform: scale(1.1); }
@@ -338,6 +345,7 @@ table.fin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-w
 .w-56 { width: 14rem; }
 .w-72 { width: 18rem; }
 .pl-11 { padding-left: 2.75rem; }
+.ps-11 { padding-inline-start: 2.75rem; }
 .left-3.5 { left: 0.875rem; }
 .left-4 { left: 1rem; }
 .left-6 { left: 1.5rem; }
@@ -460,6 +468,17 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--ui-primary); }
 .icon svg { width: 20px; height: 20px; display: block; }
 .sidebar-link .icon svg { width: 20px; height: 20px; }
 .btn-icon svg, .icon-btn svg { width: 18px; height: 18px; }
+
+/* ---------- responsive shell ----------
+   Tabler display utilities are !important, so page-level responsive display
+   overrides need !important too, otherwise drawers never hide on mobile. */
+@media (max-width: 1023.98px) {
+  .sidebar { display: none !important; }
+  .sidebar.open { display: flex !important; }
+}
+@media (max-width: 639.98px) {
+  .hide-mobile { display: none !important; }
+}
 
 /* ---------- misc ---------- */
 .page-head h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em; }

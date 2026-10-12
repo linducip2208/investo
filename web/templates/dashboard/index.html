@@ -711,7 +711,7 @@
     </aside>
 
     <!-- MAIN -->
-    <div class="flex-fill app-offset min-vh-100 d-flex flex-column">
+    <div class="flex-fill app-offset min-w-0 min-vh-100 d-flex flex-column">
         <!-- TOPBAR -->
         <header class="position-sticky top-0 z-2 h-16 bg-body/90 dark:bg-body/90  border-bottom border dark:border d-flex align-items-center px-2 px-lg-2 gap-4">
             <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted  dark:hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -729,7 +729,7 @@
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-fill p-2 p-lg-2 vstack gap-3 overflow-y-auto">
+        <main class="flex-fill min-w-0 p-2 p-lg-2 vstack gap-3 overflow-y-auto">
             
             <!-- HEADER ROW -->
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-2">
@@ -753,8 +753,8 @@
             </div>
 
             <!-- TICKER BAR -->
-            <div class="bg-white/50 dark:bg-white/50 border border/50 dark:border/50 rounded-3 px-2 py-2 overflow-hidden">
-                <div class="d-flex gap-5 animate-ticker" style="min-width:200%">
+            <div class="ticker-viewport bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-4 px-2 py-2 mb-2 overflow-hidden">
+                <div class="ticker-track" aria-label="Harga saham terkini">
                     <template x-for="(s,i) in ticker.concat(ticker)" :key="i">
                         <span class="d-inline-flex align-items-center gap-2 fs-sm text-nowrap flex-shrink-0">
                             <span class="fw-semibold text-body dark:text-white font-monospace" x-text="s.code"></span>
@@ -903,9 +903,6 @@
         new ResizeObserver(function(){ chart.applyOptions({ width: c.clientWidth }); }).observe(c);
     })();
     </script>
-    <style>
-        @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
-    </style>
     <script>
         (function(){
             var ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');

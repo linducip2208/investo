@@ -93,7 +93,7 @@ function stockList() {
 <aside class="sidebar position-fixed top-0 bottom-0 start-0 z-3 w-60 bg-body dark:bg-[#0b1120] border-end border dark:border/50 d-flex flex-column" >
     <div class="d-flex align-items-center gap-3 px-2 h-16 border-bottom border dark:border/50">
         <div class="w-8 h-8 rounded-2 bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center fw-bold text-white fs-sm">I</div>
-        <span class="fw-bold fs-3 text-white">Investo</span>
+        <span class="fw-bold fs-3 text-body">Investo</span>
     </div>
     <nav class="flex-fill overflow-y-auto px-2 py-2 vstack gap-1">
         <a href="/dashboard" class="sidebar-link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -209,14 +209,14 @@ function stockList() {
 </aside>
 
 <!-- MAIN -->
-<div class="flex-fill ml-60 min-vh-100 d-flex flex-column">
+<div class="flex-fill app-offset min-w-0 min-vh-100 d-flex flex-column">
     <!-- TOPBAR -->
     <header class="position-sticky top-0 z-2 h-16 bg-body bg-opacity-100 dark:bg-[#0b1120]/90  border-bottom border dark:border/50 d-flex align-items-center px-2 px-lg-5 gap-4">
         <button @click="sidebarOpen=!sidebarOpen" class="d-lg-none p-2 text-muted dark:text-muted "><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="flex-fill max-w-md d-none d-sm-block">
             <div class="position-relative">
                 <svg class="position-absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" x-model="searchQuery" @keydown.enter="goSearch()" placeholder="Cari saham berdasarkan kode atau nama..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 ps-2 pe-2 py-2 fs-sm text-white      ">
+                <input type="text" x-model="searchQuery" @keydown.enter="goSearch()" placeholder="Cari saham berdasarkan kode atau nama..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 ps-11 pe-2 py-2 fs-sm text-body      ">
             </div>
         </div>
         <div class="d-flex align-items-center gap-2 ms-auto">
@@ -225,7 +225,7 @@ function stockList() {
             [[if .User]]
             <div class="d-flex align-items-center gap-2 ps-2 border-start border dark:border">
                 <div class="w-8 h-8 rounded-pill bg-gradient bg-gradient-from-blue bg-gradient-to-blue d-flex align-items-center justify-content-center text-white fs-xs fw-bold">[[slice .User.Name 0 1]]</div>
-                <span class="fs-sm fw-medium text-white d-none d-sm-block">[[.User.Name]]</span>
+                <span class="fs-sm fw-medium text-body d-none d-sm-block">[[.User.Name]]</span>
             </div>
             [[else]]
             <a href="/login" class="px-2 py-2 bg-primary  text-white fs-sm fw-medium rounded-3 ">Masuk</a>
@@ -234,7 +234,7 @@ function stockList() {
     </header>
 
     <!-- CONTENT -->
-    <main class="flex-fill px-2 px-lg-5 py-2 overflow-y-auto">
+    <main class="flex-fill min-w-0 px-2 px-lg-5 py-2 overflow-y-auto">
 
         <!-- PAGE HEADER -->
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-3 mb-2">
@@ -250,11 +250,11 @@ function stockList() {
         </div>
 
         <!-- TICKER BAR -->
-        <div class="bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-4 px-2 py-2 mb-2 overflow-hidden">
-            <div class="d-flex gap-5 animate-ticker" style="min-width:200%">
+        <div class="ticker-viewport bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-4 px-2 py-2 mb-2 overflow-hidden">
+            <div class="ticker-track" aria-label="Harga saham terkini">
                 <template x-for="(s,i) in ticker.concat(ticker)" :key="i">
                     <span class="d-inline-flex align-items-center gap-2 fs-sm text-nowrap flex-shrink-0">
-                        <span class="fw-semibold text-white font-monospace" x-text="s.code"></span>
+                        <span class="fw-semibold text-body font-monospace" x-text="s.code"></span>
                         <span class="text-muted dark:text-muted font-monospace" x-text="fmt(s.price)"></span>
                         <span :class="(s.change||0)>=0?'text-success':'text-danger'" class="font-monospace fs-xs" x-text="((s.change||0)>=0?'+':'')+(s.change||0).toFixed(1)+'%'"></span>
                     </span>
@@ -266,7 +266,7 @@ function stockList() {
         <div class="mb-2 d-sm-none">
             <div class="position-relative">
                 <svg class="position-absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" x-model="searchQuery" @keydown.enter="goSearch()" placeholder="Cari kode atau nama saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 ps-2 pe-2 py-2 fs-sm text-white      ">
+                <input type="text" x-model="searchQuery" @keydown.enter="goSearch()" placeholder="Cari kode atau nama saham..." class="w-100 bg-white dark:bg-white border border dark:border rounded-3 ps-11 pe-2 py-2 fs-sm text-body      ">
             </div>
         </div>
 
@@ -281,7 +281,7 @@ function stockList() {
         </div>
 
         <!-- TABLE -->
-        <div class="card overflow-hidden">
+        <div class="card overflow-hidden min-w-0">
             <div class="overflow-x-auto">
                 <table class="table table-vcenter table-hover w-100 fs-sm">
                     <thead>
@@ -296,7 +296,7 @@ function stockList() {
                     </thead>
                     <tbody class="divide-y border dark:divide-slate-700/30">
                         [[range .Stocks]]
-                        <tr class=" dark:hover:bg-secondary-lt/30  cursor-pointer group" onclick="window.location='/saham/[[.Code]]'">
+                        <tr class=" dark:hover:bg-secondary-lt/30  cursor-pointer group" data-code="[[.Code]]" onclick="window.location='/saham/[[.Code]]'">
                             <td class="px-2 py-2">
                                 <span class="fw-bold text-primary  font-monospace">[[.Code]]</span>
                             </td>
@@ -306,13 +306,18 @@ function stockList() {
                             <td class="px-2 py-2 hide-mobile">
                                 <span class="d-inline-block px-2 py-0 bg-primary bg-opacity-25 text-primary rounded-2 fs-6 fw-medium">[[.SectorName]]</span>
                             </td>
-                            <td class="px-2 py-2 text-end font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[formatPrice .Price]]</td>
-                            <td class="px-2 py-2 text-end font-monospace fs-sm">
+                            <td class="px-2 py-2 text-end text-nowrap font-monospace fs-sm fw-semibold text-body dark:text-[#f8fafc]">[[formatPrice .Price]]</td>
+                            <td class="px-2 py-2 text-end text-nowrap font-monospace fs-sm">
                                 [[if ge .ChangePercent 0.0]]
                                 <span class="text-success fw-semibold">+[[printf "%.1f" .ChangePercent]]%</span>
                                 [[else]]
                                 <span class="text-danger fw-semibold">[[printf "%.1f" .ChangePercent]]%</span>
                                 [[end]]
+                            </td>
+                            <td class="px-2 py-2 text-center">
+                                <span class="sparkline-container d-inline-block align-middle">
+                                    <svg width="100" height="40" viewBox="0 0 100 40" role="img" aria-label="Grafik mini [[.Code]]"><polyline fill="none" stroke="[[if ge .ChangePercent 0.0]]#18794e[[else]]#c93a3a[[end]]" stroke-width="1.5" points=""/></svg>
+                                </span>
                             </td>
                         </tr>
                         [[end]]
@@ -333,7 +338,7 @@ function stockList() {
         <!-- PAGINATION -->
         [[if .TotalPages]]
         <div class="mt-2 d-flex align-items-center justify-content-between">
-            <p class="fs-sm text-muted">Halaman <span class="text-white fw-semibold">[[.Page]]</span> dari <span class="text-white fw-semibold">[[.TotalPages]]</span></p>
+            <p class="fs-sm text-muted">Halaman <span class="text-body fw-semibold">[[.Page]]</span> dari <span class="text-body fw-semibold">[[.TotalPages]]</span></p>
             <div class="d-flex align-items-center gap-1">
                 [[if gt .Page 1]]
                 <a href="/saham?page=[[subtract .Page 1]][[if .Search]]&search=[[.Search]][[end]][[if .CurrentSector]]&sector=[[.CurrentSector]][[end]]" class="px-2 py-2 fs-sm fw-medium text-muted dark:text-muted bg-white dark:bg-[#1e293b] border border dark:border/50 rounded-3  dark:hover:bg-secondary-lt ">Sebelumnya</a>
@@ -355,12 +360,13 @@ function stockList() {
 </div>
 
 <style>
-    @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+
 </style>
 
 <script>
 (function() {
-    document.querySelectorAll('[data-code]').forEach(function(row) {
+    var sparkRows = document.querySelectorAll('[data-code]');
+    sparkRows.forEach(function(row, idx) {
         var code = row.getAttribute('data-code');
         if (!code) return;
         var container = row.querySelector('.sparkline-container');
@@ -369,6 +375,8 @@ function stockList() {
         if (!svg) return;
 
         var upColor = svg.querySelector('polyline').getAttribute('stroke');
+        // pace initial chart fetches (~250ms apart) to stay under API rate limits
+        setTimeout(function(){
         fetch('/api/stocks/'+code+'/chart?start='+new Date(Date.now()-30*86400000).toISOString().slice(0,10))
             .then(function(r){return r.json()})
             .then(function(d){
@@ -385,6 +393,7 @@ function stockList() {
                 }).join(' ');
                 svg.innerHTML = '<polyline fill="none" stroke="'+upColor+'" stroke-width="1.5" points="'+pts+'"/>';
             }).catch(function(){});
+        }, idx*250);
     });
 
     var liveRows = document.querySelectorAll('[data-code]');
@@ -401,7 +410,8 @@ function stockList() {
         });
         if (!priceEl) return;
         var oldPrice = parseFloat((priceEl.textContent||'').replace(/[^\d]/g,''))||0;
-        setInterval(function(){
+        var pollOnce = function(){
+            if (document.hidden) return; // pause when tab not visible (saves API quota)
             fetch('/api/stocks/'+code+'/price')
                 .then(function(r){return r.json()})
                 .then(function(d){
@@ -416,7 +426,11 @@ function stockList() {
                         changeEl.innerHTML = '<span class="font-monospace fs-sm fw-semibold '+(d.change>=0?'text-success':'text-danger')+'">'+chTxt+'</span>';
                     }
                 }).catch(function(){});
-        }, 30000);
+        };
+        // stagger first poll to avoid thundering herd, then 60s cadence
+        // (60s keeps ~50 rows under the 60 req/min API limit; visual ticker stays smooth)
+        setTimeout(pollOnce, Math.floor(Math.random()*60000));
+        setInterval(pollOnce, 60000);
     });
 })();
 </script>
